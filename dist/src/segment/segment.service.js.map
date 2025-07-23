@@ -1,0 +1,1 @@
+{"version":3,"file":"segment.service.js","sourceRoot":"","sources":["../../../src/segment/segment.service.ts"],"names":[],"mappings":";;;;;;;;;AAAA,2CAA4C;AAIrC,IAAM,cAAc,GAApB,MAAM,cAAc;IACzB,OAAO,CAAC,EAAU;QAChB,OAAO,IAAI,CAAC,OAAO,CAAC,EAAE,CAAC,CAAC;IAC1B,CAAC;CACF,CAAA;AAJY,wCAAc;yBAAd,cAAc;IAD1B,IAAA,mBAAU,GAAE;GACA,cAAc,CAI1B"}

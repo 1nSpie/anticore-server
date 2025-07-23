@@ -1,0 +1,135 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Brand {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+  Car  Car[]
+}
+
+model Car {
+  id      Int    @id @default(autoincrement())
+  model   String
+  brandId Int?
+  segment Int
+  brand   Brand? @relation(fields: [brandId], references: [id])
+}
+
+model BodyTypePrice {
+  id             Int  @id @default(autoincrement())
+  segment        Int  @unique // Ценовой сегмент (1-6)
+  standartML     Int?
+  standartMLBody Int?
+  complexML      Int?
+  complexMLBody  Int?
+}
+
+model BlogPost {
+  id        Int      @id @default(autoincrement())
+  title     String
+  excerpt   String
+  content   String
+  slug      String   @unique
+  date      DateTime @default(now())
+  readTime  String
+  categoryId Int
+  image     String?
+  author    String   @default("Эксперт Anticore")
+  featured  Boolean  @default(false)
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  category BlogCategory @relation(fields: [categoryId], references: [id])
+  tags     BlogTag[]    @relation("BlogPostTags")
+  
+  @@map("blog_posts")
+}
+
+model BlogCategory {
+  id        Int        @id @default(autoincrement())
+  name      String     @unique
+  slug      String     @unique
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  
+  posts BlogPost[]
+  
+  @@map("blog_categories")
+}
+
+model BlogTag {
+  id        Int        @id @default(autoincrement())
+  name      String     @unique
+  slug      String     @unique
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  
+  posts BlogPost[] @relation("BlogPostTags")
+  
+  @@map("blog_tags")
+}
+
+model Work {
+  id            Int      @id @default(autoincrement())
+  title         String
+  description   String
+  slug          String   @unique
+  beforeImage   String?
+  afterImage    String?
+  duration      String   // например "6 часов"
+  year          String   // например "2024"
+  carBrand      String   // например "Toyota"
+  carModel      String   // например "Camry 2018"
+  categoryId    Int
+  featured      Boolean  @default(false)
+  published     Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  category      WorkCategory @relation(fields: [categoryId], references: [id])
+  services      WorkService[]
+  images        WorkImage[]
+  
+  @@map("works")
+}
+
+model WorkCategory {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  slug      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  works Work[]
+  
+  @@map("work_categories")
+}
+
+model WorkService {
+  id      Int    @id @default(autoincrement())
+  name    String
+  workId  Int
+  
+  work Work @relation(fields: [workId], references: [id], onDelete: Cascade)
+  
+  @@map("work_services")
+}
+
+model WorkImage {
+  id       Int    @id @default(autoincrement())
+  url      String
+  alt      String?
+  order    Int    @default(0)
+  workId   Int
+  
+  work Work @relation(fields: [workId], references: [id], onDelete: Cascade)
+  
+  @@map("work_images")
+}
