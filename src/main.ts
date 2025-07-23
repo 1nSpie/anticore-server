@@ -8,8 +8,13 @@ import { join } from "path";
 async function bootstrap() {
   const port = process.env.PORT ?? 4444;
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  app.setGlobalPrefix("api");
+  app.useGlobalPipes(new ValidationPipe());
   app.enableCors({
-    origin: process.env.FRONTEND_BASE_URL,
+    origin: [
+      process.env.FRONTEND_BASE_URL ?? "",
+      process.env.SERVER_SELECTEL ?? "",
+    ],
     credentials: true,
   });
 
@@ -18,8 +23,6 @@ async function bootstrap() {
     prefix: "/static/",
   });
 
-  app.setGlobalPrefix("api");
-  app.useGlobalPipes(new ValidationPipe());
   await app.listen(port);
 }
 bootstrap().catch((err) => console.error(err));
