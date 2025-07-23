@@ -9,12 +9,13 @@ async function bootstrap() {
     const port = process.env.PORT ?? 4444;
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     app.enableCors({
+        origin: process.env.FRONTEND_BASE_URL,
         credentials: true,
     });
-    app.useStaticAssets((0, path_1.join)(__dirname, '..', 'public'), {
-        prefix: '/static/',
+    app.useStaticAssets((0, path_1.join)(__dirname, "..", "public"), {
+        prefix: "/static/",
     });
-    app.setGlobalPrefix('api');
+    app.setGlobalPrefix("api");
     app.useGlobalPipes(new common_1.ValidationPipe());
     await app.listen(port);
 }
