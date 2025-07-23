@@ -8,15 +8,18 @@ const path_1 = require("path");
 async function bootstrap() {
     const port = process.env.PORT ?? 4444;
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
+    app.setGlobalPrefix("api");
+    app.useGlobalPipes(new common_1.ValidationPipe());
     app.enableCors({
-        origin: process.env.FRONTEND_BASE_URL,
+        origin: [
+            process.env.FRONTEND_BASE_URL ?? "",
+            process.env.SERVER_SELECTEL ?? "",
+        ],
         credentials: true,
     });
     app.useStaticAssets((0, path_1.join)(__dirname, "..", "public"), {
         prefix: "/static/",
     });
-    app.setGlobalPrefix("api");
-    app.useGlobalPipes(new common_1.ValidationPipe());
     await app.listen(port);
 }
 bootstrap().catch((err) => console.error(err));
