@@ -19,7 +19,11 @@ async function bootstrap() {
   });
 
   app.enableCors({
-    origin: "https://xn--80aaag6amsblus.xn--p1ai",
+    origin: [
+      "https://xn--80aaag6amsblus.xn--p1ai",
+      process.env.FRONTEND_BASE_URL ?? "",
+      process.env.SERVER_SELECTEL ?? "",
+    ],
     methods: "GET,POST,PUT,DELETE",
     credentials: true,
   });
