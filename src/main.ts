@@ -18,10 +18,18 @@ async function bootstrap() {
     credentials: true,
   });
 
+  app.enableCors({
+    origin: "https://xn--80aaag6amsblus.xn--p1ai",
+    methods: "GET,POST,PUT,DELETE",
+    credentials: true,
+  });
+
   // Serve static files from public directory
   app.useStaticAssets(join(__dirname, "..", "public"), {
     prefix: "/static/",
   });
+  // Для работы за прокси
+  app.set("trust proxy", true);
 
   await app.listen(port);
 }

@@ -17,9 +17,15 @@ async function bootstrap() {
         ],
         credentials: true,
     });
+    app.enableCors({
+        origin: "https://xn--80aaag6amsblus.xn--p1ai",
+        methods: "GET,POST,PUT,DELETE",
+        credentials: true,
+    });
     app.useStaticAssets((0, path_1.join)(__dirname, "..", "public"), {
         prefix: "/static/",
     });
+    app.set("trust proxy", true);
     await app.listen(port);
 }
 bootstrap().catch((err) => console.error(err));
