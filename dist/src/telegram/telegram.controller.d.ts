@@ -1,11 +1,11 @@
-import { TelegramService } from './telegram.service';
+import { TelegramService } from "./telegram.service";
 interface SimpleTelegramMessage {
     name: string;
     phone: string;
     message: string;
-    href: string;
+    href?: string;
 }
-export type ContactMethod = 'telegram' | 'whatsapp' | 'phone';
+export type ContactMethod = "telegram" | "whatsapp" | "phone";
 export type AutoPriceFormData = {
     brand: string;
     model: string;
