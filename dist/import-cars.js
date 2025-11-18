@@ -8,78 +8,96 @@ const prisma = new client_1.PrismaClient();
 const classes = [
     {
         segment: 1,
-        standartML: 18000,
-        standartMLBody: 20000,
-        complexML: 23000,
-        complexMLBody: 25000,
+        standartML: 20500,
+        standartMLBody: 23500,
+        complexML: 25500,
+        complexMLBody: 28500,
     },
     {
         segment: 2,
-        standartML: 21000,
-        standartMLBody: 23000,
-        complexML: 28000,
-        complexMLBody: 30000,
+        standartML: 23500,
+        standartMLBody: 26500,
+        complexML: 28500,
+        complexMLBody: 31500,
     },
     {
         segment: 3,
-        standartML: 24000,
-        standartMLBody: 26000,
-        complexML: 33000,
-        complexMLBody: 35000,
+        standartML: 26500,
+        standartMLBody: 29500,
+        complexML: 31500,
+        complexMLBody: 34500,
     },
     {
         segment: 4,
-        standartML: 27000,
-        standartMLBody: 29000,
-        complexML: 38000,
-        complexMLBody: 40000,
+        standartML: 28500,
+        standartMLBody: 31500,
+        complexML: 33500,
+        complexMLBody: 36500,
     },
     {
         segment: 5,
-        standartML: 30000,
-        standartMLBody: 32000,
-        complexML: 43000,
-        complexMLBody: 45000,
+        standartML: 33500,
+        standartMLBody: 36500,
+        complexML: 38500,
+        complexMLBody: 41500,
     },
     {
         segment: 6,
-        standartML: 33000,
-        standartMLBody: 35000,
-        complexML: 48000,
-        complexMLBody: 50000,
+        standartML: 38500,
+        standartMLBody: 41500,
+        complexML: 43500,
+        complexMLBody: 46500,
     },
 ];
+const FILE_NAME = "table2.xlsx";
+const COLUMN_INDEX = {
+    brand: 0,
+    model: 2,
+    segment: 3,
+};
+const normalizeCell = (value) => value === null || value === undefined ? "" : `${value}`.trim();
+const parseSegment = (value) => {
+    const parsed = Number(value);
+    return Number.isFinite(parsed) ? parsed : 1;
+};
 async function main() {
     try {
-        const filePath = path.join(__dirname, 'table.xlsx');
+        const filePath = path.join(__dirname, FILE_NAME);
         if (!fs.existsSync(filePath)) {
             throw new Error(`Файл ${filePath} не найден`);
         }
-        console.log('📖 Читаем Excel файл...');
+        console.log("📖 Читаем Excel файл...");
         const workbook = XLSX.readFile(filePath);
         const sheetName = workbook.SheetNames[0];
         const worksheet = workbook.Sheets[sheetName];
         const jsonData = XLSX.utils.sheet_to_json(worksheet, {
             header: 1,
         });
-        const headers = jsonData[0];
+        const headers = (jsonData[0] ?? []).map((cell) => normalizeCell(cell));
         console.log(`📊 Найдено ${jsonData.length - 1} строк данных`);
-        console.log(`📋 Заголовки: ${headers.join(', ')}`);
-        console.log('🗑️ Очищаем старые данные...');
+        console.log(`📋 Заголовки: ${headers.join(", ")}`);
+        console.log("🗑️ Очищаем старые данные...");
         await prisma.bodyTypePrice.deleteMany({});
         await prisma.car.deleteMany({});
         await prisma.brand.deleteMany({});
+        console.log("💰 Синхронизируем ценовые сегменты...");
+        await Promise.all(classes.map((bodyType) => prisma.bodyTypePrice.upsert({
+            where: { segment: bodyType.segment },
+            create: bodyType,
+            update: bodyType,
+        })));
+        console.log(`💰 Обновлено ценовых сегментов: ${classes.length}`);
         let processedRows = 0;
         let skippedRows = 0;
         for (let i = 1; i < jsonData.length; i++) {
             const row = jsonData[i];
-            if (!row || !row[0]) {
+            if (!row) {
                 skippedRows++;
                 continue;
             }
-            const brandName = row[0]?.toString().trim();
-            const modelName = row[1]?.toString().trim();
-            const segment = parseInt(row[2]) || 1;
+            const brandName = normalizeCell(row[COLUMN_INDEX.brand]);
+            const modelName = normalizeCell(row[COLUMN_INDEX.model]);
+            const segment = parseSegment(row[COLUMN_INDEX.segment]);
             if (!brandName || !modelName) {
                 console.log(`⚠️ Пропускаем строку ${i + 1}: отсутствует бренд или модель`);
                 skippedRows++;
@@ -114,11 +132,6 @@ async function main() {
                     },
                 });
                 console.log(`🚗 Создана модель: ${brandName} ${modelName} (сегмент: ${segment})`);
-                await prisma.bodyTypePrice.createMany({
-                    data: classes,
-                    skipDuplicates: true,
-                });
-                console.log(`💰 Добавлено цен: ${classes.length}`);
                 processedRows++;
             }
             catch (error) {
@@ -126,27 +139,30 @@ async function main() {
                 skippedRows++;
             }
         }
-        console.log('\n📈 Статистика импорта:');
+        console.log("\n📈 Статистика импорта:");
         console.log(`✅ Обработано строк: ${processedRows}`);
         console.log(`⚠️ Пропущено строк: ${skippedRows}`);
         console.log(`📊 Всего строк в файле: ${jsonData.length - 1}`);
         const brandsCount = await prisma.brand.count();
         const carsCount = await prisma.car.count();
         const pricesCount = await prisma.bodyTypePrice.count();
-        console.log('\n🎯 Итоговая статистика базы данных:');
+        console.log("\n🎯 Итоговая статистика базы данных:");
         console.log(`🏢 Брендов: ${brandsCount}`);
         console.log(`🚗 Моделей: ${carsCount}`);
         console.log(`💰 Цен: ${pricesCount}`);
-        console.log('\n✅ Импорт завершен успешно!');
+        console.log("\n✅ Импорт завершен успешно!");
     }
     catch (error) {
-        console.error('❌ Критическая ошибка импорта:', error);
+        console.error("❌ Критическая ошибка импорта:", error);
         throw error;
     }
 }
 main()
-    .catch((e) => {
-    console.error('❌ Ошибка импорта:', e.message);
+    .catch((error) => {
+    const message = error instanceof Error ? error.message : String(error);
+    console.error("❌ Ошибка импорта:", message);
 })
-    .finally(async () => await prisma.$disconnect());
+    .finally(() => {
+    void prisma.$disconnect();
+});
 //# sourceMappingURL=import-cars.js.map
