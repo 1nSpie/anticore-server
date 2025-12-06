@@ -12,8 +12,8 @@ export declare class BrandsController {
             complexMLBody: number | null;
         } | null;
         id: number;
+        segment: number;
         model: string;
         brandId: number | null;
-        segment: number;
     }[]>;
 }

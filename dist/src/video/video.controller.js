@@ -21,64 +21,94 @@ let VideoController = class VideoController {
     streamVideo(req, res) {
         const filename = req.params.filename;
         const getContentType = (filename) => {
-            const ext = filename.toLowerCase().split('.').pop();
+            const ext = filename.toLowerCase().split(".").pop();
             switch (ext) {
-                case 'mp4':
-                    return 'video/mp4';
-                case 'webm':
-                    return 'video/webm';
-                case 'ogg':
-                    return 'video/ogg';
+                case "mp4":
+                    return "video/mp4";
+                case "webm":
+                    return "video/webm";
+                case "ogg":
+                    return "video/ogg";
                 default:
                     return null;
             }
         };
         const contentType = getContentType(filename);
         if (!contentType) {
-            return res.status(common_1.HttpStatus.BAD_REQUEST).send('Unsupported video format');
+            return res
+                .status(common_1.HttpStatus.BAD_REQUEST)
+                .send("Unsupported video format");
         }
-        const filePath = (0, path_1.join)(process.cwd(), 'public', 'video', filename);
+        const filePath = (0, path_1.join)(process.cwd(), "public", "video", filename);
         let videoStats;
         try {
             videoStats = (0, fs_2.statSync)(filePath);
         }
         catch {
-            return res.status(common_1.HttpStatus.NOT_FOUND).send('Видео не найдено');
+            return res.status(common_1.HttpStatus.NOT_FOUND).send("Видео не найдено");
         }
         const fileSize = videoStats?.size;
         const range = req.headers.range;
+        req.on("close", () => {
+        });
         if (!range) {
             res.header({
-                'Content-Type': contentType,
-                'Content-Length': fileSize,
+                "Content-Type": contentType,
+                "Content-Length": fileSize,
             });
-            (0, fs_1.createReadStream)(filePath).pipe(res);
+            const stream = (0, fs_1.createReadStream)(filePath);
+            stream.on("error", (error) => {
+                if (!res.headersSent) {
+                    res
+                        .status(common_1.HttpStatus.INTERNAL_SERVER_ERROR)
+                        .send("Ошибка чтения видео");
+                }
+            });
+            stream.pipe(res);
+            res.on("close", () => {
+                if (!stream.destroyed) {
+                    stream.destroy();
+                }
+            });
             return;
         }
-        const parts = range.replace(/bytes=/, '').split('-');
+        const parts = range.replace(/bytes=/, "").split("-");
         const start = parseInt(parts[0], 10);
         const end = parts[1] ? parseInt(parts[1], 10) : fileSize - 1;
         if (start >= fileSize) {
             return res
                 .status(common_1.HttpStatus.REQUESTED_RANGE_NOT_SATISFIABLE)
-                .header('Content-Range', `bytes */${fileSize}`)
-                .send('Requested range not satisfiable');
+                .header("Content-Range", `bytes */${fileSize}`)
+                .send("Requested range not satisfiable");
         }
         const chunkSize = end - start + 1;
         res.header({
-            'Content-Type': contentType,
-            'Content-Range': `bytes ${start}-${end}/${fileSize}`,
-            'Accept-Ranges': 'bytes',
-            'Content-Length': chunkSize,
-            'Cache-Control': 'public, max-age=31536000',
+            "Content-Type": contentType,
+            "Content-Range": `bytes ${start}-${end}/${fileSize}`,
+            "Accept-Ranges": "bytes",
+            "Content-Length": chunkSize,
+            "Cache-Control": "public, max-age=31536000",
         });
         res.status(common_1.HttpStatus.PARTIAL_CONTENT);
-        (0, fs_1.createReadStream)(filePath, { start, end }).pipe(res);
+        const stream = (0, fs_1.createReadStream)(filePath, { start, end });
+        stream.on("error", (error) => {
+            if (!res.headersSent) {
+                res
+                    .status(common_1.HttpStatus.INTERNAL_SERVER_ERROR)
+                    .send("Ошибка чтения видео");
+            }
+        });
+        stream.pipe(res);
+        res.on("close", () => {
+            if (!stream.destroyed) {
+                stream.destroy();
+            }
+        });
     }
 };
 exports.VideoController = VideoController;
 __decorate([
-    (0, common_1.Get)(':filename'),
+    (0, common_1.Get)(":filename"),
     __param(0, (0, common_1.Req)()),
     __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
@@ -86,6 +116,6 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], VideoController.prototype, "streamVideo", null);
 exports.VideoController = VideoController = __decorate([
-    (0, common_1.Controller)('video')
+    (0, common_1.Controller)("video")
 ], VideoController);
 //# sourceMappingURL=video.controller.js.map

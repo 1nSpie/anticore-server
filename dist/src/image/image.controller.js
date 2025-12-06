@@ -11,32 +11,39 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
+var ImageController_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ImageController = void 0;
 const common_1 = require("@nestjs/common");
 const fs = require("fs");
 const image_service_1 = require("./image.service");
-let ImageController = class ImageController {
+let ImageController = ImageController_1 = class ImageController {
     imageService;
+    logger = new common_1.Logger(ImageController_1.name);
     constructor(imageService) {
         this.imageService = imageService;
     }
     getBlogImage(filename, res) {
         const imagePath = this.imageService.getBlogImagePath(filename);
-        console.log('Requested filename:', filename);
-        console.log('Resolved path:', imagePath);
-        console.log('File exists:', fs.existsSync(imagePath));
         if (!fs.existsSync(imagePath)) {
             return res
                 .status(common_1.HttpStatus.NOT_FOUND)
                 .json({ error: 'Blog image not found', path: imagePath });
         }
-        res.sendFile(imagePath);
+        res.sendFile(imagePath, (error) => {
+            if (error && !res.headersSent) {
+                this.logger.error(`Error sending blog image ${filename}:`, error);
+                res.status(common_1.HttpStatus.INTERNAL_SERVER_ERROR).json({
+                    error: 'Error sending image',
+                });
+            }
+        });
     }
     listBlogImages() {
+        const images = this.imageService.listBlogImages();
         return {
-            images: this.imageService.listBlogImages(),
-            total: this.imageService.listBlogImages().length,
+            images,
+            total: images.length,
         };
     }
     getImage(filename, res) {
@@ -46,7 +53,14 @@ let ImageController = class ImageController {
                 .status(common_1.HttpStatus.NOT_FOUND)
                 .json({ error: 'Image not found' });
         }
-        res.sendFile(imagePath);
+        res.sendFile(imagePath, (error) => {
+            if (error && !res.headersSent) {
+                this.logger.error(`Error sending image ${filename}:`, error);
+                res.status(common_1.HttpStatus.INTERNAL_SERVER_ERROR).json({
+                    error: 'Error sending image',
+                });
+            }
+        });
     }
 };
 exports.ImageController = ImageController;
@@ -72,7 +86,7 @@ __decorate([
     __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", void 0)
 ], ImageController.prototype, "getImage", null);
-exports.ImageController = ImageController = __decorate([
+exports.ImageController = ImageController = ImageController_1 = __decorate([
     (0, common_1.Controller)('image'),
     __metadata("design:paramtypes", [image_service_1.ImageService])
 ], ImageController);

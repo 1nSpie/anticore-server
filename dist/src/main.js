@@ -10,19 +10,13 @@ async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     app.setGlobalPrefix("api");
     app.useGlobalPipes(new common_1.ValidationPipe());
+    const origins = [
+        "https://xn--80aaag6amsblus.xn--p1ai",
+        process.env.FRONTEND_BASE_URL ?? "",
+        process.env.SERVER_SELECTEL ?? "",
+    ].filter((origin) => origin !== "");
     app.enableCors({
-        origin: [
-            process.env.FRONTEND_BASE_URL ?? "",
-            process.env.SERVER_SELECTEL ?? "",
-        ],
-        credentials: true,
-    });
-    app.enableCors({
-        origin: [
-            "https://xn--80aaag6amsblus.xn--p1ai",
-            process.env.FRONTEND_BASE_URL ?? "",
-            process.env.SERVER_SELECTEL ?? "",
-        ],
+        origin: origins,
         methods: "GET,POST,PUT,DELETE",
         credentials: true,
     });

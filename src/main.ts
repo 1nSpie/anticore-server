@@ -10,20 +10,16 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.setGlobalPrefix("api");
   app.useGlobalPipes(new ValidationPipe());
-  app.enableCors({
-    origin: [
-      process.env.FRONTEND_BASE_URL ?? "",
-      process.env.SERVER_SELECTEL ?? "",
-    ],
-    credentials: true,
-  });
+
+  // Объединяем все origins в один массив
+  const origins = [
+    "https://xn--80aaag6amsblus.xn--p1ai",
+    process.env.FRONTEND_BASE_URL ?? "",
+    process.env.SERVER_SELECTEL ?? "",
+  ].filter((origin) => origin !== ""); // Убираем пустые значения
 
   app.enableCors({
-    origin: [
-      "https://xn--80aaag6amsblus.xn--p1ai",
-      process.env.FRONTEND_BASE_URL ?? "",
-      process.env.SERVER_SELECTEL ?? "",
-    ],
+    origin: origins,
     methods: "GET,POST,PUT,DELETE",
     credentials: true,
   });

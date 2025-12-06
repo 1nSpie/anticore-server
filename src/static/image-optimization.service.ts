@@ -24,7 +24,7 @@ export class ImageOptimizationService {
 
   async optimizeImage(
     filePath: string,
-    options: ImageOptimizationOptions = {}
+    options: ImageOptimizationOptions = {},
   ): Promise<OptimizedImageResult> {
     if (!existsSync(filePath)) {
       throw new Error(`Image file not found: ${filePath}`);
@@ -78,7 +78,7 @@ export class ImageOptimizationService {
         // Don't enlarge images
         const resizeWidth = Math.min(
           targetWidth,
-          metadata.width || targetWidth
+          metadata.width || targetWidth,
         );
         sharpInstance = sharpInstance.resize(resizeWidth, null, {
           withoutEnlargement: true,
@@ -137,7 +137,7 @@ export class ImageOptimizationService {
       this.cacheImage(cacheKey, optimizedBuffer);
 
       this.logger.log(
-        `Optimized image: ${filePath} (${metadata.width}x${metadata.height}) -> ${finalFormat} q${finalQuality}`
+        `Optimized image: ${filePath} (${metadata.width}x${metadata.height}) -> ${finalFormat} q${finalQuality}`,
       );
 
       return {
@@ -146,20 +146,24 @@ export class ImageOptimizationService {
         fromCache: false,
       };
     } catch (error) {
-      this.logger.error(`Error optimizing image ${filePath}:`, error.message);
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
+      this.logger.error(`Error optimizing image ${filePath}:`, errorMessage);
       throw error;
     }
   }
 
   private cacheImage(key: string, buffer: Buffer) {
-    // Implement LRU cache behavior
+    // Implement LRU cache behavior - удаляем больше при превышении лимита
     if (this.imageCache.size >= this.MAX_CACHE_SIZE) {
-      // Remove oldest entries (first 10%)
+      // Remove oldest entries (first 20% для более агрессивной очистки)
       const keysToRemove = Array.from(this.imageCache.keys()).slice(
         0,
-        Math.floor(this.MAX_CACHE_SIZE * 0.1)
+        Math.max(1, Math.floor(this.MAX_CACHE_SIZE * 0.2)),
       );
-      keysToRemove.forEach((key) => this.imageCache.delete(key));
+      keysToRemove.forEach((keyToRemove) =>
+        this.imageCache.delete(keyToRemove),
+      );
     }
     this.imageCache.set(key, buffer);
   }

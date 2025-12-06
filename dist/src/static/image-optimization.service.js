@@ -106,14 +106,15 @@ let ImageOptimizationService = ImageOptimizationService_1 = class ImageOptimizat
             };
         }
         catch (error) {
-            this.logger.error(`Error optimizing image ${filePath}:`, error.message);
+            const errorMessage = error instanceof Error ? error.message : String(error);
+            this.logger.error(`Error optimizing image ${filePath}:`, errorMessage);
             throw error;
         }
     }
     cacheImage(key, buffer) {
         if (this.imageCache.size >= this.MAX_CACHE_SIZE) {
-            const keysToRemove = Array.from(this.imageCache.keys()).slice(0, Math.floor(this.MAX_CACHE_SIZE * 0.1));
-            keysToRemove.forEach((key) => this.imageCache.delete(key));
+            const keysToRemove = Array.from(this.imageCache.keys()).slice(0, Math.max(1, Math.floor(this.MAX_CACHE_SIZE * 0.2)));
+            keysToRemove.forEach((keyToRemove) => this.imageCache.delete(keyToRemove));
         }
         this.imageCache.set(key, buffer);
     }

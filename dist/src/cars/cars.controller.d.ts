@@ -9,9 +9,9 @@ export declare class CarsController {
         } | null;
     } & {
         id: number;
+        segment: number;
         model: string;
         brandId: number | null;
-        segment: number;
     })[]>;
     findAllBrands(): import(".prisma/client").Prisma.PrismaPromise<{
         id: number;
