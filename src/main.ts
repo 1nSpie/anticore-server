@@ -11,12 +11,11 @@ async function bootstrap() {
   app.setGlobalPrefix("api");
   app.useGlobalPipes(new ValidationPipe());
 
-  // Объединяем все origins в один массив
   const origins = [
     "https://xn--80aaag6amsblus.xn--p1ai",
     process.env.FRONTEND_BASE_URL ?? "",
     process.env.SERVER_SELECTEL ?? "",
-  ].filter((origin) => origin !== ""); // Убираем пустые значения
+  ].filter((origin) => origin !== "");
 
   app.enableCors({
     origin: origins,

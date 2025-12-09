@@ -12,6 +12,7 @@ import { VideoController } from './video/video.controller';
 import { ImageModule } from './image/image.module';
 import { StaticModule } from './static/static.module';
 import { TelegramModule } from './telegram/telegram.module';
+import { LegacyModule } from './legacy/legacy.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { TelegramModule } from './telegram/telegram.module';
     ImageModule,
     StaticModule,
     TelegramModule,
+    LegacyModule,
   ],
   controllers: [VideoController],
   providers: [
