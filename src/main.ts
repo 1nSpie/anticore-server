@@ -7,6 +7,7 @@ import { join } from "path";
 
 async function bootstrap() {
   const port = process.env.PORT ?? 4444;
+  const isDev = process.env.NODE_ENV
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.setGlobalPrefix("api");
   app.useGlobalPipes(new ValidationPipe());
@@ -18,7 +19,7 @@ async function bootstrap() {
   ].filter((origin) => origin !== "");
 
   app.enableCors({
-    origin: origins,
+    origin: isDev ? 'http://localhost:3000' :origins,
     methods: "GET,POST,PUT,DELETE",
     credentials: true,
   });

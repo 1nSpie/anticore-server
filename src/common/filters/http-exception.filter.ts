@@ -13,6 +13,56 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 export class AllExceptionsFilter implements ExceptionFilter {
   private readonly logger = new Logger(AllExceptionsFilter.name);
 
+  // Список путей, которые часто используют боты - не логируем их
+  private readonly botPaths = [
+    '/pdown',
+    '/_next',
+    '/_next/server',
+    '/app',
+    '/api/route',
+    '/wp-admin',
+    '/wp-login',
+    '/.env',
+    '/.git',
+    '/admin',
+    '/phpmyadmin',
+    '/.well-known',
+    '/favicon.ico', // favicon запрашивают браузеры автоматически
+  ];
+
+  // Проверка, является ли запрос от бота
+  private isBotRequest(request: Request): boolean {
+    const userAgent = request.get('user-agent')?.toLowerCase() || '';
+    const path = request.url.toLowerCase();
+
+    // Проверка User-Agent ботов
+    const botPatterns = [
+      'bot',
+      'crawler',
+      'spider',
+      'scraper',
+      'curl',
+      'wget',
+      'python',
+      'go-http',
+      'java',
+      'scrapy',
+    ];
+
+    const isBotUA = botPatterns.some((pattern) => userAgent.includes(pattern));
+
+    // Проверка подозрительных путей
+    const isBotPath = this.botPaths.some((botPath) => path.includes(botPath));
+
+    // POST запросы на несуществующие пути - обычно боты
+    const isSuspiciousPost =
+      request.method === 'POST' &&
+      !path.startsWith('/api/') &&
+      !path.startsWith('/static/');
+
+    return isBotUA || isBotPath || isSuspiciousPost;
+  }
+
   catch(exception: unknown, host: ArgumentsHost): void {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
@@ -58,20 +108,42 @@ export class AllExceptionsFilter implements ExceptionFilter {
       error = 'Internal Server Error';
     }
 
-    const errorResponse = {
+    const isBot = this.isBotRequest(request);
+    const is404 = status === HttpStatus.NOT_FOUND;
+    const isIgnoredPath = this.botPaths.some((p) => 
+      request.url.toLowerCase().includes(p.toLowerCase())
+    );
+
+    // Не логируем ботов, 404 для известных бот-путей и favicon
+    if (!isBot && !(is404 && isIgnoredPath)) {
+      const errorResponse = {
+        statusCode: status,
+        timestamp: new Date().toISOString(),
+        path: request.url,
+        method: request.method,
+        message,
+        error,
+      };
+
+      this.logger.error(
+        `${request.method} ${request.url}`,
+        JSON.stringify(errorResponse),
+      );
+    }
+
+    // Для ботов и игнорируемых путей возвращаем простой ответ без JSON (быстрее)
+    if ((isBot || isIgnoredPath) && is404) {
+      response.status(status).send('Not Found');
+      return;
+    }
+
+    response.status(status).json({
       statusCode: status,
       timestamp: new Date().toISOString(),
       path: request.url,
       method: request.method,
       message,
       error,
-    };
-
-    this.logger.error(
-      `${request.method} ${request.url}`,
-      JSON.stringify(errorResponse),
-    );
-
-    response.status(status).json(errorResponse);
+    });
   }
 }
