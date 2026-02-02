@@ -4,6 +4,7 @@ import { AppModule } from "./app.module";
 import { ValidationPipe } from "@nestjs/common";
 import { NestExpressApplication } from "@nestjs/platform-express";
 import { join } from "path";
+import * as cookieParser from "cookie-parser";
 
 async function bootstrap() {
   const port = process.env.PORT ?? 4444;
@@ -11,6 +12,7 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.setGlobalPrefix("api");
   app.useGlobalPipes(new ValidationPipe());
+  app.use(cookieParser());
 
   const origins = [
     "https://xn--80aaag6amsblus.xn--p1ai",

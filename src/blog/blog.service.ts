@@ -1,4 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import {
   CreateBlogPostDto,
@@ -32,9 +33,11 @@ export class BlogService {
       }
     }
 
+    const { content, ...restPostData } = postData;
     return this.prisma.blogPost.create({
       data: {
-        ...postData,
+        ...restPostData,
+        content: content as unknown as Prisma.InputJsonValue,
         tags: {
           connect: tagConnections,
         },
@@ -75,7 +78,6 @@ export class BlogService {
       where.OR = [
         { title: { contains: search, mode: 'insensitive' } },
         { excerpt: { contains: search, mode: 'insensitive' } },
-        { content: { contains: search, mode: 'insensitive' } },
       ];
     }
 
@@ -135,7 +137,7 @@ export class BlogService {
   }
 
   async updatePost(id: number, updatePostDto: UpdateBlogPostDto) {
-    const { tags, ...postData } = updatePostDto;
+    const { tags, content, ...postData } = updatePostDto;
 
     // Handle tags if provided
     const tagConnections: { id: number }[] = [];
@@ -157,6 +159,7 @@ export class BlogService {
       where: { id },
       data: {
         ...postData,
+        ...(content && { content: content as unknown as Prisma.InputJsonValue }),
         ...(tags && {
           tags: {
             set: tagConnections,

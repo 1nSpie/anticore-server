@@ -7,7 +7,7 @@ import {
   Logger,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
+import { Prisma } from '@prisma/client';
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
@@ -80,11 +80,11 @@ export class AllExceptionsFilter implements ExceptionFilter {
           ? errorResponse
           : (errorResponse as { message: string }).message || 'Http Exception';
       error = exception.name;
-    } else if (exception instanceof PrismaClientKnownRequestError) {
+    } else if (exception instanceof Prisma.PrismaClientKnownRequestError) {
       status = HttpStatus.BAD_REQUEST;
       error = 'Database Error';
 
-      switch (exception.code) {
+      switch ((exception as Prisma.PrismaClientKnownRequestError).code) {
         case 'P2002':
           message = 'Запись с такими данными уже существует';
           break;

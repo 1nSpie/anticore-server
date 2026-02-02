@@ -4,8 +4,18 @@ import {
   IsBoolean,
   IsInt,
   IsArray,
+  ValidateNested,
 } from 'class-validator';
 import { Transform, Type } from 'class-transformer';
+
+export class ContentBlockDto {
+  @IsOptional()
+  @IsString()
+  subtitle?: string;
+
+  @IsString()
+  text: string;
+}
 
 export class CreateBlogPostDto {
   @IsString()
@@ -14,8 +24,10 @@ export class CreateBlogPostDto {
   @IsString()
   excerpt: string;
 
-  @IsString()
-  content: string;
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => ContentBlockDto)
+  content: ContentBlockDto[];
 
   @IsString()
   slug: string;
@@ -58,8 +70,10 @@ export class UpdateBlogPostDto {
   excerpt?: string;
 
   @IsOptional()
-  @IsString()
-  content?: string;
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => ContentBlockDto)
+  content?: ContentBlockDto[];
 
   @IsOptional()
   @IsString()

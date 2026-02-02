@@ -1,9 +1,14 @@
+import "dotenv/config";
 import * as XLSX from "xlsx";
 import { PrismaClient } from "@prisma/client";
+import { PrismaPg } from "@prisma/adapter-pg";
+import { Pool } from "pg";
 import * as path from "path";
 import * as fs from "fs";
 
-const prisma = new PrismaClient();
+const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+const adapter = new PrismaPg(pool);
+const prisma = new PrismaClient({ adapter });
 
 const classes = [
   {
@@ -50,7 +55,7 @@ const classes = [
   },
 ];
 
-const FILE_NAME = "table2.xlsx";
+const FILE_NAME = "../table2.xlsx";
 
 const COLUMN_INDEX = {
   brand: 0,
@@ -212,6 +217,7 @@ main()
     const message = error instanceof Error ? error.message : String(error);
     console.error("❌ Ошибка импорта:", message);
   })
-  .finally(() => {
-    void prisma.$disconnect();
+  .finally(async () => {
+    await prisma.$disconnect();
+    await pool.end();
   });

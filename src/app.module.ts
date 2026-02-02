@@ -15,13 +15,14 @@ import { ImageModule } from './image/image.module';
 import { StaticModule } from './static/static.module';
 import { TelegramModule } from './telegram/telegram.module';
 import { LegacyModule } from './legacy/legacy.module';
+import { AdminAuthModule } from './auth/admin-auth.module';
 
 @Module({
   imports: [
     ThrottlerModule.forRoot([
       {
         ttl: 60000, // 1 минута
-        limit: 100, // 100 запросов в минуту
+        limit: 40, // 100 запросов в минуту
       },
     ]),
     PrismaModule,
@@ -34,6 +35,7 @@ import { LegacyModule } from './legacy/legacy.module';
     StaticModule,
     TelegramModule,
     LegacyModule,
+    AdminAuthModule,
   ],
   controllers: [VideoController],
   providers: [
