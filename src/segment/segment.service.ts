@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { BodyTypePrice } from '@prisma/client';
+import { BodyTypePrice } from 'generated/prisma';
 
 @Injectable()
 export class SegmentService {
