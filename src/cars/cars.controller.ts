@@ -52,6 +52,21 @@ export class CarsController {
     });
   }
 
+  @Get('by-segment/:segment')
+  async findBySegment(@Param('segment', ParseIntPipe) segment: number) {
+    const rows = await this.prisma.$queryRaw<{ id: number }[]>`
+      SELECT id FROM "Car" WHERE segment = ${segment} ORDER BY RANDOM() LIMIT 10
+    `;
+    const ids = rows.map((r) => r.id);
+    if (ids.length === 0) return [];
+    const cars = await this.prisma.car.findMany({
+      where: { id: { in: ids } },
+      include: { brand: true },
+    });
+    const byId = new Map(cars.map((c) => [c.id, c]));
+    return ids.map((id) => byId.get(id)!).filter(Boolean);
+  }
+
   // Admin endpoints
   @UseGuards(AdminJwtGuard)
   @Post('brands')
