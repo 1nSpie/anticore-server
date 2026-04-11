@@ -16,6 +16,7 @@ import { StaticModule } from './static/static.module';
 import { TelegramModule } from './telegram/telegram.module';
 import { LegacyModule } from './legacy/legacy.module';
 import { AdminAuthModule } from './auth/admin-auth.module';
+import { VkModule } from './vk/vk.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { AdminAuthModule } from './auth/admin-auth.module';
     TelegramModule,
     LegacyModule,
     AdminAuthModule,
+    VkModule
   ],
   controllers: [VideoController],
   providers: [
