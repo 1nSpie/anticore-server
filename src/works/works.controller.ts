@@ -1,26 +1,26 @@
 import { 
   Controller, 
   Get, 
-  Post, 
-  Put, 
-  Delete, 
-  Body, 
+  // Post, 
+  // Put, 
+  // Delete, 
+  // Body, 
   Param, 
   Query, 
   ParseIntPipe 
 } from '@nestjs/common';
 import { WorksService } from './works.service';
-import { CreateWorkDto, UpdateWorkDto, CreateWorkCategoryDto, UpdateWorkCategoryDto } from './dto/work.dto';
+// import { CreateWorkDto, UpdateWorkDto, CreateWorkCategoryDto, UpdateWorkCategoryDto } from './dto/work.dto';
 
 @Controller('works')
 export class WorksController {
   constructor(private readonly worksService: WorksService) {}
 
   // Works endpoints
-  @Post()
-  createWork(@Body() createWorkDto: CreateWorkDto) {
-    return this.worksService.createWork(createWorkDto);
-  }
+  // @Post()
+  // createWork(@Body() createWorkDto: CreateWorkDto) {
+  //   return this.worksService.createWork(createWorkDto);
+  // }
 
   @Get()
   findAllWorks(
@@ -50,24 +50,24 @@ export class WorksController {
     return this.worksService.findWorkById(id);
   }
 
-  @Put(':id')
-  updateWork(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() updateWorkDto: UpdateWorkDto
-  ) {
-    return this.worksService.updateWork(id, updateWorkDto);
-  }
+  // @Put(':id')
+  // updateWork(
+  //   @Param('id', ParseIntPipe) id: number,
+  //   @Body() updateWorkDto: UpdateWorkDto
+  // ) {
+  //   return this.worksService.updateWork(id, updateWorkDto);
+  // }
 
-  @Delete(':id')
-  deleteWork(@Param('id', ParseIntPipe) id: number) {
-    return this.worksService.deleteWork(id);
-  }
+  // @Delete(':id')
+  // deleteWork(@Param('id', ParseIntPipe) id: number) {
+  //   return this.worksService.deleteWork(id);
+  // }
 
   // Work Categories endpoints
-  @Post('categories')
-  createWorkCategory(@Body() createCategoryDto: CreateWorkCategoryDto) {
-    return this.worksService.createWorkCategory(createCategoryDto);
-  }
+  // @Post('categories')
+  // createWorkCategory(@Body() createCategoryDto: CreateWorkCategoryDto) {
+  //   return this.worksService.createWorkCategory(createCategoryDto);
+  // }
 
   @Get('categories/all')
   findAllWorkCategories() {
@@ -79,16 +79,16 @@ export class WorksController {
     return this.worksService.findWorkCategoryById(id);
   }
 
-  @Put('categories/:id')
-  updateWorkCategory(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() updateCategoryDto: UpdateWorkCategoryDto
-  ) {
-    return this.worksService.updateWorkCategory(id, updateCategoryDto);
-  }
+  // @Put('categories/:id')
+  // updateWorkCategory(
+  //   @Param('id', ParseIntPipe) id: number,
+  //   @Body() updateCategoryDto: UpdateWorkCategoryDto
+  // ) {
+  //   return this.worksService.updateWorkCategory(id, updateCategoryDto);
+  // }
 
-  @Delete('categories/:id')
-  deleteWorkCategory(@Param('id', ParseIntPipe) id: number) {
-    return this.worksService.deleteWorkCategory(id);
-  }
+  // @Delete('categories/:id')
+  // deleteWorkCategory(@Param('id', ParseIntPipe) id: number) {
+  //   return this.worksService.deleteWorkCategory(id);
+  // }
 }
