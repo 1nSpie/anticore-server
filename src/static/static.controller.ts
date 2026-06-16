@@ -21,8 +21,26 @@ export class StaticController {
     private readonly imageOptimizationService: ImageOptimizationService
   ) {}
 
+  private isValidFolderName(folder: string): boolean {
+    if (!folder || folder === "undefined" || folder === "null") {
+      return false;
+    }
+    return /^[a-zA-Z0-9_-]+$/.test(folder);
+  }
+
+  private isValidFilename(filename: string): boolean {
+    if (!filename || filename === "undefined" || filename === "null") {
+      return false;
+    }
+    return !filename.includes("..") && !/[\\/]/.test(filename);
+  }
+
   @Get("images/:folder")
   getImagesList(@Param("folder") folder: string) {
+    if (!this.isValidFolderName(folder)) {
+      throw new NotFoundException(`Folder ${folder} not found`);
+    }
+
     const folderPath = join(this.publicPath, folder);
 
     if (!existsSync(folderPath)) {
@@ -63,18 +81,27 @@ export class StaticController {
     @Query("q") quality?: string,
     @Query("fm") format?: string
   ) {
+    if (!this.isValidFolderName(folder) || !this.isValidFilename(filename)) {
+      throw new NotFoundException(`Image ${folder}/${filename} not found`);
+    }
+
     const filePath = join(this.publicPath, folder, filename);
 
     if (!existsSync(filePath)) {
       throw new NotFoundException(`Image ${folder}/${filename} not found`);
     }
 
+    const needsOptimization = !!(width || quality || format);
+    if (!needsOptimization) {
+      const fileExtension = this.getFileExtension(filename);
+      this.setImageHeaders(res, fileExtension, false);
+      return res.sendFile(filePath);
+    }
+
     try {
-      // Parse query parameters
       const targetWidth = width ? parseInt(width, 10) : undefined;
       const targetQuality = quality ? parseInt(quality, 10) : undefined;
 
-      // Use the image optimization service
       const result = await this.imageOptimizationService.optimizeImage(
         filePath,
         {

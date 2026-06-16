@@ -63,6 +63,14 @@ export class AllExceptionsFilter implements ExceptionFilter {
     return isBotUA || isBotPath || isSuspiciousPost;
   }
 
+  private isIgnored404(path: string): boolean {
+    const lower = path.toLowerCase();
+    return (
+      this.botPaths.some((botPath) => lower.includes(botPath.toLowerCase())) ||
+      /\/static\/images\/(undefined|null)(\/|$)/.test(lower)
+    );
+  }
+
   catch(exception: unknown, host: ArgumentsHost): void {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
@@ -110,11 +118,9 @@ export class AllExceptionsFilter implements ExceptionFilter {
 
     const isBot = this.isBotRequest(request);
     const is404 = status === HttpStatus.NOT_FOUND;
-    const isIgnoredPath = this.botPaths.some((p) => 
-      request.url.toLowerCase().includes(p.toLowerCase())
-    );
+    const isIgnoredPath = this.isIgnored404(request.url);
 
-    // Не логируем ботов, 404 для известных бот-путей и favicon
+    // Не логируем ботов, 404 для известных бот-путей и некорректных static-запросов
     if (!isBot && !(is404 && isIgnoredPath)) {
       const errorResponse = {
         statusCode: status,

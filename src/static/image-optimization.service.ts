@@ -18,7 +18,8 @@ export interface OptimizedImageResult {
 export class ImageOptimizationService {
   private readonly logger = new Logger(ImageOptimizationService.name);
   private readonly imageCache = new Map<string, Buffer>();
-  private readonly MAX_CACHE_SIZE = 200; // Increased cache size
+  private readonly MAX_CACHE_SIZE = 50;
+  private readonly MAX_CACHE_BYTES = 50 * 1024 * 1024;
   private readonly MAX_WIDTH = 3840; // 4K width limit
   private readonly DEFAULT_QUALITY = 85;
 
@@ -154,18 +155,28 @@ export class ImageOptimizationService {
   }
 
   private cacheImage(key: string, buffer: Buffer) {
-    // Implement LRU cache behavior - удаляем больше при превышении лимита
-    if (this.imageCache.size >= this.MAX_CACHE_SIZE) {
-      // Remove oldest entries (first 20% для более агрессивной очистки)
-      const keysToRemove = Array.from(this.imageCache.keys()).slice(
-        0,
-        Math.max(1, Math.floor(this.MAX_CACHE_SIZE * 0.2)),
-      );
-      keysToRemove.forEach((keyToRemove) =>
-        this.imageCache.delete(keyToRemove),
-      );
+    if (buffer.byteLength > this.MAX_CACHE_BYTES / 4) {
+      return;
     }
+
+    while (
+      this.imageCache.size >= this.MAX_CACHE_SIZE ||
+      this.getCacheByteSize() + buffer.byteLength > this.MAX_CACHE_BYTES
+    ) {
+      const oldestKey = this.imageCache.keys().next().value;
+      if (!oldestKey) break;
+      this.imageCache.delete(oldestKey);
+    }
+
     this.imageCache.set(key, buffer);
+  }
+
+  private getCacheByteSize(): number {
+    let total = 0;
+    for (const buffer of this.imageCache.values()) {
+      total += buffer.byteLength;
+    }
+    return total;
   }
 
   getMimeType(format: string): string {
