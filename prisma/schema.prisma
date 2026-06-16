@@ -19,6 +19,7 @@ model Car {
   brandId Int?
   segment Int
   brand   Brand? @relation(fields: [brandId], references: [id])
+  cabinetUsers CabinetUser[]
 }
 
 model BodyTypePrice {
@@ -132,4 +133,149 @@ model WorkImage {
   work Work @relation(fields: [workId], references: [id], onDelete: Cascade)
   
   @@map("work_images")
+}
+
+// --- Личный кабинет (клиенты сайта) ---
+
+enum CabinetUserRole {
+  USER
+}
+
+enum SmsPurpose {
+  PASSWORD_RESET
+  PHONE_CHANGE
+}
+
+/// Ожидание подтверждения регистрации по SMS
+model PendingRegistration {
+  id                     Int       @id @default(autoincrement())
+  phone                  String    @unique
+  passwordHash           String
+  code                   String
+  expiresAt              DateTime
+  privacyPolicyAcceptedAt DateTime?
+  personalDataConsentAt  DateTime?
+  termsAcceptedAt        DateTime?
+  createdAt              DateTime  @default(now())
+
+  @@map("pending_registrations")
+}
+
+model CabinetUser {
+  id            Int       @id @default(autoincrement())
+  phone         String    @unique
+  passwordHash  String
+  firstName     String?
+  lastName      String?
+  patronymic    String?
+  birthDate           DateTime? @db.Date
+  /** Последняя смена даты рождения пользователем (лимит раз в сутки) */
+  birthDateChangedAt  DateTime?
+  carId               Int?
+  /** Свободный текст, если авто нет в каталоге */
+  customCar     String?   @db.VarChar(200)
+  phoneVerified Boolean   @default(false)
+  blocked       Boolean   @default(false)
+  blockedAt     DateTime?
+  privacyPolicyAcceptedAt DateTime?
+  personalDataConsentAt   DateTime?
+  termsAcceptedAt         DateTime?
+  role          CabinetUserRole @default(USER)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  car                   Car?                 @relation(fields: [carId], references: [id], onDelete: SetNull)
+  refreshTokens         UserRefreshToken[]
+  visits                VisitHistory[]
+  documents             UserDocument[]
+  payments              PaymentHistory[]
+  notificationSettings  NotificationSettings?
+
+  @@map("cabinet_users")
+}
+
+model UserRefreshToken {
+  id        String   @id @default(cuid())
+  tokenHash String   @unique
+  userId    Int
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user CabinetUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_refresh_tokens")
+}
+
+model SmsCode {
+  id         Int       @id @default(autoincrement())
+  phone      String
+  purpose    SmsPurpose
+  code       String
+  userId     Int?
+  expiresAt  DateTime
+  consumedAt DateTime?
+  createdAt  DateTime  @default(now())
+
+  @@index([phone, purpose])
+  @@map("sms_codes")
+}
+
+model UserDocument {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  title     String
+  fileUrl   String
+  createdAt DateTime @default(now())
+
+  user CabinetUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_documents")
+}
+
+model VisitHistory {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  visitDate   DateTime @db.Date
+  serviceType String
+  diskLink    String?
+  createdAt   DateTime @default(now())
+
+  user CabinetUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("visit_history")
+}
+
+model PaymentHistory {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  amountKopeks Int
+  currency    String   @default("RUB")
+  description String
+  status      String   @default("completed")
+  paidAt      DateTime @default(now())
+
+  user CabinetUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("payment_history")
+}
+
+model NotificationSettings {
+  userId         Int     @id
+  smsEnabled     Boolean @default(true)
+  notifyReminder Boolean @default(true)
+
+  user CabinetUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("notification_settings")
+}
+
+model AdminAuditLog {
+  id             Int      @id @default(autoincrement())
+  action         String
+  adminSubject   String
+  targetUserId   Int?
+  meta           Json?
+  createdAt      DateTime @default(now())
+
+  @@map("admin_audit_logs")
 }

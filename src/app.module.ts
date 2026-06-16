@@ -17,6 +17,10 @@ import { TelegramModule } from './telegram/telegram.module';
 import { LegacyModule } from './legacy/legacy.module';
 import { AdminAuthModule } from './auth/admin-auth.module';
 import { VkModule } from './vk/vk.module';
+import { SmsModule } from './cabinet/sms/sms.module';
+import { CabinetAuthModule } from './cabinet/auth/cabinet-auth.module';
+import { CabinetUserModule } from './cabinet/user/cabinet-user.module';
+import { CabinetAdminModule } from './cabinet/admin/cabinet-admin.module';
 
 @Module({
   imports: [
@@ -37,7 +41,11 @@ import { VkModule } from './vk/vk.module';
     TelegramModule,
     LegacyModule,
     AdminAuthModule,
-    VkModule
+    VkModule,
+    SmsModule,
+    CabinetAuthModule,
+    CabinetUserModule,
+    CabinetAdminModule,
   ],
   controllers: [VideoController],
   providers: [

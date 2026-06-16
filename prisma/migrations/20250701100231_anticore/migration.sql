@@ -9,7 +9,7 @@
 
 */
 -- DropForeignKey
-ALTER TABLE "BodyTypePrice" DROP CONSTRAINT "BodyTypePrice_carId_fkey";
+ALTER TABLE "BodyTypePrice" DROP CONSTRAINT IF EXISTS "BodyTypePrice_carId_fkey";
 
 -- AlterTable
 ALTER TABLE "BodyTypePrice" DROP COLUMN "bodyType",

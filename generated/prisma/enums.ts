@@ -9,7 +9,16 @@
 * 🟢 You can import this file directly.
 */
 
+export const CabinetUserRole = {
+  USER: 'USER'
+} as const
+
+export type CabinetUserRole = (typeof CabinetUserRole)[keyof typeof CabinetUserRole]
 
 
-// This file is empty because there are no enums in the schema.
-export {}
+export const SmsPurpose = {
+  PASSWORD_RESET: 'PASSWORD_RESET',
+  PHONE_CHANGE: 'PHONE_CHANGE'
+} as const
+
+export type SmsPurpose = (typeof SmsPurpose)[keyof typeof SmsPurpose]
