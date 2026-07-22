@@ -19,6 +19,7 @@ model Car {
   brandId Int?
   segment Int
   brand   Brand? @relation(fields: [brandId], references: [id])
+  cabinetUsers CabinetUser[]
 }
 
 model BodyTypePrice {
@@ -132,4 +133,270 @@ model WorkImage {
   work Work @relation(fields: [workId], references: [id], onDelete: Cascade)
   
   @@map("work_images")
+}
+
+// --- Личный кабинет (клиенты сайта) ---
+
+enum CabinetUserRole {
+  USER
+}
+
+enum SmsPurpose {
+  PASSWORD_RESET
+  PHONE_CHANGE
+}
+
+/// Ожидание подтверждения регистрации по SMS
+model PendingRegistration {
+  id                     Int       @id @default(autoincrement())
+  phone                  String    @unique
+  passwordHash           String
+  code                   String
+  expiresAt              DateTime
+  privacyPolicyAcceptedAt DateTime?
+  personalDataConsentAt  DateTime?
+  termsAcceptedAt        DateTime?
+  createdAt              DateTime  @default(now())
+
+  @@map("pending_registrations")
+}
+
+model CabinetUser {
+  id            Int       @id @default(autoincrement())
+  phone         String    @unique
+  passwordHash  String
+  firstName     String?
+  lastName      String?
+  patronymic    String?
+  birthDate           DateTime? @db.Date
+  /** Последняя смена даты рождения пользователем (лимит раз в сутки) */
+  birthDateChangedAt  DateTime?
+  carId               Int?
+  /** Свободный текст, если авто нет в каталоге */
+  customCar     String?   @db.VarChar(200)
+  /** VIN (17 символов) — для CRM */
+  vin             String?   @db.VarChar(17)
+  /** Заметки администратора (CRM) */
+  adminComment    String?   @db.Text
+  /** Ссылка на фотоотчёт (Яндекс.Диск), одна на клиента */
+  photoReportUrl  String?   @db.VarChar(2000)
+  phoneVerified Boolean   @default(false)
+  blocked       Boolean   @default(false)
+  blockedAt     DateTime?
+  privacyPolicyAcceptedAt DateTime?
+  personalDataConsentAt   DateTime?
+  termsAcceptedAt         DateTime?
+  role          CabinetUserRole @default(USER)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  car                   Car?                 @relation(fields: [carId], references: [id], onDelete: SetNull)
+  refreshTokens         UserRefreshToken[]
+  visits                VisitHistory[]
+  documents             UserDocument[]
+  payments              PaymentHistory[]
+  notificationSettings  NotificationSettings?
+
+  @@map("cabinet_users")
+}
+
+model UserRefreshToken {
+  id        String   @id @default(cuid())
+  tokenHash String   @unique
+  userId    Int
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user CabinetUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_refresh_tokens")
+}
+
+model SmsCode {
+  id         Int       @id @default(autoincrement())
+  phone      String
+  purpose    SmsPurpose
+  code       String
+  userId     Int?
+  expiresAt  DateTime
+  consumedAt DateTime?
+  createdAt  DateTime  @default(now())
+
+  @@index([phone, purpose])
+  @@map("sms_codes")
+}
+
+model UserDocument {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  title     String
+  fileUrl   String
+  createdAt DateTime @default(now())
+
+  user CabinetUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_documents")
+}
+
+model ServiceType {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  sortOrder Int      @default(0)
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  visits VisitHistory[]
+
+  @@map("service_types")
+}
+
+enum SiteLeadStatus {
+  NEW
+  IN_PROGRESS
+  SCHEDULED
+  REJECTED
+  COMPLETED
+}
+
+enum SiteLeadKind {
+  CALLBACK
+  PRICE_REQUEST
+}
+
+model SiteLead {
+  id                  Int            @id @default(autoincrement())
+  kind                SiteLeadKind   @default(CALLBACK)
+  name                String
+  phone               String
+  message             String?        @db.Text
+  carDescription      String?        @db.VarChar(500)
+  communicationMethod String?        @db.VarChar(50)
+  pageUrl             String?        @db.VarChar(500)
+  status              SiteLeadStatus @default(NEW)
+  adminNote           String?        @db.Text
+  diskLink            String?
+  visitId             Int?           @unique
+  processedAt         DateTime?
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
+
+  visit VisitHistory? @relation(fields: [visitId], references: [id], onDelete: SetNull)
+
+  @@index([status, createdAt])
+  @@map("site_leads")
+}
+
+model VisitHistory {
+  id              Int       @id @default(autoincrement())
+  userId          Int
+  visitDate       DateTime  @db.Date
+  serviceType     String
+  diskLink        String?
+  startsAt        DateTime?
+  endsAt          DateTime?
+  priceRub        Int?
+  serviceTypeId   Int?
+  /** Имя менеджера (только админка, не для ЛК) */
+  managerName     String?   @db.VarChar(100)
+  reviewSmsSentAt DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  user               CabinetUser       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  catalogServiceType ServiceType?      @relation(fields: [serviceTypeId], references: [id], onDelete: SetNull)
+  pendingReviewSms   PendingReviewSms?
+  siteLead           SiteLead?
+
+  @@map("visit_history")
+}
+
+model PendingReviewSms {
+  id      Int       @id @default(autoincrement())
+  visitId Int       @unique
+  sendAt  DateTime
+  sentAt  DateTime?
+  visit   VisitHistory @relation(fields: [visitId], references: [id], onDelete: Cascade)
+
+  @@index([sendAt, sentAt])
+  @@map("pending_review_sms")
+}
+
+model PaymentHistory {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  amountKopeks Int
+  currency    String   @default("RUB")
+  description String
+  status      String   @default("completed")
+  paidAt      DateTime @default(now())
+
+  user CabinetUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("payment_history")
+}
+
+model NotificationSettings {
+  userId         Int     @id
+  smsEnabled     Boolean @default(true)
+  notifyReminder Boolean @default(true)
+
+  user CabinetUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("notification_settings")
+}
+
+model AdminAuditLog {
+  id             Int      @id @default(autoincrement())
+  action         String
+  adminSubject   String
+  targetUserId   Int?
+  meta           Json?
+  createdAt      DateTime @default(now())
+
+  @@map("admin_audit_logs")
+}
+
+// --- CRM (внутренняя система автосервиса) ---
+
+model CrmAdmin {
+  id           Int      @id @default(autoincrement())
+  phone        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("crm_admins")
+}
+
+enum SmsTemplateKind {
+  APPOINTMENT
+  REVIEW
+  BIRTHDAY
+}
+
+model SmsTemplate {
+  kind      SmsTemplateKind @id
+  body      String          @db.Text
+  updatedAt DateTime        @updatedAt
+
+  @@map("sms_templates")
+}
+
+model CompanySettings {
+  id          Int    @id @default(1)
+  companyName String @default("АванКор")
+
+  @@map("company_settings")
+}
+
+model SmsLog {
+  id      Int      @id @default(autoincrement())
+  phone   String
+  kind    String
+  message String   @db.Text
+  sentAt  DateTime @default(now())
+  meta    Json?
+
+  @@index([phone, kind, sentAt])
+  @@map("sms_logs")
 }

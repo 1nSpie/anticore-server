@@ -67,3 +67,83 @@ export type WorkService = Prisma.WorkServiceModel
  * 
  */
 export type WorkImage = Prisma.WorkImageModel
+/**
+ * Model PendingRegistration
+ * Ожидание подтверждения регистрации по SMS
+ */
+export type PendingRegistration = Prisma.PendingRegistrationModel
+/**
+ * Model CabinetUser
+ * 
+ */
+export type CabinetUser = Prisma.CabinetUserModel
+/**
+ * Model UserRefreshToken
+ * 
+ */
+export type UserRefreshToken = Prisma.UserRefreshTokenModel
+/**
+ * Model SmsCode
+ * 
+ */
+export type SmsCode = Prisma.SmsCodeModel
+/**
+ * Model UserDocument
+ * 
+ */
+export type UserDocument = Prisma.UserDocumentModel
+/**
+ * Model ServiceType
+ * 
+ */
+export type ServiceType = Prisma.ServiceTypeModel
+/**
+ * Model SiteLead
+ * 
+ */
+export type SiteLead = Prisma.SiteLeadModel
+/**
+ * Model VisitHistory
+ * 
+ */
+export type VisitHistory = Prisma.VisitHistoryModel
+/**
+ * Model PendingReviewSms
+ * 
+ */
+export type PendingReviewSms = Prisma.PendingReviewSmsModel
+/**
+ * Model PaymentHistory
+ * 
+ */
+export type PaymentHistory = Prisma.PaymentHistoryModel
+/**
+ * Model NotificationSettings
+ * 
+ */
+export type NotificationSettings = Prisma.NotificationSettingsModel
+/**
+ * Model AdminAuditLog
+ * 
+ */
+export type AdminAuditLog = Prisma.AdminAuditLogModel
+/**
+ * Model CrmAdmin
+ * 
+ */
+export type CrmAdmin = Prisma.CrmAdminModel
+/**
+ * Model SmsTemplate
+ * 
+ */
+export type SmsTemplate = Prisma.SmsTemplateModel
+/**
+ * Model CompanySettings
+ * 
+ */
+export type CompanySettings = Prisma.CompanySettingsModel
+/**
+ * Model SmsLog
+ * 
+ */
+export type SmsLog = Prisma.SmsLogModel

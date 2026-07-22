@@ -60,7 +60,23 @@ export const ModelName = {
   Work: 'Work',
   WorkCategory: 'WorkCategory',
   WorkService: 'WorkService',
-  WorkImage: 'WorkImage'
+  WorkImage: 'WorkImage',
+  PendingRegistration: 'PendingRegistration',
+  CabinetUser: 'CabinetUser',
+  UserRefreshToken: 'UserRefreshToken',
+  SmsCode: 'SmsCode',
+  UserDocument: 'UserDocument',
+  ServiceType: 'ServiceType',
+  SiteLead: 'SiteLead',
+  VisitHistory: 'VisitHistory',
+  PendingReviewSms: 'PendingReviewSms',
+  PaymentHistory: 'PaymentHistory',
+  NotificationSettings: 'NotificationSettings',
+  AdminAuditLog: 'AdminAuditLog',
+  CrmAdmin: 'CrmAdmin',
+  SmsTemplate: 'SmsTemplate',
+  CompanySettings: 'CompanySettings',
+  SmsLog: 'SmsLog'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -203,6 +219,220 @@ export const WorkImageScalarFieldEnum = {
 export type WorkImageScalarFieldEnum = (typeof WorkImageScalarFieldEnum)[keyof typeof WorkImageScalarFieldEnum]
 
 
+export const PendingRegistrationScalarFieldEnum = {
+  id: 'id',
+  phone: 'phone',
+  passwordHash: 'passwordHash',
+  code: 'code',
+  expiresAt: 'expiresAt',
+  privacyPolicyAcceptedAt: 'privacyPolicyAcceptedAt',
+  personalDataConsentAt: 'personalDataConsentAt',
+  termsAcceptedAt: 'termsAcceptedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type PendingRegistrationScalarFieldEnum = (typeof PendingRegistrationScalarFieldEnum)[keyof typeof PendingRegistrationScalarFieldEnum]
+
+
+export const CabinetUserScalarFieldEnum = {
+  id: 'id',
+  phone: 'phone',
+  passwordHash: 'passwordHash',
+  firstName: 'firstName',
+  lastName: 'lastName',
+  patronymic: 'patronymic',
+  birthDate: 'birthDate',
+  birthDateChangedAt: 'birthDateChangedAt',
+  carId: 'carId',
+  customCar: 'customCar',
+  vin: 'vin',
+  adminComment: 'adminComment',
+  photoReportUrl: 'photoReportUrl',
+  phoneVerified: 'phoneVerified',
+  blocked: 'blocked',
+  blockedAt: 'blockedAt',
+  privacyPolicyAcceptedAt: 'privacyPolicyAcceptedAt',
+  personalDataConsentAt: 'personalDataConsentAt',
+  termsAcceptedAt: 'termsAcceptedAt',
+  role: 'role',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CabinetUserScalarFieldEnum = (typeof CabinetUserScalarFieldEnum)[keyof typeof CabinetUserScalarFieldEnum]
+
+
+export const UserRefreshTokenScalarFieldEnum = {
+  id: 'id',
+  tokenHash: 'tokenHash',
+  userId: 'userId',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt'
+} as const
+
+export type UserRefreshTokenScalarFieldEnum = (typeof UserRefreshTokenScalarFieldEnum)[keyof typeof UserRefreshTokenScalarFieldEnum]
+
+
+export const SmsCodeScalarFieldEnum = {
+  id: 'id',
+  phone: 'phone',
+  purpose: 'purpose',
+  code: 'code',
+  userId: 'userId',
+  expiresAt: 'expiresAt',
+  consumedAt: 'consumedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type SmsCodeScalarFieldEnum = (typeof SmsCodeScalarFieldEnum)[keyof typeof SmsCodeScalarFieldEnum]
+
+
+export const UserDocumentScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  title: 'title',
+  fileUrl: 'fileUrl',
+  createdAt: 'createdAt'
+} as const
+
+export type UserDocumentScalarFieldEnum = (typeof UserDocumentScalarFieldEnum)[keyof typeof UserDocumentScalarFieldEnum]
+
+
+export const ServiceTypeScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  sortOrder: 'sortOrder',
+  active: 'active',
+  createdAt: 'createdAt'
+} as const
+
+export type ServiceTypeScalarFieldEnum = (typeof ServiceTypeScalarFieldEnum)[keyof typeof ServiceTypeScalarFieldEnum]
+
+
+export const SiteLeadScalarFieldEnum = {
+  id: 'id',
+  kind: 'kind',
+  name: 'name',
+  phone: 'phone',
+  message: 'message',
+  carDescription: 'carDescription',
+  communicationMethod: 'communicationMethod',
+  pageUrl: 'pageUrl',
+  status: 'status',
+  adminNote: 'adminNote',
+  diskLink: 'diskLink',
+  visitId: 'visitId',
+  processedAt: 'processedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SiteLeadScalarFieldEnum = (typeof SiteLeadScalarFieldEnum)[keyof typeof SiteLeadScalarFieldEnum]
+
+
+export const VisitHistoryScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  visitDate: 'visitDate',
+  serviceType: 'serviceType',
+  diskLink: 'diskLink',
+  startsAt: 'startsAt',
+  endsAt: 'endsAt',
+  priceRub: 'priceRub',
+  serviceTypeId: 'serviceTypeId',
+  managerName: 'managerName',
+  reviewSmsSentAt: 'reviewSmsSentAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type VisitHistoryScalarFieldEnum = (typeof VisitHistoryScalarFieldEnum)[keyof typeof VisitHistoryScalarFieldEnum]
+
+
+export const PendingReviewSmsScalarFieldEnum = {
+  id: 'id',
+  visitId: 'visitId',
+  sendAt: 'sendAt',
+  sentAt: 'sentAt'
+} as const
+
+export type PendingReviewSmsScalarFieldEnum = (typeof PendingReviewSmsScalarFieldEnum)[keyof typeof PendingReviewSmsScalarFieldEnum]
+
+
+export const PaymentHistoryScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  amountKopeks: 'amountKopeks',
+  currency: 'currency',
+  description: 'description',
+  status: 'status',
+  paidAt: 'paidAt'
+} as const
+
+export type PaymentHistoryScalarFieldEnum = (typeof PaymentHistoryScalarFieldEnum)[keyof typeof PaymentHistoryScalarFieldEnum]
+
+
+export const NotificationSettingsScalarFieldEnum = {
+  userId: 'userId',
+  smsEnabled: 'smsEnabled',
+  notifyReminder: 'notifyReminder'
+} as const
+
+export type NotificationSettingsScalarFieldEnum = (typeof NotificationSettingsScalarFieldEnum)[keyof typeof NotificationSettingsScalarFieldEnum]
+
+
+export const AdminAuditLogScalarFieldEnum = {
+  id: 'id',
+  action: 'action',
+  adminSubject: 'adminSubject',
+  targetUserId: 'targetUserId',
+  meta: 'meta',
+  createdAt: 'createdAt'
+} as const
+
+export type AdminAuditLogScalarFieldEnum = (typeof AdminAuditLogScalarFieldEnum)[keyof typeof AdminAuditLogScalarFieldEnum]
+
+
+export const CrmAdminScalarFieldEnum = {
+  id: 'id',
+  phone: 'phone',
+  passwordHash: 'passwordHash',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CrmAdminScalarFieldEnum = (typeof CrmAdminScalarFieldEnum)[keyof typeof CrmAdminScalarFieldEnum]
+
+
+export const SmsTemplateScalarFieldEnum = {
+  kind: 'kind',
+  body: 'body',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SmsTemplateScalarFieldEnum = (typeof SmsTemplateScalarFieldEnum)[keyof typeof SmsTemplateScalarFieldEnum]
+
+
+export const CompanySettingsScalarFieldEnum = {
+  id: 'id',
+  companyName: 'companyName'
+} as const
+
+export type CompanySettingsScalarFieldEnum = (typeof CompanySettingsScalarFieldEnum)[keyof typeof CompanySettingsScalarFieldEnum]
+
+
+export const SmsLogScalarFieldEnum = {
+  id: 'id',
+  phone: 'phone',
+  kind: 'kind',
+  message: 'message',
+  sentAt: 'sentAt',
+  meta: 'meta'
+} as const
+
+export type SmsLogScalarFieldEnum = (typeof SmsLogScalarFieldEnum)[keyof typeof SmsLogScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -216,6 +446,14 @@ export const JsonNullValueInput = {
 } as const
 
 export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
+
+
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
 export const QueryMode = {

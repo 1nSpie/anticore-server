@@ -83,6 +83,50 @@ Check out a few resources that may come in handy when working with NestJS:
 - To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
 - Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
 
+## Личный кабинет (API для клиентов)
+
+Реализованы модули: аутентификация по телефону (SMS через SMS.ru), JWT access + opaque refresh в httpOnly-куке, профиль, история визитов, уведомления, админские операции по пользователям.
+
+### Запуск и миграции
+
+1. Установите зависимости: `npm install`
+2. Настройте `.env` (см. `.env.example`): `DATABASE_URL`, `JWT_SECRET`, `FRONTEND_BASE_URL`, при необходимости `SMS_RU_API_ID`
+3. Примените схему Prisma к БД (если нет прав на shadow DB для `migrate dev`, используйте):
+
+   ```bash
+   npx prisma db push
+   npx prisma generate
+   ```
+
+4. Запуск: `npm run start:dev` — API с префиксом `/api`
+
+### Основные маршруты
+
+| Метод | Путь | Описание |
+|-------|------|----------|
+| POST | `/api/auth/register` | Регистрация (отправка SMS) |
+| POST | `/api/auth/verify-registration` | Подтверждение кода, выдача токенов |
+| POST | `/api/auth/login` | Вход |
+| POST | `/api/auth/refresh` | Новый access (кука `cabinet_refresh`) |
+| POST | `/api/auth/logout` | Выход |
+| POST | `/api/auth/forgot-password` | Код восстановления |
+| POST | `/api/auth/reset-password` | Новый пароль по коду |
+| GET/PUT | `/api/user/profile` | Профиль (JWT Bearer) |
+| GET | `/api/user/history/visits` | История визитов |
+| GET/PUT | `/api/user/notifications` | Настройки уведомлений |
+| GET | `/api/user/payments` | История платежей клиента |
+| GET | `/api/admin/users` | Список клиентов (админ JWT) |
+| GET/PATCH | `/api/admin/users/:id` | Карточка и редактирование клиента (кроме телефона) |
+| POST | `/api/admin/users/broadcast` | Массовая SMS-рассылка |
+| PATCH | `/api/admin/users/:id/block` | Блокировка |
+| CRUD | `/api/admin/users/:id/visits` | Визиты в карточке клиента |
+
+Админ личного кабинета — тот же вход, что и для панели (`/api/admin/login`): отдельный JWT, не смешивается с клиентским.
+
+### SMS
+
+Без `SMS_RU_API_ID` коды не отправляются; сообщение с кодом пишется в лог сервера (удобно для разработки).
+
 ## Support
 
 Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).

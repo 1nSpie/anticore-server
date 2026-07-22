@@ -217,6 +217,7 @@ export type CarWhereInput = {
   brandId?: Prisma.IntNullableFilter<"Car"> | number | null
   segment?: Prisma.IntFilter<"Car"> | number
   brand?: Prisma.XOR<Prisma.BrandNullableScalarRelationFilter, Prisma.BrandWhereInput> | null
+  cabinetUsers?: Prisma.CabinetUserListRelationFilter
 }
 
 export type CarOrderByWithRelationInput = {
@@ -225,6 +226,7 @@ export type CarOrderByWithRelationInput = {
   brandId?: Prisma.SortOrderInput | Prisma.SortOrder
   segment?: Prisma.SortOrder
   brand?: Prisma.BrandOrderByWithRelationInput
+  cabinetUsers?: Prisma.CabinetUserOrderByRelationAggregateInput
 }
 
 export type CarWhereUniqueInput = Prisma.AtLeast<{
@@ -236,6 +238,7 @@ export type CarWhereUniqueInput = Prisma.AtLeast<{
   brandId?: Prisma.IntNullableFilter<"Car"> | number | null
   segment?: Prisma.IntFilter<"Car"> | number
   brand?: Prisma.XOR<Prisma.BrandNullableScalarRelationFilter, Prisma.BrandWhereInput> | null
+  cabinetUsers?: Prisma.CabinetUserListRelationFilter
 }, "id">
 
 export type CarOrderByWithAggregationInput = {
@@ -264,6 +267,7 @@ export type CarCreateInput = {
   model: string
   segment: number
   brand?: Prisma.BrandCreateNestedOneWithoutCarInput
+  cabinetUsers?: Prisma.CabinetUserCreateNestedManyWithoutCarInput
 }
 
 export type CarUncheckedCreateInput = {
@@ -271,12 +275,14 @@ export type CarUncheckedCreateInput = {
   model: string
   brandId?: number | null
   segment: number
+  cabinetUsers?: Prisma.CabinetUserUncheckedCreateNestedManyWithoutCarInput
 }
 
 export type CarUpdateInput = {
   model?: Prisma.StringFieldUpdateOperationsInput | string
   segment?: Prisma.IntFieldUpdateOperationsInput | number
   brand?: Prisma.BrandUpdateOneWithoutCarNestedInput
+  cabinetUsers?: Prisma.CabinetUserUpdateManyWithoutCarNestedInput
 }
 
 export type CarUncheckedUpdateInput = {
@@ -284,6 +290,7 @@ export type CarUncheckedUpdateInput = {
   model?: Prisma.StringFieldUpdateOperationsInput | string
   brandId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   segment?: Prisma.IntFieldUpdateOperationsInput | number
+  cabinetUsers?: Prisma.CabinetUserUncheckedUpdateManyWithoutCarNestedInput
 }
 
 export type CarCreateManyInput = {
@@ -348,6 +355,11 @@ export type CarSumOrderByAggregateInput = {
   segment?: Prisma.SortOrder
 }
 
+export type CarNullableScalarRelationFilter = {
+  is?: Prisma.CarWhereInput | null
+  isNot?: Prisma.CarWhereInput | null
+}
+
 export type CarCreateNestedManyWithoutBrandInput = {
   create?: Prisma.XOR<Prisma.CarCreateWithoutBrandInput, Prisma.CarUncheckedCreateWithoutBrandInput> | Prisma.CarCreateWithoutBrandInput[] | Prisma.CarUncheckedCreateWithoutBrandInput[]
   connectOrCreate?: Prisma.CarCreateOrConnectWithoutBrandInput | Prisma.CarCreateOrConnectWithoutBrandInput[]
@@ -398,15 +410,33 @@ export type NullableIntFieldUpdateOperationsInput = {
   divide?: number
 }
 
+export type CarCreateNestedOneWithoutCabinetUsersInput = {
+  create?: Prisma.XOR<Prisma.CarCreateWithoutCabinetUsersInput, Prisma.CarUncheckedCreateWithoutCabinetUsersInput>
+  connectOrCreate?: Prisma.CarCreateOrConnectWithoutCabinetUsersInput
+  connect?: Prisma.CarWhereUniqueInput
+}
+
+export type CarUpdateOneWithoutCabinetUsersNestedInput = {
+  create?: Prisma.XOR<Prisma.CarCreateWithoutCabinetUsersInput, Prisma.CarUncheckedCreateWithoutCabinetUsersInput>
+  connectOrCreate?: Prisma.CarCreateOrConnectWithoutCabinetUsersInput
+  upsert?: Prisma.CarUpsertWithoutCabinetUsersInput
+  disconnect?: Prisma.CarWhereInput | boolean
+  delete?: Prisma.CarWhereInput | boolean
+  connect?: Prisma.CarWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CarUpdateToOneWithWhereWithoutCabinetUsersInput, Prisma.CarUpdateWithoutCabinetUsersInput>, Prisma.CarUncheckedUpdateWithoutCabinetUsersInput>
+}
+
 export type CarCreateWithoutBrandInput = {
   model: string
   segment: number
+  cabinetUsers?: Prisma.CabinetUserCreateNestedManyWithoutCarInput
 }
 
 export type CarUncheckedCreateWithoutBrandInput = {
   id?: number
   model: string
   segment: number
+  cabinetUsers?: Prisma.CabinetUserUncheckedCreateNestedManyWithoutCarInput
 }
 
 export type CarCreateOrConnectWithoutBrandInput = {
@@ -445,6 +475,48 @@ export type CarScalarWhereInput = {
   segment?: Prisma.IntFilter<"Car"> | number
 }
 
+export type CarCreateWithoutCabinetUsersInput = {
+  model: string
+  segment: number
+  brand?: Prisma.BrandCreateNestedOneWithoutCarInput
+}
+
+export type CarUncheckedCreateWithoutCabinetUsersInput = {
+  id?: number
+  model: string
+  brandId?: number | null
+  segment: number
+}
+
+export type CarCreateOrConnectWithoutCabinetUsersInput = {
+  where: Prisma.CarWhereUniqueInput
+  create: Prisma.XOR<Prisma.CarCreateWithoutCabinetUsersInput, Prisma.CarUncheckedCreateWithoutCabinetUsersInput>
+}
+
+export type CarUpsertWithoutCabinetUsersInput = {
+  update: Prisma.XOR<Prisma.CarUpdateWithoutCabinetUsersInput, Prisma.CarUncheckedUpdateWithoutCabinetUsersInput>
+  create: Prisma.XOR<Prisma.CarCreateWithoutCabinetUsersInput, Prisma.CarUncheckedCreateWithoutCabinetUsersInput>
+  where?: Prisma.CarWhereInput
+}
+
+export type CarUpdateToOneWithWhereWithoutCabinetUsersInput = {
+  where?: Prisma.CarWhereInput
+  data: Prisma.XOR<Prisma.CarUpdateWithoutCabinetUsersInput, Prisma.CarUncheckedUpdateWithoutCabinetUsersInput>
+}
+
+export type CarUpdateWithoutCabinetUsersInput = {
+  model?: Prisma.StringFieldUpdateOperationsInput | string
+  segment?: Prisma.IntFieldUpdateOperationsInput | number
+  brand?: Prisma.BrandUpdateOneWithoutCarNestedInput
+}
+
+export type CarUncheckedUpdateWithoutCabinetUsersInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  model?: Prisma.StringFieldUpdateOperationsInput | string
+  brandId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  segment?: Prisma.IntFieldUpdateOperationsInput | number
+}
+
 export type CarCreateManyBrandInput = {
   id?: number
   model: string
@@ -454,12 +526,14 @@ export type CarCreateManyBrandInput = {
 export type CarUpdateWithoutBrandInput = {
   model?: Prisma.StringFieldUpdateOperationsInput | string
   segment?: Prisma.IntFieldUpdateOperationsInput | number
+  cabinetUsers?: Prisma.CabinetUserUpdateManyWithoutCarNestedInput
 }
 
 export type CarUncheckedUpdateWithoutBrandInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   model?: Prisma.StringFieldUpdateOperationsInput | string
   segment?: Prisma.IntFieldUpdateOperationsInput | number
+  cabinetUsers?: Prisma.CabinetUserUncheckedUpdateManyWithoutCarNestedInput
 }
 
 export type CarUncheckedUpdateManyWithoutBrandInput = {
@@ -469,6 +543,35 @@ export type CarUncheckedUpdateManyWithoutBrandInput = {
 }
 
 
+/**
+ * Count Type CarCountOutputType
+ */
+
+export type CarCountOutputType = {
+  cabinetUsers: number
+}
+
+export type CarCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  cabinetUsers?: boolean | CarCountOutputTypeCountCabinetUsersArgs
+}
+
+/**
+ * CarCountOutputType without action
+ */
+export type CarCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CarCountOutputType
+   */
+  select?: Prisma.CarCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * CarCountOutputType without action
+ */
+export type CarCountOutputTypeCountCabinetUsersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CabinetUserWhereInput
+}
+
 
 export type CarSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -476,6 +579,8 @@ export type CarSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = ru
   brandId?: boolean
   segment?: boolean
   brand?: boolean | Prisma.Car$brandArgs<ExtArgs>
+  cabinetUsers?: boolean | Prisma.Car$cabinetUsersArgs<ExtArgs>
+  _count?: boolean | Prisma.CarCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["car"]>
 
 export type CarSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -504,6 +609,8 @@ export type CarSelectScalar = {
 export type CarOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "model" | "brandId" | "segment", ExtArgs["result"]["car"]>
 export type CarInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   brand?: boolean | Prisma.Car$brandArgs<ExtArgs>
+  cabinetUsers?: boolean | Prisma.Car$cabinetUsersArgs<ExtArgs>
+  _count?: boolean | Prisma.CarCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type CarIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   brand?: boolean | Prisma.Car$brandArgs<ExtArgs>
@@ -516,6 +623,7 @@ export type $CarPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   name: "Car"
   objects: {
     brand: Prisma.$BrandPayload<ExtArgs> | null
+    cabinetUsers: Prisma.$CabinetUserPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -917,6 +1025,7 @@ readonly fields: CarFieldRefs;
 export interface Prisma__CarClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   brand<T extends Prisma.Car$brandArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Car$brandArgs<ExtArgs>>): Prisma.Prisma__BrandClient<runtime.Types.Result.GetResult<Prisma.$BrandPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  cabinetUsers<T extends Prisma.Car$cabinetUsersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Car$cabinetUsersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CabinetUserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1362,6 +1471,30 @@ export type Car$brandArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs 
    */
   include?: Prisma.BrandInclude<ExtArgs> | null
   where?: Prisma.BrandWhereInput
+}
+
+/**
+ * Car.cabinetUsers
+ */
+export type Car$cabinetUsersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CabinetUser
+   */
+  select?: Prisma.CabinetUserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CabinetUser
+   */
+  omit?: Prisma.CabinetUserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CabinetUserInclude<ExtArgs> | null
+  where?: Prisma.CabinetUserWhereInput
+  orderBy?: Prisma.CabinetUserOrderByWithRelationInput | Prisma.CabinetUserOrderByWithRelationInput[]
+  cursor?: Prisma.CabinetUserWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CabinetUserScalarFieldEnum | Prisma.CabinetUserScalarFieldEnum[]
 }
 
 /**

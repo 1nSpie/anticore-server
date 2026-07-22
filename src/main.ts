@@ -5,6 +5,7 @@ import { ValidationPipe } from "@nestjs/common";
 import { NestExpressApplication } from "@nestjs/platform-express";
 import { join } from "path";
 import * as cookieParser from "cookie-parser";
+import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 
 async function bootstrap() {
   const port = process.env.PORT ?? 4444;
@@ -22,7 +23,7 @@ async function bootstrap() {
 
   app.enableCors({
     origin: isDev ? 'http://localhost:3000' :origins,
-    methods: "GET,POST,PUT,DELETE",
+    methods: "GET,POST,PUT,PATCH,DELETE,OPTIONS",
     credentials: true,
   });
 
@@ -32,6 +33,15 @@ async function bootstrap() {
   });
   // Для работы за прокси
   app.set("trust proxy", true);
+
+  const swaggerConfig = new DocumentBuilder()
+    .setTitle("AvantKor API")
+    .setDescription("Публичный API сайта и внутренняя CRM")
+    .setVersion("1.0")
+    .addBearerAuth()
+    .build();
+  const document = SwaggerModule.createDocument(app, swaggerConfig);
+  SwaggerModule.setup("api/docs", app, document);
 
   await app.listen(port);
 }
