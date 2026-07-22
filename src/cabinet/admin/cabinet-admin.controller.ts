@@ -21,6 +21,7 @@ import { CreateVisitDto } from "./dto/create-visit.dto";
 import { UpdateVisitDto } from "./dto/update-visit.dto";
 import { AdminUpdateUserDto } from "./dto/admin-update-user.dto";
 import { BroadcastSmsDto } from "./dto/broadcast-sms.dto";
+import { clientIpFromRequest } from "../common/client-ip.util";
 
 function adminSubject(req: Request): string {
   const admin = (req as Request & { admin?: { id: string } }).admin;
@@ -54,7 +55,11 @@ export class CabinetAdminController {
 
   @Post("broadcast")
   broadcast(@Req() req: Request, @Body() dto: BroadcastSmsDto) {
-    return this.cabinetAdmin.broadcastSms(adminSubject(req), dto);
+    return this.cabinetAdmin.broadcastSms(
+      adminSubject(req),
+      dto,
+      clientIpFromRequest(req),
+    );
   }
 
   @Get(":id")

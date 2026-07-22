@@ -47,6 +47,9 @@ export type CabinetUserMinAggregateOutputType = {
   birthDateChangedAt: Date | null
   carId: number | null
   customCar: string | null
+  vin: string | null
+  adminComment: string | null
+  photoReportUrl: string | null
   phoneVerified: boolean | null
   blocked: boolean | null
   blockedAt: Date | null
@@ -69,6 +72,9 @@ export type CabinetUserMaxAggregateOutputType = {
   birthDateChangedAt: Date | null
   carId: number | null
   customCar: string | null
+  vin: string | null
+  adminComment: string | null
+  photoReportUrl: string | null
   phoneVerified: boolean | null
   blocked: boolean | null
   blockedAt: Date | null
@@ -91,6 +97,9 @@ export type CabinetUserCountAggregateOutputType = {
   birthDateChangedAt: number
   carId: number
   customCar: number
+  vin: number
+  adminComment: number
+  photoReportUrl: number
   phoneVerified: number
   blocked: number
   blockedAt: number
@@ -125,6 +134,9 @@ export type CabinetUserMinAggregateInputType = {
   birthDateChangedAt?: true
   carId?: true
   customCar?: true
+  vin?: true
+  adminComment?: true
+  photoReportUrl?: true
   phoneVerified?: true
   blocked?: true
   blockedAt?: true
@@ -147,6 +159,9 @@ export type CabinetUserMaxAggregateInputType = {
   birthDateChangedAt?: true
   carId?: true
   customCar?: true
+  vin?: true
+  adminComment?: true
+  photoReportUrl?: true
   phoneVerified?: true
   blocked?: true
   blockedAt?: true
@@ -169,6 +184,9 @@ export type CabinetUserCountAggregateInputType = {
   birthDateChangedAt?: true
   carId?: true
   customCar?: true
+  vin?: true
+  adminComment?: true
+  photoReportUrl?: true
   phoneVerified?: true
   blocked?: true
   blockedAt?: true
@@ -278,6 +296,9 @@ export type CabinetUserGroupByOutputType = {
   birthDateChangedAt: Date | null
   carId: number | null
   customCar: string | null
+  vin: string | null
+  adminComment: string | null
+  photoReportUrl: string | null
   phoneVerified: boolean
   blocked: boolean
   blockedAt: Date | null
@@ -323,6 +344,9 @@ export type CabinetUserWhereInput = {
   birthDateChangedAt?: Prisma.DateTimeNullableFilter<"CabinetUser"> | Date | string | null
   carId?: Prisma.IntNullableFilter<"CabinetUser"> | number | null
   customCar?: Prisma.StringNullableFilter<"CabinetUser"> | string | null
+  vin?: Prisma.StringNullableFilter<"CabinetUser"> | string | null
+  adminComment?: Prisma.StringNullableFilter<"CabinetUser"> | string | null
+  photoReportUrl?: Prisma.StringNullableFilter<"CabinetUser"> | string | null
   phoneVerified?: Prisma.BoolFilter<"CabinetUser"> | boolean
   blocked?: Prisma.BoolFilter<"CabinetUser"> | boolean
   blockedAt?: Prisma.DateTimeNullableFilter<"CabinetUser"> | Date | string | null
@@ -351,6 +375,9 @@ export type CabinetUserOrderByWithRelationInput = {
   birthDateChangedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   carId?: Prisma.SortOrderInput | Prisma.SortOrder
   customCar?: Prisma.SortOrderInput | Prisma.SortOrder
+  vin?: Prisma.SortOrderInput | Prisma.SortOrder
+  adminComment?: Prisma.SortOrderInput | Prisma.SortOrder
+  photoReportUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   phoneVerified?: Prisma.SortOrder
   blocked?: Prisma.SortOrder
   blockedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -382,6 +409,9 @@ export type CabinetUserWhereUniqueInput = Prisma.AtLeast<{
   birthDateChangedAt?: Prisma.DateTimeNullableFilter<"CabinetUser"> | Date | string | null
   carId?: Prisma.IntNullableFilter<"CabinetUser"> | number | null
   customCar?: Prisma.StringNullableFilter<"CabinetUser"> | string | null
+  vin?: Prisma.StringNullableFilter<"CabinetUser"> | string | null
+  adminComment?: Prisma.StringNullableFilter<"CabinetUser"> | string | null
+  photoReportUrl?: Prisma.StringNullableFilter<"CabinetUser"> | string | null
   phoneVerified?: Prisma.BoolFilter<"CabinetUser"> | boolean
   blocked?: Prisma.BoolFilter<"CabinetUser"> | boolean
   blockedAt?: Prisma.DateTimeNullableFilter<"CabinetUser"> | Date | string | null
@@ -410,6 +440,9 @@ export type CabinetUserOrderByWithAggregationInput = {
   birthDateChangedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   carId?: Prisma.SortOrderInput | Prisma.SortOrder
   customCar?: Prisma.SortOrderInput | Prisma.SortOrder
+  vin?: Prisma.SortOrderInput | Prisma.SortOrder
+  adminComment?: Prisma.SortOrderInput | Prisma.SortOrder
+  photoReportUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   phoneVerified?: Prisma.SortOrder
   blocked?: Prisma.SortOrder
   blockedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -440,6 +473,9 @@ export type CabinetUserScalarWhereWithAggregatesInput = {
   birthDateChangedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"CabinetUser"> | Date | string | null
   carId?: Prisma.IntNullableWithAggregatesFilter<"CabinetUser"> | number | null
   customCar?: Prisma.StringNullableWithAggregatesFilter<"CabinetUser"> | string | null
+  vin?: Prisma.StringNullableWithAggregatesFilter<"CabinetUser"> | string | null
+  adminComment?: Prisma.StringNullableWithAggregatesFilter<"CabinetUser"> | string | null
+  photoReportUrl?: Prisma.StringNullableWithAggregatesFilter<"CabinetUser"> | string | null
   phoneVerified?: Prisma.BoolWithAggregatesFilter<"CabinetUser"> | boolean
   blocked?: Prisma.BoolWithAggregatesFilter<"CabinetUser"> | boolean
   blockedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"CabinetUser"> | Date | string | null
@@ -460,6 +496,9 @@ export type CabinetUserCreateInput = {
   birthDate?: Date | string | null
   birthDateChangedAt?: Date | string | null
   customCar?: string | null
+  vin?: string | null
+  adminComment?: string | null
+  photoReportUrl?: string | null
   phoneVerified?: boolean
   blocked?: boolean
   blockedAt?: Date | string | null
@@ -488,6 +527,9 @@ export type CabinetUserUncheckedCreateInput = {
   birthDateChangedAt?: Date | string | null
   carId?: number | null
   customCar?: string | null
+  vin?: string | null
+  adminComment?: string | null
+  photoReportUrl?: string | null
   phoneVerified?: boolean
   blocked?: boolean
   blockedAt?: Date | string | null
@@ -513,6 +555,9 @@ export type CabinetUserUpdateInput = {
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthDateChangedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   customCar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photoReportUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   blocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -541,6 +586,9 @@ export type CabinetUserUncheckedUpdateInput = {
   birthDateChangedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   carId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   customCar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photoReportUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   blocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -568,6 +616,9 @@ export type CabinetUserCreateManyInput = {
   birthDateChangedAt?: Date | string | null
   carId?: number | null
   customCar?: string | null
+  vin?: string | null
+  adminComment?: string | null
+  photoReportUrl?: string | null
   phoneVerified?: boolean
   blocked?: boolean
   blockedAt?: Date | string | null
@@ -588,6 +639,9 @@ export type CabinetUserUpdateManyMutationInput = {
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthDateChangedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   customCar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photoReportUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   blocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -610,6 +664,9 @@ export type CabinetUserUncheckedUpdateManyInput = {
   birthDateChangedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   carId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   customCar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photoReportUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   blocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -642,6 +699,9 @@ export type CabinetUserCountOrderByAggregateInput = {
   birthDateChangedAt?: Prisma.SortOrder
   carId?: Prisma.SortOrder
   customCar?: Prisma.SortOrder
+  vin?: Prisma.SortOrder
+  adminComment?: Prisma.SortOrder
+  photoReportUrl?: Prisma.SortOrder
   phoneVerified?: Prisma.SortOrder
   blocked?: Prisma.SortOrder
   blockedAt?: Prisma.SortOrder
@@ -669,6 +729,9 @@ export type CabinetUserMaxOrderByAggregateInput = {
   birthDateChangedAt?: Prisma.SortOrder
   carId?: Prisma.SortOrder
   customCar?: Prisma.SortOrder
+  vin?: Prisma.SortOrder
+  adminComment?: Prisma.SortOrder
+  photoReportUrl?: Prisma.SortOrder
   phoneVerified?: Prisma.SortOrder
   blocked?: Prisma.SortOrder
   blockedAt?: Prisma.SortOrder
@@ -691,6 +754,9 @@ export type CabinetUserMinOrderByAggregateInput = {
   birthDateChangedAt?: Prisma.SortOrder
   carId?: Prisma.SortOrder
   customCar?: Prisma.SortOrder
+  vin?: Prisma.SortOrder
+  adminComment?: Prisma.SortOrder
+  photoReportUrl?: Prisma.SortOrder
   phoneVerified?: Prisma.SortOrder
   blocked?: Prisma.SortOrder
   blockedAt?: Prisma.SortOrder
@@ -837,6 +903,9 @@ export type CabinetUserCreateWithoutCarInput = {
   birthDate?: Date | string | null
   birthDateChangedAt?: Date | string | null
   customCar?: string | null
+  vin?: string | null
+  adminComment?: string | null
+  photoReportUrl?: string | null
   phoneVerified?: boolean
   blocked?: boolean
   blockedAt?: Date | string | null
@@ -863,6 +932,9 @@ export type CabinetUserUncheckedCreateWithoutCarInput = {
   birthDate?: Date | string | null
   birthDateChangedAt?: Date | string | null
   customCar?: string | null
+  vin?: string | null
+  adminComment?: string | null
+  photoReportUrl?: string | null
   phoneVerified?: boolean
   blocked?: boolean
   blockedAt?: Date | string | null
@@ -919,6 +991,9 @@ export type CabinetUserScalarWhereInput = {
   birthDateChangedAt?: Prisma.DateTimeNullableFilter<"CabinetUser"> | Date | string | null
   carId?: Prisma.IntNullableFilter<"CabinetUser"> | number | null
   customCar?: Prisma.StringNullableFilter<"CabinetUser"> | string | null
+  vin?: Prisma.StringNullableFilter<"CabinetUser"> | string | null
+  adminComment?: Prisma.StringNullableFilter<"CabinetUser"> | string | null
+  photoReportUrl?: Prisma.StringNullableFilter<"CabinetUser"> | string | null
   phoneVerified?: Prisma.BoolFilter<"CabinetUser"> | boolean
   blocked?: Prisma.BoolFilter<"CabinetUser"> | boolean
   blockedAt?: Prisma.DateTimeNullableFilter<"CabinetUser"> | Date | string | null
@@ -939,6 +1014,9 @@ export type CabinetUserCreateWithoutRefreshTokensInput = {
   birthDate?: Date | string | null
   birthDateChangedAt?: Date | string | null
   customCar?: string | null
+  vin?: string | null
+  adminComment?: string | null
+  photoReportUrl?: string | null
   phoneVerified?: boolean
   blocked?: boolean
   blockedAt?: Date | string | null
@@ -966,6 +1044,9 @@ export type CabinetUserUncheckedCreateWithoutRefreshTokensInput = {
   birthDateChangedAt?: Date | string | null
   carId?: number | null
   customCar?: string | null
+  vin?: string | null
+  adminComment?: string | null
+  photoReportUrl?: string | null
   phoneVerified?: boolean
   blocked?: boolean
   blockedAt?: Date | string | null
@@ -1006,6 +1087,9 @@ export type CabinetUserUpdateWithoutRefreshTokensInput = {
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthDateChangedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   customCar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photoReportUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   blocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1033,6 +1117,9 @@ export type CabinetUserUncheckedUpdateWithoutRefreshTokensInput = {
   birthDateChangedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   carId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   customCar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photoReportUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   blocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1057,6 +1144,9 @@ export type CabinetUserCreateWithoutDocumentsInput = {
   birthDate?: Date | string | null
   birthDateChangedAt?: Date | string | null
   customCar?: string | null
+  vin?: string | null
+  adminComment?: string | null
+  photoReportUrl?: string | null
   phoneVerified?: boolean
   blocked?: boolean
   blockedAt?: Date | string | null
@@ -1084,6 +1174,9 @@ export type CabinetUserUncheckedCreateWithoutDocumentsInput = {
   birthDateChangedAt?: Date | string | null
   carId?: number | null
   customCar?: string | null
+  vin?: string | null
+  adminComment?: string | null
+  photoReportUrl?: string | null
   phoneVerified?: boolean
   blocked?: boolean
   blockedAt?: Date | string | null
@@ -1124,6 +1217,9 @@ export type CabinetUserUpdateWithoutDocumentsInput = {
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthDateChangedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   customCar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photoReportUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   blocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1151,6 +1247,9 @@ export type CabinetUserUncheckedUpdateWithoutDocumentsInput = {
   birthDateChangedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   carId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   customCar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photoReportUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   blocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1175,6 +1274,9 @@ export type CabinetUserCreateWithoutVisitsInput = {
   birthDate?: Date | string | null
   birthDateChangedAt?: Date | string | null
   customCar?: string | null
+  vin?: string | null
+  adminComment?: string | null
+  photoReportUrl?: string | null
   phoneVerified?: boolean
   blocked?: boolean
   blockedAt?: Date | string | null
@@ -1202,6 +1304,9 @@ export type CabinetUserUncheckedCreateWithoutVisitsInput = {
   birthDateChangedAt?: Date | string | null
   carId?: number | null
   customCar?: string | null
+  vin?: string | null
+  adminComment?: string | null
+  photoReportUrl?: string | null
   phoneVerified?: boolean
   blocked?: boolean
   blockedAt?: Date | string | null
@@ -1242,6 +1347,9 @@ export type CabinetUserUpdateWithoutVisitsInput = {
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthDateChangedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   customCar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photoReportUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   blocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1269,6 +1377,9 @@ export type CabinetUserUncheckedUpdateWithoutVisitsInput = {
   birthDateChangedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   carId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   customCar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photoReportUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   blocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1293,6 +1404,9 @@ export type CabinetUserCreateWithoutPaymentsInput = {
   birthDate?: Date | string | null
   birthDateChangedAt?: Date | string | null
   customCar?: string | null
+  vin?: string | null
+  adminComment?: string | null
+  photoReportUrl?: string | null
   phoneVerified?: boolean
   blocked?: boolean
   blockedAt?: Date | string | null
@@ -1320,6 +1434,9 @@ export type CabinetUserUncheckedCreateWithoutPaymentsInput = {
   birthDateChangedAt?: Date | string | null
   carId?: number | null
   customCar?: string | null
+  vin?: string | null
+  adminComment?: string | null
+  photoReportUrl?: string | null
   phoneVerified?: boolean
   blocked?: boolean
   blockedAt?: Date | string | null
@@ -1360,6 +1477,9 @@ export type CabinetUserUpdateWithoutPaymentsInput = {
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthDateChangedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   customCar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photoReportUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   blocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1387,6 +1507,9 @@ export type CabinetUserUncheckedUpdateWithoutPaymentsInput = {
   birthDateChangedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   carId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   customCar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photoReportUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   blocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1411,6 +1534,9 @@ export type CabinetUserCreateWithoutNotificationSettingsInput = {
   birthDate?: Date | string | null
   birthDateChangedAt?: Date | string | null
   customCar?: string | null
+  vin?: string | null
+  adminComment?: string | null
+  photoReportUrl?: string | null
   phoneVerified?: boolean
   blocked?: boolean
   blockedAt?: Date | string | null
@@ -1438,6 +1564,9 @@ export type CabinetUserUncheckedCreateWithoutNotificationSettingsInput = {
   birthDateChangedAt?: Date | string | null
   carId?: number | null
   customCar?: string | null
+  vin?: string | null
+  adminComment?: string | null
+  photoReportUrl?: string | null
   phoneVerified?: boolean
   blocked?: boolean
   blockedAt?: Date | string | null
@@ -1478,6 +1607,9 @@ export type CabinetUserUpdateWithoutNotificationSettingsInput = {
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthDateChangedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   customCar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photoReportUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   blocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1505,6 +1637,9 @@ export type CabinetUserUncheckedUpdateWithoutNotificationSettingsInput = {
   birthDateChangedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   carId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   customCar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photoReportUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   blocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1530,6 +1665,9 @@ export type CabinetUserCreateManyCarInput = {
   birthDate?: Date | string | null
   birthDateChangedAt?: Date | string | null
   customCar?: string | null
+  vin?: string | null
+  adminComment?: string | null
+  photoReportUrl?: string | null
   phoneVerified?: boolean
   blocked?: boolean
   blockedAt?: Date | string | null
@@ -1550,6 +1688,9 @@ export type CabinetUserUpdateWithoutCarInput = {
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthDateChangedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   customCar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photoReportUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   blocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1576,6 +1717,9 @@ export type CabinetUserUncheckedUpdateWithoutCarInput = {
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthDateChangedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   customCar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photoReportUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   blocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1602,6 +1746,9 @@ export type CabinetUserUncheckedUpdateManyWithoutCarInput = {
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   birthDateChangedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   customCar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photoReportUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   blocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1682,6 +1829,9 @@ export type CabinetUserSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   birthDateChangedAt?: boolean
   carId?: boolean
   customCar?: boolean
+  vin?: boolean
+  adminComment?: boolean
+  photoReportUrl?: boolean
   phoneVerified?: boolean
   blocked?: boolean
   blockedAt?: boolean
@@ -1711,6 +1861,9 @@ export type CabinetUserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
   birthDateChangedAt?: boolean
   carId?: boolean
   customCar?: boolean
+  vin?: boolean
+  adminComment?: boolean
+  photoReportUrl?: boolean
   phoneVerified?: boolean
   blocked?: boolean
   blockedAt?: boolean
@@ -1734,6 +1887,9 @@ export type CabinetUserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
   birthDateChangedAt?: boolean
   carId?: boolean
   customCar?: boolean
+  vin?: boolean
+  adminComment?: boolean
+  photoReportUrl?: boolean
   phoneVerified?: boolean
   blocked?: boolean
   blockedAt?: boolean
@@ -1757,6 +1913,9 @@ export type CabinetUserSelectScalar = {
   birthDateChangedAt?: boolean
   carId?: boolean
   customCar?: boolean
+  vin?: boolean
+  adminComment?: boolean
+  photoReportUrl?: boolean
   phoneVerified?: boolean
   blocked?: boolean
   blockedAt?: boolean
@@ -1768,7 +1927,7 @@ export type CabinetUserSelectScalar = {
   updatedAt?: boolean
 }
 
-export type CabinetUserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "phone" | "passwordHash" | "firstName" | "lastName" | "patronymic" | "birthDate" | "birthDateChangedAt" | "carId" | "customCar" | "phoneVerified" | "blocked" | "blockedAt" | "privacyPolicyAcceptedAt" | "personalDataConsentAt" | "termsAcceptedAt" | "role" | "createdAt" | "updatedAt", ExtArgs["result"]["cabinetUser"]>
+export type CabinetUserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "phone" | "passwordHash" | "firstName" | "lastName" | "patronymic" | "birthDate" | "birthDateChangedAt" | "carId" | "customCar" | "vin" | "adminComment" | "photoReportUrl" | "phoneVerified" | "blocked" | "blockedAt" | "privacyPolicyAcceptedAt" | "personalDataConsentAt" | "termsAcceptedAt" | "role" | "createdAt" | "updatedAt", ExtArgs["result"]["cabinetUser"]>
 export type CabinetUserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   car?: boolean | Prisma.CabinetUser$carArgs<ExtArgs>
   refreshTokens?: boolean | Prisma.CabinetUser$refreshTokensArgs<ExtArgs>
@@ -1812,6 +1971,18 @@ export type $CabinetUserPayload<ExtArgs extends runtime.Types.Extensions.Interna
      * * Свободный текст, если авто нет в каталоге
      */
     customCar: string | null
+    /**
+     * * VIN (17 символов) — для CRM
+     */
+    vin: string | null
+    /**
+     * * Заметки администратора (CRM)
+     */
+    adminComment: string | null
+    /**
+     * * Ссылка на фотоотчёт (Яндекс.Диск), одна на клиента
+     */
+    photoReportUrl: string | null
     phoneVerified: boolean
     blocked: boolean
     blockedAt: Date | null
@@ -2260,6 +2431,9 @@ export interface CabinetUserFieldRefs {
   readonly birthDateChangedAt: Prisma.FieldRef<"CabinetUser", 'DateTime'>
   readonly carId: Prisma.FieldRef<"CabinetUser", 'Int'>
   readonly customCar: Prisma.FieldRef<"CabinetUser", 'String'>
+  readonly vin: Prisma.FieldRef<"CabinetUser", 'String'>
+  readonly adminComment: Prisma.FieldRef<"CabinetUser", 'String'>
+  readonly photoReportUrl: Prisma.FieldRef<"CabinetUser", 'String'>
   readonly phoneVerified: Prisma.FieldRef<"CabinetUser", 'Boolean'>
   readonly blocked: Prisma.FieldRef<"CabinetUser", 'Boolean'>
   readonly blockedAt: Prisma.FieldRef<"CabinetUser", 'DateTime'>

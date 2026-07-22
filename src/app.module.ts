@@ -21,6 +21,7 @@ import { SmsModule } from './cabinet/sms/sms.module';
 import { CabinetAuthModule } from './cabinet/auth/cabinet-auth.module';
 import { CabinetUserModule } from './cabinet/user/cabinet-user.module';
 import { CabinetAdminModule } from './cabinet/admin/cabinet-admin.module';
+import { CrmModule } from './crm/crm.module';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { CabinetAdminModule } from './cabinet/admin/cabinet-admin.module';
     CabinetAuthModule,
     CabinetUserModule,
     CabinetAdminModule,
+    CrmModule,
   ],
   controllers: [VideoController],
   providers: [

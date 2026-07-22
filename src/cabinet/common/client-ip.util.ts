@@ -2,23 +2,19 @@ import { Request } from "express";
 
 /** Публичный IP, который SMS.ru принимает в параметре `ip` (не localhost / RFC1918). */
 export function isPublicClientIp(ip: string): boolean {
-  const normalized = ip.trim().toLowerCase();
+  let normalized = ip.trim().toLowerCase();
   if (!normalized || normalized === "::1" || normalized === "0.0.0.0") {
     return false;
   }
 
+  // Express / прокси часто отдают IPv4 как ::ffff:x.x.x.x
+  if (normalized.startsWith("::ffff:")) {
+    normalized = normalized.slice(7);
+  }
+
   if (normalized.includes(":")) {
     if (normalized === "::1" || normalized.startsWith("fe80:")) return false;
-    if (
-      normalized.startsWith("fc") ||
-      normalized.startsWith("fd") ||
-      normalized.startsWith("::ffff:127.") ||
-      normalized.startsWith("::ffff:10.") ||
-      normalized.startsWith("::ffff:192.168.") ||
-      /^::ffff:172\.(1[6-9]|2\d|3[01])\./.test(normalized)
-    ) {
-      return false;
-    }
+    if (normalized.startsWith("fc") || normalized.startsWith("fd")) return false;
     return true;
   }
 
@@ -36,16 +32,49 @@ export function isPublicClientIp(ip: string): boolean {
   return true;
 }
 
-/** IP клиента для SMS.ru (параметр `ip`), с учётом прокси. */
+function normalizeIpCandidate(raw: string): string {
+  return raw.trim().replace(/^::ffff:/i, "");
+}
+
+/**
+ * IP клиента для SMS.ru (параметр `ip`), с учётом `trust proxy`.
+ * Берём первый публичный адрес из цепочки X-Forwarded-For / req.ip.
+ */
 export function clientIpFromRequest(req: Request): string | undefined {
+  const candidates: string[] = [];
+
   const xf = req.headers["x-forwarded-for"];
   if (typeof xf === "string" && xf.trim()) {
-    return xf.split(",")[0]!.trim();
+    for (const part of xf.split(",")) {
+      const v = normalizeIpCandidate(part);
+      if (v) candidates.push(v);
+    }
+  } else if (Array.isArray(xf)) {
+    for (const item of xf) {
+      for (const part of String(item).split(",")) {
+        const v = normalizeIpCandidate(part);
+        if (v) candidates.push(v);
+      }
+    }
   }
-  if (Array.isArray(xf) && xf[0]) {
-    return String(xf[0]).trim();
+
+  // Express заполняет req.ip при app.set('trust proxy', true)
+  if (req.ip) {
+    candidates.push(normalizeIpCandidate(req.ip));
   }
-  const raw = req.socket?.remoteAddress ?? req.ip;
-  if (!raw) return undefined;
-  return raw.replace(/^::ffff:/, "");
+
+  const remote = req.socket?.remoteAddress;
+  if (remote) {
+    candidates.push(normalizeIpCandidate(remote));
+  }
+
+  const seen = new Set<string>();
+  for (const ip of candidates) {
+    if (!ip || seen.has(ip)) continue;
+    seen.add(ip);
+    if (isPublicClientIp(ip)) return ip;
+  }
+
+  // Если публичного нет (локальная разработка) — вернём первый кандидат для логов
+  return candidates[0];
 }

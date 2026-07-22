@@ -5,9 +5,13 @@ import {
   HttpCode,
   HttpStatus,
   Post,
+  UsePipes,
+  ValidationPipe,
 } from "@nestjs/common";
 
 import { TelegramService } from "../telegram/telegram.service";
+import { SitePriceRequestDto } from "../common/dto/site-form.dto";
+import { normalizePhoneRu } from "../cabinet/common/phone.util";
 
 @Controller()
 export class LegacyController {
@@ -41,21 +45,21 @@ export class LegacyController {
   }
 
   @Post("formaction")
-  async handleFormAction(@Body() body: Record<string, any>) {
-    const name = (body.name || "Без имени").toString();
-    const phone = (body.phone || "Не указан").toString();
-    const message = body.message ? body.message.toString() : "";
-    const href = body.href ? body.href.toString() : undefined;
+  @UsePipes(new ValidationPipe({ transform: true, whitelist: true }))
+  async handleFormAction(@Body() body: SitePriceRequestDto) {
+    const name = body.name.trim() || "Без имени";
+    const phone = normalizePhoneRu(body.phone);
+    const message = body.message?.trim() ?? "";
+    const href = body.href?.trim() || undefined;
 
-    // Дополнительные поля для описания авто и способа связи
-    const communicationMethod = body.contactMethod
-      ? body.contactMethod.toString()
-      : undefined;
-    const carDescription = body.isNotAuto
-      ? body.customBrand?.toString()
-      : [body.brand, body.model].filter(Boolean).join(" ").trim() || undefined;
+    const communicationMethod = body.contactMethod ?? body.communicationMethod;
+    const carDescription =
+      body.carDescription?.trim() ||
+      (body.isNotAuto
+        ? body.customBrand?.trim()
+        : [body.brand, body.model].filter(Boolean).join(" ").trim()) ||
+      undefined;
 
-    // Отправляем как обычное уведомление в Telegram, чтобы заявки не терялись
     await this.telegramService.sendMessage({
       name,
       phone,

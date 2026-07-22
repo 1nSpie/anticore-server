@@ -1,10 +1,9 @@
-import { IsBoolean, IsString, MinLength, Matches, Equals } from "class-validator";
+import { IsBoolean, IsString, MinLength, Equals } from "class-validator";
+import { IsPhoneRu } from "../../../common/phone.validator";
 
 export class RegisterDto {
   @IsString()
-  @Matches(/^[\d\s+()-]+$/, {
-    message: "Телефон может содержать только цифры и символы форматирования",
-  })
+  @IsPhoneRu()
   phone!: string;
 
   @IsString()
@@ -32,4 +31,8 @@ export class RegisterDto {
     message: "Необходимо принять Пользовательское соглашение",
   })
   acceptTerms!: boolean;
+
+  /** Токен Yandex SmartCaptcha */
+  @IsString()
+  captchaToken!: string;
 }

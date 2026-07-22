@@ -22,6 +22,8 @@ function isOkCode(code: unknown): boolean {
 /**
  * Отправка SMS через SMS.ru (https://sms.ru).
  * Если SMS_RU_API_ID не задан — код пишется в лог (удобно для локальной разработки).
+ *
+ * Рекомендация SMS.ru: передавать IP пользователя в `&ip=` для защиты от подозрительного трафика.
  */
 @Injectable()
 export class SmsService {
@@ -55,6 +57,10 @@ export class SmsService {
     } else if (ip) {
       this.logger.debug(
         `SMS.ru: параметр ip не передан (${ip} — локальный/приватный адрес)`,
+      );
+    } else {
+      this.logger.debug(
+        "SMS.ru: параметр ip не передан (IP клиента неизвестен)",
       );
     }
 
@@ -121,6 +127,9 @@ export class SmsService {
       );
     }
 
-    this.logger.log(`SMS.ru: сообщение принято к отправке, номер ${to}`);
+    this.logger.log(
+      `SMS.ru: сообщение принято к отправке, номер ${to}` +
+        (params.ip ? `, ip=${params.ip}` : ""),
+    );
   }
 }

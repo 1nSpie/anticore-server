@@ -29,11 +29,15 @@ export type AggregateVisitHistory = {
 export type VisitHistoryAvgAggregateOutputType = {
   id: number | null
   userId: number | null
+  priceRub: number | null
+  serviceTypeId: number | null
 }
 
 export type VisitHistorySumAggregateOutputType = {
   id: number | null
   userId: number | null
+  priceRub: number | null
+  serviceTypeId: number | null
 }
 
 export type VisitHistoryMinAggregateOutputType = {
@@ -42,7 +46,14 @@ export type VisitHistoryMinAggregateOutputType = {
   visitDate: Date | null
   serviceType: string | null
   diskLink: string | null
+  startsAt: Date | null
+  endsAt: Date | null
+  priceRub: number | null
+  serviceTypeId: number | null
+  managerName: string | null
+  reviewSmsSentAt: Date | null
   createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type VisitHistoryMaxAggregateOutputType = {
@@ -51,7 +62,14 @@ export type VisitHistoryMaxAggregateOutputType = {
   visitDate: Date | null
   serviceType: string | null
   diskLink: string | null
+  startsAt: Date | null
+  endsAt: Date | null
+  priceRub: number | null
+  serviceTypeId: number | null
+  managerName: string | null
+  reviewSmsSentAt: Date | null
   createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type VisitHistoryCountAggregateOutputType = {
@@ -60,7 +78,14 @@ export type VisitHistoryCountAggregateOutputType = {
   visitDate: number
   serviceType: number
   diskLink: number
+  startsAt: number
+  endsAt: number
+  priceRub: number
+  serviceTypeId: number
+  managerName: number
+  reviewSmsSentAt: number
   createdAt: number
+  updatedAt: number
   _all: number
 }
 
@@ -68,11 +93,15 @@ export type VisitHistoryCountAggregateOutputType = {
 export type VisitHistoryAvgAggregateInputType = {
   id?: true
   userId?: true
+  priceRub?: true
+  serviceTypeId?: true
 }
 
 export type VisitHistorySumAggregateInputType = {
   id?: true
   userId?: true
+  priceRub?: true
+  serviceTypeId?: true
 }
 
 export type VisitHistoryMinAggregateInputType = {
@@ -81,7 +110,14 @@ export type VisitHistoryMinAggregateInputType = {
   visitDate?: true
   serviceType?: true
   diskLink?: true
+  startsAt?: true
+  endsAt?: true
+  priceRub?: true
+  serviceTypeId?: true
+  managerName?: true
+  reviewSmsSentAt?: true
   createdAt?: true
+  updatedAt?: true
 }
 
 export type VisitHistoryMaxAggregateInputType = {
@@ -90,7 +126,14 @@ export type VisitHistoryMaxAggregateInputType = {
   visitDate?: true
   serviceType?: true
   diskLink?: true
+  startsAt?: true
+  endsAt?: true
+  priceRub?: true
+  serviceTypeId?: true
+  managerName?: true
+  reviewSmsSentAt?: true
   createdAt?: true
+  updatedAt?: true
 }
 
 export type VisitHistoryCountAggregateInputType = {
@@ -99,7 +142,14 @@ export type VisitHistoryCountAggregateInputType = {
   visitDate?: true
   serviceType?: true
   diskLink?: true
+  startsAt?: true
+  endsAt?: true
+  priceRub?: true
+  serviceTypeId?: true
+  managerName?: true
+  reviewSmsSentAt?: true
   createdAt?: true
+  updatedAt?: true
   _all?: true
 }
 
@@ -195,7 +245,14 @@ export type VisitHistoryGroupByOutputType = {
   visitDate: Date
   serviceType: string
   diskLink: string | null
+  startsAt: Date | null
+  endsAt: Date | null
+  priceRub: number | null
+  serviceTypeId: number | null
+  managerName: string | null
+  reviewSmsSentAt: Date | null
   createdAt: Date
+  updatedAt: Date
   _count: VisitHistoryCountAggregateOutputType | null
   _avg: VisitHistoryAvgAggregateOutputType | null
   _sum: VisitHistorySumAggregateOutputType | null
@@ -227,8 +284,18 @@ export type VisitHistoryWhereInput = {
   visitDate?: Prisma.DateTimeFilter<"VisitHistory"> | Date | string
   serviceType?: Prisma.StringFilter<"VisitHistory"> | string
   diskLink?: Prisma.StringNullableFilter<"VisitHistory"> | string | null
+  startsAt?: Prisma.DateTimeNullableFilter<"VisitHistory"> | Date | string | null
+  endsAt?: Prisma.DateTimeNullableFilter<"VisitHistory"> | Date | string | null
+  priceRub?: Prisma.IntNullableFilter<"VisitHistory"> | number | null
+  serviceTypeId?: Prisma.IntNullableFilter<"VisitHistory"> | number | null
+  managerName?: Prisma.StringNullableFilter<"VisitHistory"> | string | null
+  reviewSmsSentAt?: Prisma.DateTimeNullableFilter<"VisitHistory"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"VisitHistory"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"VisitHistory"> | Date | string
   user?: Prisma.XOR<Prisma.CabinetUserScalarRelationFilter, Prisma.CabinetUserWhereInput>
+  catalogServiceType?: Prisma.XOR<Prisma.ServiceTypeNullableScalarRelationFilter, Prisma.ServiceTypeWhereInput> | null
+  pendingReviewSms?: Prisma.XOR<Prisma.PendingReviewSmsNullableScalarRelationFilter, Prisma.PendingReviewSmsWhereInput> | null
+  siteLead?: Prisma.XOR<Prisma.SiteLeadNullableScalarRelationFilter, Prisma.SiteLeadWhereInput> | null
 }
 
 export type VisitHistoryOrderByWithRelationInput = {
@@ -237,8 +304,18 @@ export type VisitHistoryOrderByWithRelationInput = {
   visitDate?: Prisma.SortOrder
   serviceType?: Prisma.SortOrder
   diskLink?: Prisma.SortOrderInput | Prisma.SortOrder
+  startsAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  endsAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  priceRub?: Prisma.SortOrderInput | Prisma.SortOrder
+  serviceTypeId?: Prisma.SortOrderInput | Prisma.SortOrder
+  managerName?: Prisma.SortOrderInput | Prisma.SortOrder
+  reviewSmsSentAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   user?: Prisma.CabinetUserOrderByWithRelationInput
+  catalogServiceType?: Prisma.ServiceTypeOrderByWithRelationInput
+  pendingReviewSms?: Prisma.PendingReviewSmsOrderByWithRelationInput
+  siteLead?: Prisma.SiteLeadOrderByWithRelationInput
 }
 
 export type VisitHistoryWhereUniqueInput = Prisma.AtLeast<{
@@ -250,8 +327,18 @@ export type VisitHistoryWhereUniqueInput = Prisma.AtLeast<{
   visitDate?: Prisma.DateTimeFilter<"VisitHistory"> | Date | string
   serviceType?: Prisma.StringFilter<"VisitHistory"> | string
   diskLink?: Prisma.StringNullableFilter<"VisitHistory"> | string | null
+  startsAt?: Prisma.DateTimeNullableFilter<"VisitHistory"> | Date | string | null
+  endsAt?: Prisma.DateTimeNullableFilter<"VisitHistory"> | Date | string | null
+  priceRub?: Prisma.IntNullableFilter<"VisitHistory"> | number | null
+  serviceTypeId?: Prisma.IntNullableFilter<"VisitHistory"> | number | null
+  managerName?: Prisma.StringNullableFilter<"VisitHistory"> | string | null
+  reviewSmsSentAt?: Prisma.DateTimeNullableFilter<"VisitHistory"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"VisitHistory"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"VisitHistory"> | Date | string
   user?: Prisma.XOR<Prisma.CabinetUserScalarRelationFilter, Prisma.CabinetUserWhereInput>
+  catalogServiceType?: Prisma.XOR<Prisma.ServiceTypeNullableScalarRelationFilter, Prisma.ServiceTypeWhereInput> | null
+  pendingReviewSms?: Prisma.XOR<Prisma.PendingReviewSmsNullableScalarRelationFilter, Prisma.PendingReviewSmsWhereInput> | null
+  siteLead?: Prisma.XOR<Prisma.SiteLeadNullableScalarRelationFilter, Prisma.SiteLeadWhereInput> | null
 }, "id">
 
 export type VisitHistoryOrderByWithAggregationInput = {
@@ -260,7 +347,14 @@ export type VisitHistoryOrderByWithAggregationInput = {
   visitDate?: Prisma.SortOrder
   serviceType?: Prisma.SortOrder
   diskLink?: Prisma.SortOrderInput | Prisma.SortOrder
+  startsAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  endsAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  priceRub?: Prisma.SortOrderInput | Prisma.SortOrder
+  serviceTypeId?: Prisma.SortOrderInput | Prisma.SortOrder
+  managerName?: Prisma.SortOrderInput | Prisma.SortOrder
+  reviewSmsSentAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   _count?: Prisma.VisitHistoryCountOrderByAggregateInput
   _avg?: Prisma.VisitHistoryAvgOrderByAggregateInput
   _max?: Prisma.VisitHistoryMaxOrderByAggregateInput
@@ -277,15 +371,31 @@ export type VisitHistoryScalarWhereWithAggregatesInput = {
   visitDate?: Prisma.DateTimeWithAggregatesFilter<"VisitHistory"> | Date | string
   serviceType?: Prisma.StringWithAggregatesFilter<"VisitHistory"> | string
   diskLink?: Prisma.StringNullableWithAggregatesFilter<"VisitHistory"> | string | null
+  startsAt?: Prisma.DateTimeNullableWithAggregatesFilter<"VisitHistory"> | Date | string | null
+  endsAt?: Prisma.DateTimeNullableWithAggregatesFilter<"VisitHistory"> | Date | string | null
+  priceRub?: Prisma.IntNullableWithAggregatesFilter<"VisitHistory"> | number | null
+  serviceTypeId?: Prisma.IntNullableWithAggregatesFilter<"VisitHistory"> | number | null
+  managerName?: Prisma.StringNullableWithAggregatesFilter<"VisitHistory"> | string | null
+  reviewSmsSentAt?: Prisma.DateTimeNullableWithAggregatesFilter<"VisitHistory"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"VisitHistory"> | Date | string
+  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"VisitHistory"> | Date | string
 }
 
 export type VisitHistoryCreateInput = {
   visitDate: Date | string
   serviceType: string
   diskLink?: string | null
+  startsAt?: Date | string | null
+  endsAt?: Date | string | null
+  priceRub?: number | null
+  managerName?: string | null
+  reviewSmsSentAt?: Date | string | null
   createdAt?: Date | string
+  updatedAt?: Date | string
   user: Prisma.CabinetUserCreateNestedOneWithoutVisitsInput
+  catalogServiceType?: Prisma.ServiceTypeCreateNestedOneWithoutVisitsInput
+  pendingReviewSms?: Prisma.PendingReviewSmsCreateNestedOneWithoutVisitInput
+  siteLead?: Prisma.SiteLeadCreateNestedOneWithoutVisitInput
 }
 
 export type VisitHistoryUncheckedCreateInput = {
@@ -294,15 +404,33 @@ export type VisitHistoryUncheckedCreateInput = {
   visitDate: Date | string
   serviceType: string
   diskLink?: string | null
+  startsAt?: Date | string | null
+  endsAt?: Date | string | null
+  priceRub?: number | null
+  serviceTypeId?: number | null
+  managerName?: string | null
+  reviewSmsSentAt?: Date | string | null
   createdAt?: Date | string
+  updatedAt?: Date | string
+  pendingReviewSms?: Prisma.PendingReviewSmsUncheckedCreateNestedOneWithoutVisitInput
+  siteLead?: Prisma.SiteLeadUncheckedCreateNestedOneWithoutVisitInput
 }
 
 export type VisitHistoryUpdateInput = {
   visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   serviceType?: Prisma.StringFieldUpdateOperationsInput | string
   diskLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  priceRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  managerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewSmsSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.CabinetUserUpdateOneRequiredWithoutVisitsNestedInput
+  catalogServiceType?: Prisma.ServiceTypeUpdateOneWithoutVisitsNestedInput
+  pendingReviewSms?: Prisma.PendingReviewSmsUpdateOneWithoutVisitNestedInput
+  siteLead?: Prisma.SiteLeadUpdateOneWithoutVisitNestedInput
 }
 
 export type VisitHistoryUncheckedUpdateInput = {
@@ -311,7 +439,16 @@ export type VisitHistoryUncheckedUpdateInput = {
   visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   serviceType?: Prisma.StringFieldUpdateOperationsInput | string
   diskLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  priceRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  serviceTypeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  managerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewSmsSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pendingReviewSms?: Prisma.PendingReviewSmsUncheckedUpdateOneWithoutVisitNestedInput
+  siteLead?: Prisma.SiteLeadUncheckedUpdateOneWithoutVisitNestedInput
 }
 
 export type VisitHistoryCreateManyInput = {
@@ -320,14 +457,27 @@ export type VisitHistoryCreateManyInput = {
   visitDate: Date | string
   serviceType: string
   diskLink?: string | null
+  startsAt?: Date | string | null
+  endsAt?: Date | string | null
+  priceRub?: number | null
+  serviceTypeId?: number | null
+  managerName?: string | null
+  reviewSmsSentAt?: Date | string | null
   createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type VisitHistoryUpdateManyMutationInput = {
   visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   serviceType?: Prisma.StringFieldUpdateOperationsInput | string
   diskLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  priceRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  managerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewSmsSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type VisitHistoryUncheckedUpdateManyInput = {
@@ -336,7 +486,14 @@ export type VisitHistoryUncheckedUpdateManyInput = {
   visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   serviceType?: Prisma.StringFieldUpdateOperationsInput | string
   diskLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  priceRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  serviceTypeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  managerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewSmsSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type VisitHistoryListRelationFilter = {
@@ -349,18 +506,32 @@ export type VisitHistoryOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
+export type VisitHistoryNullableScalarRelationFilter = {
+  is?: Prisma.VisitHistoryWhereInput | null
+  isNot?: Prisma.VisitHistoryWhereInput | null
+}
+
 export type VisitHistoryCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   visitDate?: Prisma.SortOrder
   serviceType?: Prisma.SortOrder
   diskLink?: Prisma.SortOrder
+  startsAt?: Prisma.SortOrder
+  endsAt?: Prisma.SortOrder
+  priceRub?: Prisma.SortOrder
+  serviceTypeId?: Prisma.SortOrder
+  managerName?: Prisma.SortOrder
+  reviewSmsSentAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type VisitHistoryAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  priceRub?: Prisma.SortOrder
+  serviceTypeId?: Prisma.SortOrder
 }
 
 export type VisitHistoryMaxOrderByAggregateInput = {
@@ -369,7 +540,14 @@ export type VisitHistoryMaxOrderByAggregateInput = {
   visitDate?: Prisma.SortOrder
   serviceType?: Prisma.SortOrder
   diskLink?: Prisma.SortOrder
+  startsAt?: Prisma.SortOrder
+  endsAt?: Prisma.SortOrder
+  priceRub?: Prisma.SortOrder
+  serviceTypeId?: Prisma.SortOrder
+  managerName?: Prisma.SortOrder
+  reviewSmsSentAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type VisitHistoryMinOrderByAggregateInput = {
@@ -378,12 +556,26 @@ export type VisitHistoryMinOrderByAggregateInput = {
   visitDate?: Prisma.SortOrder
   serviceType?: Prisma.SortOrder
   diskLink?: Prisma.SortOrder
+  startsAt?: Prisma.SortOrder
+  endsAt?: Prisma.SortOrder
+  priceRub?: Prisma.SortOrder
+  serviceTypeId?: Prisma.SortOrder
+  managerName?: Prisma.SortOrder
+  reviewSmsSentAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type VisitHistorySumOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  priceRub?: Prisma.SortOrder
+  serviceTypeId?: Prisma.SortOrder
+}
+
+export type VisitHistoryScalarRelationFilter = {
+  is?: Prisma.VisitHistoryWhereInput
+  isNot?: Prisma.VisitHistoryWhereInput
 }
 
 export type VisitHistoryCreateNestedManyWithoutUserInput = {
@@ -428,11 +620,92 @@ export type VisitHistoryUncheckedUpdateManyWithoutUserNestedInput = {
   deleteMany?: Prisma.VisitHistoryScalarWhereInput | Prisma.VisitHistoryScalarWhereInput[]
 }
 
+export type VisitHistoryCreateNestedManyWithoutCatalogServiceTypeInput = {
+  create?: Prisma.XOR<Prisma.VisitHistoryCreateWithoutCatalogServiceTypeInput, Prisma.VisitHistoryUncheckedCreateWithoutCatalogServiceTypeInput> | Prisma.VisitHistoryCreateWithoutCatalogServiceTypeInput[] | Prisma.VisitHistoryUncheckedCreateWithoutCatalogServiceTypeInput[]
+  connectOrCreate?: Prisma.VisitHistoryCreateOrConnectWithoutCatalogServiceTypeInput | Prisma.VisitHistoryCreateOrConnectWithoutCatalogServiceTypeInput[]
+  createMany?: Prisma.VisitHistoryCreateManyCatalogServiceTypeInputEnvelope
+  connect?: Prisma.VisitHistoryWhereUniqueInput | Prisma.VisitHistoryWhereUniqueInput[]
+}
+
+export type VisitHistoryUncheckedCreateNestedManyWithoutCatalogServiceTypeInput = {
+  create?: Prisma.XOR<Prisma.VisitHistoryCreateWithoutCatalogServiceTypeInput, Prisma.VisitHistoryUncheckedCreateWithoutCatalogServiceTypeInput> | Prisma.VisitHistoryCreateWithoutCatalogServiceTypeInput[] | Prisma.VisitHistoryUncheckedCreateWithoutCatalogServiceTypeInput[]
+  connectOrCreate?: Prisma.VisitHistoryCreateOrConnectWithoutCatalogServiceTypeInput | Prisma.VisitHistoryCreateOrConnectWithoutCatalogServiceTypeInput[]
+  createMany?: Prisma.VisitHistoryCreateManyCatalogServiceTypeInputEnvelope
+  connect?: Prisma.VisitHistoryWhereUniqueInput | Prisma.VisitHistoryWhereUniqueInput[]
+}
+
+export type VisitHistoryUpdateManyWithoutCatalogServiceTypeNestedInput = {
+  create?: Prisma.XOR<Prisma.VisitHistoryCreateWithoutCatalogServiceTypeInput, Prisma.VisitHistoryUncheckedCreateWithoutCatalogServiceTypeInput> | Prisma.VisitHistoryCreateWithoutCatalogServiceTypeInput[] | Prisma.VisitHistoryUncheckedCreateWithoutCatalogServiceTypeInput[]
+  connectOrCreate?: Prisma.VisitHistoryCreateOrConnectWithoutCatalogServiceTypeInput | Prisma.VisitHistoryCreateOrConnectWithoutCatalogServiceTypeInput[]
+  upsert?: Prisma.VisitHistoryUpsertWithWhereUniqueWithoutCatalogServiceTypeInput | Prisma.VisitHistoryUpsertWithWhereUniqueWithoutCatalogServiceTypeInput[]
+  createMany?: Prisma.VisitHistoryCreateManyCatalogServiceTypeInputEnvelope
+  set?: Prisma.VisitHistoryWhereUniqueInput | Prisma.VisitHistoryWhereUniqueInput[]
+  disconnect?: Prisma.VisitHistoryWhereUniqueInput | Prisma.VisitHistoryWhereUniqueInput[]
+  delete?: Prisma.VisitHistoryWhereUniqueInput | Prisma.VisitHistoryWhereUniqueInput[]
+  connect?: Prisma.VisitHistoryWhereUniqueInput | Prisma.VisitHistoryWhereUniqueInput[]
+  update?: Prisma.VisitHistoryUpdateWithWhereUniqueWithoutCatalogServiceTypeInput | Prisma.VisitHistoryUpdateWithWhereUniqueWithoutCatalogServiceTypeInput[]
+  updateMany?: Prisma.VisitHistoryUpdateManyWithWhereWithoutCatalogServiceTypeInput | Prisma.VisitHistoryUpdateManyWithWhereWithoutCatalogServiceTypeInput[]
+  deleteMany?: Prisma.VisitHistoryScalarWhereInput | Prisma.VisitHistoryScalarWhereInput[]
+}
+
+export type VisitHistoryUncheckedUpdateManyWithoutCatalogServiceTypeNestedInput = {
+  create?: Prisma.XOR<Prisma.VisitHistoryCreateWithoutCatalogServiceTypeInput, Prisma.VisitHistoryUncheckedCreateWithoutCatalogServiceTypeInput> | Prisma.VisitHistoryCreateWithoutCatalogServiceTypeInput[] | Prisma.VisitHistoryUncheckedCreateWithoutCatalogServiceTypeInput[]
+  connectOrCreate?: Prisma.VisitHistoryCreateOrConnectWithoutCatalogServiceTypeInput | Prisma.VisitHistoryCreateOrConnectWithoutCatalogServiceTypeInput[]
+  upsert?: Prisma.VisitHistoryUpsertWithWhereUniqueWithoutCatalogServiceTypeInput | Prisma.VisitHistoryUpsertWithWhereUniqueWithoutCatalogServiceTypeInput[]
+  createMany?: Prisma.VisitHistoryCreateManyCatalogServiceTypeInputEnvelope
+  set?: Prisma.VisitHistoryWhereUniqueInput | Prisma.VisitHistoryWhereUniqueInput[]
+  disconnect?: Prisma.VisitHistoryWhereUniqueInput | Prisma.VisitHistoryWhereUniqueInput[]
+  delete?: Prisma.VisitHistoryWhereUniqueInput | Prisma.VisitHistoryWhereUniqueInput[]
+  connect?: Prisma.VisitHistoryWhereUniqueInput | Prisma.VisitHistoryWhereUniqueInput[]
+  update?: Prisma.VisitHistoryUpdateWithWhereUniqueWithoutCatalogServiceTypeInput | Prisma.VisitHistoryUpdateWithWhereUniqueWithoutCatalogServiceTypeInput[]
+  updateMany?: Prisma.VisitHistoryUpdateManyWithWhereWithoutCatalogServiceTypeInput | Prisma.VisitHistoryUpdateManyWithWhereWithoutCatalogServiceTypeInput[]
+  deleteMany?: Prisma.VisitHistoryScalarWhereInput | Prisma.VisitHistoryScalarWhereInput[]
+}
+
+export type VisitHistoryCreateNestedOneWithoutSiteLeadInput = {
+  create?: Prisma.XOR<Prisma.VisitHistoryCreateWithoutSiteLeadInput, Prisma.VisitHistoryUncheckedCreateWithoutSiteLeadInput>
+  connectOrCreate?: Prisma.VisitHistoryCreateOrConnectWithoutSiteLeadInput
+  connect?: Prisma.VisitHistoryWhereUniqueInput
+}
+
+export type VisitHistoryUpdateOneWithoutSiteLeadNestedInput = {
+  create?: Prisma.XOR<Prisma.VisitHistoryCreateWithoutSiteLeadInput, Prisma.VisitHistoryUncheckedCreateWithoutSiteLeadInput>
+  connectOrCreate?: Prisma.VisitHistoryCreateOrConnectWithoutSiteLeadInput
+  upsert?: Prisma.VisitHistoryUpsertWithoutSiteLeadInput
+  disconnect?: Prisma.VisitHistoryWhereInput | boolean
+  delete?: Prisma.VisitHistoryWhereInput | boolean
+  connect?: Prisma.VisitHistoryWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.VisitHistoryUpdateToOneWithWhereWithoutSiteLeadInput, Prisma.VisitHistoryUpdateWithoutSiteLeadInput>, Prisma.VisitHistoryUncheckedUpdateWithoutSiteLeadInput>
+}
+
+export type VisitHistoryCreateNestedOneWithoutPendingReviewSmsInput = {
+  create?: Prisma.XOR<Prisma.VisitHistoryCreateWithoutPendingReviewSmsInput, Prisma.VisitHistoryUncheckedCreateWithoutPendingReviewSmsInput>
+  connectOrCreate?: Prisma.VisitHistoryCreateOrConnectWithoutPendingReviewSmsInput
+  connect?: Prisma.VisitHistoryWhereUniqueInput
+}
+
+export type VisitHistoryUpdateOneRequiredWithoutPendingReviewSmsNestedInput = {
+  create?: Prisma.XOR<Prisma.VisitHistoryCreateWithoutPendingReviewSmsInput, Prisma.VisitHistoryUncheckedCreateWithoutPendingReviewSmsInput>
+  connectOrCreate?: Prisma.VisitHistoryCreateOrConnectWithoutPendingReviewSmsInput
+  upsert?: Prisma.VisitHistoryUpsertWithoutPendingReviewSmsInput
+  connect?: Prisma.VisitHistoryWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.VisitHistoryUpdateToOneWithWhereWithoutPendingReviewSmsInput, Prisma.VisitHistoryUpdateWithoutPendingReviewSmsInput>, Prisma.VisitHistoryUncheckedUpdateWithoutPendingReviewSmsInput>
+}
+
 export type VisitHistoryCreateWithoutUserInput = {
   visitDate: Date | string
   serviceType: string
   diskLink?: string | null
+  startsAt?: Date | string | null
+  endsAt?: Date | string | null
+  priceRub?: number | null
+  managerName?: string | null
+  reviewSmsSentAt?: Date | string | null
   createdAt?: Date | string
+  updatedAt?: Date | string
+  catalogServiceType?: Prisma.ServiceTypeCreateNestedOneWithoutVisitsInput
+  pendingReviewSms?: Prisma.PendingReviewSmsCreateNestedOneWithoutVisitInput
+  siteLead?: Prisma.SiteLeadCreateNestedOneWithoutVisitInput
 }
 
 export type VisitHistoryUncheckedCreateWithoutUserInput = {
@@ -440,7 +713,16 @@ export type VisitHistoryUncheckedCreateWithoutUserInput = {
   visitDate: Date | string
   serviceType: string
   diskLink?: string | null
+  startsAt?: Date | string | null
+  endsAt?: Date | string | null
+  priceRub?: number | null
+  serviceTypeId?: number | null
+  managerName?: string | null
+  reviewSmsSentAt?: Date | string | null
   createdAt?: Date | string
+  updatedAt?: Date | string
+  pendingReviewSms?: Prisma.PendingReviewSmsUncheckedCreateNestedOneWithoutVisitInput
+  siteLead?: Prisma.SiteLeadUncheckedCreateNestedOneWithoutVisitInput
 }
 
 export type VisitHistoryCreateOrConnectWithoutUserInput = {
@@ -478,7 +760,237 @@ export type VisitHistoryScalarWhereInput = {
   visitDate?: Prisma.DateTimeFilter<"VisitHistory"> | Date | string
   serviceType?: Prisma.StringFilter<"VisitHistory"> | string
   diskLink?: Prisma.StringNullableFilter<"VisitHistory"> | string | null
+  startsAt?: Prisma.DateTimeNullableFilter<"VisitHistory"> | Date | string | null
+  endsAt?: Prisma.DateTimeNullableFilter<"VisitHistory"> | Date | string | null
+  priceRub?: Prisma.IntNullableFilter<"VisitHistory"> | number | null
+  serviceTypeId?: Prisma.IntNullableFilter<"VisitHistory"> | number | null
+  managerName?: Prisma.StringNullableFilter<"VisitHistory"> | string | null
+  reviewSmsSentAt?: Prisma.DateTimeNullableFilter<"VisitHistory"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"VisitHistory"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"VisitHistory"> | Date | string
+}
+
+export type VisitHistoryCreateWithoutCatalogServiceTypeInput = {
+  visitDate: Date | string
+  serviceType: string
+  diskLink?: string | null
+  startsAt?: Date | string | null
+  endsAt?: Date | string | null
+  priceRub?: number | null
+  managerName?: string | null
+  reviewSmsSentAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.CabinetUserCreateNestedOneWithoutVisitsInput
+  pendingReviewSms?: Prisma.PendingReviewSmsCreateNestedOneWithoutVisitInput
+  siteLead?: Prisma.SiteLeadCreateNestedOneWithoutVisitInput
+}
+
+export type VisitHistoryUncheckedCreateWithoutCatalogServiceTypeInput = {
+  id?: number
+  userId: number
+  visitDate: Date | string
+  serviceType: string
+  diskLink?: string | null
+  startsAt?: Date | string | null
+  endsAt?: Date | string | null
+  priceRub?: number | null
+  managerName?: string | null
+  reviewSmsSentAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  pendingReviewSms?: Prisma.PendingReviewSmsUncheckedCreateNestedOneWithoutVisitInput
+  siteLead?: Prisma.SiteLeadUncheckedCreateNestedOneWithoutVisitInput
+}
+
+export type VisitHistoryCreateOrConnectWithoutCatalogServiceTypeInput = {
+  where: Prisma.VisitHistoryWhereUniqueInput
+  create: Prisma.XOR<Prisma.VisitHistoryCreateWithoutCatalogServiceTypeInput, Prisma.VisitHistoryUncheckedCreateWithoutCatalogServiceTypeInput>
+}
+
+export type VisitHistoryCreateManyCatalogServiceTypeInputEnvelope = {
+  data: Prisma.VisitHistoryCreateManyCatalogServiceTypeInput | Prisma.VisitHistoryCreateManyCatalogServiceTypeInput[]
+  skipDuplicates?: boolean
+}
+
+export type VisitHistoryUpsertWithWhereUniqueWithoutCatalogServiceTypeInput = {
+  where: Prisma.VisitHistoryWhereUniqueInput
+  update: Prisma.XOR<Prisma.VisitHistoryUpdateWithoutCatalogServiceTypeInput, Prisma.VisitHistoryUncheckedUpdateWithoutCatalogServiceTypeInput>
+  create: Prisma.XOR<Prisma.VisitHistoryCreateWithoutCatalogServiceTypeInput, Prisma.VisitHistoryUncheckedCreateWithoutCatalogServiceTypeInput>
+}
+
+export type VisitHistoryUpdateWithWhereUniqueWithoutCatalogServiceTypeInput = {
+  where: Prisma.VisitHistoryWhereUniqueInput
+  data: Prisma.XOR<Prisma.VisitHistoryUpdateWithoutCatalogServiceTypeInput, Prisma.VisitHistoryUncheckedUpdateWithoutCatalogServiceTypeInput>
+}
+
+export type VisitHistoryUpdateManyWithWhereWithoutCatalogServiceTypeInput = {
+  where: Prisma.VisitHistoryScalarWhereInput
+  data: Prisma.XOR<Prisma.VisitHistoryUpdateManyMutationInput, Prisma.VisitHistoryUncheckedUpdateManyWithoutCatalogServiceTypeInput>
+}
+
+export type VisitHistoryCreateWithoutSiteLeadInput = {
+  visitDate: Date | string
+  serviceType: string
+  diskLink?: string | null
+  startsAt?: Date | string | null
+  endsAt?: Date | string | null
+  priceRub?: number | null
+  managerName?: string | null
+  reviewSmsSentAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.CabinetUserCreateNestedOneWithoutVisitsInput
+  catalogServiceType?: Prisma.ServiceTypeCreateNestedOneWithoutVisitsInput
+  pendingReviewSms?: Prisma.PendingReviewSmsCreateNestedOneWithoutVisitInput
+}
+
+export type VisitHistoryUncheckedCreateWithoutSiteLeadInput = {
+  id?: number
+  userId: number
+  visitDate: Date | string
+  serviceType: string
+  diskLink?: string | null
+  startsAt?: Date | string | null
+  endsAt?: Date | string | null
+  priceRub?: number | null
+  serviceTypeId?: number | null
+  managerName?: string | null
+  reviewSmsSentAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  pendingReviewSms?: Prisma.PendingReviewSmsUncheckedCreateNestedOneWithoutVisitInput
+}
+
+export type VisitHistoryCreateOrConnectWithoutSiteLeadInput = {
+  where: Prisma.VisitHistoryWhereUniqueInput
+  create: Prisma.XOR<Prisma.VisitHistoryCreateWithoutSiteLeadInput, Prisma.VisitHistoryUncheckedCreateWithoutSiteLeadInput>
+}
+
+export type VisitHistoryUpsertWithoutSiteLeadInput = {
+  update: Prisma.XOR<Prisma.VisitHistoryUpdateWithoutSiteLeadInput, Prisma.VisitHistoryUncheckedUpdateWithoutSiteLeadInput>
+  create: Prisma.XOR<Prisma.VisitHistoryCreateWithoutSiteLeadInput, Prisma.VisitHistoryUncheckedCreateWithoutSiteLeadInput>
+  where?: Prisma.VisitHistoryWhereInput
+}
+
+export type VisitHistoryUpdateToOneWithWhereWithoutSiteLeadInput = {
+  where?: Prisma.VisitHistoryWhereInput
+  data: Prisma.XOR<Prisma.VisitHistoryUpdateWithoutSiteLeadInput, Prisma.VisitHistoryUncheckedUpdateWithoutSiteLeadInput>
+}
+
+export type VisitHistoryUpdateWithoutSiteLeadInput = {
+  visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  serviceType?: Prisma.StringFieldUpdateOperationsInput | string
+  diskLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  priceRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  managerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewSmsSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.CabinetUserUpdateOneRequiredWithoutVisitsNestedInput
+  catalogServiceType?: Prisma.ServiceTypeUpdateOneWithoutVisitsNestedInput
+  pendingReviewSms?: Prisma.PendingReviewSmsUpdateOneWithoutVisitNestedInput
+}
+
+export type VisitHistoryUncheckedUpdateWithoutSiteLeadInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  userId?: Prisma.IntFieldUpdateOperationsInput | number
+  visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  serviceType?: Prisma.StringFieldUpdateOperationsInput | string
+  diskLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  priceRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  serviceTypeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  managerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewSmsSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pendingReviewSms?: Prisma.PendingReviewSmsUncheckedUpdateOneWithoutVisitNestedInput
+}
+
+export type VisitHistoryCreateWithoutPendingReviewSmsInput = {
+  visitDate: Date | string
+  serviceType: string
+  diskLink?: string | null
+  startsAt?: Date | string | null
+  endsAt?: Date | string | null
+  priceRub?: number | null
+  managerName?: string | null
+  reviewSmsSentAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.CabinetUserCreateNestedOneWithoutVisitsInput
+  catalogServiceType?: Prisma.ServiceTypeCreateNestedOneWithoutVisitsInput
+  siteLead?: Prisma.SiteLeadCreateNestedOneWithoutVisitInput
+}
+
+export type VisitHistoryUncheckedCreateWithoutPendingReviewSmsInput = {
+  id?: number
+  userId: number
+  visitDate: Date | string
+  serviceType: string
+  diskLink?: string | null
+  startsAt?: Date | string | null
+  endsAt?: Date | string | null
+  priceRub?: number | null
+  serviceTypeId?: number | null
+  managerName?: string | null
+  reviewSmsSentAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  siteLead?: Prisma.SiteLeadUncheckedCreateNestedOneWithoutVisitInput
+}
+
+export type VisitHistoryCreateOrConnectWithoutPendingReviewSmsInput = {
+  where: Prisma.VisitHistoryWhereUniqueInput
+  create: Prisma.XOR<Prisma.VisitHistoryCreateWithoutPendingReviewSmsInput, Prisma.VisitHistoryUncheckedCreateWithoutPendingReviewSmsInput>
+}
+
+export type VisitHistoryUpsertWithoutPendingReviewSmsInput = {
+  update: Prisma.XOR<Prisma.VisitHistoryUpdateWithoutPendingReviewSmsInput, Prisma.VisitHistoryUncheckedUpdateWithoutPendingReviewSmsInput>
+  create: Prisma.XOR<Prisma.VisitHistoryCreateWithoutPendingReviewSmsInput, Prisma.VisitHistoryUncheckedCreateWithoutPendingReviewSmsInput>
+  where?: Prisma.VisitHistoryWhereInput
+}
+
+export type VisitHistoryUpdateToOneWithWhereWithoutPendingReviewSmsInput = {
+  where?: Prisma.VisitHistoryWhereInput
+  data: Prisma.XOR<Prisma.VisitHistoryUpdateWithoutPendingReviewSmsInput, Prisma.VisitHistoryUncheckedUpdateWithoutPendingReviewSmsInput>
+}
+
+export type VisitHistoryUpdateWithoutPendingReviewSmsInput = {
+  visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  serviceType?: Prisma.StringFieldUpdateOperationsInput | string
+  diskLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  priceRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  managerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewSmsSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.CabinetUserUpdateOneRequiredWithoutVisitsNestedInput
+  catalogServiceType?: Prisma.ServiceTypeUpdateOneWithoutVisitsNestedInput
+  siteLead?: Prisma.SiteLeadUpdateOneWithoutVisitNestedInput
+}
+
+export type VisitHistoryUncheckedUpdateWithoutPendingReviewSmsInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  userId?: Prisma.IntFieldUpdateOperationsInput | number
+  visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  serviceType?: Prisma.StringFieldUpdateOperationsInput | string
+  diskLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  priceRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  serviceTypeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  managerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewSmsSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  siteLead?: Prisma.SiteLeadUncheckedUpdateOneWithoutVisitNestedInput
 }
 
 export type VisitHistoryCreateManyUserInput = {
@@ -486,14 +998,30 @@ export type VisitHistoryCreateManyUserInput = {
   visitDate: Date | string
   serviceType: string
   diskLink?: string | null
+  startsAt?: Date | string | null
+  endsAt?: Date | string | null
+  priceRub?: number | null
+  serviceTypeId?: number | null
+  managerName?: string | null
+  reviewSmsSentAt?: Date | string | null
   createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type VisitHistoryUpdateWithoutUserInput = {
   visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   serviceType?: Prisma.StringFieldUpdateOperationsInput | string
   diskLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  priceRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  managerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewSmsSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  catalogServiceType?: Prisma.ServiceTypeUpdateOneWithoutVisitsNestedInput
+  pendingReviewSms?: Prisma.PendingReviewSmsUpdateOneWithoutVisitNestedInput
+  siteLead?: Prisma.SiteLeadUpdateOneWithoutVisitNestedInput
 }
 
 export type VisitHistoryUncheckedUpdateWithoutUserInput = {
@@ -501,7 +1029,16 @@ export type VisitHistoryUncheckedUpdateWithoutUserInput = {
   visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   serviceType?: Prisma.StringFieldUpdateOperationsInput | string
   diskLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  priceRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  serviceTypeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  managerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewSmsSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pendingReviewSms?: Prisma.PendingReviewSmsUncheckedUpdateOneWithoutVisitNestedInput
+  siteLead?: Prisma.SiteLeadUncheckedUpdateOneWithoutVisitNestedInput
 }
 
 export type VisitHistoryUncheckedUpdateManyWithoutUserInput = {
@@ -509,7 +1046,77 @@ export type VisitHistoryUncheckedUpdateManyWithoutUserInput = {
   visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   serviceType?: Prisma.StringFieldUpdateOperationsInput | string
   diskLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  priceRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  serviceTypeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  managerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewSmsSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type VisitHistoryCreateManyCatalogServiceTypeInput = {
+  id?: number
+  userId: number
+  visitDate: Date | string
+  serviceType: string
+  diskLink?: string | null
+  startsAt?: Date | string | null
+  endsAt?: Date | string | null
+  priceRub?: number | null
+  managerName?: string | null
+  reviewSmsSentAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type VisitHistoryUpdateWithoutCatalogServiceTypeInput = {
+  visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  serviceType?: Prisma.StringFieldUpdateOperationsInput | string
+  diskLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  priceRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  managerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewSmsSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.CabinetUserUpdateOneRequiredWithoutVisitsNestedInput
+  pendingReviewSms?: Prisma.PendingReviewSmsUpdateOneWithoutVisitNestedInput
+  siteLead?: Prisma.SiteLeadUpdateOneWithoutVisitNestedInput
+}
+
+export type VisitHistoryUncheckedUpdateWithoutCatalogServiceTypeInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  userId?: Prisma.IntFieldUpdateOperationsInput | number
+  visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  serviceType?: Prisma.StringFieldUpdateOperationsInput | string
+  diskLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  priceRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  managerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewSmsSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pendingReviewSms?: Prisma.PendingReviewSmsUncheckedUpdateOneWithoutVisitNestedInput
+  siteLead?: Prisma.SiteLeadUncheckedUpdateOneWithoutVisitNestedInput
+}
+
+export type VisitHistoryUncheckedUpdateManyWithoutCatalogServiceTypeInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  userId?: Prisma.IntFieldUpdateOperationsInput | number
+  visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  serviceType?: Prisma.StringFieldUpdateOperationsInput | string
+  diskLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  priceRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  managerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewSmsSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
@@ -520,8 +1127,18 @@ export type VisitHistorySelect<ExtArgs extends runtime.Types.Extensions.Internal
   visitDate?: boolean
   serviceType?: boolean
   diskLink?: boolean
+  startsAt?: boolean
+  endsAt?: boolean
+  priceRub?: boolean
+  serviceTypeId?: boolean
+  managerName?: boolean
+  reviewSmsSentAt?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
   user?: boolean | Prisma.CabinetUserDefaultArgs<ExtArgs>
+  catalogServiceType?: boolean | Prisma.VisitHistory$catalogServiceTypeArgs<ExtArgs>
+  pendingReviewSms?: boolean | Prisma.VisitHistory$pendingReviewSmsArgs<ExtArgs>
+  siteLead?: boolean | Prisma.VisitHistory$siteLeadArgs<ExtArgs>
 }, ExtArgs["result"]["visitHistory"]>
 
 export type VisitHistorySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -530,8 +1147,16 @@ export type VisitHistorySelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   visitDate?: boolean
   serviceType?: boolean
   diskLink?: boolean
+  startsAt?: boolean
+  endsAt?: boolean
+  priceRub?: boolean
+  serviceTypeId?: boolean
+  managerName?: boolean
+  reviewSmsSentAt?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
   user?: boolean | Prisma.CabinetUserDefaultArgs<ExtArgs>
+  catalogServiceType?: boolean | Prisma.VisitHistory$catalogServiceTypeArgs<ExtArgs>
 }, ExtArgs["result"]["visitHistory"]>
 
 export type VisitHistorySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -540,8 +1165,16 @@ export type VisitHistorySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   visitDate?: boolean
   serviceType?: boolean
   diskLink?: boolean
+  startsAt?: boolean
+  endsAt?: boolean
+  priceRub?: boolean
+  serviceTypeId?: boolean
+  managerName?: boolean
+  reviewSmsSentAt?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
   user?: boolean | Prisma.CabinetUserDefaultArgs<ExtArgs>
+  catalogServiceType?: boolean | Prisma.VisitHistory$catalogServiceTypeArgs<ExtArgs>
 }, ExtArgs["result"]["visitHistory"]>
 
 export type VisitHistorySelectScalar = {
@@ -550,24 +1183,39 @@ export type VisitHistorySelectScalar = {
   visitDate?: boolean
   serviceType?: boolean
   diskLink?: boolean
+  startsAt?: boolean
+  endsAt?: boolean
+  priceRub?: boolean
+  serviceTypeId?: boolean
+  managerName?: boolean
+  reviewSmsSentAt?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
 }
 
-export type VisitHistoryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "visitDate" | "serviceType" | "diskLink" | "createdAt", ExtArgs["result"]["visitHistory"]>
+export type VisitHistoryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "visitDate" | "serviceType" | "diskLink" | "startsAt" | "endsAt" | "priceRub" | "serviceTypeId" | "managerName" | "reviewSmsSentAt" | "createdAt" | "updatedAt", ExtArgs["result"]["visitHistory"]>
 export type VisitHistoryInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.CabinetUserDefaultArgs<ExtArgs>
+  catalogServiceType?: boolean | Prisma.VisitHistory$catalogServiceTypeArgs<ExtArgs>
+  pendingReviewSms?: boolean | Prisma.VisitHistory$pendingReviewSmsArgs<ExtArgs>
+  siteLead?: boolean | Prisma.VisitHistory$siteLeadArgs<ExtArgs>
 }
 export type VisitHistoryIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.CabinetUserDefaultArgs<ExtArgs>
+  catalogServiceType?: boolean | Prisma.VisitHistory$catalogServiceTypeArgs<ExtArgs>
 }
 export type VisitHistoryIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.CabinetUserDefaultArgs<ExtArgs>
+  catalogServiceType?: boolean | Prisma.VisitHistory$catalogServiceTypeArgs<ExtArgs>
 }
 
 export type $VisitHistoryPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "VisitHistory"
   objects: {
     user: Prisma.$CabinetUserPayload<ExtArgs>
+    catalogServiceType: Prisma.$ServiceTypePayload<ExtArgs> | null
+    pendingReviewSms: Prisma.$PendingReviewSmsPayload<ExtArgs> | null
+    siteLead: Prisma.$SiteLeadPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -575,7 +1223,17 @@ export type $VisitHistoryPayload<ExtArgs extends runtime.Types.Extensions.Intern
     visitDate: Date
     serviceType: string
     diskLink: string | null
+    startsAt: Date | null
+    endsAt: Date | null
+    priceRub: number | null
+    serviceTypeId: number | null
+    /**
+     * * Имя менеджера (только админка, не для ЛК)
+     */
+    managerName: string | null
+    reviewSmsSentAt: Date | null
     createdAt: Date
+    updatedAt: Date
   }, ExtArgs["result"]["visitHistory"]>
   composites: {}
 }
@@ -971,6 +1629,9 @@ readonly fields: VisitHistoryFieldRefs;
 export interface Prisma__VisitHistoryClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   user<T extends Prisma.CabinetUserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CabinetUserDefaultArgs<ExtArgs>>): Prisma.Prisma__CabinetUserClient<runtime.Types.Result.GetResult<Prisma.$CabinetUserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  catalogServiceType<T extends Prisma.VisitHistory$catalogServiceTypeArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.VisitHistory$catalogServiceTypeArgs<ExtArgs>>): Prisma.Prisma__ServiceTypeClient<runtime.Types.Result.GetResult<Prisma.$ServiceTypePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  pendingReviewSms<T extends Prisma.VisitHistory$pendingReviewSmsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.VisitHistory$pendingReviewSmsArgs<ExtArgs>>): Prisma.Prisma__PendingReviewSmsClient<runtime.Types.Result.GetResult<Prisma.$PendingReviewSmsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  siteLead<T extends Prisma.VisitHistory$siteLeadArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.VisitHistory$siteLeadArgs<ExtArgs>>): Prisma.Prisma__SiteLeadClient<runtime.Types.Result.GetResult<Prisma.$SiteLeadPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1005,7 +1666,14 @@ export interface VisitHistoryFieldRefs {
   readonly visitDate: Prisma.FieldRef<"VisitHistory", 'DateTime'>
   readonly serviceType: Prisma.FieldRef<"VisitHistory", 'String'>
   readonly diskLink: Prisma.FieldRef<"VisitHistory", 'String'>
+  readonly startsAt: Prisma.FieldRef<"VisitHistory", 'DateTime'>
+  readonly endsAt: Prisma.FieldRef<"VisitHistory", 'DateTime'>
+  readonly priceRub: Prisma.FieldRef<"VisitHistory", 'Int'>
+  readonly serviceTypeId: Prisma.FieldRef<"VisitHistory", 'Int'>
+  readonly managerName: Prisma.FieldRef<"VisitHistory", 'String'>
+  readonly reviewSmsSentAt: Prisma.FieldRef<"VisitHistory", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"VisitHistory", 'DateTime'>
+  readonly updatedAt: Prisma.FieldRef<"VisitHistory", 'DateTime'>
 }
     
 
@@ -1399,6 +2067,63 @@ export type VisitHistoryDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.
    * Limit how many VisitHistories to delete.
    */
   limit?: number
+}
+
+/**
+ * VisitHistory.catalogServiceType
+ */
+export type VisitHistory$catalogServiceTypeArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ServiceType
+   */
+  select?: Prisma.ServiceTypeSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ServiceType
+   */
+  omit?: Prisma.ServiceTypeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ServiceTypeInclude<ExtArgs> | null
+  where?: Prisma.ServiceTypeWhereInput
+}
+
+/**
+ * VisitHistory.pendingReviewSms
+ */
+export type VisitHistory$pendingReviewSmsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PendingReviewSms
+   */
+  select?: Prisma.PendingReviewSmsSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PendingReviewSms
+   */
+  omit?: Prisma.PendingReviewSmsOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PendingReviewSmsInclude<ExtArgs> | null
+  where?: Prisma.PendingReviewSmsWhereInput
+}
+
+/**
+ * VisitHistory.siteLead
+ */
+export type VisitHistory$siteLeadArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SiteLead
+   */
+  select?: Prisma.SiteLeadSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SiteLead
+   */
+  omit?: Prisma.SiteLeadOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SiteLeadInclude<ExtArgs> | null
+  where?: Prisma.SiteLeadWhereInput
 }
 
 /**

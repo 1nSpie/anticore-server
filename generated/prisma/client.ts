@@ -113,10 +113,25 @@ export type SmsCode = Prisma.SmsCodeModel
  */
 export type UserDocument = Prisma.UserDocumentModel
 /**
+ * Model ServiceType
+ * 
+ */
+export type ServiceType = Prisma.ServiceTypeModel
+/**
+ * Model SiteLead
+ * 
+ */
+export type SiteLead = Prisma.SiteLeadModel
+/**
  * Model VisitHistory
  * 
  */
 export type VisitHistory = Prisma.VisitHistoryModel
+/**
+ * Model PendingReviewSms
+ * 
+ */
+export type PendingReviewSms = Prisma.PendingReviewSmsModel
 /**
  * Model PaymentHistory
  * 
@@ -132,3 +147,23 @@ export type NotificationSettings = Prisma.NotificationSettingsModel
  * 
  */
 export type AdminAuditLog = Prisma.AdminAuditLogModel
+/**
+ * Model CrmAdmin
+ * 
+ */
+export type CrmAdmin = Prisma.CrmAdminModel
+/**
+ * Model SmsTemplate
+ * 
+ */
+export type SmsTemplate = Prisma.SmsTemplateModel
+/**
+ * Model CompanySettings
+ * 
+ */
+export type CompanySettings = Prisma.CompanySettingsModel
+/**
+ * Model SmsLog
+ * 
+ */
+export type SmsLog = Prisma.SmsLogModel

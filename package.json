@@ -22,7 +22,8 @@
     "import-cars": "ts-node prisma/import-cars.ts",
     "seed-blog": "ts-node prisma/blog-seed.ts",
     "seed-works": "ts-node prisma/works-seed.ts",
-    "seed-segments": "ts-node prisma/segment-seed.ts"
+    "seed-segments": "ts-node prisma/segment-seed.ts",
+    "birthday-sms": "ts-node --transpile-only -r tsconfig-paths/register prisma/run-birthday-sms.ts"
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"
@@ -33,6 +34,7 @@
     "@nestjs/core": "^11.0.1",
     "@nestjs/mapped-types": "*",
     "@nestjs/platform-express": "^11.1.3",
+    "@nestjs/schedule": "^6.0.0",
     "@nestjs/serve-static": "^5.0.3",
     "@nestjs/swagger": "^11.2.5",
     "@nestjs/throttler": "^6.5.0",

@@ -22,3 +22,31 @@ export const SmsPurpose = {
 } as const
 
 export type SmsPurpose = (typeof SmsPurpose)[keyof typeof SmsPurpose]
+
+
+export const SiteLeadStatus = {
+  NEW: 'NEW',
+  IN_PROGRESS: 'IN_PROGRESS',
+  SCHEDULED: 'SCHEDULED',
+  REJECTED: 'REJECTED',
+  COMPLETED: 'COMPLETED'
+} as const
+
+export type SiteLeadStatus = (typeof SiteLeadStatus)[keyof typeof SiteLeadStatus]
+
+
+export const SiteLeadKind = {
+  CALLBACK: 'CALLBACK',
+  PRICE_REQUEST: 'PRICE_REQUEST'
+} as const
+
+export type SiteLeadKind = (typeof SiteLeadKind)[keyof typeof SiteLeadKind]
+
+
+export const SmsTemplateKind = {
+  APPOINTMENT: 'APPOINTMENT',
+  REVIEW: 'REVIEW',
+  BIRTHDAY: 'BIRTHDAY'
+} as const
+
+export type SmsTemplateKind = (typeof SmsTemplateKind)[keyof typeof SmsTemplateKind]

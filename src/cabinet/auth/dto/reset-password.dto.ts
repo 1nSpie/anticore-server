@@ -1,12 +1,13 @@
-import { IsString, Length, Matches, MinLength } from "class-validator";
+import { IsString, MinLength } from "class-validator";
+import { IsPhoneRu } from "../../../common/phone.validator";
 
 export class ResetPasswordDto {
   @IsString()
-  @Matches(/^[\d\s+()-]+$/)
+  @IsPhoneRu()
   phone!: string;
 
   @IsString()
-  @Length(4, 8)
+  @MinLength(4)
   code!: string;
 
   @IsString()

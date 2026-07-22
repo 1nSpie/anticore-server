@@ -174,7 +174,11 @@ export class CabinetAdminService {
     return this.getUser(adminSubject, id);
   }
 
-  async broadcastSms(adminSubject: string, dto: BroadcastSmsDto) {
+  async broadcastSms(
+    adminSubject: string,
+    dto: BroadcastSmsDto,
+    clientIp?: string,
+  ) {
     const respectOptOut = dto.respectSmsOptOut !== false;
     const onlyActive = dto.onlyActive !== false;
     const message = dto.message.trim();
@@ -222,7 +226,7 @@ export class CabinetAdminService {
         }
       }
       try {
-        await this.sms.sendCode(user.phone, message);
+        await this.sms.sendCode(user.phone, message, { clientIp });
         sent++;
       } catch (e) {
         failed++;

@@ -1,8 +1,9 @@
-import { IsString, MinLength, Matches } from "class-validator";
+import { IsString, MinLength } from "class-validator";
+import { IsPhoneRu } from "../../../common/phone.validator";
 
 export class CabinetLoginDto {
   @IsString()
-  @Matches(/^[\d\s+()-]+$/)
+  @IsPhoneRu()
   phone!: string;
 
   @IsString()

@@ -174,6 +174,12 @@ model CabinetUser {
   carId               Int?
   /** Свободный текст, если авто нет в каталоге */
   customCar     String?   @db.VarChar(200)
+  /** VIN (17 символов) — для CRM */
+  vin             String?   @db.VarChar(17)
+  /** Заметки администратора (CRM) */
+  adminComment    String?   @db.Text
+  /** Ссылка на фотоотчёт (Яндекс.Диск), одна на клиента */
+  photoReportUrl  String?   @db.VarChar(2000)
   phoneVerified Boolean   @default(false)
   blocked       Boolean   @default(false)
   blockedAt     DateTime?
@@ -232,17 +238,87 @@ model UserDocument {
   @@map("user_documents")
 }
 
-model VisitHistory {
-  id          Int      @id @default(autoincrement())
-  userId      Int
-  visitDate   DateTime @db.Date
-  serviceType String
-  diskLink    String?
-  createdAt   DateTime @default(now())
+model ServiceType {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  sortOrder Int      @default(0)
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
 
-  user CabinetUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+  visits VisitHistory[]
+
+  @@map("service_types")
+}
+
+enum SiteLeadStatus {
+  NEW
+  IN_PROGRESS
+  SCHEDULED
+  REJECTED
+  COMPLETED
+}
+
+enum SiteLeadKind {
+  CALLBACK
+  PRICE_REQUEST
+}
+
+model SiteLead {
+  id                  Int            @id @default(autoincrement())
+  kind                SiteLeadKind   @default(CALLBACK)
+  name                String
+  phone               String
+  message             String?        @db.Text
+  carDescription      String?        @db.VarChar(500)
+  communicationMethod String?        @db.VarChar(50)
+  pageUrl             String?        @db.VarChar(500)
+  status              SiteLeadStatus @default(NEW)
+  adminNote           String?        @db.Text
+  diskLink            String?
+  visitId             Int?           @unique
+  processedAt         DateTime?
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
+
+  visit VisitHistory? @relation(fields: [visitId], references: [id], onDelete: SetNull)
+
+  @@index([status, createdAt])
+  @@map("site_leads")
+}
+
+model VisitHistory {
+  id              Int       @id @default(autoincrement())
+  userId          Int
+  visitDate       DateTime  @db.Date
+  serviceType     String
+  diskLink        String?
+  startsAt        DateTime?
+  endsAt          DateTime?
+  priceRub        Int?
+  serviceTypeId   Int?
+  /** Имя менеджера (только админка, не для ЛК) */
+  managerName     String?   @db.VarChar(100)
+  reviewSmsSentAt DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  user               CabinetUser       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  catalogServiceType ServiceType?      @relation(fields: [serviceTypeId], references: [id], onDelete: SetNull)
+  pendingReviewSms   PendingReviewSms?
+  siteLead           SiteLead?
 
   @@map("visit_history")
+}
+
+model PendingReviewSms {
+  id      Int       @id @default(autoincrement())
+  visitId Int       @unique
+  sendAt  DateTime
+  sentAt  DateTime?
+  visit   VisitHistory @relation(fields: [visitId], references: [id], onDelete: Cascade)
+
+  @@index([sendAt, sentAt])
+  @@map("pending_review_sms")
 }
 
 model PaymentHistory {
@@ -278,4 +354,49 @@ model AdminAuditLog {
   createdAt      DateTime @default(now())
 
   @@map("admin_audit_logs")
+}
+
+// --- CRM (внутренняя система автосервиса) ---
+
+model CrmAdmin {
+  id           Int      @id @default(autoincrement())
+  phone        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("crm_admins")
+}
+
+enum SmsTemplateKind {
+  APPOINTMENT
+  REVIEW
+  BIRTHDAY
+}
+
+model SmsTemplate {
+  kind      SmsTemplateKind @id
+  body      String          @db.Text
+  updatedAt DateTime        @updatedAt
+
+  @@map("sms_templates")
+}
+
+model CompanySettings {
+  id          Int    @id @default(1)
+  companyName String @default("АванКор")
+
+  @@map("company_settings")
+}
+
+model SmsLog {
+  id      Int      @id @default(autoincrement())
+  phone   String
+  kind    String
+  message String   @db.Text
+  sentAt  DateTime @default(now())
+  meta    Json?
+
+  @@index([phone, kind, sentAt])
+  @@map("sms_logs")
 }

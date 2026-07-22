@@ -1,7 +1,12 @@
-import { IsString, Matches } from "class-validator";
+import { IsString } from "class-validator";
+import { IsPhoneRu } from "../../../common/phone.validator";
 
 export class ForgotPasswordDto {
   @IsString()
-  @Matches(/^[\d\s+()-]+$/)
+  @IsPhoneRu()
   phone!: string;
+
+  /** Токен Yandex SmartCaptcha */
+  @IsString()
+  captchaToken!: string;
 }

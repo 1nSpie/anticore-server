@@ -58,6 +58,11 @@ export class CabinetUserController {
     return this.cabinetUser.listVisits(req.cabinetUserId!);
   }
 
+  @Get("leads")
+  leads(@Req() req: Request) {
+    return this.cabinetUser.listLeads(req.cabinetUserId!);
+  }
+
   @Get("payments")
   payments(@Req() req: Request) {
     return this.cabinetUser.listPayments(req.cabinetUserId!);

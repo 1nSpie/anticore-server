@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from "@nestjs/common";
 import * as bcrypt from "bcrypt";
-import { Prisma } from "../../../generated/prisma/client";
+import { Prisma, SiteLeadStatus } from "../../../generated/prisma/client";
 import { PrismaService } from "../../prisma/prisma.service";
 import { CabinetAuthService } from "../auth/cabinet-auth.service";
 import { UpdateProfileDto } from "./dto/update-profile.dto";
@@ -209,5 +209,36 @@ export class CabinetUserService {
       where: { userId },
       orderBy: { paidAt: "desc" },
     });
+  }
+
+  async listLeads(userId: number) {
+    const user = await this.prisma.cabinetUser.findUnique({
+      where: { id: userId },
+      select: { phone: true },
+    });
+    if (!user) {
+      throw new NotFoundException("Пользователь не найден");
+    }
+
+    const leads = await this.prisma.siteLead.findMany({
+      where: { phone: user.phone },
+      orderBy: { createdAt: "desc" },
+      select: {
+        id: true,
+        kind: true,
+        status: true,
+        message: true,
+        carDescription: true,
+        createdAt: true,
+        processedAt: true,
+        diskLink: true,
+      },
+    });
+
+    return leads.map((lead) => ({
+      ...lead,
+      diskLink:
+        lead.status === SiteLeadStatus.COMPLETED ? lead.diskLink : null,
+    }));
   }
 }

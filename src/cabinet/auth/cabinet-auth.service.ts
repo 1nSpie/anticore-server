@@ -9,6 +9,7 @@ import * as bcrypt from "bcrypt";
 import * as jwt from "jsonwebtoken";
 import { PrismaService } from "../../prisma/prisma.service";
 import { SmsService } from "../sms/sms.service";
+import { SmartCaptchaService } from "../common/smartcaptcha.service";
 import { normalizePhoneRu } from "../common/phone.util";
 import {
   generateOpaqueToken,
@@ -48,11 +49,24 @@ function randomSmsCode(): string {
   return String(Math.floor(100000 + Math.random() * 900000));
 }
 
+/** Минимальный интервал между повторными SMS-кодами восстановления пароля */
+const PASSWORD_RESET_SMS_COOLDOWN_MS = 3 * 60 * 1000;
+
+function formatCooldownWait(msLeft: number): string {
+  const sec = Math.max(1, Math.ceil(msLeft / 1000));
+  const min = Math.floor(sec / 60);
+  const rem = sec % 60;
+  if (min <= 0) return `${sec} сек.`;
+  if (rem === 0) return `${min} мин.`;
+  return `${min} мин. ${rem} сек.`;
+}
+
 @Injectable()
 export class CabinetAuthService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly sms: SmsService,
+    private readonly smartCaptcha: SmartCaptchaService,
   ) {}
 
   getRefreshCookieName(): string {
@@ -61,6 +75,8 @@ export class CabinetAuthService {
 
   /** Регистрация: создаёт/обновляет ожидание и шлёт SMS с кодом. */
   async register(dto: RegisterDto, clientIp?: string) {
+    await this.smartCaptcha.verifyOrThrow(dto.captchaToken, clientIp);
+
     if (dto.password !== dto.passwordConfirm) {
       throw new BadRequestException("Пароли не совпадают");
     }
@@ -102,7 +118,9 @@ export class CabinetAuthService {
     });
 
     return {
-      message: "Код подтверждения отправлен по SMS",
+      message: existing
+        ? "Код отправлен. После подтверждения откроется личный кабинет с данными, которые уже есть в сервисе."
+        : "Код подтверждения отправлен по SMS",
       phone,
     };
   }
@@ -229,12 +247,29 @@ export class CabinetAuthService {
   }
 
   async forgotPassword(dto: ForgotPasswordDto, clientIp?: string) {
+    await this.smartCaptcha.verifyOrThrow(dto.captchaToken, clientIp);
+
     const phone = normalizePhoneRu(dto.phone);
     const user = await this.prisma.cabinetUser.findUnique({ where: { phone } });
     if (!user?.phoneVerified) {
       // Не раскрываем наличие номера
       return { message: "Если номер зарегистрирован, код отправлен по SMS" };
     }
+
+    const lastCode = await this.prisma.smsCode.findFirst({
+      where: { phone, purpose: SmsPurpose.PASSWORD_RESET },
+      orderBy: { createdAt: "desc" },
+    });
+    if (lastCode) {
+      const elapsed = Date.now() - lastCode.createdAt.getTime();
+      if (elapsed < PASSWORD_RESET_SMS_COOLDOWN_MS) {
+        const wait = PASSWORD_RESET_SMS_COOLDOWN_MS - elapsed;
+        throw new BadRequestException(
+          `Повторный код можно запросить через ${formatCooldownWait(wait)}`,
+        );
+      }
+    }
+
     const code = randomSmsCode();
     const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
     await this.prisma.smsCode.updateMany({
@@ -251,7 +286,10 @@ export class CabinetAuthService {
     await this.sms.sendCode(phone, `Код восстановления пароля Anticore: ${code}`, {
       clientIp,
     });
-    return { message: "Если номер зарегистрирован, код отправлен по SMS" };
+    return {
+      message: "Если номер зарегистрирован, код отправлен по SMS",
+      retryAfterSec: Math.floor(PASSWORD_RESET_SMS_COOLDOWN_MS / 1000),
+    };
   }
 
   async resetPassword(dto: ResetPasswordDto) {

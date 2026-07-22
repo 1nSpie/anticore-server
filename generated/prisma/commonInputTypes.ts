@@ -287,6 +287,40 @@ export type EnumSmsPurposeWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumSmsPurposeFilter<$PrismaModel>
 }
 
+export type EnumSiteLeadKindFilter<$PrismaModel = never> = {
+  equals?: $Enums.SiteLeadKind | Prisma.EnumSiteLeadKindFieldRefInput<$PrismaModel>
+  in?: $Enums.SiteLeadKind[] | Prisma.ListEnumSiteLeadKindFieldRefInput<$PrismaModel>
+  notIn?: $Enums.SiteLeadKind[] | Prisma.ListEnumSiteLeadKindFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumSiteLeadKindFilter<$PrismaModel> | $Enums.SiteLeadKind
+}
+
+export type EnumSiteLeadStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.SiteLeadStatus | Prisma.EnumSiteLeadStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.SiteLeadStatus[] | Prisma.ListEnumSiteLeadStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.SiteLeadStatus[] | Prisma.ListEnumSiteLeadStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumSiteLeadStatusFilter<$PrismaModel> | $Enums.SiteLeadStatus
+}
+
+export type EnumSiteLeadKindWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.SiteLeadKind | Prisma.EnumSiteLeadKindFieldRefInput<$PrismaModel>
+  in?: $Enums.SiteLeadKind[] | Prisma.ListEnumSiteLeadKindFieldRefInput<$PrismaModel>
+  notIn?: $Enums.SiteLeadKind[] | Prisma.ListEnumSiteLeadKindFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumSiteLeadKindWithAggregatesFilter<$PrismaModel> | $Enums.SiteLeadKind
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumSiteLeadKindFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumSiteLeadKindFilter<$PrismaModel>
+}
+
+export type EnumSiteLeadStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.SiteLeadStatus | Prisma.EnumSiteLeadStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.SiteLeadStatus[] | Prisma.ListEnumSiteLeadStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.SiteLeadStatus[] | Prisma.ListEnumSiteLeadStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumSiteLeadStatusWithAggregatesFilter<$PrismaModel> | $Enums.SiteLeadStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumSiteLeadStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumSiteLeadStatusFilter<$PrismaModel>
+}
+
 export type JsonNullableFilter<$PrismaModel = never> =
 | Prisma.PatchUndefined<
     Prisma.Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
@@ -336,6 +370,23 @@ export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
   _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
   _min?: Prisma.NestedJsonNullableFilter<$PrismaModel>
   _max?: Prisma.NestedJsonNullableFilter<$PrismaModel>
+}
+
+export type EnumSmsTemplateKindFilter<$PrismaModel = never> = {
+  equals?: $Enums.SmsTemplateKind | Prisma.EnumSmsTemplateKindFieldRefInput<$PrismaModel>
+  in?: $Enums.SmsTemplateKind[] | Prisma.ListEnumSmsTemplateKindFieldRefInput<$PrismaModel>
+  notIn?: $Enums.SmsTemplateKind[] | Prisma.ListEnumSmsTemplateKindFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumSmsTemplateKindFilter<$PrismaModel> | $Enums.SmsTemplateKind
+}
+
+export type EnumSmsTemplateKindWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.SmsTemplateKind | Prisma.EnumSmsTemplateKindFieldRefInput<$PrismaModel>
+  in?: $Enums.SmsTemplateKind[] | Prisma.ListEnumSmsTemplateKindFieldRefInput<$PrismaModel>
+  notIn?: $Enums.SmsTemplateKind[] | Prisma.ListEnumSmsTemplateKindFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumSmsTemplateKindWithAggregatesFilter<$PrismaModel> | $Enums.SmsTemplateKind
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumSmsTemplateKindFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumSmsTemplateKindFilter<$PrismaModel>
 }
 
 export type NestedIntFilter<$PrismaModel = never> = {
@@ -597,6 +648,40 @@ export type NestedEnumSmsPurposeWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumSmsPurposeFilter<$PrismaModel>
 }
 
+export type NestedEnumSiteLeadKindFilter<$PrismaModel = never> = {
+  equals?: $Enums.SiteLeadKind | Prisma.EnumSiteLeadKindFieldRefInput<$PrismaModel>
+  in?: $Enums.SiteLeadKind[] | Prisma.ListEnumSiteLeadKindFieldRefInput<$PrismaModel>
+  notIn?: $Enums.SiteLeadKind[] | Prisma.ListEnumSiteLeadKindFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumSiteLeadKindFilter<$PrismaModel> | $Enums.SiteLeadKind
+}
+
+export type NestedEnumSiteLeadStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.SiteLeadStatus | Prisma.EnumSiteLeadStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.SiteLeadStatus[] | Prisma.ListEnumSiteLeadStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.SiteLeadStatus[] | Prisma.ListEnumSiteLeadStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumSiteLeadStatusFilter<$PrismaModel> | $Enums.SiteLeadStatus
+}
+
+export type NestedEnumSiteLeadKindWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.SiteLeadKind | Prisma.EnumSiteLeadKindFieldRefInput<$PrismaModel>
+  in?: $Enums.SiteLeadKind[] | Prisma.ListEnumSiteLeadKindFieldRefInput<$PrismaModel>
+  notIn?: $Enums.SiteLeadKind[] | Prisma.ListEnumSiteLeadKindFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumSiteLeadKindWithAggregatesFilter<$PrismaModel> | $Enums.SiteLeadKind
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumSiteLeadKindFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumSiteLeadKindFilter<$PrismaModel>
+}
+
+export type NestedEnumSiteLeadStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.SiteLeadStatus | Prisma.EnumSiteLeadStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.SiteLeadStatus[] | Prisma.ListEnumSiteLeadStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.SiteLeadStatus[] | Prisma.ListEnumSiteLeadStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumSiteLeadStatusWithAggregatesFilter<$PrismaModel> | $Enums.SiteLeadStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumSiteLeadStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumSiteLeadStatusFilter<$PrismaModel>
+}
+
 export type NestedJsonNullableFilter<$PrismaModel = never> =
 | Prisma.PatchUndefined<
     Prisma.Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
@@ -619,6 +704,23 @@ export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
   gt?: runtime.InputJsonValue | Prisma.JsonFieldRefInput<$PrismaModel>
   gte?: runtime.InputJsonValue | Prisma.JsonFieldRefInput<$PrismaModel>
   not?: runtime.InputJsonValue | Prisma.JsonFieldRefInput<$PrismaModel> | Prisma.JsonNullValueFilter
+}
+
+export type NestedEnumSmsTemplateKindFilter<$PrismaModel = never> = {
+  equals?: $Enums.SmsTemplateKind | Prisma.EnumSmsTemplateKindFieldRefInput<$PrismaModel>
+  in?: $Enums.SmsTemplateKind[] | Prisma.ListEnumSmsTemplateKindFieldRefInput<$PrismaModel>
+  notIn?: $Enums.SmsTemplateKind[] | Prisma.ListEnumSmsTemplateKindFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumSmsTemplateKindFilter<$PrismaModel> | $Enums.SmsTemplateKind
+}
+
+export type NestedEnumSmsTemplateKindWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.SmsTemplateKind | Prisma.EnumSmsTemplateKindFieldRefInput<$PrismaModel>
+  in?: $Enums.SmsTemplateKind[] | Prisma.ListEnumSmsTemplateKindFieldRefInput<$PrismaModel>
+  notIn?: $Enums.SmsTemplateKind[] | Prisma.ListEnumSmsTemplateKindFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumSmsTemplateKindWithAggregatesFilter<$PrismaModel> | $Enums.SmsTemplateKind
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumSmsTemplateKindFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumSmsTemplateKindFilter<$PrismaModel>
 }
 
 
