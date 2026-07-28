@@ -27,6 +27,7 @@ export type SmsPurpose = (typeof SmsPurpose)[keyof typeof SmsPurpose]
 export const SiteLeadStatus = {
   NEW: 'NEW',
   IN_PROGRESS: 'IN_PROGRESS',
+  NEEDS_CLARIFICATION: 'NEEDS_CLARIFICATION',
   SCHEDULED: 'SCHEDULED',
   REJECTED: 'REJECTED',
   COMPLETED: 'COMPLETED'

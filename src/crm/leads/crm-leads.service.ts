@@ -25,6 +25,24 @@ function isTerminalStatus(status: SiteLeadStatus): boolean {
   );
 }
 
+function assertAdminNoteOnLeaveNew(
+  lead: { status: SiteLeadStatus; adminNote: string | null },
+  dto: UpdateSiteLeadDto,
+): void {
+  const nextStatus = dto.status ?? lead.status;
+  if (
+    lead.status === SiteLeadStatus.NEW &&
+    nextStatus !== SiteLeadStatus.NEW
+  ) {
+    const note = (dto.adminNote ?? lead.adminNote)?.trim();
+    if (!note) {
+      throw new BadRequestException(
+        "Укажите комментарий администратора при смене статуса с «Новая»",
+      );
+    }
+  }
+}
+
 @Injectable()
 export class CrmLeadsService {
   constructor(private readonly prisma: PrismaService) {}
@@ -74,6 +92,8 @@ export class CrmLeadsService {
   async update(id: number, dto: UpdateSiteLeadDto) {
     const lead = await this.get(id);
 
+    assertAdminNoteOnLeaveNew(lead, dto);
+
     if (dto.status === SiteLeadStatus.COMPLETED) {
       const link = (dto.diskLink ?? lead.diskLink)?.trim();
       if (!link) {
@@ -90,6 +110,9 @@ export class CrmLeadsService {
         processedAt: isTerminalStatus(dto.status) ? new Date() : undefined,
       }),
       ...(dto.adminNote !== undefined && { adminNote: dto.adminNote }),
+      ...(dto.followUpAt !== undefined && {
+        followUpAt: dto.followUpAt ? new Date(dto.followUpAt) : null,
+      }),
       ...(dto.visitId !== undefined && { visitId: dto.visitId }),
       ...(diskLink !== undefined && { diskLink }),
     };
@@ -154,7 +177,10 @@ export class CrmLeadsService {
   }
 
   async linkToVisit(leadId: number, visitId: number) {
-    await this.get(leadId);
+    const lead = await this.get(leadId);
+    assertAdminNoteOnLeaveNew(lead, {
+      status: SiteLeadStatus.SCHEDULED,
+    });
     return this.prisma.siteLead.update({
       where: { id: leadId },
       data: {
@@ -180,5 +206,27 @@ export class CrmLeadsService {
         diskLink: true,
       },
     });
+  }
+
+  /** Заявки с наступившей датой повторной связи → «На уточнении». */
+  async processDueFollowUps(): Promise<number> {
+    const now = new Date();
+    const result = await this.prisma.siteLead.updateMany({
+      where: {
+        followUpAt: { lte: now },
+        status: {
+          notIn: [
+            SiteLeadStatus.REJECTED,
+            SiteLeadStatus.COMPLETED,
+            SiteLeadStatus.SCHEDULED,
+          ],
+        },
+      },
+      data: {
+        status: SiteLeadStatus.NEEDS_CLARIFICATION,
+        followUpAt: null,
+      },
+    });
+    return result.count;
   }
 }

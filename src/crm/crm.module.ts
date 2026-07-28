@@ -9,6 +9,7 @@ import { CrmClientsController } from "./clients/crm-clients.controller";
 import { CrmClientsService } from "./clients/crm-clients.service";
 import { CrmLeadsController } from "./leads/crm-leads.controller";
 import { CrmLeadsService } from "./leads/crm-leads.service";
+import { CrmLeadsScheduler } from "./leads/crm-leads.scheduler";
 import { CrmSettingsController } from "./settings/crm-settings.controller";
 import { CrmSettingsService } from "./settings/crm-settings.service";
 import { CrmSmsScheduler } from "./sms/crm-sms.scheduler";
@@ -32,6 +33,7 @@ import { CrmSmsService } from "./sms/crm-sms.service";
     CrmClientsService,
     CrmAppointmentsService,
     CrmLeadsService,
+    CrmLeadsScheduler,
     CrmSettingsService,
     CrmSmsService,
     CrmSmsScheduler,

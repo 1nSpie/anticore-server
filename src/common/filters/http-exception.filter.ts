@@ -89,10 +89,11 @@ export class AllExceptionsFilter implements ExceptionFilter {
           : (errorResponse as { message: string }).message || 'Http Exception';
       error = exception.name;
     } else if (exception instanceof Prisma.PrismaClientKnownRequestError) {
+      const prismaErr = exception as Prisma.PrismaClientKnownRequestError;
       status = HttpStatus.BAD_REQUEST;
-      error = 'Database Error';
+      error = `Database Error (${prismaErr.code})`;
 
-      switch ((exception as Prisma.PrismaClientKnownRequestError).code) {
+      switch (prismaErr.code) {
         case 'P2002':
           message = 'Запись с такими данными уже существует';
           break;
@@ -103,9 +104,16 @@ export class AllExceptionsFilter implements ExceptionFilter {
         case 'P2003':
           message = 'Нарушение внешнего ключа';
           break;
+        case 'P2022':
+          message = `В БД нет колонки: ${String(prismaErr.meta?.column ?? 'unknown')}`;
+          break;
         default:
-          message = 'Ошибка базы данных';
+          message = `Ошибка базы данных (${prismaErr.code})`;
       }
+      this.logger.error(
+        `Prisma ${prismaErr.code}: ${prismaErr.message}`,
+        JSON.stringify(prismaErr.meta ?? {}),
+      );
     } else if (exception instanceof Error) {
       status = HttpStatus.INTERNAL_SERVER_ERROR;
       message = exception.message;

@@ -253,6 +253,7 @@ model ServiceType {
 enum SiteLeadStatus {
   NEW
   IN_PROGRESS
+  NEEDS_CLARIFICATION
   SCHEDULED
   REJECTED
   COMPLETED
@@ -275,6 +276,7 @@ model SiteLead {
   status              SiteLeadStatus @default(NEW)
   adminNote           String?        @db.Text
   diskLink            String?
+  followUpAt          DateTime?
   visitId             Int?           @unique
   processedAt         DateTime?
   createdAt           DateTime       @default(now())

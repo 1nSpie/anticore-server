@@ -1,4 +1,5 @@
 import {
+  IsDateString,
   IsIn,
   IsInt,
   IsOptional,
@@ -12,6 +13,7 @@ import { IsPhoneRu } from "../../../common/phone.validator";
 const SITE_LEAD_STATUSES = [
   "NEW",
   "IN_PROGRESS",
+  "NEEDS_CLARIFICATION",
   "SCHEDULED",
   "REJECTED",
   "COMPLETED",
@@ -59,6 +61,10 @@ export class UpdateSiteLeadDto {
   @IsString()
   @MaxLength(5000)
   adminNote?: string | null;
+
+  @IsOptional()
+  @IsDateString()
+  followUpAt?: string | null;
 
   @IsOptional()
   @IsString()

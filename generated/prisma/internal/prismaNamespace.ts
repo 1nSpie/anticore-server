@@ -2618,6 +2618,7 @@ export const SiteLeadScalarFieldEnum = {
   status: 'status',
   adminNote: 'adminNote',
   diskLink: 'diskLink',
+  followUpAt: 'followUpAt',
   visitId: 'visitId',
   processedAt: 'processedAt',
   createdAt: 'createdAt',
