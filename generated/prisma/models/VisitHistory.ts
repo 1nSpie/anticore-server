@@ -50,6 +50,7 @@ export type VisitHistoryMinAggregateOutputType = {
   endsAt: Date | null
   priceRub: number | null
   serviceTypeId: number | null
+  location: $Enums.CrmLocation | null
   managerName: string | null
   reviewSmsSentAt: Date | null
   createdAt: Date | null
@@ -66,6 +67,7 @@ export type VisitHistoryMaxAggregateOutputType = {
   endsAt: Date | null
   priceRub: number | null
   serviceTypeId: number | null
+  location: $Enums.CrmLocation | null
   managerName: string | null
   reviewSmsSentAt: Date | null
   createdAt: Date | null
@@ -82,6 +84,7 @@ export type VisitHistoryCountAggregateOutputType = {
   endsAt: number
   priceRub: number
   serviceTypeId: number
+  location: number
   managerName: number
   reviewSmsSentAt: number
   createdAt: number
@@ -114,6 +117,7 @@ export type VisitHistoryMinAggregateInputType = {
   endsAt?: true
   priceRub?: true
   serviceTypeId?: true
+  location?: true
   managerName?: true
   reviewSmsSentAt?: true
   createdAt?: true
@@ -130,6 +134,7 @@ export type VisitHistoryMaxAggregateInputType = {
   endsAt?: true
   priceRub?: true
   serviceTypeId?: true
+  location?: true
   managerName?: true
   reviewSmsSentAt?: true
   createdAt?: true
@@ -146,6 +151,7 @@ export type VisitHistoryCountAggregateInputType = {
   endsAt?: true
   priceRub?: true
   serviceTypeId?: true
+  location?: true
   managerName?: true
   reviewSmsSentAt?: true
   createdAt?: true
@@ -249,6 +255,7 @@ export type VisitHistoryGroupByOutputType = {
   endsAt: Date | null
   priceRub: number | null
   serviceTypeId: number | null
+  location: $Enums.CrmLocation
   managerName: string | null
   reviewSmsSentAt: Date | null
   createdAt: Date
@@ -288,6 +295,7 @@ export type VisitHistoryWhereInput = {
   endsAt?: Prisma.DateTimeNullableFilter<"VisitHistory"> | Date | string | null
   priceRub?: Prisma.IntNullableFilter<"VisitHistory"> | number | null
   serviceTypeId?: Prisma.IntNullableFilter<"VisitHistory"> | number | null
+  location?: Prisma.EnumCrmLocationFilter<"VisitHistory"> | $Enums.CrmLocation
   managerName?: Prisma.StringNullableFilter<"VisitHistory"> | string | null
   reviewSmsSentAt?: Prisma.DateTimeNullableFilter<"VisitHistory"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"VisitHistory"> | Date | string
@@ -308,6 +316,7 @@ export type VisitHistoryOrderByWithRelationInput = {
   endsAt?: Prisma.SortOrderInput | Prisma.SortOrder
   priceRub?: Prisma.SortOrderInput | Prisma.SortOrder
   serviceTypeId?: Prisma.SortOrderInput | Prisma.SortOrder
+  location?: Prisma.SortOrder
   managerName?: Prisma.SortOrderInput | Prisma.SortOrder
   reviewSmsSentAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -331,6 +340,7 @@ export type VisitHistoryWhereUniqueInput = Prisma.AtLeast<{
   endsAt?: Prisma.DateTimeNullableFilter<"VisitHistory"> | Date | string | null
   priceRub?: Prisma.IntNullableFilter<"VisitHistory"> | number | null
   serviceTypeId?: Prisma.IntNullableFilter<"VisitHistory"> | number | null
+  location?: Prisma.EnumCrmLocationFilter<"VisitHistory"> | $Enums.CrmLocation
   managerName?: Prisma.StringNullableFilter<"VisitHistory"> | string | null
   reviewSmsSentAt?: Prisma.DateTimeNullableFilter<"VisitHistory"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"VisitHistory"> | Date | string
@@ -351,6 +361,7 @@ export type VisitHistoryOrderByWithAggregationInput = {
   endsAt?: Prisma.SortOrderInput | Prisma.SortOrder
   priceRub?: Prisma.SortOrderInput | Prisma.SortOrder
   serviceTypeId?: Prisma.SortOrderInput | Prisma.SortOrder
+  location?: Prisma.SortOrder
   managerName?: Prisma.SortOrderInput | Prisma.SortOrder
   reviewSmsSentAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -375,6 +386,7 @@ export type VisitHistoryScalarWhereWithAggregatesInput = {
   endsAt?: Prisma.DateTimeNullableWithAggregatesFilter<"VisitHistory"> | Date | string | null
   priceRub?: Prisma.IntNullableWithAggregatesFilter<"VisitHistory"> | number | null
   serviceTypeId?: Prisma.IntNullableWithAggregatesFilter<"VisitHistory"> | number | null
+  location?: Prisma.EnumCrmLocationWithAggregatesFilter<"VisitHistory"> | $Enums.CrmLocation
   managerName?: Prisma.StringNullableWithAggregatesFilter<"VisitHistory"> | string | null
   reviewSmsSentAt?: Prisma.DateTimeNullableWithAggregatesFilter<"VisitHistory"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"VisitHistory"> | Date | string
@@ -388,6 +400,7 @@ export type VisitHistoryCreateInput = {
   startsAt?: Date | string | null
   endsAt?: Date | string | null
   priceRub?: number | null
+  location?: $Enums.CrmLocation
   managerName?: string | null
   reviewSmsSentAt?: Date | string | null
   createdAt?: Date | string
@@ -408,6 +421,7 @@ export type VisitHistoryUncheckedCreateInput = {
   endsAt?: Date | string | null
   priceRub?: number | null
   serviceTypeId?: number | null
+  location?: $Enums.CrmLocation
   managerName?: string | null
   reviewSmsSentAt?: Date | string | null
   createdAt?: Date | string
@@ -423,6 +437,7 @@ export type VisitHistoryUpdateInput = {
   startsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   priceRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  location?: Prisma.EnumCrmLocationFieldUpdateOperationsInput | $Enums.CrmLocation
   managerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewSmsSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -443,6 +458,7 @@ export type VisitHistoryUncheckedUpdateInput = {
   endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   priceRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   serviceTypeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  location?: Prisma.EnumCrmLocationFieldUpdateOperationsInput | $Enums.CrmLocation
   managerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewSmsSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -461,6 +477,7 @@ export type VisitHistoryCreateManyInput = {
   endsAt?: Date | string | null
   priceRub?: number | null
   serviceTypeId?: number | null
+  location?: $Enums.CrmLocation
   managerName?: string | null
   reviewSmsSentAt?: Date | string | null
   createdAt?: Date | string
@@ -474,6 +491,7 @@ export type VisitHistoryUpdateManyMutationInput = {
   startsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   priceRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  location?: Prisma.EnumCrmLocationFieldUpdateOperationsInput | $Enums.CrmLocation
   managerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewSmsSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -490,6 +508,7 @@ export type VisitHistoryUncheckedUpdateManyInput = {
   endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   priceRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   serviceTypeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  location?: Prisma.EnumCrmLocationFieldUpdateOperationsInput | $Enums.CrmLocation
   managerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewSmsSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -521,6 +540,7 @@ export type VisitHistoryCountOrderByAggregateInput = {
   endsAt?: Prisma.SortOrder
   priceRub?: Prisma.SortOrder
   serviceTypeId?: Prisma.SortOrder
+  location?: Prisma.SortOrder
   managerName?: Prisma.SortOrder
   reviewSmsSentAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -544,6 +564,7 @@ export type VisitHistoryMaxOrderByAggregateInput = {
   endsAt?: Prisma.SortOrder
   priceRub?: Prisma.SortOrder
   serviceTypeId?: Prisma.SortOrder
+  location?: Prisma.SortOrder
   managerName?: Prisma.SortOrder
   reviewSmsSentAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -560,6 +581,7 @@ export type VisitHistoryMinOrderByAggregateInput = {
   endsAt?: Prisma.SortOrder
   priceRub?: Prisma.SortOrder
   serviceTypeId?: Prisma.SortOrder
+  location?: Prisma.SortOrder
   managerName?: Prisma.SortOrder
   reviewSmsSentAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -678,6 +700,10 @@ export type VisitHistoryUpdateOneWithoutSiteLeadNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.VisitHistoryUpdateToOneWithWhereWithoutSiteLeadInput, Prisma.VisitHistoryUpdateWithoutSiteLeadInput>, Prisma.VisitHistoryUncheckedUpdateWithoutSiteLeadInput>
 }
 
+export type EnumCrmLocationFieldUpdateOperationsInput = {
+  set?: $Enums.CrmLocation
+}
+
 export type VisitHistoryCreateNestedOneWithoutPendingReviewSmsInput = {
   create?: Prisma.XOR<Prisma.VisitHistoryCreateWithoutPendingReviewSmsInput, Prisma.VisitHistoryUncheckedCreateWithoutPendingReviewSmsInput>
   connectOrCreate?: Prisma.VisitHistoryCreateOrConnectWithoutPendingReviewSmsInput
@@ -699,6 +725,7 @@ export type VisitHistoryCreateWithoutUserInput = {
   startsAt?: Date | string | null
   endsAt?: Date | string | null
   priceRub?: number | null
+  location?: $Enums.CrmLocation
   managerName?: string | null
   reviewSmsSentAt?: Date | string | null
   createdAt?: Date | string
@@ -717,6 +744,7 @@ export type VisitHistoryUncheckedCreateWithoutUserInput = {
   endsAt?: Date | string | null
   priceRub?: number | null
   serviceTypeId?: number | null
+  location?: $Enums.CrmLocation
   managerName?: string | null
   reviewSmsSentAt?: Date | string | null
   createdAt?: Date | string
@@ -764,6 +792,7 @@ export type VisitHistoryScalarWhereInput = {
   endsAt?: Prisma.DateTimeNullableFilter<"VisitHistory"> | Date | string | null
   priceRub?: Prisma.IntNullableFilter<"VisitHistory"> | number | null
   serviceTypeId?: Prisma.IntNullableFilter<"VisitHistory"> | number | null
+  location?: Prisma.EnumCrmLocationFilter<"VisitHistory"> | $Enums.CrmLocation
   managerName?: Prisma.StringNullableFilter<"VisitHistory"> | string | null
   reviewSmsSentAt?: Prisma.DateTimeNullableFilter<"VisitHistory"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"VisitHistory"> | Date | string
@@ -777,6 +806,7 @@ export type VisitHistoryCreateWithoutCatalogServiceTypeInput = {
   startsAt?: Date | string | null
   endsAt?: Date | string | null
   priceRub?: number | null
+  location?: $Enums.CrmLocation
   managerName?: string | null
   reviewSmsSentAt?: Date | string | null
   createdAt?: Date | string
@@ -795,6 +825,7 @@ export type VisitHistoryUncheckedCreateWithoutCatalogServiceTypeInput = {
   startsAt?: Date | string | null
   endsAt?: Date | string | null
   priceRub?: number | null
+  location?: $Enums.CrmLocation
   managerName?: string | null
   reviewSmsSentAt?: Date | string | null
   createdAt?: Date | string
@@ -836,6 +867,7 @@ export type VisitHistoryCreateWithoutSiteLeadInput = {
   startsAt?: Date | string | null
   endsAt?: Date | string | null
   priceRub?: number | null
+  location?: $Enums.CrmLocation
   managerName?: string | null
   reviewSmsSentAt?: Date | string | null
   createdAt?: Date | string
@@ -855,6 +887,7 @@ export type VisitHistoryUncheckedCreateWithoutSiteLeadInput = {
   endsAt?: Date | string | null
   priceRub?: number | null
   serviceTypeId?: number | null
+  location?: $Enums.CrmLocation
   managerName?: string | null
   reviewSmsSentAt?: Date | string | null
   createdAt?: Date | string
@@ -885,6 +918,7 @@ export type VisitHistoryUpdateWithoutSiteLeadInput = {
   startsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   priceRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  location?: Prisma.EnumCrmLocationFieldUpdateOperationsInput | $Enums.CrmLocation
   managerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewSmsSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -904,6 +938,7 @@ export type VisitHistoryUncheckedUpdateWithoutSiteLeadInput = {
   endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   priceRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   serviceTypeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  location?: Prisma.EnumCrmLocationFieldUpdateOperationsInput | $Enums.CrmLocation
   managerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewSmsSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -918,6 +953,7 @@ export type VisitHistoryCreateWithoutPendingReviewSmsInput = {
   startsAt?: Date | string | null
   endsAt?: Date | string | null
   priceRub?: number | null
+  location?: $Enums.CrmLocation
   managerName?: string | null
   reviewSmsSentAt?: Date | string | null
   createdAt?: Date | string
@@ -937,6 +973,7 @@ export type VisitHistoryUncheckedCreateWithoutPendingReviewSmsInput = {
   endsAt?: Date | string | null
   priceRub?: number | null
   serviceTypeId?: number | null
+  location?: $Enums.CrmLocation
   managerName?: string | null
   reviewSmsSentAt?: Date | string | null
   createdAt?: Date | string
@@ -967,6 +1004,7 @@ export type VisitHistoryUpdateWithoutPendingReviewSmsInput = {
   startsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   priceRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  location?: Prisma.EnumCrmLocationFieldUpdateOperationsInput | $Enums.CrmLocation
   managerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewSmsSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -986,6 +1024,7 @@ export type VisitHistoryUncheckedUpdateWithoutPendingReviewSmsInput = {
   endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   priceRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   serviceTypeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  location?: Prisma.EnumCrmLocationFieldUpdateOperationsInput | $Enums.CrmLocation
   managerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewSmsSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1002,6 +1041,7 @@ export type VisitHistoryCreateManyUserInput = {
   endsAt?: Date | string | null
   priceRub?: number | null
   serviceTypeId?: number | null
+  location?: $Enums.CrmLocation
   managerName?: string | null
   reviewSmsSentAt?: Date | string | null
   createdAt?: Date | string
@@ -1015,6 +1055,7 @@ export type VisitHistoryUpdateWithoutUserInput = {
   startsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   priceRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  location?: Prisma.EnumCrmLocationFieldUpdateOperationsInput | $Enums.CrmLocation
   managerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewSmsSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1033,6 +1074,7 @@ export type VisitHistoryUncheckedUpdateWithoutUserInput = {
   endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   priceRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   serviceTypeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  location?: Prisma.EnumCrmLocationFieldUpdateOperationsInput | $Enums.CrmLocation
   managerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewSmsSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1050,6 +1092,7 @@ export type VisitHistoryUncheckedUpdateManyWithoutUserInput = {
   endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   priceRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   serviceTypeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  location?: Prisma.EnumCrmLocationFieldUpdateOperationsInput | $Enums.CrmLocation
   managerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewSmsSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1065,6 +1108,7 @@ export type VisitHistoryCreateManyCatalogServiceTypeInput = {
   startsAt?: Date | string | null
   endsAt?: Date | string | null
   priceRub?: number | null
+  location?: $Enums.CrmLocation
   managerName?: string | null
   reviewSmsSentAt?: Date | string | null
   createdAt?: Date | string
@@ -1078,6 +1122,7 @@ export type VisitHistoryUpdateWithoutCatalogServiceTypeInput = {
   startsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   priceRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  location?: Prisma.EnumCrmLocationFieldUpdateOperationsInput | $Enums.CrmLocation
   managerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewSmsSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1096,6 +1141,7 @@ export type VisitHistoryUncheckedUpdateWithoutCatalogServiceTypeInput = {
   startsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   priceRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  location?: Prisma.EnumCrmLocationFieldUpdateOperationsInput | $Enums.CrmLocation
   managerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewSmsSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1113,6 +1159,7 @@ export type VisitHistoryUncheckedUpdateManyWithoutCatalogServiceTypeInput = {
   startsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   priceRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  location?: Prisma.EnumCrmLocationFieldUpdateOperationsInput | $Enums.CrmLocation
   managerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewSmsSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1131,6 +1178,7 @@ export type VisitHistorySelect<ExtArgs extends runtime.Types.Extensions.Internal
   endsAt?: boolean
   priceRub?: boolean
   serviceTypeId?: boolean
+  location?: boolean
   managerName?: boolean
   reviewSmsSentAt?: boolean
   createdAt?: boolean
@@ -1151,6 +1199,7 @@ export type VisitHistorySelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   endsAt?: boolean
   priceRub?: boolean
   serviceTypeId?: boolean
+  location?: boolean
   managerName?: boolean
   reviewSmsSentAt?: boolean
   createdAt?: boolean
@@ -1169,6 +1218,7 @@ export type VisitHistorySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   endsAt?: boolean
   priceRub?: boolean
   serviceTypeId?: boolean
+  location?: boolean
   managerName?: boolean
   reviewSmsSentAt?: boolean
   createdAt?: boolean
@@ -1187,13 +1237,14 @@ export type VisitHistorySelectScalar = {
   endsAt?: boolean
   priceRub?: boolean
   serviceTypeId?: boolean
+  location?: boolean
   managerName?: boolean
   reviewSmsSentAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type VisitHistoryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "visitDate" | "serviceType" | "diskLink" | "startsAt" | "endsAt" | "priceRub" | "serviceTypeId" | "managerName" | "reviewSmsSentAt" | "createdAt" | "updatedAt", ExtArgs["result"]["visitHistory"]>
+export type VisitHistoryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "visitDate" | "serviceType" | "diskLink" | "startsAt" | "endsAt" | "priceRub" | "serviceTypeId" | "location" | "managerName" | "reviewSmsSentAt" | "createdAt" | "updatedAt", ExtArgs["result"]["visitHistory"]>
 export type VisitHistoryInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.CabinetUserDefaultArgs<ExtArgs>
   catalogServiceType?: boolean | Prisma.VisitHistory$catalogServiceTypeArgs<ExtArgs>
@@ -1227,6 +1278,10 @@ export type $VisitHistoryPayload<ExtArgs extends runtime.Types.Extensions.Intern
     endsAt: Date | null
     priceRub: number | null
     serviceTypeId: number | null
+    /**
+     * * Филиал / площадка записи
+     */
+    location: $Enums.CrmLocation
     /**
      * * Имя менеджера (только админка, не для ЛК)
      */
@@ -1670,6 +1725,7 @@ export interface VisitHistoryFieldRefs {
   readonly endsAt: Prisma.FieldRef<"VisitHistory", 'DateTime'>
   readonly priceRub: Prisma.FieldRef<"VisitHistory", 'Int'>
   readonly serviceTypeId: Prisma.FieldRef<"VisitHistory", 'Int'>
+  readonly location: Prisma.FieldRef<"VisitHistory", 'CrmLocation'>
   readonly managerName: Prisma.FieldRef<"VisitHistory", 'String'>
   readonly reviewSmsSentAt: Prisma.FieldRef<"VisitHistory", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"VisitHistory", 'DateTime'>

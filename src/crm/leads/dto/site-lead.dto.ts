@@ -6,9 +6,11 @@ import {
   IsString,
   MaxLength,
   MinLength,
+  ValidateIf,
 } from "class-validator";
 import { Type } from "class-transformer";
 import { IsPhoneRu } from "../../../common/phone.validator";
+import { CRM_LOCATIONS } from "../../common/crm-location";
 
 const SITE_LEAD_STATUSES = [
   "NEW",
@@ -65,6 +67,11 @@ export class UpdateSiteLeadDto {
   @IsOptional()
   @IsDateString()
   followUpAt?: string | null;
+
+  @IsOptional()
+  @ValidateIf((_, v) => v !== null)
+  @IsIn([...CRM_LOCATIONS])
+  location?: (typeof CRM_LOCATIONS)[number] | null;
 
   @IsOptional()
   @IsString()

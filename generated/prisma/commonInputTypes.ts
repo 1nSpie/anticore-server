@@ -301,6 +301,13 @@ export type EnumSiteLeadStatusFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumSiteLeadStatusFilter<$PrismaModel> | $Enums.SiteLeadStatus
 }
 
+export type EnumCrmLocationNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.CrmLocation | Prisma.EnumCrmLocationFieldRefInput<$PrismaModel> | null
+  in?: $Enums.CrmLocation[] | Prisma.ListEnumCrmLocationFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.CrmLocation[] | Prisma.ListEnumCrmLocationFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumCrmLocationNullableFilter<$PrismaModel> | $Enums.CrmLocation | null
+}
+
 export type EnumSiteLeadKindWithAggregatesFilter<$PrismaModel = never> = {
   equals?: $Enums.SiteLeadKind | Prisma.EnumSiteLeadKindFieldRefInput<$PrismaModel>
   in?: $Enums.SiteLeadKind[] | Prisma.ListEnumSiteLeadKindFieldRefInput<$PrismaModel>
@@ -319,6 +326,33 @@ export type EnumSiteLeadStatusWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumSiteLeadStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumSiteLeadStatusFilter<$PrismaModel>
+}
+
+export type EnumCrmLocationNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.CrmLocation | Prisma.EnumCrmLocationFieldRefInput<$PrismaModel> | null
+  in?: $Enums.CrmLocation[] | Prisma.ListEnumCrmLocationFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.CrmLocation[] | Prisma.ListEnumCrmLocationFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumCrmLocationNullableWithAggregatesFilter<$PrismaModel> | $Enums.CrmLocation | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumCrmLocationNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumCrmLocationNullableFilter<$PrismaModel>
+}
+
+export type EnumCrmLocationFilter<$PrismaModel = never> = {
+  equals?: $Enums.CrmLocation | Prisma.EnumCrmLocationFieldRefInput<$PrismaModel>
+  in?: $Enums.CrmLocation[] | Prisma.ListEnumCrmLocationFieldRefInput<$PrismaModel>
+  notIn?: $Enums.CrmLocation[] | Prisma.ListEnumCrmLocationFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumCrmLocationFilter<$PrismaModel> | $Enums.CrmLocation
+}
+
+export type EnumCrmLocationWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.CrmLocation | Prisma.EnumCrmLocationFieldRefInput<$PrismaModel>
+  in?: $Enums.CrmLocation[] | Prisma.ListEnumCrmLocationFieldRefInput<$PrismaModel>
+  notIn?: $Enums.CrmLocation[] | Prisma.ListEnumCrmLocationFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumCrmLocationWithAggregatesFilter<$PrismaModel> | $Enums.CrmLocation
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumCrmLocationFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumCrmLocationFilter<$PrismaModel>
 }
 
 export type JsonNullableFilter<$PrismaModel = never> =
@@ -662,6 +696,13 @@ export type NestedEnumSiteLeadStatusFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumSiteLeadStatusFilter<$PrismaModel> | $Enums.SiteLeadStatus
 }
 
+export type NestedEnumCrmLocationNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.CrmLocation | Prisma.EnumCrmLocationFieldRefInput<$PrismaModel> | null
+  in?: $Enums.CrmLocation[] | Prisma.ListEnumCrmLocationFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.CrmLocation[] | Prisma.ListEnumCrmLocationFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumCrmLocationNullableFilter<$PrismaModel> | $Enums.CrmLocation | null
+}
+
 export type NestedEnumSiteLeadKindWithAggregatesFilter<$PrismaModel = never> = {
   equals?: $Enums.SiteLeadKind | Prisma.EnumSiteLeadKindFieldRefInput<$PrismaModel>
   in?: $Enums.SiteLeadKind[] | Prisma.ListEnumSiteLeadKindFieldRefInput<$PrismaModel>
@@ -680,6 +721,33 @@ export type NestedEnumSiteLeadStatusWithAggregatesFilter<$PrismaModel = never> =
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumSiteLeadStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumSiteLeadStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumCrmLocationNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.CrmLocation | Prisma.EnumCrmLocationFieldRefInput<$PrismaModel> | null
+  in?: $Enums.CrmLocation[] | Prisma.ListEnumCrmLocationFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.CrmLocation[] | Prisma.ListEnumCrmLocationFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumCrmLocationNullableWithAggregatesFilter<$PrismaModel> | $Enums.CrmLocation | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumCrmLocationNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumCrmLocationNullableFilter<$PrismaModel>
+}
+
+export type NestedEnumCrmLocationFilter<$PrismaModel = never> = {
+  equals?: $Enums.CrmLocation | Prisma.EnumCrmLocationFieldRefInput<$PrismaModel>
+  in?: $Enums.CrmLocation[] | Prisma.ListEnumCrmLocationFieldRefInput<$PrismaModel>
+  notIn?: $Enums.CrmLocation[] | Prisma.ListEnumCrmLocationFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumCrmLocationFilter<$PrismaModel> | $Enums.CrmLocation
+}
+
+export type NestedEnumCrmLocationWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.CrmLocation | Prisma.EnumCrmLocationFieldRefInput<$PrismaModel>
+  in?: $Enums.CrmLocation[] | Prisma.ListEnumCrmLocationFieldRefInput<$PrismaModel>
+  notIn?: $Enums.CrmLocation[] | Prisma.ListEnumCrmLocationFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumCrmLocationWithAggregatesFilter<$PrismaModel> | $Enums.CrmLocation
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumCrmLocationFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumCrmLocationFilter<$PrismaModel>
 }
 
 export type NestedJsonNullableFilter<$PrismaModel = never> =

@@ -44,6 +44,15 @@ export const SiteLeadKind = {
 export type SiteLeadKind = (typeof SiteLeadKind)[keyof typeof SiteLeadKind]
 
 
+export const CrmLocation = {
+  ZHUKOVSKY: 'ZHUKOVSKY',
+  RAMENSKOYE: 'RAMENSKOYE',
+  KOLOMNA: 'KOLOMNA'
+} as const
+
+export type CrmLocation = (typeof CrmLocation)[keyof typeof CrmLocation]
+
+
 export const SmsTemplateKind = {
   APPOINTMENT: 'APPOINTMENT',
   REVIEW: 'REVIEW',

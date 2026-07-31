@@ -1,7 +1,20 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Put, UseGuards, UsePipes, ValidationPipe } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Put,
+  Query,
+  UseGuards,
+  UsePipes,
+  ValidationPipe,
+} from "@nestjs/common";
 import { AdminJwtGuard } from "../../auth/admin-jwt.guard";
 import { CrmSettingsService } from "./crm-settings.service";
 import {
+  UpsertDayLimitsDto,
   UpdateServiceTypesDto,
   UpdateSmsTemplatesDto,
 } from "./dto/crm-settings.dto";
@@ -35,5 +48,23 @@ export class CrmSettingsController {
   @Put("sms-templates")
   updateSmsTemplates(@Body() dto: UpdateSmsTemplatesDto) {
     return this.settings.updateSmsTemplates(dto);
+  }
+
+  @Get("day-limits")
+  getDayLimits(
+    @Query("year", ParseIntPipe) year: number,
+    @Query("month", ParseIntPipe) month: number,
+  ) {
+    return this.settings.getDayLimits(year, month);
+  }
+
+  @Put("day-limits")
+  upsertDayLimits(@Body() dto: UpsertDayLimitsDto) {
+    return this.settings.upsertDayLimits(dto);
+  }
+
+  @Delete("day-limits/:date")
+  deleteDayLimit(@Param("date") date: string) {
+    return this.settings.deleteDayLimit(date);
   }
 }

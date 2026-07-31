@@ -167,3 +167,8 @@ export type CompanySettings = Prisma.CompanySettingsModel
  * 
  */
 export type SmsLog = Prisma.SmsLogModel
+/**
+ * Model CrmDayLimit
+ * * Лимит записей в календарь на день (проставляет менеджер).
+ */
+export type CrmDayLimit = Prisma.CrmDayLimitModel

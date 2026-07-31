@@ -26,8 +26,12 @@ export class CrmAppointmentsController {
   constructor(private readonly appointments: CrmAppointmentsService) {}
 
   @Get()
-  list(@Query("from") from?: string, @Query("to") to?: string) {
-    return this.appointments.list(from, to);
+  list(
+    @Query("from") from?: string,
+    @Query("to") to?: string,
+    @Query("location") location?: string,
+  ) {
+    return this.appointments.list(from, to, location);
   }
 
   @Post()

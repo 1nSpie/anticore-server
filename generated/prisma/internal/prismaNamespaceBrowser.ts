@@ -76,7 +76,8 @@ export const ModelName = {
   CrmAdmin: 'CrmAdmin',
   SmsTemplate: 'SmsTemplate',
   CompanySettings: 'CompanySettings',
-  SmsLog: 'SmsLog'
+  SmsLog: 'SmsLog',
+  CrmDayLimit: 'CrmDayLimit'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -322,6 +323,7 @@ export const SiteLeadScalarFieldEnum = {
   adminNote: 'adminNote',
   diskLink: 'diskLink',
   followUpAt: 'followUpAt',
+  location: 'location',
   visitId: 'visitId',
   processedAt: 'processedAt',
   createdAt: 'createdAt',
@@ -341,6 +343,7 @@ export const VisitHistoryScalarFieldEnum = {
   endsAt: 'endsAt',
   priceRub: 'priceRub',
   serviceTypeId: 'serviceTypeId',
+  location: 'location',
   managerName: 'managerName',
   reviewSmsSentAt: 'reviewSmsSentAt',
   createdAt: 'createdAt',
@@ -432,6 +435,17 @@ export const SmsLogScalarFieldEnum = {
 } as const
 
 export type SmsLogScalarFieldEnum = (typeof SmsLogScalarFieldEnum)[keyof typeof SmsLogScalarFieldEnum]
+
+
+export const CrmDayLimitScalarFieldEnum = {
+  id: 'id',
+  date: 'date',
+  maxAppointments: 'maxAppointments',
+  note: 'note',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CrmDayLimitScalarFieldEnum = (typeof CrmDayLimitScalarFieldEnum)[keyof typeof CrmDayLimitScalarFieldEnum]
 
 
 export const SortOrder = {

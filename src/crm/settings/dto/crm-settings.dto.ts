@@ -1,4 +1,4 @@
-import { IsArray, IsInt, IsOptional, IsString, MaxLength, Min, ValidateNested } from "class-validator";
+import { IsArray, IsDateString, IsInt, IsOptional, IsString, MaxLength, Min, ValidateNested } from "class-validator";
 import { Type } from "class-transformer";
 
 export class UpdateSmsTemplatesDto {
@@ -42,4 +42,25 @@ export class UpdateServiceTypesDto {
   @ValidateNested({ each: true })
   @Type(() => ServiceTypeItemDto)
   items!: ServiceTypeItemDto[];
+}
+
+export class DayLimitItemDto {
+  @IsDateString()
+  date!: string;
+
+  @IsInt()
+  @Min(0)
+  maxAppointments!: number;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(300)
+  note?: string | null;
+}
+
+export class UpsertDayLimitsDto {
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => DayLimitItemDto)
+  items!: DayLimitItemDto[];
 }

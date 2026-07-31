@@ -1,11 +1,13 @@
 import {
   IsDateString,
+  IsIn,
   IsInt,
   IsOptional,
   IsString,
   MaxLength,
   Min,
 } from "class-validator";
+import { CRM_LOCATIONS } from "../../common/crm-location";
 
 export class CreateAppointmentDto {
   @IsInt()
@@ -34,6 +36,16 @@ export class CreateAppointmentDto {
   @IsString()
   @MaxLength(100)
   managerName?: string;
+
+  @IsOptional()
+  @IsIn([...CRM_LOCATIONS])
+  location?: (typeof CRM_LOCATIONS)[number];
+
+  /** Если указан — запись создаётся вместе с привязкой заявки (защита от дублей). */
+  @IsOptional()
+  @IsInt()
+  @Min(1)
+  leadId?: number;
 }
 
 export class UpdateAppointmentDto {
@@ -68,6 +80,10 @@ export class UpdateAppointmentDto {
   @IsString()
   @MaxLength(100)
   managerName?: string | null;
+
+  @IsOptional()
+  @IsIn([...CRM_LOCATIONS])
+  location?: (typeof CRM_LOCATIONS)[number];
 
   @IsOptional()
   @IsString()

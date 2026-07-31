@@ -1,9 +1,19 @@
 import {
   BadRequestException,
+  ConflictException,
   Injectable,
+  Logger,
   NotFoundException,
 } from "@nestjs/common";
+import { CrmLocation, SiteLeadStatus } from "../../../generated/prisma/client";
 import { PrismaService } from "../../prisma/prisma.service";
+import { CrmLeadsService } from "../leads/crm-leads.service";
+import {
+  DEFAULT_CRM_LOCATION,
+  CRM_LOCATIONS,
+  type CrmLocationCode,
+} from "../common/crm-location";
+import { CrmSettingsService } from "../settings/crm-settings.service";
 import { CrmSmsService } from "../sms/crm-sms.service";
 import {
   CreateAppointmentDto,
@@ -12,17 +22,27 @@ import {
 
 @Injectable()
 export class CrmAppointmentsService {
+  private readonly logger = new Logger(CrmAppointmentsService.name);
+
   constructor(
     private readonly prisma: PrismaService,
     private readonly crmSms: CrmSmsService,
+    private readonly leads: CrmLeadsService,
+    private readonly settings: CrmSettingsService,
   ) {}
 
-  async list(from?: string, to?: string) {
-    const where: { startsAt?: { gte?: Date; lte?: Date } } = {};
+  async list(from?: string, to?: string, location?: string) {
+    const where: {
+      startsAt?: { gte?: Date; lte?: Date };
+      location?: CrmLocation;
+    } = {};
     if (from || to) {
       where.startsAt = {};
       if (from) where.startsAt.gte = new Date(from);
       if (to) where.startsAt.lte = new Date(to);
+    }
+    if (location && (CRM_LOCATIONS as readonly string[]).includes(location)) {
+      where.location = location as CrmLocation;
     }
 
     const rows = await this.prisma.visitHistory.findMany({
@@ -54,38 +74,97 @@ export class CrmAppointmentsService {
     this.assertRange(startsAt, endsAt);
 
     await this.ensureClient(dto.clientId);
-
-    const row = await this.prisma.visitHistory.create({
-      data: {
-        userId: dto.clientId,
-        visitDate: startsAt,
-        startsAt,
-        endsAt,
-        serviceType: dto.serviceType,
-        serviceTypeId: dto.serviceTypeId ?? null,
-        priceRub: dto.priceRub,
-        managerName: dto.managerName?.trim() || null,
-      },
-      include: {
-        user: {
-          select: {
-            id: true,
-            phone: true,
-            firstName: true,
-            lastName: true,
-            patronymic: true,
-            customCar: true,
-            vin: true,
-            car: { include: { brand: { select: { name: true } } } },
-          },
-        },
-        catalogServiceType: true,
-      },
+    const location = (dto.location ?? DEFAULT_CRM_LOCATION) as CrmLocation;
+    await this.settings.assertDayCapacity(startsAt, {
+      location: location as CrmLocationCode,
     });
 
-    await this.crmSms.sendAppointmentSms(row);
+    if (dto.leadId) {
+      const lead = await this.leads.get(dto.leadId);
+      this.leads.assertCanSchedule(lead);
+    }
 
-    return this.toEvent(row);
+    const include = {
+      user: {
+        select: {
+          id: true,
+          phone: true,
+          firstName: true,
+          lastName: true,
+          patronymic: true,
+          customCar: true,
+          vin: true,
+          car: { include: { brand: { select: { name: true } } } },
+        },
+      },
+      catalogServiceType: true,
+    } as const;
+
+    const visitData = {
+      userId: dto.clientId,
+      visitDate: startsAt,
+      startsAt,
+      endsAt,
+      serviceType: dto.serviceType,
+      serviceTypeId: dto.serviceTypeId ?? null,
+      priceRub: dto.priceRub,
+      managerName: dto.managerName?.trim() || null,
+      location,
+    };
+
+    const row = dto.leadId
+      ? await this.prisma.$transaction(async (tx) => {
+          const visit = await tx.visitHistory.create({
+            data: visitData,
+          });
+
+          const linked = await tx.siteLead.updateMany({
+            where: {
+              id: dto.leadId,
+              visitId: null,
+              status: {
+                notIn: [
+                  SiteLeadStatus.SCHEDULED,
+                  SiteLeadStatus.REJECTED,
+                  SiteLeadStatus.COMPLETED,
+                ],
+              },
+            },
+            data: {
+              visitId: visit.id,
+              status: SiteLeadStatus.SCHEDULED,
+              processedAt: new Date(),
+            },
+          });
+
+          if (linked.count === 0) {
+            throw new ConflictException(
+              `Заявка #${dto.leadId} уже записана в календарь или недоступна`,
+            );
+          }
+
+          return tx.visitHistory.findUniqueOrThrow({
+            where: { id: visit.id },
+            include,
+          });
+        })
+      : await this.prisma.visitHistory.create({
+          data: visitData,
+          include,
+        });
+
+    let smsError: string | null = null;
+    try {
+      await this.crmSms.sendAppointmentSms(row);
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : "Не удалось отправить SMS";
+      this.logger.warn(`SMS при создании записи #${row.id}: ${message}`);
+      smsError =
+        "Запись создана, но SMS клиенту не отправлено. Проверьте SMS.ru или отправьте вручную.";
+    }
+
+    return { ...this.toEvent(row), smsError };
   }
 
   async update(id: number, dto: UpdateAppointmentDto) {
@@ -100,6 +179,13 @@ export class CrmAppointmentsService {
     const startsAt = dto.startsAt ? new Date(dto.startsAt) : existing.startsAt;
     const endsAt = dto.endsAt ? new Date(dto.endsAt) : existing.endsAt;
     if (startsAt && endsAt) this.assertRange(startsAt, endsAt);
+    const nextLocation = (dto.location ?? existing.location) as CrmLocation;
+    if (startsAt) {
+      await this.settings.assertDayCapacity(startsAt, {
+        excludeVisitId: id,
+        location: nextLocation as CrmLocationCode,
+      });
+    }
 
     const row = await this.prisma.visitHistory.update({
       where: { id },
@@ -118,6 +204,7 @@ export class CrmAppointmentsService {
         ...(dto.managerName !== undefined && {
           managerName: dto.managerName?.trim() || null,
         }),
+        ...(dto.location !== undefined && { location: dto.location }),
         ...(dto.diskLink !== undefined && {
           diskLink: dto.diskLink?.trim() || null,
         }),
@@ -207,6 +294,7 @@ export class CrmAppointmentsService {
     priceRub: number | null;
     serviceTypeId: number | null;
     managerName: string | null;
+    location?: CrmLocation | null;
     reviewSmsSentAt?: Date | null;
     user: {
       id: number;
@@ -235,6 +323,7 @@ export class CrmAppointmentsService {
       catalogServiceType: row.catalogServiceType,
       priceRub: row.priceRub ?? 0,
       managerName: row.managerName,
+      location: (row.location ?? DEFAULT_CRM_LOCATION) as CrmLocationCode,
       title: row.serviceType,
       reviewSmsSentAt: row.reviewSmsSentAt
         ? row.reviewSmsSentAt.toISOString()

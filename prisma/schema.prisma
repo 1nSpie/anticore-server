@@ -277,6 +277,8 @@ model SiteLead {
   adminNote           String?        @db.Text
   diskLink            String?
   followUpAt          DateTime?
+  /** Город / филиал для записи */
+  location            CrmLocation?
   visitId             Int?           @unique
   processedAt         DateTime?
   createdAt           DateTime       @default(now())
@@ -298,6 +300,8 @@ model VisitHistory {
   endsAt          DateTime?
   priceRub        Int?
   serviceTypeId   Int?
+  /** Филиал / площадка записи */
+  location        CrmLocation @default(ZHUKOVSKY)
   /** Имя менеджера (только админка, не для ЛК) */
   managerName     String?   @db.VarChar(100)
   reviewSmsSentAt DateTime?
@@ -309,7 +313,14 @@ model VisitHistory {
   pendingReviewSms   PendingReviewSms?
   siteLead           SiteLead?
 
+  @@index([location, startsAt])
   @@map("visit_history")
+}
+
+enum CrmLocation {
+  ZHUKOVSKY
+  RAMENSKOYE
+  KOLOMNA
 }
 
 model PendingReviewSms {
@@ -401,4 +412,15 @@ model SmsLog {
 
   @@index([phone, kind, sentAt])
   @@map("sms_logs")
+}
+
+/** Лимит записей в календарь на день (проставляет менеджер). */
+model CrmDayLimit {
+  id               Int      @id @default(autoincrement())
+  date             DateTime @unique @db.Date
+  maxAppointments  Int
+  note             String?  @db.VarChar(300)
+  updatedAt        DateTime @updatedAt
+
+  @@map("crm_day_limits")
 }

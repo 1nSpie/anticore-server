@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ConflictException,
   Injectable,
   NotFoundException,
 } from "@nestjs/common";
@@ -113,6 +114,7 @@ export class CrmLeadsService {
       ...(dto.followUpAt !== undefined && {
         followUpAt: dto.followUpAt ? new Date(dto.followUpAt) : null,
       }),
+      ...(dto.location !== undefined && { location: dto.location }),
       ...(dto.visitId !== undefined && { visitId: dto.visitId }),
       ...(diskLink !== undefined && { diskLink }),
     };
@@ -176,11 +178,56 @@ export class CrmLeadsService {
     return updated;
   }
 
-  async linkToVisit(leadId: number, visitId: number) {
-    const lead = await this.get(leadId);
+  /** Бросает, если заявка уже в календаре / завершена / отклонена. */
+  assertCanSchedule(lead: {
+    id: number;
+    status: SiteLeadStatus;
+    visitId: number | null;
+    adminNote: string | null;
+  }): void {
+    if (lead.visitId) {
+      throw new ConflictException(
+        `Заявка #${lead.id} уже записана в календарь (визит #${lead.visitId})`,
+      );
+    }
+    if (lead.status === SiteLeadStatus.SCHEDULED) {
+      throw new ConflictException(
+        `Заявка #${lead.id} уже имеет статус «В календаре»`,
+      );
+    }
+    if (
+      lead.status === SiteLeadStatus.REJECTED ||
+      lead.status === SiteLeadStatus.COMPLETED
+    ) {
+      throw new BadRequestException(
+        `Заявку #${lead.id} нельзя записать в календарь из текущего статуса`,
+      );
+    }
     assertAdminNoteOnLeaveNew(lead, {
       status: SiteLeadStatus.SCHEDULED,
     });
+  }
+
+  async linkToVisit(leadId: number, visitId: number) {
+    const lead = await this.get(leadId);
+    this.assertCanSchedule(lead);
+
+    const visit = await this.prisma.visitHistory.findUnique({
+      where: { id: visitId },
+      select: { id: true },
+    });
+    if (!visit) throw new NotFoundException("Запись в календаре не найдена");
+
+    const taken = await this.prisma.siteLead.findFirst({
+      where: { visitId },
+      select: { id: true },
+    });
+    if (taken) {
+      throw new ConflictException(
+        `Запись #${visitId} уже привязана к заявке #${taken.id}`,
+      );
+    }
+
     return this.prisma.siteLead.update({
       where: { id: leadId },
       data: {

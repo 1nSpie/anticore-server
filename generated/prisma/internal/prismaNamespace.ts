@@ -409,7 +409,8 @@ export const ModelName = {
   CrmAdmin: 'CrmAdmin',
   SmsTemplate: 'SmsTemplate',
   CompanySettings: 'CompanySettings',
-  SmsLog: 'SmsLog'
+  SmsLog: 'SmsLog',
+  CrmDayLimit: 'CrmDayLimit'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -425,7 +426,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "brand" | "car" | "bodyTypePrice" | "blogPost" | "blogCategory" | "blogTag" | "work" | "workCategory" | "workService" | "workImage" | "pendingRegistration" | "cabinetUser" | "userRefreshToken" | "smsCode" | "userDocument" | "serviceType" | "siteLead" | "visitHistory" | "pendingReviewSms" | "paymentHistory" | "notificationSettings" | "adminAuditLog" | "crmAdmin" | "smsTemplate" | "companySettings" | "smsLog"
+    modelProps: "brand" | "car" | "bodyTypePrice" | "blogPost" | "blogCategory" | "blogTag" | "work" | "workCategory" | "workService" | "workImage" | "pendingRegistration" | "cabinetUser" | "userRefreshToken" | "smsCode" | "userDocument" | "serviceType" | "siteLead" | "visitHistory" | "pendingReviewSms" | "paymentHistory" | "notificationSettings" | "adminAuditLog" | "crmAdmin" | "smsTemplate" | "companySettings" | "smsLog" | "crmDayLimit"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2353,6 +2354,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    CrmDayLimit: {
+      payload: Prisma.$CrmDayLimitPayload<ExtArgs>
+      fields: Prisma.CrmDayLimitFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CrmDayLimitFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CrmDayLimitPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CrmDayLimitFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CrmDayLimitPayload>
+        }
+        findFirst: {
+          args: Prisma.CrmDayLimitFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CrmDayLimitPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CrmDayLimitFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CrmDayLimitPayload>
+        }
+        findMany: {
+          args: Prisma.CrmDayLimitFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CrmDayLimitPayload>[]
+        }
+        create: {
+          args: Prisma.CrmDayLimitCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CrmDayLimitPayload>
+        }
+        createMany: {
+          args: Prisma.CrmDayLimitCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CrmDayLimitCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CrmDayLimitPayload>[]
+        }
+        delete: {
+          args: Prisma.CrmDayLimitDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CrmDayLimitPayload>
+        }
+        update: {
+          args: Prisma.CrmDayLimitUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CrmDayLimitPayload>
+        }
+        deleteMany: {
+          args: Prisma.CrmDayLimitDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CrmDayLimitUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CrmDayLimitUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CrmDayLimitPayload>[]
+        }
+        upsert: {
+          args: Prisma.CrmDayLimitUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CrmDayLimitPayload>
+        }
+        aggregate: {
+          args: Prisma.CrmDayLimitAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCrmDayLimit>
+        }
+        groupBy: {
+          args: Prisma.CrmDayLimitGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CrmDayLimitGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CrmDayLimitCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CrmDayLimitCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -2619,6 +2694,7 @@ export const SiteLeadScalarFieldEnum = {
   adminNote: 'adminNote',
   diskLink: 'diskLink',
   followUpAt: 'followUpAt',
+  location: 'location',
   visitId: 'visitId',
   processedAt: 'processedAt',
   createdAt: 'createdAt',
@@ -2638,6 +2714,7 @@ export const VisitHistoryScalarFieldEnum = {
   endsAt: 'endsAt',
   priceRub: 'priceRub',
   serviceTypeId: 'serviceTypeId',
+  location: 'location',
   managerName: 'managerName',
   reviewSmsSentAt: 'reviewSmsSentAt',
   createdAt: 'createdAt',
@@ -2729,6 +2806,17 @@ export const SmsLogScalarFieldEnum = {
 } as const
 
 export type SmsLogScalarFieldEnum = (typeof SmsLogScalarFieldEnum)[keyof typeof SmsLogScalarFieldEnum]
+
+
+export const CrmDayLimitScalarFieldEnum = {
+  id: 'id',
+  date: 'date',
+  maxAppointments: 'maxAppointments',
+  note: 'note',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CrmDayLimitScalarFieldEnum = (typeof CrmDayLimitScalarFieldEnum)[keyof typeof CrmDayLimitScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -2905,6 +2993,20 @@ export type ListEnumSiteLeadStatusFieldRefInput<$PrismaModel> = FieldRefInputTyp
 
 
 /**
+ * Reference to a field of type 'CrmLocation'
+ */
+export type EnumCrmLocationFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CrmLocation'>
+    
+
+
+/**
+ * Reference to a field of type 'CrmLocation[]'
+ */
+export type ListEnumCrmLocationFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CrmLocation[]'>
+    
+
+
+/**
  * Reference to a field of type 'SmsTemplateKind'
  */
 export type EnumSmsTemplateKindFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SmsTemplateKind'>
@@ -3052,6 +3154,7 @@ export type GlobalOmitConfig = {
   smsTemplate?: Prisma.SmsTemplateOmit
   companySettings?: Prisma.CompanySettingsOmit
   smsLog?: Prisma.SmsLogOmit
+  crmDayLimit?: Prisma.CrmDayLimitOmit
 }
 
 /* Types for Logging */
