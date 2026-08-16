@@ -19,7 +19,9 @@ model Car {
   brandId Int?
   segment Int
   brand   Brand? @relation(fields: [brandId], references: [id])
+  /** @deprecated legacy single-car slot on CabinetUser — prefer ClientVehicle */
   cabinetUsers CabinetUser[]
+  clientVehicles ClientVehicle[]
 }
 
 model BodyTypePrice {
@@ -171,10 +173,11 @@ model CabinetUser {
   birthDate           DateTime? @db.Date
   /** Последняя смена даты рождения пользователем (лимит раз в сутки) */
   birthDateChangedAt  DateTime?
+  /** @deprecated use ClientVehicle — kept synced from primary vehicle */
   carId               Int?
-  /** Свободный текст, если авто нет в каталоге */
+  /** @deprecated use ClientVehicle.customLabel */
   customCar     String?   @db.VarChar(200)
-  /** VIN (17 символов) — для CRM */
+  /** @deprecated use ClientVehicle.vin */
   vin             String?   @db.VarChar(17)
   /** Заметки администратора (CRM) */
   adminComment    String?   @db.Text
@@ -191,6 +194,7 @@ model CabinetUser {
   updatedAt     DateTime  @updatedAt
 
   car                   Car?                 @relation(fields: [carId], references: [id], onDelete: SetNull)
+  vehicles              ClientVehicle[]
   refreshTokens         UserRefreshToken[]
   visits                VisitHistory[]
   documents             UserDocument[]
@@ -198,6 +202,27 @@ model CabinetUser {
   notificationSettings  NotificationSettings?
 
   @@map("cabinet_users")
+}
+
+/** Автомобиль клиента (экземпляр); каталог Car — только марка/модель/сегмент. */
+model ClientVehicle {
+  id          Int       @id @default(autoincrement())
+  userId      Int
+  carId       Int?
+  /** Свободный текст, если авто нет в каталоге */
+  customLabel String?   @db.VarChar(200)
+  vin         String?   @db.VarChar(17)
+  isPrimary   Boolean   @default(false)
+  archivedAt  DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  user   CabinetUser    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  car    Car?           @relation(fields: [carId], references: [id], onDelete: SetNull)
+  visits VisitHistory[]
+
+  @@index([userId])
+  @@map("client_vehicles")
 }
 
 model UserRefreshToken {
@@ -293,6 +318,8 @@ model SiteLead {
 model VisitHistory {
   id              Int       @id @default(autoincrement())
   userId          Int
+  /** Автомобиль, по которому визит / обслуживание */
+  vehicleId       Int?
   visitDate       DateTime  @db.Date
   serviceType     String
   diskLink        String?
@@ -309,11 +336,13 @@ model VisitHistory {
   updatedAt       DateTime  @updatedAt
 
   user               CabinetUser       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  vehicle            ClientVehicle?    @relation(fields: [vehicleId], references: [id], onDelete: SetNull)
   catalogServiceType ServiceType?      @relation(fields: [serviceTypeId], references: [id], onDelete: SetNull)
   pendingReviewSms   PendingReviewSms?
   siteLead           SiteLead?
 
   @@index([location, startsAt])
+  @@index([vehicleId])
   @@map("visit_history")
 }
 
@@ -414,13 +443,16 @@ model SmsLog {
   @@map("sms_logs")
 }
 
-/** Лимит записей в календарь на день (проставляет менеджер). */
+/** Лимит записей в календарь на день и филиал. */
 model CrmDayLimit {
-  id               Int      @id @default(autoincrement())
-  date             DateTime @unique @db.Date
+  id               Int         @id @default(autoincrement())
+  date             DateTime    @db.Date
+  location         CrmLocation
   maxAppointments  Int
-  note             String?  @db.VarChar(300)
-  updatedAt        DateTime @updatedAt
+  note             String?     @db.VarChar(300)
+  updatedAt        DateTime    @updatedAt
 
+  @@unique([date, location])
+  @@index([location, date])
   @@map("crm_day_limits")
 }

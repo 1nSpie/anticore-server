@@ -6,6 +6,7 @@ import {
 import * as bcrypt from "bcrypt";
 import { Prisma, SiteLeadStatus } from "../../../generated/prisma/client";
 import { PrismaService } from "../../prisma/prisma.service";
+import { ClientVehiclesService } from "../../client-vehicles/client-vehicles.service";
 import { CabinetAuthService } from "../auth/cabinet-auth.service";
 import { UpdateProfileDto } from "./dto/update-profile.dto";
 import { ChangePasswordDto } from "./dto/change-password.dto";
@@ -13,7 +14,10 @@ import { UpdateNotificationsDto } from "./dto/update-notifications.dto";
 
 const ONE_DAY_MS = 24 * 60 * 60 * 1000;
 
-function sameDate(a: Date | null | undefined, b: Date | null | undefined): boolean {
+function sameDate(
+  a: Date | null | undefined,
+  b: Date | null | undefined,
+): boolean {
   if (!a && !b) return true;
   if (!a || !b) return false;
   return a.toISOString().slice(0, 10) === b.toISOString().slice(0, 10);
@@ -21,7 +25,10 @@ function sameDate(a: Date | null | undefined, b: Date | null | undefined): boole
 
 function birthDateChangeMeta(changedAt: Date | null | undefined) {
   if (!changedAt) {
-    return { canChangeBirthDate: true, nextBirthDateChangeAt: null as string | null };
+    return {
+      canChangeBirthDate: true,
+      nextBirthDateChangeAt: null as string | null,
+    };
   }
   const next = new Date(changedAt.getTime() + ONE_DAY_MS);
   const canChangeBirthDate = Date.now() >= next.getTime();
@@ -45,6 +52,7 @@ export class CabinetUserService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly cabinetAuth: CabinetAuthService,
+    private readonly vehicles: ClientVehiclesService,
   ) {}
 
   async getProfile(userId: number) {
@@ -55,9 +63,11 @@ export class CabinetUserService {
     if (!user) {
       throw new NotFoundException("Пользователь не найден");
     }
+    const vehicleList = await this.vehicles.listForUser(userId);
     const { passwordHash: _p, ...rest } = user;
     return {
       ...rest,
+      vehicles: vehicleList,
       ...birthDateChangeMeta(user.birthDateChangedAt),
     };
   }
@@ -100,37 +110,28 @@ export class CabinetUserService {
         data.birthDateChangedAt = new Date();
       }
     }
-    if (dto.customCar !== undefined) {
-      const trimmed = dto.customCar?.trim() || null;
-      data.customCar = trimmed;
-      if (trimmed) {
-        data.car = { disconnect: true };
+
+    const hasLegacyCar =
+      dto.carId !== undefined || dto.customCar !== undefined;
+    if (hasLegacyCar) {
+      const hasValue = dto.carId != null || Boolean(dto.customCar?.trim());
+      if (hasValue) {
+        await this.vehicles.ensurePrimaryFromLegacy(userId, {
+          carId: dto.carId,
+          customCar: dto.customCar,
+        });
       }
-    }
-    if (dto.carId !== undefined) {
-      data.car =
-        dto.carId === null
-          ? { disconnect: true }
-          : { connect: { id: dto.carId } };
-      if (dto.carId !== null) {
-        data.customCar = null;
-      }
+      await this.vehicles.syncLegacyFields(userId);
     }
 
-    if (Object.keys(data).length === 0) {
-      return this.getProfile(userId);
+    if (Object.keys(data).length > 0) {
+      await this.prisma.cabinetUser.update({
+        where: { id: userId },
+        data,
+      });
     }
 
-    const user = await this.prisma.cabinetUser.update({
-      where: { id: userId },
-      data,
-      include: profileInclude,
-    });
-    const { passwordHash: _p, ...rest } = user;
-    return {
-      ...rest,
-      ...birthDateChangeMeta(user.birthDateChangedAt),
-    };
+    return this.getProfile(userId);
   }
 
   async changePassword(
@@ -197,11 +198,42 @@ export class CabinetUserService {
     return this.getNotificationSettings(userId);
   }
 
-  async listVisits(userId: number) {
-    return this.prisma.visitHistory.findMany({
-      where: { userId },
+  async listVisits(userId: number, vehicleId?: number) {
+    const rows = await this.prisma.visitHistory.findMany({
+      where: {
+        userId,
+        ...(vehicleId ? { vehicleId } : {}),
+      },
       orderBy: { visitDate: "desc" },
+      include: {
+        vehicle: {
+          include: {
+            car: {
+              select: {
+                model: true,
+                brand: { select: { name: true } },
+              },
+            },
+          },
+        },
+      },
     });
+
+    return rows.map((v) => ({
+      id: v.id,
+      visitDate: v.visitDate,
+      serviceType: v.serviceType,
+      diskLink: v.diskLink,
+      vehicleId: v.vehicleId,
+      vehicleLabel: v.vehicle
+        ? v.vehicle.customLabel?.trim() ||
+          (v.vehicle.car
+            ? [v.vehicle.car.brand?.name, v.vehicle.car.model]
+                .filter(Boolean)
+                .join(" ")
+            : "")
+        : null,
+    }));
   }
 
   async listPayments(userId: number) {

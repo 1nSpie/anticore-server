@@ -1,6 +1,10 @@
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
-import { SmsTemplateKind } from "../../../generated/prisma/client";
+import { CrmLocation, SmsTemplateKind } from "../../../generated/prisma/client";
 import { PrismaService } from "../../prisma/prisma.service";
+import {
+  CRM_LOCATION_LABELS,
+  CRM_LOCATIONS,
+} from "../common/crm-location";
 import {
   UpsertDayLimitsDto,
   UpdateServiceTypesDto,
@@ -107,8 +111,9 @@ export class CrmSettingsService {
     return row?.companyName ?? "АванКор";
   }
 
-  /** Лимиты записей на дни месяца (календарные даты YYYY-MM-DD). */
-  async getDayLimits(year: number, month: number) {
+  /** Лимиты записей на дни месяца для филиала. */
+  async getDayLimits(year: number, month: number, location: string) {
+    const loc = this.parseLocation(location);
     if (!Number.isInteger(year) || year < 2000 || year > 2100) {
       throw new BadRequestException("Некорректный год");
     }
@@ -120,25 +125,28 @@ export class CrmSettingsService {
     const to = new Date(Date.UTC(year, month, 1));
 
     const rows = await this.prisma.crmDayLimit.findMany({
-      where: { date: { gte: from, lt: to } },
+      where: { date: { gte: from, lt: to }, location: loc },
       orderBy: { date: "asc" },
     });
 
     return rows.map((r) => ({
       id: r.id,
       date: r.date.toISOString().slice(0, 10),
+      location: r.location,
       maxAppointments: r.maxAppointments,
       note: r.note,
     }));
   }
 
   async upsertDayLimits(dto: UpsertDayLimitsDto) {
+    const location = this.parseLocation(dto.location);
     for (const item of dto.items) {
       const date = this.parseDateOnly(item.date);
       await this.prisma.crmDayLimit.upsert({
-        where: { date },
+        where: { date_location: { date, location } },
         create: {
           date,
+          location,
           maxAppointments: item.maxAppointments,
           note: item.note?.trim() || null,
         },
@@ -149,26 +157,30 @@ export class CrmSettingsService {
       });
     }
 
-    return { ok: true, count: dto.items.length };
+    return { ok: true, count: dto.items.length, location };
   }
 
-  async deleteDayLimit(dateStr: string) {
+  async deleteDayLimit(dateStr: string, location: string) {
+    const loc = this.parseLocation(location);
     const date = this.parseDateOnly(dateStr);
-    await this.prisma.crmDayLimit.deleteMany({ where: { date } });
+    await this.prisma.crmDayLimit.deleteMany({
+      where: { date, location: loc },
+    });
     return { message: "Лимит снят" };
   }
 
   /**
-   * Если на день задан лимит — проверяем число записей.
+   * Если на день+филиал задан лимит — проверяем число записей этого филиала.
    * Без лимита ограничений нет.
    */
   async assertDayCapacity(
     startsAt: Date,
-    opts?: { excludeVisitId?: number; location?: string },
+    opts: { location: string; excludeVisitId?: number },
   ) {
+    const loc = this.parseLocation(opts.location);
     const day = this.moscowDateOnly(startsAt);
     const limit = await this.prisma.crmDayLimit.findUnique({
-      where: { date: day },
+      where: { date_location: { date: day, location: loc } },
     });
     if (!limit) return;
 
@@ -178,21 +190,27 @@ export class CrmSettingsService {
     const count = await this.prisma.visitHistory.count({
       where: {
         startsAt: { gte: day, lt: dayEnd },
-        ...(opts?.location
-          ? { location: opts.location as never }
-          : {}),
-        ...(opts?.excludeVisitId ? { id: { not: opts.excludeVisitId } } : {}),
+        location: loc,
+        ...(opts.excludeVisitId ? { id: { not: opts.excludeVisitId } } : {}),
       },
     });
 
     if (count >= limit.maxAppointments) {
       const label = day.toISOString().slice(0, 10);
+      const city = CRM_LOCATION_LABELS[loc];
       throw new BadRequestException(
         limit.maxAppointments === 0
-          ? `На ${label} запись закрыта (лимит 0)`
-          : `На ${label} достигнут лимит записей (${limit.maxAppointments})`,
+          ? `${city}: на ${label} запись закрыта (лимит 0)`
+          : `${city}: на ${label} достигнут лимит записей (${limit.maxAppointments})`,
       );
     }
+  }
+
+  private parseLocation(value: string): CrmLocation {
+    if (!(CRM_LOCATIONS as readonly string[]).includes(value)) {
+      throw new BadRequestException("Укажите филиал");
+    }
+    return value as CrmLocation;
   }
 
   private parseDateOnly(value: string): Date {

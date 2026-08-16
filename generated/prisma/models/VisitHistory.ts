@@ -29,6 +29,7 @@ export type AggregateVisitHistory = {
 export type VisitHistoryAvgAggregateOutputType = {
   id: number | null
   userId: number | null
+  vehicleId: number | null
   priceRub: number | null
   serviceTypeId: number | null
 }
@@ -36,6 +37,7 @@ export type VisitHistoryAvgAggregateOutputType = {
 export type VisitHistorySumAggregateOutputType = {
   id: number | null
   userId: number | null
+  vehicleId: number | null
   priceRub: number | null
   serviceTypeId: number | null
 }
@@ -43,6 +45,7 @@ export type VisitHistorySumAggregateOutputType = {
 export type VisitHistoryMinAggregateOutputType = {
   id: number | null
   userId: number | null
+  vehicleId: number | null
   visitDate: Date | null
   serviceType: string | null
   diskLink: string | null
@@ -60,6 +63,7 @@ export type VisitHistoryMinAggregateOutputType = {
 export type VisitHistoryMaxAggregateOutputType = {
   id: number | null
   userId: number | null
+  vehicleId: number | null
   visitDate: Date | null
   serviceType: string | null
   diskLink: string | null
@@ -77,6 +81,7 @@ export type VisitHistoryMaxAggregateOutputType = {
 export type VisitHistoryCountAggregateOutputType = {
   id: number
   userId: number
+  vehicleId: number
   visitDate: number
   serviceType: number
   diskLink: number
@@ -96,6 +101,7 @@ export type VisitHistoryCountAggregateOutputType = {
 export type VisitHistoryAvgAggregateInputType = {
   id?: true
   userId?: true
+  vehicleId?: true
   priceRub?: true
   serviceTypeId?: true
 }
@@ -103,6 +109,7 @@ export type VisitHistoryAvgAggregateInputType = {
 export type VisitHistorySumAggregateInputType = {
   id?: true
   userId?: true
+  vehicleId?: true
   priceRub?: true
   serviceTypeId?: true
 }
@@ -110,6 +117,7 @@ export type VisitHistorySumAggregateInputType = {
 export type VisitHistoryMinAggregateInputType = {
   id?: true
   userId?: true
+  vehicleId?: true
   visitDate?: true
   serviceType?: true
   diskLink?: true
@@ -127,6 +135,7 @@ export type VisitHistoryMinAggregateInputType = {
 export type VisitHistoryMaxAggregateInputType = {
   id?: true
   userId?: true
+  vehicleId?: true
   visitDate?: true
   serviceType?: true
   diskLink?: true
@@ -144,6 +153,7 @@ export type VisitHistoryMaxAggregateInputType = {
 export type VisitHistoryCountAggregateInputType = {
   id?: true
   userId?: true
+  vehicleId?: true
   visitDate?: true
   serviceType?: true
   diskLink?: true
@@ -248,6 +258,7 @@ export type VisitHistoryGroupByArgs<ExtArgs extends runtime.Types.Extensions.Int
 export type VisitHistoryGroupByOutputType = {
   id: number
   userId: number
+  vehicleId: number | null
   visitDate: Date
   serviceType: string
   diskLink: string | null
@@ -288,6 +299,7 @@ export type VisitHistoryWhereInput = {
   NOT?: Prisma.VisitHistoryWhereInput | Prisma.VisitHistoryWhereInput[]
   id?: Prisma.IntFilter<"VisitHistory"> | number
   userId?: Prisma.IntFilter<"VisitHistory"> | number
+  vehicleId?: Prisma.IntNullableFilter<"VisitHistory"> | number | null
   visitDate?: Prisma.DateTimeFilter<"VisitHistory"> | Date | string
   serviceType?: Prisma.StringFilter<"VisitHistory"> | string
   diskLink?: Prisma.StringNullableFilter<"VisitHistory"> | string | null
@@ -301,6 +313,7 @@ export type VisitHistoryWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"VisitHistory"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"VisitHistory"> | Date | string
   user?: Prisma.XOR<Prisma.CabinetUserScalarRelationFilter, Prisma.CabinetUserWhereInput>
+  vehicle?: Prisma.XOR<Prisma.ClientVehicleNullableScalarRelationFilter, Prisma.ClientVehicleWhereInput> | null
   catalogServiceType?: Prisma.XOR<Prisma.ServiceTypeNullableScalarRelationFilter, Prisma.ServiceTypeWhereInput> | null
   pendingReviewSms?: Prisma.XOR<Prisma.PendingReviewSmsNullableScalarRelationFilter, Prisma.PendingReviewSmsWhereInput> | null
   siteLead?: Prisma.XOR<Prisma.SiteLeadNullableScalarRelationFilter, Prisma.SiteLeadWhereInput> | null
@@ -309,6 +322,7 @@ export type VisitHistoryWhereInput = {
 export type VisitHistoryOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  vehicleId?: Prisma.SortOrderInput | Prisma.SortOrder
   visitDate?: Prisma.SortOrder
   serviceType?: Prisma.SortOrder
   diskLink?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -322,6 +336,7 @@ export type VisitHistoryOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   user?: Prisma.CabinetUserOrderByWithRelationInput
+  vehicle?: Prisma.ClientVehicleOrderByWithRelationInput
   catalogServiceType?: Prisma.ServiceTypeOrderByWithRelationInput
   pendingReviewSms?: Prisma.PendingReviewSmsOrderByWithRelationInput
   siteLead?: Prisma.SiteLeadOrderByWithRelationInput
@@ -333,6 +348,7 @@ export type VisitHistoryWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.VisitHistoryWhereInput[]
   NOT?: Prisma.VisitHistoryWhereInput | Prisma.VisitHistoryWhereInput[]
   userId?: Prisma.IntFilter<"VisitHistory"> | number
+  vehicleId?: Prisma.IntNullableFilter<"VisitHistory"> | number | null
   visitDate?: Prisma.DateTimeFilter<"VisitHistory"> | Date | string
   serviceType?: Prisma.StringFilter<"VisitHistory"> | string
   diskLink?: Prisma.StringNullableFilter<"VisitHistory"> | string | null
@@ -346,6 +362,7 @@ export type VisitHistoryWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"VisitHistory"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"VisitHistory"> | Date | string
   user?: Prisma.XOR<Prisma.CabinetUserScalarRelationFilter, Prisma.CabinetUserWhereInput>
+  vehicle?: Prisma.XOR<Prisma.ClientVehicleNullableScalarRelationFilter, Prisma.ClientVehicleWhereInput> | null
   catalogServiceType?: Prisma.XOR<Prisma.ServiceTypeNullableScalarRelationFilter, Prisma.ServiceTypeWhereInput> | null
   pendingReviewSms?: Prisma.XOR<Prisma.PendingReviewSmsNullableScalarRelationFilter, Prisma.PendingReviewSmsWhereInput> | null
   siteLead?: Prisma.XOR<Prisma.SiteLeadNullableScalarRelationFilter, Prisma.SiteLeadWhereInput> | null
@@ -354,6 +371,7 @@ export type VisitHistoryWhereUniqueInput = Prisma.AtLeast<{
 export type VisitHistoryOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  vehicleId?: Prisma.SortOrderInput | Prisma.SortOrder
   visitDate?: Prisma.SortOrder
   serviceType?: Prisma.SortOrder
   diskLink?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -379,6 +397,7 @@ export type VisitHistoryScalarWhereWithAggregatesInput = {
   NOT?: Prisma.VisitHistoryScalarWhereWithAggregatesInput | Prisma.VisitHistoryScalarWhereWithAggregatesInput[]
   id?: Prisma.IntWithAggregatesFilter<"VisitHistory"> | number
   userId?: Prisma.IntWithAggregatesFilter<"VisitHistory"> | number
+  vehicleId?: Prisma.IntNullableWithAggregatesFilter<"VisitHistory"> | number | null
   visitDate?: Prisma.DateTimeWithAggregatesFilter<"VisitHistory"> | Date | string
   serviceType?: Prisma.StringWithAggregatesFilter<"VisitHistory"> | string
   diskLink?: Prisma.StringNullableWithAggregatesFilter<"VisitHistory"> | string | null
@@ -406,6 +425,7 @@ export type VisitHistoryCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.CabinetUserCreateNestedOneWithoutVisitsInput
+  vehicle?: Prisma.ClientVehicleCreateNestedOneWithoutVisitsInput
   catalogServiceType?: Prisma.ServiceTypeCreateNestedOneWithoutVisitsInput
   pendingReviewSms?: Prisma.PendingReviewSmsCreateNestedOneWithoutVisitInput
   siteLead?: Prisma.SiteLeadCreateNestedOneWithoutVisitInput
@@ -414,6 +434,7 @@ export type VisitHistoryCreateInput = {
 export type VisitHistoryUncheckedCreateInput = {
   id?: number
   userId: number
+  vehicleId?: number | null
   visitDate: Date | string
   serviceType: string
   diskLink?: string | null
@@ -443,6 +464,7 @@ export type VisitHistoryUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.CabinetUserUpdateOneRequiredWithoutVisitsNestedInput
+  vehicle?: Prisma.ClientVehicleUpdateOneWithoutVisitsNestedInput
   catalogServiceType?: Prisma.ServiceTypeUpdateOneWithoutVisitsNestedInput
   pendingReviewSms?: Prisma.PendingReviewSmsUpdateOneWithoutVisitNestedInput
   siteLead?: Prisma.SiteLeadUpdateOneWithoutVisitNestedInput
@@ -451,6 +473,7 @@ export type VisitHistoryUpdateInput = {
 export type VisitHistoryUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   userId?: Prisma.IntFieldUpdateOperationsInput | number
+  vehicleId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   serviceType?: Prisma.StringFieldUpdateOperationsInput | string
   diskLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -470,6 +493,7 @@ export type VisitHistoryUncheckedUpdateInput = {
 export type VisitHistoryCreateManyInput = {
   id?: number
   userId: number
+  vehicleId?: number | null
   visitDate: Date | string
   serviceType: string
   diskLink?: string | null
@@ -501,6 +525,7 @@ export type VisitHistoryUpdateManyMutationInput = {
 export type VisitHistoryUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   userId?: Prisma.IntFieldUpdateOperationsInput | number
+  vehicleId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   serviceType?: Prisma.StringFieldUpdateOperationsInput | string
   diskLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -533,6 +558,7 @@ export type VisitHistoryNullableScalarRelationFilter = {
 export type VisitHistoryCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  vehicleId?: Prisma.SortOrder
   visitDate?: Prisma.SortOrder
   serviceType?: Prisma.SortOrder
   diskLink?: Prisma.SortOrder
@@ -550,6 +576,7 @@ export type VisitHistoryCountOrderByAggregateInput = {
 export type VisitHistoryAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  vehicleId?: Prisma.SortOrder
   priceRub?: Prisma.SortOrder
   serviceTypeId?: Prisma.SortOrder
 }
@@ -557,6 +584,7 @@ export type VisitHistoryAvgOrderByAggregateInput = {
 export type VisitHistoryMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  vehicleId?: Prisma.SortOrder
   visitDate?: Prisma.SortOrder
   serviceType?: Prisma.SortOrder
   diskLink?: Prisma.SortOrder
@@ -574,6 +602,7 @@ export type VisitHistoryMaxOrderByAggregateInput = {
 export type VisitHistoryMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  vehicleId?: Prisma.SortOrder
   visitDate?: Prisma.SortOrder
   serviceType?: Prisma.SortOrder
   diskLink?: Prisma.SortOrder
@@ -591,6 +620,7 @@ export type VisitHistoryMinOrderByAggregateInput = {
 export type VisitHistorySumOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  vehicleId?: Prisma.SortOrder
   priceRub?: Prisma.SortOrder
   serviceTypeId?: Prisma.SortOrder
 }
@@ -639,6 +669,48 @@ export type VisitHistoryUncheckedUpdateManyWithoutUserNestedInput = {
   connect?: Prisma.VisitHistoryWhereUniqueInput | Prisma.VisitHistoryWhereUniqueInput[]
   update?: Prisma.VisitHistoryUpdateWithWhereUniqueWithoutUserInput | Prisma.VisitHistoryUpdateWithWhereUniqueWithoutUserInput[]
   updateMany?: Prisma.VisitHistoryUpdateManyWithWhereWithoutUserInput | Prisma.VisitHistoryUpdateManyWithWhereWithoutUserInput[]
+  deleteMany?: Prisma.VisitHistoryScalarWhereInput | Prisma.VisitHistoryScalarWhereInput[]
+}
+
+export type VisitHistoryCreateNestedManyWithoutVehicleInput = {
+  create?: Prisma.XOR<Prisma.VisitHistoryCreateWithoutVehicleInput, Prisma.VisitHistoryUncheckedCreateWithoutVehicleInput> | Prisma.VisitHistoryCreateWithoutVehicleInput[] | Prisma.VisitHistoryUncheckedCreateWithoutVehicleInput[]
+  connectOrCreate?: Prisma.VisitHistoryCreateOrConnectWithoutVehicleInput | Prisma.VisitHistoryCreateOrConnectWithoutVehicleInput[]
+  createMany?: Prisma.VisitHistoryCreateManyVehicleInputEnvelope
+  connect?: Prisma.VisitHistoryWhereUniqueInput | Prisma.VisitHistoryWhereUniqueInput[]
+}
+
+export type VisitHistoryUncheckedCreateNestedManyWithoutVehicleInput = {
+  create?: Prisma.XOR<Prisma.VisitHistoryCreateWithoutVehicleInput, Prisma.VisitHistoryUncheckedCreateWithoutVehicleInput> | Prisma.VisitHistoryCreateWithoutVehicleInput[] | Prisma.VisitHistoryUncheckedCreateWithoutVehicleInput[]
+  connectOrCreate?: Prisma.VisitHistoryCreateOrConnectWithoutVehicleInput | Prisma.VisitHistoryCreateOrConnectWithoutVehicleInput[]
+  createMany?: Prisma.VisitHistoryCreateManyVehicleInputEnvelope
+  connect?: Prisma.VisitHistoryWhereUniqueInput | Prisma.VisitHistoryWhereUniqueInput[]
+}
+
+export type VisitHistoryUpdateManyWithoutVehicleNestedInput = {
+  create?: Prisma.XOR<Prisma.VisitHistoryCreateWithoutVehicleInput, Prisma.VisitHistoryUncheckedCreateWithoutVehicleInput> | Prisma.VisitHistoryCreateWithoutVehicleInput[] | Prisma.VisitHistoryUncheckedCreateWithoutVehicleInput[]
+  connectOrCreate?: Prisma.VisitHistoryCreateOrConnectWithoutVehicleInput | Prisma.VisitHistoryCreateOrConnectWithoutVehicleInput[]
+  upsert?: Prisma.VisitHistoryUpsertWithWhereUniqueWithoutVehicleInput | Prisma.VisitHistoryUpsertWithWhereUniqueWithoutVehicleInput[]
+  createMany?: Prisma.VisitHistoryCreateManyVehicleInputEnvelope
+  set?: Prisma.VisitHistoryWhereUniqueInput | Prisma.VisitHistoryWhereUniqueInput[]
+  disconnect?: Prisma.VisitHistoryWhereUniqueInput | Prisma.VisitHistoryWhereUniqueInput[]
+  delete?: Prisma.VisitHistoryWhereUniqueInput | Prisma.VisitHistoryWhereUniqueInput[]
+  connect?: Prisma.VisitHistoryWhereUniqueInput | Prisma.VisitHistoryWhereUniqueInput[]
+  update?: Prisma.VisitHistoryUpdateWithWhereUniqueWithoutVehicleInput | Prisma.VisitHistoryUpdateWithWhereUniqueWithoutVehicleInput[]
+  updateMany?: Prisma.VisitHistoryUpdateManyWithWhereWithoutVehicleInput | Prisma.VisitHistoryUpdateManyWithWhereWithoutVehicleInput[]
+  deleteMany?: Prisma.VisitHistoryScalarWhereInput | Prisma.VisitHistoryScalarWhereInput[]
+}
+
+export type VisitHistoryUncheckedUpdateManyWithoutVehicleNestedInput = {
+  create?: Prisma.XOR<Prisma.VisitHistoryCreateWithoutVehicleInput, Prisma.VisitHistoryUncheckedCreateWithoutVehicleInput> | Prisma.VisitHistoryCreateWithoutVehicleInput[] | Prisma.VisitHistoryUncheckedCreateWithoutVehicleInput[]
+  connectOrCreate?: Prisma.VisitHistoryCreateOrConnectWithoutVehicleInput | Prisma.VisitHistoryCreateOrConnectWithoutVehicleInput[]
+  upsert?: Prisma.VisitHistoryUpsertWithWhereUniqueWithoutVehicleInput | Prisma.VisitHistoryUpsertWithWhereUniqueWithoutVehicleInput[]
+  createMany?: Prisma.VisitHistoryCreateManyVehicleInputEnvelope
+  set?: Prisma.VisitHistoryWhereUniqueInput | Prisma.VisitHistoryWhereUniqueInput[]
+  disconnect?: Prisma.VisitHistoryWhereUniqueInput | Prisma.VisitHistoryWhereUniqueInput[]
+  delete?: Prisma.VisitHistoryWhereUniqueInput | Prisma.VisitHistoryWhereUniqueInput[]
+  connect?: Prisma.VisitHistoryWhereUniqueInput | Prisma.VisitHistoryWhereUniqueInput[]
+  update?: Prisma.VisitHistoryUpdateWithWhereUniqueWithoutVehicleInput | Prisma.VisitHistoryUpdateWithWhereUniqueWithoutVehicleInput[]
+  updateMany?: Prisma.VisitHistoryUpdateManyWithWhereWithoutVehicleInput | Prisma.VisitHistoryUpdateManyWithWhereWithoutVehicleInput[]
   deleteMany?: Prisma.VisitHistoryScalarWhereInput | Prisma.VisitHistoryScalarWhereInput[]
 }
 
@@ -730,6 +802,7 @@ export type VisitHistoryCreateWithoutUserInput = {
   reviewSmsSentAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  vehicle?: Prisma.ClientVehicleCreateNestedOneWithoutVisitsInput
   catalogServiceType?: Prisma.ServiceTypeCreateNestedOneWithoutVisitsInput
   pendingReviewSms?: Prisma.PendingReviewSmsCreateNestedOneWithoutVisitInput
   siteLead?: Prisma.SiteLeadCreateNestedOneWithoutVisitInput
@@ -737,6 +810,7 @@ export type VisitHistoryCreateWithoutUserInput = {
 
 export type VisitHistoryUncheckedCreateWithoutUserInput = {
   id?: number
+  vehicleId?: number | null
   visitDate: Date | string
   serviceType: string
   diskLink?: string | null
@@ -785,6 +859,7 @@ export type VisitHistoryScalarWhereInput = {
   NOT?: Prisma.VisitHistoryScalarWhereInput | Prisma.VisitHistoryScalarWhereInput[]
   id?: Prisma.IntFilter<"VisitHistory"> | number
   userId?: Prisma.IntFilter<"VisitHistory"> | number
+  vehicleId?: Prisma.IntNullableFilter<"VisitHistory"> | number | null
   visitDate?: Prisma.DateTimeFilter<"VisitHistory"> | Date | string
   serviceType?: Prisma.StringFilter<"VisitHistory"> | string
   diskLink?: Prisma.StringNullableFilter<"VisitHistory"> | string | null
@@ -797,6 +872,69 @@ export type VisitHistoryScalarWhereInput = {
   reviewSmsSentAt?: Prisma.DateTimeNullableFilter<"VisitHistory"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"VisitHistory"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"VisitHistory"> | Date | string
+}
+
+export type VisitHistoryCreateWithoutVehicleInput = {
+  visitDate: Date | string
+  serviceType: string
+  diskLink?: string | null
+  startsAt?: Date | string | null
+  endsAt?: Date | string | null
+  priceRub?: number | null
+  location?: $Enums.CrmLocation
+  managerName?: string | null
+  reviewSmsSentAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.CabinetUserCreateNestedOneWithoutVisitsInput
+  catalogServiceType?: Prisma.ServiceTypeCreateNestedOneWithoutVisitsInput
+  pendingReviewSms?: Prisma.PendingReviewSmsCreateNestedOneWithoutVisitInput
+  siteLead?: Prisma.SiteLeadCreateNestedOneWithoutVisitInput
+}
+
+export type VisitHistoryUncheckedCreateWithoutVehicleInput = {
+  id?: number
+  userId: number
+  visitDate: Date | string
+  serviceType: string
+  diskLink?: string | null
+  startsAt?: Date | string | null
+  endsAt?: Date | string | null
+  priceRub?: number | null
+  serviceTypeId?: number | null
+  location?: $Enums.CrmLocation
+  managerName?: string | null
+  reviewSmsSentAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  pendingReviewSms?: Prisma.PendingReviewSmsUncheckedCreateNestedOneWithoutVisitInput
+  siteLead?: Prisma.SiteLeadUncheckedCreateNestedOneWithoutVisitInput
+}
+
+export type VisitHistoryCreateOrConnectWithoutVehicleInput = {
+  where: Prisma.VisitHistoryWhereUniqueInput
+  create: Prisma.XOR<Prisma.VisitHistoryCreateWithoutVehicleInput, Prisma.VisitHistoryUncheckedCreateWithoutVehicleInput>
+}
+
+export type VisitHistoryCreateManyVehicleInputEnvelope = {
+  data: Prisma.VisitHistoryCreateManyVehicleInput | Prisma.VisitHistoryCreateManyVehicleInput[]
+  skipDuplicates?: boolean
+}
+
+export type VisitHistoryUpsertWithWhereUniqueWithoutVehicleInput = {
+  where: Prisma.VisitHistoryWhereUniqueInput
+  update: Prisma.XOR<Prisma.VisitHistoryUpdateWithoutVehicleInput, Prisma.VisitHistoryUncheckedUpdateWithoutVehicleInput>
+  create: Prisma.XOR<Prisma.VisitHistoryCreateWithoutVehicleInput, Prisma.VisitHistoryUncheckedCreateWithoutVehicleInput>
+}
+
+export type VisitHistoryUpdateWithWhereUniqueWithoutVehicleInput = {
+  where: Prisma.VisitHistoryWhereUniqueInput
+  data: Prisma.XOR<Prisma.VisitHistoryUpdateWithoutVehicleInput, Prisma.VisitHistoryUncheckedUpdateWithoutVehicleInput>
+}
+
+export type VisitHistoryUpdateManyWithWhereWithoutVehicleInput = {
+  where: Prisma.VisitHistoryScalarWhereInput
+  data: Prisma.XOR<Prisma.VisitHistoryUpdateManyMutationInput, Prisma.VisitHistoryUncheckedUpdateManyWithoutVehicleInput>
 }
 
 export type VisitHistoryCreateWithoutCatalogServiceTypeInput = {
@@ -812,6 +950,7 @@ export type VisitHistoryCreateWithoutCatalogServiceTypeInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.CabinetUserCreateNestedOneWithoutVisitsInput
+  vehicle?: Prisma.ClientVehicleCreateNestedOneWithoutVisitsInput
   pendingReviewSms?: Prisma.PendingReviewSmsCreateNestedOneWithoutVisitInput
   siteLead?: Prisma.SiteLeadCreateNestedOneWithoutVisitInput
 }
@@ -819,6 +958,7 @@ export type VisitHistoryCreateWithoutCatalogServiceTypeInput = {
 export type VisitHistoryUncheckedCreateWithoutCatalogServiceTypeInput = {
   id?: number
   userId: number
+  vehicleId?: number | null
   visitDate: Date | string
   serviceType: string
   diskLink?: string | null
@@ -873,6 +1013,7 @@ export type VisitHistoryCreateWithoutSiteLeadInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.CabinetUserCreateNestedOneWithoutVisitsInput
+  vehicle?: Prisma.ClientVehicleCreateNestedOneWithoutVisitsInput
   catalogServiceType?: Prisma.ServiceTypeCreateNestedOneWithoutVisitsInput
   pendingReviewSms?: Prisma.PendingReviewSmsCreateNestedOneWithoutVisitInput
 }
@@ -880,6 +1021,7 @@ export type VisitHistoryCreateWithoutSiteLeadInput = {
 export type VisitHistoryUncheckedCreateWithoutSiteLeadInput = {
   id?: number
   userId: number
+  vehicleId?: number | null
   visitDate: Date | string
   serviceType: string
   diskLink?: string | null
@@ -924,6 +1066,7 @@ export type VisitHistoryUpdateWithoutSiteLeadInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.CabinetUserUpdateOneRequiredWithoutVisitsNestedInput
+  vehicle?: Prisma.ClientVehicleUpdateOneWithoutVisitsNestedInput
   catalogServiceType?: Prisma.ServiceTypeUpdateOneWithoutVisitsNestedInput
   pendingReviewSms?: Prisma.PendingReviewSmsUpdateOneWithoutVisitNestedInput
 }
@@ -931,6 +1074,7 @@ export type VisitHistoryUpdateWithoutSiteLeadInput = {
 export type VisitHistoryUncheckedUpdateWithoutSiteLeadInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   userId?: Prisma.IntFieldUpdateOperationsInput | number
+  vehicleId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   serviceType?: Prisma.StringFieldUpdateOperationsInput | string
   diskLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -959,6 +1103,7 @@ export type VisitHistoryCreateWithoutPendingReviewSmsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.CabinetUserCreateNestedOneWithoutVisitsInput
+  vehicle?: Prisma.ClientVehicleCreateNestedOneWithoutVisitsInput
   catalogServiceType?: Prisma.ServiceTypeCreateNestedOneWithoutVisitsInput
   siteLead?: Prisma.SiteLeadCreateNestedOneWithoutVisitInput
 }
@@ -966,6 +1111,7 @@ export type VisitHistoryCreateWithoutPendingReviewSmsInput = {
 export type VisitHistoryUncheckedCreateWithoutPendingReviewSmsInput = {
   id?: number
   userId: number
+  vehicleId?: number | null
   visitDate: Date | string
   serviceType: string
   diskLink?: string | null
@@ -1010,6 +1156,7 @@ export type VisitHistoryUpdateWithoutPendingReviewSmsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.CabinetUserUpdateOneRequiredWithoutVisitsNestedInput
+  vehicle?: Prisma.ClientVehicleUpdateOneWithoutVisitsNestedInput
   catalogServiceType?: Prisma.ServiceTypeUpdateOneWithoutVisitsNestedInput
   siteLead?: Prisma.SiteLeadUpdateOneWithoutVisitNestedInput
 }
@@ -1017,6 +1164,7 @@ export type VisitHistoryUpdateWithoutPendingReviewSmsInput = {
 export type VisitHistoryUncheckedUpdateWithoutPendingReviewSmsInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   userId?: Prisma.IntFieldUpdateOperationsInput | number
+  vehicleId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   serviceType?: Prisma.StringFieldUpdateOperationsInput | string
   diskLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1034,6 +1182,7 @@ export type VisitHistoryUncheckedUpdateWithoutPendingReviewSmsInput = {
 
 export type VisitHistoryCreateManyUserInput = {
   id?: number
+  vehicleId?: number | null
   visitDate: Date | string
   serviceType: string
   diskLink?: string | null
@@ -1060,6 +1209,7 @@ export type VisitHistoryUpdateWithoutUserInput = {
   reviewSmsSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  vehicle?: Prisma.ClientVehicleUpdateOneWithoutVisitsNestedInput
   catalogServiceType?: Prisma.ServiceTypeUpdateOneWithoutVisitsNestedInput
   pendingReviewSms?: Prisma.PendingReviewSmsUpdateOneWithoutVisitNestedInput
   siteLead?: Prisma.SiteLeadUpdateOneWithoutVisitNestedInput
@@ -1067,6 +1217,7 @@ export type VisitHistoryUpdateWithoutUserInput = {
 
 export type VisitHistoryUncheckedUpdateWithoutUserInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
+  vehicleId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   serviceType?: Prisma.StringFieldUpdateOperationsInput | string
   diskLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1085,6 +1236,78 @@ export type VisitHistoryUncheckedUpdateWithoutUserInput = {
 
 export type VisitHistoryUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
+  vehicleId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  serviceType?: Prisma.StringFieldUpdateOperationsInput | string
+  diskLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  priceRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  serviceTypeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  location?: Prisma.EnumCrmLocationFieldUpdateOperationsInput | $Enums.CrmLocation
+  managerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewSmsSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type VisitHistoryCreateManyVehicleInput = {
+  id?: number
+  userId: number
+  visitDate: Date | string
+  serviceType: string
+  diskLink?: string | null
+  startsAt?: Date | string | null
+  endsAt?: Date | string | null
+  priceRub?: number | null
+  serviceTypeId?: number | null
+  location?: $Enums.CrmLocation
+  managerName?: string | null
+  reviewSmsSentAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type VisitHistoryUpdateWithoutVehicleInput = {
+  visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  serviceType?: Prisma.StringFieldUpdateOperationsInput | string
+  diskLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  priceRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  location?: Prisma.EnumCrmLocationFieldUpdateOperationsInput | $Enums.CrmLocation
+  managerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewSmsSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.CabinetUserUpdateOneRequiredWithoutVisitsNestedInput
+  catalogServiceType?: Prisma.ServiceTypeUpdateOneWithoutVisitsNestedInput
+  pendingReviewSms?: Prisma.PendingReviewSmsUpdateOneWithoutVisitNestedInput
+  siteLead?: Prisma.SiteLeadUpdateOneWithoutVisitNestedInput
+}
+
+export type VisitHistoryUncheckedUpdateWithoutVehicleInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  userId?: Prisma.IntFieldUpdateOperationsInput | number
+  visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  serviceType?: Prisma.StringFieldUpdateOperationsInput | string
+  diskLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  priceRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  serviceTypeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  location?: Prisma.EnumCrmLocationFieldUpdateOperationsInput | $Enums.CrmLocation
+  managerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewSmsSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pendingReviewSms?: Prisma.PendingReviewSmsUncheckedUpdateOneWithoutVisitNestedInput
+  siteLead?: Prisma.SiteLeadUncheckedUpdateOneWithoutVisitNestedInput
+}
+
+export type VisitHistoryUncheckedUpdateManyWithoutVehicleInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  userId?: Prisma.IntFieldUpdateOperationsInput | number
   visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   serviceType?: Prisma.StringFieldUpdateOperationsInput | string
   diskLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1102,6 +1325,7 @@ export type VisitHistoryUncheckedUpdateManyWithoutUserInput = {
 export type VisitHistoryCreateManyCatalogServiceTypeInput = {
   id?: number
   userId: number
+  vehicleId?: number | null
   visitDate: Date | string
   serviceType: string
   diskLink?: string | null
@@ -1128,6 +1352,7 @@ export type VisitHistoryUpdateWithoutCatalogServiceTypeInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.CabinetUserUpdateOneRequiredWithoutVisitsNestedInput
+  vehicle?: Prisma.ClientVehicleUpdateOneWithoutVisitsNestedInput
   pendingReviewSms?: Prisma.PendingReviewSmsUpdateOneWithoutVisitNestedInput
   siteLead?: Prisma.SiteLeadUpdateOneWithoutVisitNestedInput
 }
@@ -1135,6 +1360,7 @@ export type VisitHistoryUpdateWithoutCatalogServiceTypeInput = {
 export type VisitHistoryUncheckedUpdateWithoutCatalogServiceTypeInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   userId?: Prisma.IntFieldUpdateOperationsInput | number
+  vehicleId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   serviceType?: Prisma.StringFieldUpdateOperationsInput | string
   diskLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1153,6 +1379,7 @@ export type VisitHistoryUncheckedUpdateWithoutCatalogServiceTypeInput = {
 export type VisitHistoryUncheckedUpdateManyWithoutCatalogServiceTypeInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   userId?: Prisma.IntFieldUpdateOperationsInput | number
+  vehicleId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   serviceType?: Prisma.StringFieldUpdateOperationsInput | string
   diskLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1171,6 +1398,7 @@ export type VisitHistoryUncheckedUpdateManyWithoutCatalogServiceTypeInput = {
 export type VisitHistorySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
+  vehicleId?: boolean
   visitDate?: boolean
   serviceType?: boolean
   diskLink?: boolean
@@ -1184,6 +1412,7 @@ export type VisitHistorySelect<ExtArgs extends runtime.Types.Extensions.Internal
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.CabinetUserDefaultArgs<ExtArgs>
+  vehicle?: boolean | Prisma.VisitHistory$vehicleArgs<ExtArgs>
   catalogServiceType?: boolean | Prisma.VisitHistory$catalogServiceTypeArgs<ExtArgs>
   pendingReviewSms?: boolean | Prisma.VisitHistory$pendingReviewSmsArgs<ExtArgs>
   siteLead?: boolean | Prisma.VisitHistory$siteLeadArgs<ExtArgs>
@@ -1192,6 +1421,7 @@ export type VisitHistorySelect<ExtArgs extends runtime.Types.Extensions.Internal
 export type VisitHistorySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
+  vehicleId?: boolean
   visitDate?: boolean
   serviceType?: boolean
   diskLink?: boolean
@@ -1205,12 +1435,14 @@ export type VisitHistorySelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.CabinetUserDefaultArgs<ExtArgs>
+  vehicle?: boolean | Prisma.VisitHistory$vehicleArgs<ExtArgs>
   catalogServiceType?: boolean | Prisma.VisitHistory$catalogServiceTypeArgs<ExtArgs>
 }, ExtArgs["result"]["visitHistory"]>
 
 export type VisitHistorySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
+  vehicleId?: boolean
   visitDate?: boolean
   serviceType?: boolean
   diskLink?: boolean
@@ -1224,12 +1456,14 @@ export type VisitHistorySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.CabinetUserDefaultArgs<ExtArgs>
+  vehicle?: boolean | Prisma.VisitHistory$vehicleArgs<ExtArgs>
   catalogServiceType?: boolean | Prisma.VisitHistory$catalogServiceTypeArgs<ExtArgs>
 }, ExtArgs["result"]["visitHistory"]>
 
 export type VisitHistorySelectScalar = {
   id?: boolean
   userId?: boolean
+  vehicleId?: boolean
   visitDate?: boolean
   serviceType?: boolean
   diskLink?: boolean
@@ -1244,19 +1478,22 @@ export type VisitHistorySelectScalar = {
   updatedAt?: boolean
 }
 
-export type VisitHistoryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "visitDate" | "serviceType" | "diskLink" | "startsAt" | "endsAt" | "priceRub" | "serviceTypeId" | "location" | "managerName" | "reviewSmsSentAt" | "createdAt" | "updatedAt", ExtArgs["result"]["visitHistory"]>
+export type VisitHistoryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "vehicleId" | "visitDate" | "serviceType" | "diskLink" | "startsAt" | "endsAt" | "priceRub" | "serviceTypeId" | "location" | "managerName" | "reviewSmsSentAt" | "createdAt" | "updatedAt", ExtArgs["result"]["visitHistory"]>
 export type VisitHistoryInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.CabinetUserDefaultArgs<ExtArgs>
+  vehicle?: boolean | Prisma.VisitHistory$vehicleArgs<ExtArgs>
   catalogServiceType?: boolean | Prisma.VisitHistory$catalogServiceTypeArgs<ExtArgs>
   pendingReviewSms?: boolean | Prisma.VisitHistory$pendingReviewSmsArgs<ExtArgs>
   siteLead?: boolean | Prisma.VisitHistory$siteLeadArgs<ExtArgs>
 }
 export type VisitHistoryIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.CabinetUserDefaultArgs<ExtArgs>
+  vehicle?: boolean | Prisma.VisitHistory$vehicleArgs<ExtArgs>
   catalogServiceType?: boolean | Prisma.VisitHistory$catalogServiceTypeArgs<ExtArgs>
 }
 export type VisitHistoryIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.CabinetUserDefaultArgs<ExtArgs>
+  vehicle?: boolean | Prisma.VisitHistory$vehicleArgs<ExtArgs>
   catalogServiceType?: boolean | Prisma.VisitHistory$catalogServiceTypeArgs<ExtArgs>
 }
 
@@ -1264,6 +1501,7 @@ export type $VisitHistoryPayload<ExtArgs extends runtime.Types.Extensions.Intern
   name: "VisitHistory"
   objects: {
     user: Prisma.$CabinetUserPayload<ExtArgs>
+    vehicle: Prisma.$ClientVehiclePayload<ExtArgs> | null
     catalogServiceType: Prisma.$ServiceTypePayload<ExtArgs> | null
     pendingReviewSms: Prisma.$PendingReviewSmsPayload<ExtArgs> | null
     siteLead: Prisma.$SiteLeadPayload<ExtArgs> | null
@@ -1271,6 +1509,10 @@ export type $VisitHistoryPayload<ExtArgs extends runtime.Types.Extensions.Intern
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
     userId: number
+    /**
+     * * Автомобиль, по которому визит / обслуживание
+     */
+    vehicleId: number | null
     visitDate: Date
     serviceType: string
     diskLink: string | null
@@ -1684,6 +1926,7 @@ readonly fields: VisitHistoryFieldRefs;
 export interface Prisma__VisitHistoryClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   user<T extends Prisma.CabinetUserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CabinetUserDefaultArgs<ExtArgs>>): Prisma.Prisma__CabinetUserClient<runtime.Types.Result.GetResult<Prisma.$CabinetUserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  vehicle<T extends Prisma.VisitHistory$vehicleArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.VisitHistory$vehicleArgs<ExtArgs>>): Prisma.Prisma__ClientVehicleClient<runtime.Types.Result.GetResult<Prisma.$ClientVehiclePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   catalogServiceType<T extends Prisma.VisitHistory$catalogServiceTypeArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.VisitHistory$catalogServiceTypeArgs<ExtArgs>>): Prisma.Prisma__ServiceTypeClient<runtime.Types.Result.GetResult<Prisma.$ServiceTypePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   pendingReviewSms<T extends Prisma.VisitHistory$pendingReviewSmsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.VisitHistory$pendingReviewSmsArgs<ExtArgs>>): Prisma.Prisma__PendingReviewSmsClient<runtime.Types.Result.GetResult<Prisma.$PendingReviewSmsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   siteLead<T extends Prisma.VisitHistory$siteLeadArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.VisitHistory$siteLeadArgs<ExtArgs>>): Prisma.Prisma__SiteLeadClient<runtime.Types.Result.GetResult<Prisma.$SiteLeadPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
@@ -1718,6 +1961,7 @@ export interface Prisma__VisitHistoryClient<T, Null = never, ExtArgs extends run
 export interface VisitHistoryFieldRefs {
   readonly id: Prisma.FieldRef<"VisitHistory", 'Int'>
   readonly userId: Prisma.FieldRef<"VisitHistory", 'Int'>
+  readonly vehicleId: Prisma.FieldRef<"VisitHistory", 'Int'>
   readonly visitDate: Prisma.FieldRef<"VisitHistory", 'DateTime'>
   readonly serviceType: Prisma.FieldRef<"VisitHistory", 'String'>
   readonly diskLink: Prisma.FieldRef<"VisitHistory", 'String'>
@@ -2123,6 +2367,25 @@ export type VisitHistoryDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.
    * Limit how many VisitHistories to delete.
    */
   limit?: number
+}
+
+/**
+ * VisitHistory.vehicle
+ */
+export type VisitHistory$vehicleArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ClientVehicle
+   */
+  select?: Prisma.ClientVehicleSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ClientVehicle
+   */
+  omit?: Prisma.ClientVehicleOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ClientVehicleInclude<ExtArgs> | null
+  where?: Prisma.ClientVehicleWhereInput
 }
 
 /**

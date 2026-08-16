@@ -7,18 +7,46 @@ import {
 } from "@nestjs/common";
 import { CrmLocation, SiteLeadStatus } from "../../../generated/prisma/client";
 import { PrismaService } from "../../prisma/prisma.service";
+import { ClientVehiclesService } from "../../client-vehicles/client-vehicles.service";
 import { CrmLeadsService } from "../leads/crm-leads.service";
 import {
   DEFAULT_CRM_LOCATION,
   CRM_LOCATIONS,
   type CrmLocationCode,
 } from "../common/crm-location";
+import { formatVehicleLabel } from "../common/crm-format.util";
 import { CrmSettingsService } from "../settings/crm-settings.service";
 import { CrmSmsService } from "../sms/crm-sms.service";
 import {
   CreateAppointmentDto,
   UpdateAppointmentDto,
 } from "./dto/appointment.dto";
+
+const appointmentInclude = {
+  user: {
+    select: {
+      id: true,
+      phone: true,
+      firstName: true,
+      lastName: true,
+      patronymic: true,
+      customCar: true,
+      vin: true,
+      car: { include: { brand: { select: { name: true } } } },
+    },
+  },
+  vehicle: {
+    include: {
+      car: {
+        select: {
+          model: true,
+          brand: { select: { name: true } },
+        },
+      },
+    },
+  },
+  catalogServiceType: true,
+} as const;
 
 @Injectable()
 export class CrmAppointmentsService {
@@ -29,6 +57,7 @@ export class CrmAppointmentsService {
     private readonly crmSms: CrmSmsService,
     private readonly leads: CrmLeadsService,
     private readonly settings: CrmSettingsService,
+    private readonly vehicles: ClientVehiclesService,
   ) {}
 
   async list(from?: string, to?: string, location?: string) {
@@ -48,21 +77,7 @@ export class CrmAppointmentsService {
     const rows = await this.prisma.visitHistory.findMany({
       where,
       orderBy: { startsAt: "asc" },
-      include: {
-        user: {
-          select: {
-            id: true,
-            phone: true,
-            firstName: true,
-            lastName: true,
-            patronymic: true,
-            customCar: true,
-            vin: true,
-            car: { include: { brand: { select: { name: true } } } },
-          },
-        },
-        catalogServiceType: true,
-      },
+      include: appointmentInclude,
     });
 
     return rows.map((r) => this.toEvent(r));
@@ -74,6 +89,8 @@ export class CrmAppointmentsService {
     this.assertRange(startsAt, endsAt);
 
     await this.ensureClient(dto.clientId);
+    const vehicleId = await this.resolveVehicleId(dto.clientId, dto.vehicleId);
+
     const location = (dto.location ?? DEFAULT_CRM_LOCATION) as CrmLocation;
     await this.settings.assertDayCapacity(startsAt, {
       location: location as CrmLocationCode,
@@ -84,24 +101,9 @@ export class CrmAppointmentsService {
       this.leads.assertCanSchedule(lead);
     }
 
-    const include = {
-      user: {
-        select: {
-          id: true,
-          phone: true,
-          firstName: true,
-          lastName: true,
-          patronymic: true,
-          customCar: true,
-          vin: true,
-          car: { include: { brand: { select: { name: true } } } },
-        },
-      },
-      catalogServiceType: true,
-    } as const;
-
     const visitData = {
       userId: dto.clientId,
+      vehicleId,
       visitDate: startsAt,
       startsAt,
       endsAt,
@@ -145,12 +147,12 @@ export class CrmAppointmentsService {
 
           return tx.visitHistory.findUniqueOrThrow({
             where: { id: visit.id },
-            include,
+            include: appointmentInclude,
           });
         })
       : await this.prisma.visitHistory.create({
           data: visitData,
-          include,
+          include: appointmentInclude,
         });
 
     let smsError: string | null = null;
@@ -174,7 +176,20 @@ export class CrmAppointmentsService {
     });
     if (!existing) throw new NotFoundException("Запись не найдена");
 
+    const clientId = dto.clientId ?? existing.userId;
     if (dto.clientId) await this.ensureClient(dto.clientId);
+
+    let vehicleId = existing.vehicleId;
+    if (dto.vehicleId !== undefined) {
+      if (dto.vehicleId === null) {
+        vehicleId = null;
+      } else {
+        await this.vehicles.assertOwnedActive(clientId, dto.vehicleId);
+        vehicleId = dto.vehicleId;
+      }
+    } else if (dto.clientId && dto.clientId !== existing.userId) {
+      vehicleId = await this.resolveVehicleId(clientId, undefined);
+    }
 
     const startsAt = dto.startsAt ? new Date(dto.startsAt) : existing.startsAt;
     const endsAt = dto.endsAt ? new Date(dto.endsAt) : existing.endsAt;
@@ -191,6 +206,7 @@ export class CrmAppointmentsService {
       where: { id },
       data: {
         ...(dto.clientId !== undefined && { userId: dto.clientId }),
+        vehicleId,
         ...(dto.startsAt !== undefined && {
           startsAt,
           visitDate: startsAt!,
@@ -209,28 +225,16 @@ export class CrmAppointmentsService {
           diskLink: dto.diskLink?.trim() || null,
         }),
       },
-      include: {
-        user: {
-          select: {
-            id: true,
-            phone: true,
-            firstName: true,
-            lastName: true,
-            patronymic: true,
-            customCar: true,
-            vin: true,
-            car: { include: { brand: { select: { name: true } } } },
-          },
-        },
-        catalogServiceType: true,
-      },
+      include: appointmentInclude,
     });
 
     return this.toEvent(row);
   }
 
   async remove(id: number) {
-    const existing = await this.prisma.visitHistory.findUnique({ where: { id } });
+    const existing = await this.prisma.visitHistory.findUnique({
+      where: { id },
+    });
     if (!existing) throw new NotFoundException("Запись не найдена");
     await this.prisma.visitHistory.delete({ where: { id } });
     return { message: "Удалено" };
@@ -246,6 +250,13 @@ export class CrmAppointmentsService {
             car: { include: { brand: { select: { name: true } } } },
           },
         },
+        vehicle: {
+          include: {
+            car: {
+              select: { model: true, brand: { select: { name: true } } },
+            },
+          },
+        },
       },
     });
     if (!visit) throw new NotFoundException("Запись не найдена");
@@ -254,21 +265,7 @@ export class CrmAppointmentsService {
 
     const updated = await this.prisma.visitHistory.findUnique({
       where: { id },
-      include: {
-        user: {
-          select: {
-            id: true,
-            phone: true,
-            firstName: true,
-            lastName: true,
-            patronymic: true,
-            customCar: true,
-            vin: true,
-            car: { include: { brand: { select: { name: true } } } },
-          },
-        },
-        catalogServiceType: true,
-      },
+      include: appointmentInclude,
     });
     return this.toEvent(updated!);
   }
@@ -284,9 +281,26 @@ export class CrmAppointmentsService {
     if (!u) throw new NotFoundException("Клиент не найден");
   }
 
+  /** If client has vehicles, vehicleId is required (or defaults to primary). */
+  private async resolveVehicleId(
+    clientId: number,
+    vehicleId?: number,
+  ): Promise<number | null> {
+    if (vehicleId != null) {
+      await this.vehicles.assertOwnedActive(clientId, vehicleId);
+      return vehicleId;
+    }
+
+    const list = await this.vehicles.listForUser(clientId);
+    if (list.length === 0) return null;
+    const primary = list.find((v) => v.isPrimary) ?? list[0];
+    return primary.id;
+  }
+
   private toEvent(row: {
     id: number;
     userId: number;
+    vehicleId?: number | null;
     startsAt: Date | null;
     endsAt: Date | null;
     visitDate: Date;
@@ -306,15 +320,34 @@ export class CrmAppointmentsService {
       vin: string | null;
       car?: { model: string; brand?: { name: string } | null } | null;
     };
+    vehicle?: {
+      id: number;
+      customLabel: string | null;
+      vin: string | null;
+      car?: { model: string; brand?: { name: string } | null } | null;
+    } | null;
     catalogServiceType?: { id: number; name: string } | null;
   }) {
     const start = row.startsAt ?? row.visitDate;
     const end =
-      row.endsAt ??
-      new Date(start.getTime() + 60 * 60 * 1000);
+      row.endsAt ?? new Date(start.getTime() + 60 * 60 * 1000);
+    const vehicleLabel = row.vehicle
+      ? formatVehicleLabel(row.vehicle)
+      : null;
     return {
       id: row.id,
       clientId: row.userId,
+      vehicleId: row.vehicleId ?? null,
+      vehicle: row.vehicle
+        ? {
+            id: row.vehicle.id,
+            label: vehicleLabel,
+            vin: row.vehicle.vin,
+            customLabel: row.vehicle.customLabel,
+            carBrand: row.vehicle.car?.brand?.name ?? null,
+            carModelName: row.vehicle.car?.model ?? null,
+          }
+        : null,
       client: row.user,
       startsAt: start.toISOString(),
       endsAt: end.toISOString(),

@@ -98,6 +98,11 @@ export type PendingRegistration = Prisma.PendingRegistrationModel
  */
 export type CabinetUser = Prisma.CabinetUserModel
 /**
+ * Model ClientVehicle
+ * * Автомобиль клиента (экземпляр); каталог Car — только марка/модель/сегмент.
+ */
+export type ClientVehicle = Prisma.ClientVehicleModel
+/**
  * Model UserRefreshToken
  * 
  */
@@ -169,6 +174,6 @@ export type CompanySettings = Prisma.CompanySettingsModel
 export type SmsLog = Prisma.SmsLogModel
 /**
  * Model CrmDayLimit
- * * Лимит записей в календарь на день (проставляет менеджер).
+ * * Лимит записей в календарь на день и филиал.
  */
 export type CrmDayLimit = Prisma.CrmDayLimitModel

@@ -14,7 +14,7 @@ import type * as Prisma from "../internal/prismaNamespace"
 
 /**
  * Model CrmDayLimit
- * * Лимит записей в календарь на день (проставляет менеджер).
+ * * Лимит записей в календарь на день и филиал.
  */
 export type CrmDayLimitModel = runtime.Types.Result.DefaultSelection<Prisma.$CrmDayLimitPayload>
 
@@ -39,6 +39,7 @@ export type CrmDayLimitSumAggregateOutputType = {
 export type CrmDayLimitMinAggregateOutputType = {
   id: number | null
   date: Date | null
+  location: $Enums.CrmLocation | null
   maxAppointments: number | null
   note: string | null
   updatedAt: Date | null
@@ -47,6 +48,7 @@ export type CrmDayLimitMinAggregateOutputType = {
 export type CrmDayLimitMaxAggregateOutputType = {
   id: number | null
   date: Date | null
+  location: $Enums.CrmLocation | null
   maxAppointments: number | null
   note: string | null
   updatedAt: Date | null
@@ -55,6 +57,7 @@ export type CrmDayLimitMaxAggregateOutputType = {
 export type CrmDayLimitCountAggregateOutputType = {
   id: number
   date: number
+  location: number
   maxAppointments: number
   note: number
   updatedAt: number
@@ -75,6 +78,7 @@ export type CrmDayLimitSumAggregateInputType = {
 export type CrmDayLimitMinAggregateInputType = {
   id?: true
   date?: true
+  location?: true
   maxAppointments?: true
   note?: true
   updatedAt?: true
@@ -83,6 +87,7 @@ export type CrmDayLimitMinAggregateInputType = {
 export type CrmDayLimitMaxAggregateInputType = {
   id?: true
   date?: true
+  location?: true
   maxAppointments?: true
   note?: true
   updatedAt?: true
@@ -91,6 +96,7 @@ export type CrmDayLimitMaxAggregateInputType = {
 export type CrmDayLimitCountAggregateInputType = {
   id?: true
   date?: true
+  location?: true
   maxAppointments?: true
   note?: true
   updatedAt?: true
@@ -186,6 +192,7 @@ export type CrmDayLimitGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inte
 export type CrmDayLimitGroupByOutputType = {
   id: number
   date: Date
+  location: $Enums.CrmLocation
   maxAppointments: number
   note: string | null
   updatedAt: Date
@@ -217,6 +224,7 @@ export type CrmDayLimitWhereInput = {
   NOT?: Prisma.CrmDayLimitWhereInput | Prisma.CrmDayLimitWhereInput[]
   id?: Prisma.IntFilter<"CrmDayLimit"> | number
   date?: Prisma.DateTimeFilter<"CrmDayLimit"> | Date | string
+  location?: Prisma.EnumCrmLocationFilter<"CrmDayLimit"> | $Enums.CrmLocation
   maxAppointments?: Prisma.IntFilter<"CrmDayLimit"> | number
   note?: Prisma.StringNullableFilter<"CrmDayLimit"> | string | null
   updatedAt?: Prisma.DateTimeFilter<"CrmDayLimit"> | Date | string
@@ -225,6 +233,7 @@ export type CrmDayLimitWhereInput = {
 export type CrmDayLimitOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   date?: Prisma.SortOrder
+  location?: Prisma.SortOrder
   maxAppointments?: Prisma.SortOrder
   note?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -232,18 +241,21 @@ export type CrmDayLimitOrderByWithRelationInput = {
 
 export type CrmDayLimitWhereUniqueInput = Prisma.AtLeast<{
   id?: number
-  date?: Date | string
+  date_location?: Prisma.CrmDayLimitDateLocationCompoundUniqueInput
   AND?: Prisma.CrmDayLimitWhereInput | Prisma.CrmDayLimitWhereInput[]
   OR?: Prisma.CrmDayLimitWhereInput[]
   NOT?: Prisma.CrmDayLimitWhereInput | Prisma.CrmDayLimitWhereInput[]
+  date?: Prisma.DateTimeFilter<"CrmDayLimit"> | Date | string
+  location?: Prisma.EnumCrmLocationFilter<"CrmDayLimit"> | $Enums.CrmLocation
   maxAppointments?: Prisma.IntFilter<"CrmDayLimit"> | number
   note?: Prisma.StringNullableFilter<"CrmDayLimit"> | string | null
   updatedAt?: Prisma.DateTimeFilter<"CrmDayLimit"> | Date | string
-}, "id" | "date">
+}, "id" | "date_location">
 
 export type CrmDayLimitOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   date?: Prisma.SortOrder
+  location?: Prisma.SortOrder
   maxAppointments?: Prisma.SortOrder
   note?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -260,6 +272,7 @@ export type CrmDayLimitScalarWhereWithAggregatesInput = {
   NOT?: Prisma.CrmDayLimitScalarWhereWithAggregatesInput | Prisma.CrmDayLimitScalarWhereWithAggregatesInput[]
   id?: Prisma.IntWithAggregatesFilter<"CrmDayLimit"> | number
   date?: Prisma.DateTimeWithAggregatesFilter<"CrmDayLimit"> | Date | string
+  location?: Prisma.EnumCrmLocationWithAggregatesFilter<"CrmDayLimit"> | $Enums.CrmLocation
   maxAppointments?: Prisma.IntWithAggregatesFilter<"CrmDayLimit"> | number
   note?: Prisma.StringNullableWithAggregatesFilter<"CrmDayLimit"> | string | null
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"CrmDayLimit"> | Date | string
@@ -267,6 +280,7 @@ export type CrmDayLimitScalarWhereWithAggregatesInput = {
 
 export type CrmDayLimitCreateInput = {
   date: Date | string
+  location: $Enums.CrmLocation
   maxAppointments: number
   note?: string | null
   updatedAt?: Date | string
@@ -275,6 +289,7 @@ export type CrmDayLimitCreateInput = {
 export type CrmDayLimitUncheckedCreateInput = {
   id?: number
   date: Date | string
+  location: $Enums.CrmLocation
   maxAppointments: number
   note?: string | null
   updatedAt?: Date | string
@@ -282,6 +297,7 @@ export type CrmDayLimitUncheckedCreateInput = {
 
 export type CrmDayLimitUpdateInput = {
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  location?: Prisma.EnumCrmLocationFieldUpdateOperationsInput | $Enums.CrmLocation
   maxAppointments?: Prisma.IntFieldUpdateOperationsInput | number
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -290,6 +306,7 @@ export type CrmDayLimitUpdateInput = {
 export type CrmDayLimitUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  location?: Prisma.EnumCrmLocationFieldUpdateOperationsInput | $Enums.CrmLocation
   maxAppointments?: Prisma.IntFieldUpdateOperationsInput | number
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -298,6 +315,7 @@ export type CrmDayLimitUncheckedUpdateInput = {
 export type CrmDayLimitCreateManyInput = {
   id?: number
   date: Date | string
+  location: $Enums.CrmLocation
   maxAppointments: number
   note?: string | null
   updatedAt?: Date | string
@@ -305,6 +323,7 @@ export type CrmDayLimitCreateManyInput = {
 
 export type CrmDayLimitUpdateManyMutationInput = {
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  location?: Prisma.EnumCrmLocationFieldUpdateOperationsInput | $Enums.CrmLocation
   maxAppointments?: Prisma.IntFieldUpdateOperationsInput | number
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -313,14 +332,21 @@ export type CrmDayLimitUpdateManyMutationInput = {
 export type CrmDayLimitUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  location?: Prisma.EnumCrmLocationFieldUpdateOperationsInput | $Enums.CrmLocation
   maxAppointments?: Prisma.IntFieldUpdateOperationsInput | number
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
+export type CrmDayLimitDateLocationCompoundUniqueInput = {
+  date: Date | string
+  location: $Enums.CrmLocation
+}
+
 export type CrmDayLimitCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   date?: Prisma.SortOrder
+  location?: Prisma.SortOrder
   maxAppointments?: Prisma.SortOrder
   note?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -334,6 +360,7 @@ export type CrmDayLimitAvgOrderByAggregateInput = {
 export type CrmDayLimitMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   date?: Prisma.SortOrder
+  location?: Prisma.SortOrder
   maxAppointments?: Prisma.SortOrder
   note?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -342,6 +369,7 @@ export type CrmDayLimitMaxOrderByAggregateInput = {
 export type CrmDayLimitMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   date?: Prisma.SortOrder
+  location?: Prisma.SortOrder
   maxAppointments?: Prisma.SortOrder
   note?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -357,6 +385,7 @@ export type CrmDayLimitSumOrderByAggregateInput = {
 export type CrmDayLimitSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   date?: boolean
+  location?: boolean
   maxAppointments?: boolean
   note?: boolean
   updatedAt?: boolean
@@ -365,6 +394,7 @@ export type CrmDayLimitSelect<ExtArgs extends runtime.Types.Extensions.InternalA
 export type CrmDayLimitSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   date?: boolean
+  location?: boolean
   maxAppointments?: boolean
   note?: boolean
   updatedAt?: boolean
@@ -373,6 +403,7 @@ export type CrmDayLimitSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
 export type CrmDayLimitSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   date?: boolean
+  location?: boolean
   maxAppointments?: boolean
   note?: boolean
   updatedAt?: boolean
@@ -381,12 +412,13 @@ export type CrmDayLimitSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
 export type CrmDayLimitSelectScalar = {
   id?: boolean
   date?: boolean
+  location?: boolean
   maxAppointments?: boolean
   note?: boolean
   updatedAt?: boolean
 }
 
-export type CrmDayLimitOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "date" | "maxAppointments" | "note" | "updatedAt", ExtArgs["result"]["crmDayLimit"]>
+export type CrmDayLimitOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "date" | "location" | "maxAppointments" | "note" | "updatedAt", ExtArgs["result"]["crmDayLimit"]>
 
 export type $CrmDayLimitPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "CrmDayLimit"
@@ -394,6 +426,7 @@ export type $CrmDayLimitPayload<ExtArgs extends runtime.Types.Extensions.Interna
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
     date: Date
+    location: $Enums.CrmLocation
     maxAppointments: number
     note: string | null
     updatedAt: Date
@@ -822,6 +855,7 @@ export interface Prisma__CrmDayLimitClient<T, Null = never, ExtArgs extends runt
 export interface CrmDayLimitFieldRefs {
   readonly id: Prisma.FieldRef<"CrmDayLimit", 'Int'>
   readonly date: Prisma.FieldRef<"CrmDayLimit", 'DateTime'>
+  readonly location: Prisma.FieldRef<"CrmDayLimit", 'CrmLocation'>
   readonly maxAppointments: Prisma.FieldRef<"CrmDayLimit", 'Int'>
   readonly note: Prisma.FieldRef<"CrmDayLimit", 'String'>
   readonly updatedAt: Prisma.FieldRef<"CrmDayLimit", 'DateTime'>

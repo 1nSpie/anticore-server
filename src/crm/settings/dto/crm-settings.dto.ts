@@ -1,5 +1,6 @@
-import { IsArray, IsDateString, IsInt, IsOptional, IsString, MaxLength, Min, ValidateNested } from "class-validator";
+import { IsArray, IsDateString, IsIn, IsInt, IsOptional, IsString, MaxLength, Min, ValidateNested } from "class-validator";
 import { Type } from "class-transformer";
+import { CRM_LOCATIONS } from "../../common/crm-location";
 
 export class UpdateSmsTemplatesDto {
   @IsOptional()
@@ -59,6 +60,9 @@ export class DayLimitItemDto {
 }
 
 export class UpsertDayLimitsDto {
+  @IsIn([...CRM_LOCATIONS])
+  location!: (typeof CRM_LOCATIONS)[number];
+
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => DayLimitItemDto)

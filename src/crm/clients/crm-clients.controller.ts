@@ -41,8 +41,15 @@ export class CrmClientsController {
   }
 
   @Get(":id")
-  get(@Param("id", ParseIntPipe) id: number) {
-    return this.clients.get(id);
+  get(
+    @Param("id", ParseIntPipe) id: number,
+    @Query("vehicleId") vehicleIdRaw?: string,
+  ) {
+    const vehicleId =
+      vehicleIdRaw && /^\d+$/.test(vehicleIdRaw)
+        ? Number(vehicleIdRaw)
+        : undefined;
+    return this.clients.get(id, vehicleId);
   }
 
   @Post()

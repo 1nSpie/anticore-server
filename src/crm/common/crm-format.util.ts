@@ -23,23 +23,53 @@ export function formatCarModel(user: {
   return "";
 }
 
+export function formatVehicleLabel(vehicle: {
+  customLabel?: string | null;
+  car?: { model: string; brand?: { name: string } | null } | null;
+}): string {
+  if (vehicle.customLabel?.trim()) return vehicle.customLabel.trim();
+  if (vehicle.car) {
+    const brand = vehicle.car.brand?.name;
+    return brand ? `${brand} ${vehicle.car.model}` : vehicle.car.model;
+  }
+  return "";
+}
+
 export function validateVin(vin: string): string {
   return validateVinStrict(vin);
 }
 
 export { normalizeVin };
 
+const MOSCOW_TZ = "Europe/Moscow";
+
+/** Дата ДД.ММ.ГГГГ в часовом поясе Москвы (не сервера). */
 export function formatDateRu(d: Date): string {
-  const dd = String(d.getDate()).padStart(2, "0");
-  const mm = String(d.getMonth() + 1).padStart(2, "0");
-  const yyyy = d.getFullYear();
-  return `${dd}.${mm}.${yyyy}`;
+  const parts = new Intl.DateTimeFormat("en-GB", {
+    timeZone: MOSCOW_TZ,
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  }).formatToParts(d);
+  const day = parts.find((p) => p.type === "day")?.value ?? "01";
+  const month = parts.find((p) => p.type === "month")?.value ?? "01";
+  const year = parts.find((p) => p.type === "year")?.value ?? "1970";
+  return `${day}.${month}.${year}`;
 }
 
+/** Время ЧЧ:ММ в часовом поясе Москвы (не сервера). */
 export function formatTimeRu(d: Date): string {
-  const hh = String(d.getHours()).padStart(2, "0");
-  const mi = String(d.getMinutes()).padStart(2, "0");
-  return `${hh}:${mi}`;
+  const parts = new Intl.DateTimeFormat("en-GB", {
+    timeZone: MOSCOW_TZ,
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  }).formatToParts(d);
+  let hour = parts.find((p) => p.type === "hour")?.value ?? "00";
+  const minute = parts.find((p) => p.type === "minute")?.value ?? "00";
+  // Node/ICU иногда отдаёт "24" для полуночи
+  if (hour === "24") hour = "00";
+  return `${hour.padStart(2, "0")}:${minute.padStart(2, "0")}`;
 }
 
 export type SmsPlaceholderCtx = {

@@ -54,8 +54,9 @@ export class CrmSettingsController {
   getDayLimits(
     @Query("year", ParseIntPipe) year: number,
     @Query("month", ParseIntPipe) month: number,
+    @Query("location") location: string,
   ) {
-    return this.settings.getDayLimits(year, month);
+    return this.settings.getDayLimits(year, month, location);
   }
 
   @Put("day-limits")
@@ -64,7 +65,10 @@ export class CrmSettingsController {
   }
 
   @Delete("day-limits/:date")
-  deleteDayLimit(@Param("date") date: string) {
-    return this.settings.deleteDayLimit(date);
+  deleteDayLimit(
+    @Param("date") date: string,
+    @Query("location") location: string,
+  ) {
+    return this.settings.deleteDayLimit(date, location);
   }
 }

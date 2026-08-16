@@ -63,6 +63,7 @@ export const ModelName = {
   WorkImage: 'WorkImage',
   PendingRegistration: 'PendingRegistration',
   CabinetUser: 'CabinetUser',
+  ClientVehicle: 'ClientVehicle',
   UserRefreshToken: 'UserRefreshToken',
   SmsCode: 'SmsCode',
   UserDocument: 'UserDocument',
@@ -263,6 +264,21 @@ export const CabinetUserScalarFieldEnum = {
 export type CabinetUserScalarFieldEnum = (typeof CabinetUserScalarFieldEnum)[keyof typeof CabinetUserScalarFieldEnum]
 
 
+export const ClientVehicleScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  carId: 'carId',
+  customLabel: 'customLabel',
+  vin: 'vin',
+  isPrimary: 'isPrimary',
+  archivedAt: 'archivedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ClientVehicleScalarFieldEnum = (typeof ClientVehicleScalarFieldEnum)[keyof typeof ClientVehicleScalarFieldEnum]
+
+
 export const UserRefreshTokenScalarFieldEnum = {
   id: 'id',
   tokenHash: 'tokenHash',
@@ -336,6 +352,7 @@ export type SiteLeadScalarFieldEnum = (typeof SiteLeadScalarFieldEnum)[keyof typ
 export const VisitHistoryScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
+  vehicleId: 'vehicleId',
   visitDate: 'visitDate',
   serviceType: 'serviceType',
   diskLink: 'diskLink',
@@ -440,6 +457,7 @@ export type SmsLogScalarFieldEnum = (typeof SmsLogScalarFieldEnum)[keyof typeof 
 export const CrmDayLimitScalarFieldEnum = {
   id: 'id',
   date: 'date',
+  location: 'location',
   maxAppointments: 'maxAppointments',
   note: 'note',
   updatedAt: 'updatedAt'

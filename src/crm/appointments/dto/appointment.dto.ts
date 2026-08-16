@@ -6,6 +6,7 @@ import {
   IsString,
   MaxLength,
   Min,
+  ValidateIf,
 } from "class-validator";
 import { CRM_LOCATIONS } from "../../common/crm-location";
 
@@ -13,6 +14,12 @@ export class CreateAppointmentDto {
   @IsInt()
   @Min(1)
   clientId!: number;
+
+  /** Автомобиль клиента; обязателен, если у клиента есть авто. */
+  @IsOptional()
+  @IsInt()
+  @Min(1)
+  vehicleId?: number;
 
   @IsDateString()
   startsAt!: string;
@@ -53,6 +60,12 @@ export class UpdateAppointmentDto {
   @IsInt()
   @Min(1)
   clientId?: number;
+
+  @IsOptional()
+  @ValidateIf((_, v) => v !== null && v !== undefined)
+  @IsInt()
+  @Min(1)
+  vehicleId?: number | null;
 
   @IsOptional()
   @IsDateString()

@@ -8,10 +8,12 @@ import { randomBytes } from "crypto";
 import { Prisma } from "../../../generated/prisma/client";
 import { PrismaService } from "../../prisma/prisma.service";
 import { CabinetAuthService } from "../../cabinet/auth/cabinet-auth.service";
+import { ClientVehiclesService } from "../../client-vehicles/client-vehicles.service";
 import { normalizePhoneRu } from "../../cabinet/common/phone.util";
 import {
   formatCarModel,
   formatClientFio,
+  formatVehicleLabel,
   validateVin,
 } from "../common/crm-format.util";
 import { CrmSmsService } from "../sms/crm-sms.service";
@@ -22,12 +24,23 @@ import {
   UpdateCrmClientDto,
 } from "./dto/crm-client.dto";
 
+const vehicleInclude = {
+  car: {
+    select: {
+      model: true,
+      segment: true,
+      brand: { select: { name: true } },
+    },
+  },
+} as const;
+
 @Injectable()
 export class CrmClientsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly crmSms: CrmSmsService,
     private readonly cabinetAuth: CabinetAuthService,
+    private readonly vehicles: ClientVehiclesService,
   ) {}
 
   async list(query: ListCrmClientsQueryDto = {}) {
@@ -71,7 +84,14 @@ export class CrmClientsService {
         take,
         include: {
           car: { include: { brand: { select: { name: true } } } },
-          notificationSettings: { select: { smsEnabled: true, notifyReminder: true } },
+          vehicles: {
+            where: { archivedAt: null },
+            orderBy: [{ isPrimary: "desc" }, { id: "asc" }],
+            include: vehicleInclude,
+          },
+          notificationSettings: {
+            select: { smsEnabled: true, notifyReminder: true },
+          },
           _count: { select: { visits: true } },
         },
       }),
@@ -86,13 +106,25 @@ export class CrmClientsService {
     };
   }
 
-  async get(id: number) {
+  async get(id: number, vehicleId?: number) {
     const user = await this.prisma.cabinetUser.findUnique({
       where: { id },
       include: {
         car: { include: { brand: { select: { name: true } } } },
+        vehicles: {
+          where: { archivedAt: null },
+          orderBy: [{ isPrimary: "desc" }, { id: "asc" }],
+          include: vehicleInclude,
+        },
         notificationSettings: true,
-        visits: { orderBy: { startsAt: "desc" }, take: 50 },
+        visits: {
+          where: vehicleId ? { vehicleId } : undefined,
+          orderBy: { startsAt: "desc" },
+          take: 50,
+          include: {
+            vehicle: { include: vehicleInclude },
+          },
+        },
         _count: { select: { visits: true } },
       },
     });
@@ -105,7 +137,9 @@ export class CrmClientsService {
     if (dto.vin?.trim()) validateVin(dto.vin);
     if (dto.carId != null) await this.assertCarExists(dto.carId);
 
-    const exists = await this.prisma.cabinetUser.findUnique({ where: { phone } });
+    const exists = await this.prisma.cabinetUser.findUnique({
+      where: { phone },
+    });
     if (exists) {
       throw new BadRequestException("Клиент с таким телефоном уже существует");
     }
@@ -120,19 +154,28 @@ export class CrmClientsService {
         patronymic: dto.patronymic?.trim() || null,
         birthDate: dto.birthDate ? new Date(dto.birthDate) : null,
         carId: dto.carId ?? null,
-        customCar: null,
+        customCar: dto.customCar?.trim() || null,
         vin: dto.vin?.trim() ? validateVin(dto.vin) : null,
         adminComment: dto.adminComment?.trim() || null,
         phoneVerified: false,
         notificationSettings: { create: {} },
       },
-      include: { car: { include: { brand: { select: { name: true } } } } },
     });
-    return this.toClientView(user);
+
+    await this.vehicles.ensurePrimaryFromLegacy(user.id, {
+      carId: dto.carId ?? null,
+      customCar: dto.customCar ?? null,
+      vin: dto.vin ?? null,
+    });
+    await this.vehicles.syncLegacyFields(user.id);
+
+    return this.get(user.id);
   }
 
   async update(id: number, dto: UpdateCrmClientDto) {
-    const existing = await this.prisma.cabinetUser.findUnique({ where: { id } });
+    const existing = await this.prisma.cabinetUser.findUnique({
+      where: { id },
+    });
     if (!existing) throw new NotFoundException("Клиент не найден");
 
     if (dto.vin !== undefined && dto.vin?.trim()) validateVin(dto.vin);
@@ -153,27 +196,26 @@ export class CrmClientsService {
     if (dto.birthDate !== undefined) {
       data.birthDate = dto.birthDate ? new Date(dto.birthDate) : null;
     }
-    if (dto.customCar !== undefined) {
-      const trimmed = dto.customCar?.trim() || null;
-      data.customCar = trimmed;
-      if (trimmed) data.car = { disconnect: true };
-    }
-    if (dto.carId !== undefined) {
-      data.car =
-        dto.carId === null
-          ? { disconnect: true }
-          : { connect: { id: dto.carId } };
-      if (dto.carId !== null) data.customCar = null;
-    }
-    if (dto.vin !== undefined) {
-      data.vin = dto.vin?.trim() ? validateVin(dto.vin) : null;
-    }
     if (dto.adminComment !== undefined) {
       data.adminComment = dto.adminComment?.trim() || null;
     }
     if (dto.blocked !== undefined) {
       data.blocked = dto.blocked;
       data.blockedAt = dto.blocked ? new Date() : null;
+    }
+
+    const hasLegacyCar =
+      dto.carId !== undefined ||
+      dto.customCar !== undefined ||
+      dto.vin !== undefined;
+
+    if (hasLegacyCar) {
+      await this.vehicles.ensurePrimaryFromLegacy(id, {
+        carId: dto.carId,
+        customCar: dto.customCar,
+        vin: dto.vin,
+      });
+      await this.vehicles.syncLegacyFields(id);
     }
 
     const hasProfileChanges = Object.keys(data).length > 0;
@@ -203,21 +245,7 @@ export class CrmClientsService {
       });
     }
 
-    if (!hasProfileChanges && !notifFields) {
-      return this.get(id);
-    }
-
-    const user = await this.prisma.cabinetUser.findUnique({
-      where: { id },
-      include: {
-        car: { include: { brand: { select: { name: true } } } },
-        notificationSettings: true,
-        visits: { orderBy: { startsAt: "desc" }, take: 50 },
-        _count: { select: { visits: true } },
-      },
-    });
-    if (!user) throw new NotFoundException("Клиент не найден");
-    return this.toClientView(user);
+    return this.get(id);
   }
 
   async remove(id: number) {
@@ -235,6 +263,7 @@ export class CrmClientsService {
         user: {
           include: { car: { include: { brand: { select: { name: true } } } } },
         },
+        vehicle: { include: vehicleInclude },
       },
     });
     if (!visit) {
@@ -271,41 +300,71 @@ export class CrmClientsService {
     }
   }
 
-  private toClientView(
-    user: {
+  private toClientView(user: {
+    id: number;
+    phone: string;
+    firstName: string | null;
+    lastName: string | null;
+    patronymic: string | null;
+    birthDate: Date | null;
+    carId: number | null;
+    customCar: string | null;
+    vin: string | null;
+    adminComment: string | null;
+    blocked?: boolean;
+    phoneVerified?: boolean;
+    blockedAt?: Date | null;
+    createdAt: Date;
+    car?: { model: string; brand?: { name: string } | null } | null;
+    vehicles?: Array<{
       id: number;
-      phone: string;
-      firstName: string | null;
-      lastName: string | null;
-      patronymic: string | null;
-      birthDate: Date | null;
+      userId: number;
       carId: number | null;
-      customCar: string | null;
+      customLabel: string | null;
       vin: string | null;
-      adminComment: string | null;
-      blocked?: boolean;
-      phoneVerified?: boolean;
-      blockedAt?: Date | null;
+      isPrimary: boolean;
+      archivedAt: Date | null;
       createdAt: Date;
-      car?: { model: string; brand?: { name: string } | null } | null;
-      notificationSettings?: {
-        smsEnabled: boolean;
-        notifyReminder: boolean;
+      updatedAt: Date;
+      car?: {
+        model: string;
+        segment?: number;
+        brand?: { name: string } | null;
       } | null;
-      visits?: Array<{
+    }>;
+    notificationSettings?: {
+      smsEnabled: boolean;
+      notifyReminder: boolean;
+    } | null;
+    visits?: Array<{
+      id: number;
+      visitDate: Date;
+      startsAt: Date | null;
+      endsAt: Date | null;
+      serviceType: string;
+      serviceTypeId: number | null;
+      diskLink: string | null;
+      managerName: string | null;
+      priceRub: number | null;
+      vehicleId?: number | null;
+      vehicle?: {
         id: number;
-        visitDate: Date;
-        startsAt: Date | null;
-        endsAt: Date | null;
-        serviceType: string;
-        serviceTypeId: number | null;
-        diskLink: string | null;
-        managerName: string | null;
-        priceRub: number | null;
-      }>;
-      _count?: { visits: number };
-    },
-  ) {
+        customLabel: string | null;
+        vin: string | null;
+        car?: {
+          model: string;
+          brand?: { name: string } | null;
+        } | null;
+      } | null;
+    }>;
+    _count?: { visits: number };
+  }) {
+    const vehicles = (user.vehicles ?? []).map((v) =>
+      this.vehicles.toView(v),
+    );
+    const primary = vehicles.find((v) => v.isPrimary) ?? vehicles[0];
+    const legacyLabel = formatCarModel(user);
+
     return {
       id: user.id,
       phone: user.phone,
@@ -314,12 +373,13 @@ export class CrmClientsService {
       lastName: user.lastName,
       patronymic: user.patronymic,
       birthDate: user.birthDate,
-      carId: user.carId,
-      carBrand: user.car?.brand?.name ?? null,
-      carModelName: user.car?.model ?? null,
-      carModel: formatCarModel(user),
-      customCar: user.customCar,
-      vin: user.vin,
+      carId: primary?.carId ?? user.carId,
+      carBrand: primary?.carBrand ?? user.car?.brand?.name ?? null,
+      carModelName: primary?.carModelName ?? user.car?.model ?? null,
+      carModel: primary?.label || legacyLabel,
+      customCar: primary?.customLabel ?? user.customCar,
+      vin: primary?.vin ?? user.vin,
+      vehicles,
       adminComment: user.adminComment,
       blocked: user.blocked ?? false,
       phoneVerified: user.phoneVerified ?? false,
@@ -341,6 +401,11 @@ export class CrmClientsService {
         diskLink: v.diskLink,
         managerName: v.managerName,
         priceRub: v.priceRub,
+        vehicleId: v.vehicleId ?? null,
+        vehicleLabel: v.vehicle
+          ? formatVehicleLabel(v.vehicle)
+          : null,
+        vehicleVin: v.vehicle?.vin ?? null,
       })),
     };
   }

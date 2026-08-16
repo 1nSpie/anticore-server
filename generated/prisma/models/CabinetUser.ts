@@ -357,6 +357,7 @@ export type CabinetUserWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"CabinetUser"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"CabinetUser"> | Date | string
   car?: Prisma.XOR<Prisma.CarNullableScalarRelationFilter, Prisma.CarWhereInput> | null
+  vehicles?: Prisma.ClientVehicleListRelationFilter
   refreshTokens?: Prisma.UserRefreshTokenListRelationFilter
   visits?: Prisma.VisitHistoryListRelationFilter
   documents?: Prisma.UserDocumentListRelationFilter
@@ -388,6 +389,7 @@ export type CabinetUserOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   car?: Prisma.CarOrderByWithRelationInput
+  vehicles?: Prisma.ClientVehicleOrderByRelationAggregateInput
   refreshTokens?: Prisma.UserRefreshTokenOrderByRelationAggregateInput
   visits?: Prisma.VisitHistoryOrderByRelationAggregateInput
   documents?: Prisma.UserDocumentOrderByRelationAggregateInput
@@ -422,6 +424,7 @@ export type CabinetUserWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"CabinetUser"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"CabinetUser"> | Date | string
   car?: Prisma.XOR<Prisma.CarNullableScalarRelationFilter, Prisma.CarWhereInput> | null
+  vehicles?: Prisma.ClientVehicleListRelationFilter
   refreshTokens?: Prisma.UserRefreshTokenListRelationFilter
   visits?: Prisma.VisitHistoryListRelationFilter
   documents?: Prisma.UserDocumentListRelationFilter
@@ -509,6 +512,7 @@ export type CabinetUserCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   car?: Prisma.CarCreateNestedOneWithoutCabinetUsersInput
+  vehicles?: Prisma.ClientVehicleCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.UserRefreshTokenCreateNestedManyWithoutUserInput
   visits?: Prisma.VisitHistoryCreateNestedManyWithoutUserInput
   documents?: Prisma.UserDocumentCreateNestedManyWithoutUserInput
@@ -539,6 +543,7 @@ export type CabinetUserUncheckedCreateInput = {
   role?: $Enums.CabinetUserRole
   createdAt?: Date | string
   updatedAt?: Date | string
+  vehicles?: Prisma.ClientVehicleUncheckedCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.UserRefreshTokenUncheckedCreateNestedManyWithoutUserInput
   visits?: Prisma.VisitHistoryUncheckedCreateNestedManyWithoutUserInput
   documents?: Prisma.UserDocumentUncheckedCreateNestedManyWithoutUserInput
@@ -568,6 +573,7 @@ export type CabinetUserUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   car?: Prisma.CarUpdateOneWithoutCabinetUsersNestedInput
+  vehicles?: Prisma.ClientVehicleUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.UserRefreshTokenUpdateManyWithoutUserNestedInput
   visits?: Prisma.VisitHistoryUpdateManyWithoutUserNestedInput
   documents?: Prisma.UserDocumentUpdateManyWithoutUserNestedInput
@@ -598,6 +604,7 @@ export type CabinetUserUncheckedUpdateInput = {
   role?: Prisma.EnumCabinetUserRoleFieldUpdateOperationsInput | $Enums.CabinetUserRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  vehicles?: Prisma.ClientVehicleUncheckedUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.UserRefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   visits?: Prisma.VisitHistoryUncheckedUpdateManyWithoutUserNestedInput
   documents?: Prisma.UserDocumentUncheckedUpdateManyWithoutUserNestedInput
@@ -824,6 +831,20 @@ export type EnumCabinetUserRoleFieldUpdateOperationsInput = {
   set?: $Enums.CabinetUserRole
 }
 
+export type CabinetUserCreateNestedOneWithoutVehiclesInput = {
+  create?: Prisma.XOR<Prisma.CabinetUserCreateWithoutVehiclesInput, Prisma.CabinetUserUncheckedCreateWithoutVehiclesInput>
+  connectOrCreate?: Prisma.CabinetUserCreateOrConnectWithoutVehiclesInput
+  connect?: Prisma.CabinetUserWhereUniqueInput
+}
+
+export type CabinetUserUpdateOneRequiredWithoutVehiclesNestedInput = {
+  create?: Prisma.XOR<Prisma.CabinetUserCreateWithoutVehiclesInput, Prisma.CabinetUserUncheckedCreateWithoutVehiclesInput>
+  connectOrCreate?: Prisma.CabinetUserCreateOrConnectWithoutVehiclesInput
+  upsert?: Prisma.CabinetUserUpsertWithoutVehiclesInput
+  connect?: Prisma.CabinetUserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CabinetUserUpdateToOneWithWhereWithoutVehiclesInput, Prisma.CabinetUserUpdateWithoutVehiclesInput>, Prisma.CabinetUserUncheckedUpdateWithoutVehiclesInput>
+}
+
 export type CabinetUserCreateNestedOneWithoutRefreshTokensInput = {
   create?: Prisma.XOR<Prisma.CabinetUserCreateWithoutRefreshTokensInput, Prisma.CabinetUserUncheckedCreateWithoutRefreshTokensInput>
   connectOrCreate?: Prisma.CabinetUserCreateOrConnectWithoutRefreshTokensInput
@@ -915,6 +936,7 @@ export type CabinetUserCreateWithoutCarInput = {
   role?: $Enums.CabinetUserRole
   createdAt?: Date | string
   updatedAt?: Date | string
+  vehicles?: Prisma.ClientVehicleCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.UserRefreshTokenCreateNestedManyWithoutUserInput
   visits?: Prisma.VisitHistoryCreateNestedManyWithoutUserInput
   documents?: Prisma.UserDocumentCreateNestedManyWithoutUserInput
@@ -944,6 +966,7 @@ export type CabinetUserUncheckedCreateWithoutCarInput = {
   role?: $Enums.CabinetUserRole
   createdAt?: Date | string
   updatedAt?: Date | string
+  vehicles?: Prisma.ClientVehicleUncheckedCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.UserRefreshTokenUncheckedCreateNestedManyWithoutUserInput
   visits?: Prisma.VisitHistoryUncheckedCreateNestedManyWithoutUserInput
   documents?: Prisma.UserDocumentUncheckedCreateNestedManyWithoutUserInput
@@ -1005,6 +1028,140 @@ export type CabinetUserScalarWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"CabinetUser"> | Date | string
 }
 
+export type CabinetUserCreateWithoutVehiclesInput = {
+  phone: string
+  passwordHash: string
+  firstName?: string | null
+  lastName?: string | null
+  patronymic?: string | null
+  birthDate?: Date | string | null
+  birthDateChangedAt?: Date | string | null
+  customCar?: string | null
+  vin?: string | null
+  adminComment?: string | null
+  photoReportUrl?: string | null
+  phoneVerified?: boolean
+  blocked?: boolean
+  blockedAt?: Date | string | null
+  privacyPolicyAcceptedAt?: Date | string | null
+  personalDataConsentAt?: Date | string | null
+  termsAcceptedAt?: Date | string | null
+  role?: $Enums.CabinetUserRole
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  car?: Prisma.CarCreateNestedOneWithoutCabinetUsersInput
+  refreshTokens?: Prisma.UserRefreshTokenCreateNestedManyWithoutUserInput
+  visits?: Prisma.VisitHistoryCreateNestedManyWithoutUserInput
+  documents?: Prisma.UserDocumentCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentHistoryCreateNestedManyWithoutUserInput
+  notificationSettings?: Prisma.NotificationSettingsCreateNestedOneWithoutUserInput
+}
+
+export type CabinetUserUncheckedCreateWithoutVehiclesInput = {
+  id?: number
+  phone: string
+  passwordHash: string
+  firstName?: string | null
+  lastName?: string | null
+  patronymic?: string | null
+  birthDate?: Date | string | null
+  birthDateChangedAt?: Date | string | null
+  carId?: number | null
+  customCar?: string | null
+  vin?: string | null
+  adminComment?: string | null
+  photoReportUrl?: string | null
+  phoneVerified?: boolean
+  blocked?: boolean
+  blockedAt?: Date | string | null
+  privacyPolicyAcceptedAt?: Date | string | null
+  personalDataConsentAt?: Date | string | null
+  termsAcceptedAt?: Date | string | null
+  role?: $Enums.CabinetUserRole
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  refreshTokens?: Prisma.UserRefreshTokenUncheckedCreateNestedManyWithoutUserInput
+  visits?: Prisma.VisitHistoryUncheckedCreateNestedManyWithoutUserInput
+  documents?: Prisma.UserDocumentUncheckedCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentHistoryUncheckedCreateNestedManyWithoutUserInput
+  notificationSettings?: Prisma.NotificationSettingsUncheckedCreateNestedOneWithoutUserInput
+}
+
+export type CabinetUserCreateOrConnectWithoutVehiclesInput = {
+  where: Prisma.CabinetUserWhereUniqueInput
+  create: Prisma.XOR<Prisma.CabinetUserCreateWithoutVehiclesInput, Prisma.CabinetUserUncheckedCreateWithoutVehiclesInput>
+}
+
+export type CabinetUserUpsertWithoutVehiclesInput = {
+  update: Prisma.XOR<Prisma.CabinetUserUpdateWithoutVehiclesInput, Prisma.CabinetUserUncheckedUpdateWithoutVehiclesInput>
+  create: Prisma.XOR<Prisma.CabinetUserCreateWithoutVehiclesInput, Prisma.CabinetUserUncheckedCreateWithoutVehiclesInput>
+  where?: Prisma.CabinetUserWhereInput
+}
+
+export type CabinetUserUpdateToOneWithWhereWithoutVehiclesInput = {
+  where?: Prisma.CabinetUserWhereInput
+  data: Prisma.XOR<Prisma.CabinetUserUpdateWithoutVehiclesInput, Prisma.CabinetUserUncheckedUpdateWithoutVehiclesInput>
+}
+
+export type CabinetUserUpdateWithoutVehiclesInput = {
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  patronymic?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  birthDateChangedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  customCar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photoReportUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  blocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyPolicyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  personalDataConsentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  termsAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  role?: Prisma.EnumCabinetUserRoleFieldUpdateOperationsInput | $Enums.CabinetUserRole
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  car?: Prisma.CarUpdateOneWithoutCabinetUsersNestedInput
+  refreshTokens?: Prisma.UserRefreshTokenUpdateManyWithoutUserNestedInput
+  visits?: Prisma.VisitHistoryUpdateManyWithoutUserNestedInput
+  documents?: Prisma.UserDocumentUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentHistoryUpdateManyWithoutUserNestedInput
+  notificationSettings?: Prisma.NotificationSettingsUpdateOneWithoutUserNestedInput
+}
+
+export type CabinetUserUncheckedUpdateWithoutVehiclesInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  patronymic?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  birthDateChangedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  carId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  customCar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photoReportUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  blocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  privacyPolicyAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  personalDataConsentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  termsAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  role?: Prisma.EnumCabinetUserRoleFieldUpdateOperationsInput | $Enums.CabinetUserRole
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  refreshTokens?: Prisma.UserRefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+  visits?: Prisma.VisitHistoryUncheckedUpdateManyWithoutUserNestedInput
+  documents?: Prisma.UserDocumentUncheckedUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentHistoryUncheckedUpdateManyWithoutUserNestedInput
+  notificationSettings?: Prisma.NotificationSettingsUncheckedUpdateOneWithoutUserNestedInput
+}
+
 export type CabinetUserCreateWithoutRefreshTokensInput = {
   phone: string
   passwordHash: string
@@ -1027,6 +1184,7 @@ export type CabinetUserCreateWithoutRefreshTokensInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   car?: Prisma.CarCreateNestedOneWithoutCabinetUsersInput
+  vehicles?: Prisma.ClientVehicleCreateNestedManyWithoutUserInput
   visits?: Prisma.VisitHistoryCreateNestedManyWithoutUserInput
   documents?: Prisma.UserDocumentCreateNestedManyWithoutUserInput
   payments?: Prisma.PaymentHistoryCreateNestedManyWithoutUserInput
@@ -1056,6 +1214,7 @@ export type CabinetUserUncheckedCreateWithoutRefreshTokensInput = {
   role?: $Enums.CabinetUserRole
   createdAt?: Date | string
   updatedAt?: Date | string
+  vehicles?: Prisma.ClientVehicleUncheckedCreateNestedManyWithoutUserInput
   visits?: Prisma.VisitHistoryUncheckedCreateNestedManyWithoutUserInput
   documents?: Prisma.UserDocumentUncheckedCreateNestedManyWithoutUserInput
   payments?: Prisma.PaymentHistoryUncheckedCreateNestedManyWithoutUserInput
@@ -1100,6 +1259,7 @@ export type CabinetUserUpdateWithoutRefreshTokensInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   car?: Prisma.CarUpdateOneWithoutCabinetUsersNestedInput
+  vehicles?: Prisma.ClientVehicleUpdateManyWithoutUserNestedInput
   visits?: Prisma.VisitHistoryUpdateManyWithoutUserNestedInput
   documents?: Prisma.UserDocumentUpdateManyWithoutUserNestedInput
   payments?: Prisma.PaymentHistoryUpdateManyWithoutUserNestedInput
@@ -1129,6 +1289,7 @@ export type CabinetUserUncheckedUpdateWithoutRefreshTokensInput = {
   role?: Prisma.EnumCabinetUserRoleFieldUpdateOperationsInput | $Enums.CabinetUserRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  vehicles?: Prisma.ClientVehicleUncheckedUpdateManyWithoutUserNestedInput
   visits?: Prisma.VisitHistoryUncheckedUpdateManyWithoutUserNestedInput
   documents?: Prisma.UserDocumentUncheckedUpdateManyWithoutUserNestedInput
   payments?: Prisma.PaymentHistoryUncheckedUpdateManyWithoutUserNestedInput
@@ -1157,6 +1318,7 @@ export type CabinetUserCreateWithoutDocumentsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   car?: Prisma.CarCreateNestedOneWithoutCabinetUsersInput
+  vehicles?: Prisma.ClientVehicleCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.UserRefreshTokenCreateNestedManyWithoutUserInput
   visits?: Prisma.VisitHistoryCreateNestedManyWithoutUserInput
   payments?: Prisma.PaymentHistoryCreateNestedManyWithoutUserInput
@@ -1186,6 +1348,7 @@ export type CabinetUserUncheckedCreateWithoutDocumentsInput = {
   role?: $Enums.CabinetUserRole
   createdAt?: Date | string
   updatedAt?: Date | string
+  vehicles?: Prisma.ClientVehicleUncheckedCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.UserRefreshTokenUncheckedCreateNestedManyWithoutUserInput
   visits?: Prisma.VisitHistoryUncheckedCreateNestedManyWithoutUserInput
   payments?: Prisma.PaymentHistoryUncheckedCreateNestedManyWithoutUserInput
@@ -1230,6 +1393,7 @@ export type CabinetUserUpdateWithoutDocumentsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   car?: Prisma.CarUpdateOneWithoutCabinetUsersNestedInput
+  vehicles?: Prisma.ClientVehicleUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.UserRefreshTokenUpdateManyWithoutUserNestedInput
   visits?: Prisma.VisitHistoryUpdateManyWithoutUserNestedInput
   payments?: Prisma.PaymentHistoryUpdateManyWithoutUserNestedInput
@@ -1259,6 +1423,7 @@ export type CabinetUserUncheckedUpdateWithoutDocumentsInput = {
   role?: Prisma.EnumCabinetUserRoleFieldUpdateOperationsInput | $Enums.CabinetUserRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  vehicles?: Prisma.ClientVehicleUncheckedUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.UserRefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   visits?: Prisma.VisitHistoryUncheckedUpdateManyWithoutUserNestedInput
   payments?: Prisma.PaymentHistoryUncheckedUpdateManyWithoutUserNestedInput
@@ -1287,6 +1452,7 @@ export type CabinetUserCreateWithoutVisitsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   car?: Prisma.CarCreateNestedOneWithoutCabinetUsersInput
+  vehicles?: Prisma.ClientVehicleCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.UserRefreshTokenCreateNestedManyWithoutUserInput
   documents?: Prisma.UserDocumentCreateNestedManyWithoutUserInput
   payments?: Prisma.PaymentHistoryCreateNestedManyWithoutUserInput
@@ -1316,6 +1482,7 @@ export type CabinetUserUncheckedCreateWithoutVisitsInput = {
   role?: $Enums.CabinetUserRole
   createdAt?: Date | string
   updatedAt?: Date | string
+  vehicles?: Prisma.ClientVehicleUncheckedCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.UserRefreshTokenUncheckedCreateNestedManyWithoutUserInput
   documents?: Prisma.UserDocumentUncheckedCreateNestedManyWithoutUserInput
   payments?: Prisma.PaymentHistoryUncheckedCreateNestedManyWithoutUserInput
@@ -1360,6 +1527,7 @@ export type CabinetUserUpdateWithoutVisitsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   car?: Prisma.CarUpdateOneWithoutCabinetUsersNestedInput
+  vehicles?: Prisma.ClientVehicleUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.UserRefreshTokenUpdateManyWithoutUserNestedInput
   documents?: Prisma.UserDocumentUpdateManyWithoutUserNestedInput
   payments?: Prisma.PaymentHistoryUpdateManyWithoutUserNestedInput
@@ -1389,6 +1557,7 @@ export type CabinetUserUncheckedUpdateWithoutVisitsInput = {
   role?: Prisma.EnumCabinetUserRoleFieldUpdateOperationsInput | $Enums.CabinetUserRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  vehicles?: Prisma.ClientVehicleUncheckedUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.UserRefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   documents?: Prisma.UserDocumentUncheckedUpdateManyWithoutUserNestedInput
   payments?: Prisma.PaymentHistoryUncheckedUpdateManyWithoutUserNestedInput
@@ -1417,6 +1586,7 @@ export type CabinetUserCreateWithoutPaymentsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   car?: Prisma.CarCreateNestedOneWithoutCabinetUsersInput
+  vehicles?: Prisma.ClientVehicleCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.UserRefreshTokenCreateNestedManyWithoutUserInput
   visits?: Prisma.VisitHistoryCreateNestedManyWithoutUserInput
   documents?: Prisma.UserDocumentCreateNestedManyWithoutUserInput
@@ -1446,6 +1616,7 @@ export type CabinetUserUncheckedCreateWithoutPaymentsInput = {
   role?: $Enums.CabinetUserRole
   createdAt?: Date | string
   updatedAt?: Date | string
+  vehicles?: Prisma.ClientVehicleUncheckedCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.UserRefreshTokenUncheckedCreateNestedManyWithoutUserInput
   visits?: Prisma.VisitHistoryUncheckedCreateNestedManyWithoutUserInput
   documents?: Prisma.UserDocumentUncheckedCreateNestedManyWithoutUserInput
@@ -1490,6 +1661,7 @@ export type CabinetUserUpdateWithoutPaymentsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   car?: Prisma.CarUpdateOneWithoutCabinetUsersNestedInput
+  vehicles?: Prisma.ClientVehicleUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.UserRefreshTokenUpdateManyWithoutUserNestedInput
   visits?: Prisma.VisitHistoryUpdateManyWithoutUserNestedInput
   documents?: Prisma.UserDocumentUpdateManyWithoutUserNestedInput
@@ -1519,6 +1691,7 @@ export type CabinetUserUncheckedUpdateWithoutPaymentsInput = {
   role?: Prisma.EnumCabinetUserRoleFieldUpdateOperationsInput | $Enums.CabinetUserRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  vehicles?: Prisma.ClientVehicleUncheckedUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.UserRefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   visits?: Prisma.VisitHistoryUncheckedUpdateManyWithoutUserNestedInput
   documents?: Prisma.UserDocumentUncheckedUpdateManyWithoutUserNestedInput
@@ -1547,6 +1720,7 @@ export type CabinetUserCreateWithoutNotificationSettingsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   car?: Prisma.CarCreateNestedOneWithoutCabinetUsersInput
+  vehicles?: Prisma.ClientVehicleCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.UserRefreshTokenCreateNestedManyWithoutUserInput
   visits?: Prisma.VisitHistoryCreateNestedManyWithoutUserInput
   documents?: Prisma.UserDocumentCreateNestedManyWithoutUserInput
@@ -1576,6 +1750,7 @@ export type CabinetUserUncheckedCreateWithoutNotificationSettingsInput = {
   role?: $Enums.CabinetUserRole
   createdAt?: Date | string
   updatedAt?: Date | string
+  vehicles?: Prisma.ClientVehicleUncheckedCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.UserRefreshTokenUncheckedCreateNestedManyWithoutUserInput
   visits?: Prisma.VisitHistoryUncheckedCreateNestedManyWithoutUserInput
   documents?: Prisma.UserDocumentUncheckedCreateNestedManyWithoutUserInput
@@ -1620,6 +1795,7 @@ export type CabinetUserUpdateWithoutNotificationSettingsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   car?: Prisma.CarUpdateOneWithoutCabinetUsersNestedInput
+  vehicles?: Prisma.ClientVehicleUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.UserRefreshTokenUpdateManyWithoutUserNestedInput
   visits?: Prisma.VisitHistoryUpdateManyWithoutUserNestedInput
   documents?: Prisma.UserDocumentUpdateManyWithoutUserNestedInput
@@ -1649,6 +1825,7 @@ export type CabinetUserUncheckedUpdateWithoutNotificationSettingsInput = {
   role?: Prisma.EnumCabinetUserRoleFieldUpdateOperationsInput | $Enums.CabinetUserRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  vehicles?: Prisma.ClientVehicleUncheckedUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.UserRefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   visits?: Prisma.VisitHistoryUncheckedUpdateManyWithoutUserNestedInput
   documents?: Prisma.UserDocumentUncheckedUpdateManyWithoutUserNestedInput
@@ -1700,6 +1877,7 @@ export type CabinetUserUpdateWithoutCarInput = {
   role?: Prisma.EnumCabinetUserRoleFieldUpdateOperationsInput | $Enums.CabinetUserRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  vehicles?: Prisma.ClientVehicleUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.UserRefreshTokenUpdateManyWithoutUserNestedInput
   visits?: Prisma.VisitHistoryUpdateManyWithoutUserNestedInput
   documents?: Prisma.UserDocumentUpdateManyWithoutUserNestedInput
@@ -1729,6 +1907,7 @@ export type CabinetUserUncheckedUpdateWithoutCarInput = {
   role?: Prisma.EnumCabinetUserRoleFieldUpdateOperationsInput | $Enums.CabinetUserRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  vehicles?: Prisma.ClientVehicleUncheckedUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.UserRefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   visits?: Prisma.VisitHistoryUncheckedUpdateManyWithoutUserNestedInput
   documents?: Prisma.UserDocumentUncheckedUpdateManyWithoutUserNestedInput
@@ -1766,6 +1945,7 @@ export type CabinetUserUncheckedUpdateManyWithoutCarInput = {
  */
 
 export type CabinetUserCountOutputType = {
+  vehicles: number
   refreshTokens: number
   visits: number
   documents: number
@@ -1773,6 +1953,7 @@ export type CabinetUserCountOutputType = {
 }
 
 export type CabinetUserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  vehicles?: boolean | CabinetUserCountOutputTypeCountVehiclesArgs
   refreshTokens?: boolean | CabinetUserCountOutputTypeCountRefreshTokensArgs
   visits?: boolean | CabinetUserCountOutputTypeCountVisitsArgs
   documents?: boolean | CabinetUserCountOutputTypeCountDocumentsArgs
@@ -1787,6 +1968,13 @@ export type CabinetUserCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.
    * Select specific fields to fetch from the CabinetUserCountOutputType
    */
   select?: Prisma.CabinetUserCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * CabinetUserCountOutputType without action
+ */
+export type CabinetUserCountOutputTypeCountVehiclesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ClientVehicleWhereInput
 }
 
 /**
@@ -1842,6 +2030,7 @@ export type CabinetUserSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   createdAt?: boolean
   updatedAt?: boolean
   car?: boolean | Prisma.CabinetUser$carArgs<ExtArgs>
+  vehicles?: boolean | Prisma.CabinetUser$vehiclesArgs<ExtArgs>
   refreshTokens?: boolean | Prisma.CabinetUser$refreshTokensArgs<ExtArgs>
   visits?: boolean | Prisma.CabinetUser$visitsArgs<ExtArgs>
   documents?: boolean | Prisma.CabinetUser$documentsArgs<ExtArgs>
@@ -1930,6 +2119,7 @@ export type CabinetUserSelectScalar = {
 export type CabinetUserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "phone" | "passwordHash" | "firstName" | "lastName" | "patronymic" | "birthDate" | "birthDateChangedAt" | "carId" | "customCar" | "vin" | "adminComment" | "photoReportUrl" | "phoneVerified" | "blocked" | "blockedAt" | "privacyPolicyAcceptedAt" | "personalDataConsentAt" | "termsAcceptedAt" | "role" | "createdAt" | "updatedAt", ExtArgs["result"]["cabinetUser"]>
 export type CabinetUserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   car?: boolean | Prisma.CabinetUser$carArgs<ExtArgs>
+  vehicles?: boolean | Prisma.CabinetUser$vehiclesArgs<ExtArgs>
   refreshTokens?: boolean | Prisma.CabinetUser$refreshTokensArgs<ExtArgs>
   visits?: boolean | Prisma.CabinetUser$visitsArgs<ExtArgs>
   documents?: boolean | Prisma.CabinetUser$documentsArgs<ExtArgs>
@@ -1948,6 +2138,7 @@ export type $CabinetUserPayload<ExtArgs extends runtime.Types.Extensions.Interna
   name: "CabinetUser"
   objects: {
     car: Prisma.$CarPayload<ExtArgs> | null
+    vehicles: Prisma.$ClientVehiclePayload<ExtArgs>[]
     refreshTokens: Prisma.$UserRefreshTokenPayload<ExtArgs>[]
     visits: Prisma.$VisitHistoryPayload<ExtArgs>[]
     documents: Prisma.$UserDocumentPayload<ExtArgs>[]
@@ -1966,13 +2157,16 @@ export type $CabinetUserPayload<ExtArgs extends runtime.Types.Extensions.Interna
      * * Последняя смена даты рождения пользователем (лимит раз в сутки)
      */
     birthDateChangedAt: Date | null
+    /**
+     * * @deprecated use ClientVehicle — kept synced from primary vehicle
+     */
     carId: number | null
     /**
-     * * Свободный текст, если авто нет в каталоге
+     * * @deprecated use ClientVehicle.customLabel
      */
     customCar: string | null
     /**
-     * * VIN (17 символов) — для CRM
+     * * @deprecated use ClientVehicle.vin
      */
     vin: string | null
     /**
@@ -2387,6 +2581,7 @@ readonly fields: CabinetUserFieldRefs;
 export interface Prisma__CabinetUserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   car<T extends Prisma.CabinetUser$carArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CabinetUser$carArgs<ExtArgs>>): Prisma.Prisma__CarClient<runtime.Types.Result.GetResult<Prisma.$CarPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  vehicles<T extends Prisma.CabinetUser$vehiclesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CabinetUser$vehiclesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ClientVehiclePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   refreshTokens<T extends Prisma.CabinetUser$refreshTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CabinetUser$refreshTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserRefreshTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   visits<T extends Prisma.CabinetUser$visitsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CabinetUser$visitsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VisitHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   documents<T extends Prisma.CabinetUser$documentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CabinetUser$documentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserDocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -2855,6 +3050,30 @@ export type CabinetUser$carArgs<ExtArgs extends runtime.Types.Extensions.Interna
    */
   include?: Prisma.CarInclude<ExtArgs> | null
   where?: Prisma.CarWhereInput
+}
+
+/**
+ * CabinetUser.vehicles
+ */
+export type CabinetUser$vehiclesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ClientVehicle
+   */
+  select?: Prisma.ClientVehicleSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ClientVehicle
+   */
+  omit?: Prisma.ClientVehicleOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ClientVehicleInclude<ExtArgs> | null
+  where?: Prisma.ClientVehicleWhereInput
+  orderBy?: Prisma.ClientVehicleOrderByWithRelationInput | Prisma.ClientVehicleOrderByWithRelationInput[]
+  cursor?: Prisma.ClientVehicleWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ClientVehicleScalarFieldEnum | Prisma.ClientVehicleScalarFieldEnum[]
 }
 
 /**

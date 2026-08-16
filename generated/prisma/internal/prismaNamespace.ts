@@ -396,6 +396,7 @@ export const ModelName = {
   WorkImage: 'WorkImage',
   PendingRegistration: 'PendingRegistration',
   CabinetUser: 'CabinetUser',
+  ClientVehicle: 'ClientVehicle',
   UserRefreshToken: 'UserRefreshToken',
   SmsCode: 'SmsCode',
   UserDocument: 'UserDocument',
@@ -426,7 +427,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "brand" | "car" | "bodyTypePrice" | "blogPost" | "blogCategory" | "blogTag" | "work" | "workCategory" | "workService" | "workImage" | "pendingRegistration" | "cabinetUser" | "userRefreshToken" | "smsCode" | "userDocument" | "serviceType" | "siteLead" | "visitHistory" | "pendingReviewSms" | "paymentHistory" | "notificationSettings" | "adminAuditLog" | "crmAdmin" | "smsTemplate" | "companySettings" | "smsLog" | "crmDayLimit"
+    modelProps: "brand" | "car" | "bodyTypePrice" | "blogPost" | "blogCategory" | "blogTag" | "work" | "workCategory" | "workService" | "workImage" | "pendingRegistration" | "cabinetUser" | "clientVehicle" | "userRefreshToken" | "smsCode" | "userDocument" | "serviceType" | "siteLead" | "visitHistory" | "pendingReviewSms" | "paymentHistory" | "notificationSettings" | "adminAuditLog" | "crmAdmin" | "smsTemplate" | "companySettings" | "smsLog" | "crmDayLimit"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1315,6 +1316,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.CabinetUserCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.CabinetUserCountAggregateOutputType> | number
+        }
+      }
+    }
+    ClientVehicle: {
+      payload: Prisma.$ClientVehiclePayload<ExtArgs>
+      fields: Prisma.ClientVehicleFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ClientVehicleFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClientVehiclePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ClientVehicleFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClientVehiclePayload>
+        }
+        findFirst: {
+          args: Prisma.ClientVehicleFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClientVehiclePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ClientVehicleFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClientVehiclePayload>
+        }
+        findMany: {
+          args: Prisma.ClientVehicleFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClientVehiclePayload>[]
+        }
+        create: {
+          args: Prisma.ClientVehicleCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClientVehiclePayload>
+        }
+        createMany: {
+          args: Prisma.ClientVehicleCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ClientVehicleCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClientVehiclePayload>[]
+        }
+        delete: {
+          args: Prisma.ClientVehicleDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClientVehiclePayload>
+        }
+        update: {
+          args: Prisma.ClientVehicleUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClientVehiclePayload>
+        }
+        deleteMany: {
+          args: Prisma.ClientVehicleDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ClientVehicleUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ClientVehicleUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClientVehiclePayload>[]
+        }
+        upsert: {
+          args: Prisma.ClientVehicleUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClientVehiclePayload>
+        }
+        aggregate: {
+          args: Prisma.ClientVehicleAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateClientVehicle>
+        }
+        groupBy: {
+          args: Prisma.ClientVehicleGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ClientVehicleGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ClientVehicleCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ClientVehicleCountAggregateOutputType> | number
         }
       }
     }
@@ -2634,6 +2709,21 @@ export const CabinetUserScalarFieldEnum = {
 export type CabinetUserScalarFieldEnum = (typeof CabinetUserScalarFieldEnum)[keyof typeof CabinetUserScalarFieldEnum]
 
 
+export const ClientVehicleScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  carId: 'carId',
+  customLabel: 'customLabel',
+  vin: 'vin',
+  isPrimary: 'isPrimary',
+  archivedAt: 'archivedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ClientVehicleScalarFieldEnum = (typeof ClientVehicleScalarFieldEnum)[keyof typeof ClientVehicleScalarFieldEnum]
+
+
 export const UserRefreshTokenScalarFieldEnum = {
   id: 'id',
   tokenHash: 'tokenHash',
@@ -2707,6 +2797,7 @@ export type SiteLeadScalarFieldEnum = (typeof SiteLeadScalarFieldEnum)[keyof typ
 export const VisitHistoryScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
+  vehicleId: 'vehicleId',
   visitDate: 'visitDate',
   serviceType: 'serviceType',
   diskLink: 'diskLink',
@@ -2811,6 +2902,7 @@ export type SmsLogScalarFieldEnum = (typeof SmsLogScalarFieldEnum)[keyof typeof 
 export const CrmDayLimitScalarFieldEnum = {
   id: 'id',
   date: 'date',
+  location: 'location',
   maxAppointments: 'maxAppointments',
   note: 'note',
   updatedAt: 'updatedAt'
@@ -3140,6 +3232,7 @@ export type GlobalOmitConfig = {
   workImage?: Prisma.WorkImageOmit
   pendingRegistration?: Prisma.PendingRegistrationOmit
   cabinetUser?: Prisma.CabinetUserOmit
+  clientVehicle?: Prisma.ClientVehicleOmit
   userRefreshToken?: Prisma.UserRefreshTokenOmit
   smsCode?: Prisma.SmsCodeOmit
   userDocument?: Prisma.UserDocumentOmit

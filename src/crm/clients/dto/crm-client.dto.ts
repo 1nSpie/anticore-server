@@ -43,6 +43,12 @@ export class CreateCrmClientDto {
   carId?: number;
 
   @IsOptional()
+  @ValidateIf((_, v) => v !== null && v !== undefined)
+  @IsString()
+  @MaxLength(200)
+  customCar?: string | null;
+
+  @IsOptional()
   @IsString()
   @MaxLength(17)
   @IsVin()

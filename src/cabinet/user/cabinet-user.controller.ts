@@ -1,9 +1,14 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
+  Param,
+  ParseIntPipe,
+  Patch,
   Post,
   Put,
+  Query,
   Req,
   UseGuards,
   UsePipes,
@@ -12,6 +17,8 @@ import {
 import { Request } from "express";
 import { CabinetJwtGuard } from "../auth/cabinet-jwt.guard";
 import { CabinetAuthService } from "../auth/cabinet-auth.service";
+import { ClientVehiclesService } from "../../client-vehicles/client-vehicles.service";
+import { UpsertClientVehicleDto } from "../../client-vehicles/dto/upsert-client-vehicle.dto";
 import { CabinetUserService } from "./cabinet-user.service";
 import { UpdateProfileDto } from "./dto/update-profile.dto";
 import { ChangePasswordDto } from "./dto/change-password.dto";
@@ -26,6 +33,7 @@ export class CabinetUserController {
   constructor(
     private readonly cabinetUser: CabinetUserService,
     private readonly cabinetAuth: CabinetAuthService,
+    private readonly vehicles: ClientVehiclesService,
   ) {}
 
   @Get("profile")
@@ -37,6 +45,35 @@ export class CabinetUserController {
   @UsePipes(new ValidationPipe({ transform: true, whitelist: true }))
   updateProfile(@Req() req: Request, @Body() dto: UpdateProfileDto) {
     return this.cabinetUser.updateProfile(req.cabinetUserId!, dto);
+  }
+
+  @Get("vehicles")
+  listVehicles(@Req() req: Request) {
+    return this.vehicles.listForUser(req.cabinetUserId!);
+  }
+
+  @Post("vehicles")
+  @UsePipes(new ValidationPipe({ transform: true, whitelist: true }))
+  createVehicle(@Req() req: Request, @Body() dto: UpsertClientVehicleDto) {
+    return this.vehicles.create(req.cabinetUserId!, dto);
+  }
+
+  @Patch("vehicles/:id")
+  @UsePipes(new ValidationPipe({ transform: true, whitelist: true }))
+  updateVehicle(
+    @Req() req: Request,
+    @Param("id", ParseIntPipe) id: number,
+    @Body() dto: UpsertClientVehicleDto,
+  ) {
+    return this.vehicles.update(req.cabinetUserId!, id, dto);
+  }
+
+  @Delete("vehicles/:id")
+  archiveVehicle(
+    @Req() req: Request,
+    @Param("id", ParseIntPipe) id: number,
+  ) {
+    return this.vehicles.archive(req.cabinetUserId!, id);
   }
 
   @Post("profile/change-password")
@@ -54,8 +91,15 @@ export class CabinetUserController {
   }
 
   @Get("history/visits")
-  visits(@Req() req: Request) {
-    return this.cabinetUser.listVisits(req.cabinetUserId!);
+  visits(
+    @Req() req: Request,
+    @Query("vehicleId") vehicleIdRaw?: string,
+  ) {
+    const vehicleId =
+      vehicleIdRaw && /^\d+$/.test(vehicleIdRaw)
+        ? Number(vehicleIdRaw)
+        : undefined;
+    return this.cabinetUser.listVisits(req.cabinetUserId!, vehicleId);
   }
 
   @Get("leads")
