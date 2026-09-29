@@ -1,3 +1,4 @@
+import { MediaModule } from './media/media.module';
 import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
@@ -29,6 +30,7 @@ import { CrmModule } from './crm/crm.module';
       },
     ]),
     PrismaModule,
+    MediaModule,
     CarsModule,
     BrandsModule,
     SegmentModule,
