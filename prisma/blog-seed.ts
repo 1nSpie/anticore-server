@@ -7,6 +7,10 @@ const adapter = new PrismaPg({
 });
 const prisma = new PrismaClient({ adapter });
 
+// Пути картинок — ключи в Selectel S3: файл `blog/<имя>.jpg` лежит в бакете как `image/blog/<имя>.jpg`.
+// Сайт строит URL через contentImageUrl() (anticore-client/src/lib/media.ts).
+// Файлы заливаются скриптом scripts/upload-media.sh из anticore-server/public/blog.
+
 // Тип для блока контента
 interface ContentBlock {
   subtitle?: string;
