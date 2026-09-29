@@ -10,9 +10,6 @@ import { BotBlockerMiddleware } from './common/middleware/bot-blocker.middleware
 import { SegmentModule } from './segment/segment.module';
 import { BlogModule } from './blog/blog.module';
 import { WorksModule } from './works/works.module';
-import { VideoController } from './video/video.controller';
-import { ImageModule } from './image/image.module';
-import { StaticModule } from './static/static.module';
 import { TelegramModule } from './telegram/telegram.module';
 import { LegacyModule } from './legacy/legacy.module';
 import { AdminAuthModule } from './auth/admin-auth.module';
@@ -37,8 +34,6 @@ import { CrmModule } from './crm/crm.module';
     SegmentModule,
     BlogModule,
     WorksModule,
-    ImageModule,
-    StaticModule,
     TelegramModule,
     LegacyModule,
     AdminAuthModule,
@@ -49,7 +44,6 @@ import { CrmModule } from './crm/crm.module';
     CabinetAdminModule,
     CrmModule,
   ],
-  controllers: [VideoController],
   providers: [
     {
       provide: APP_FILTER,

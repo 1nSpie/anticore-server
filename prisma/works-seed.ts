@@ -7,6 +7,10 @@ const adapter = new PrismaPg({
 });
 const prisma = new PrismaClient({ adapter });
 
+// Пути картинок — ключи в Selectel S3: файл `works/<имя>.jpg` лежит в бакете как `image/works/<имя>.jpg`.
+// Сайт строит URL через contentImageUrl() (anticore-client/src/lib/media.ts).
+// Файлы заливаются скриптом scripts/upload-media.sh из anticore-server/public/works.
+
 async function seedWorks() {
   // First, delete all existing works and their related data
   console.log('Deleting existing works...');

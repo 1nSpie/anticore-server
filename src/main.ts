@@ -3,7 +3,6 @@ import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
 import { ValidationPipe } from "@nestjs/common";
 import { NestExpressApplication } from "@nestjs/platform-express";
-import { join } from "path";
 import * as cookieParser from "cookie-parser";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 
@@ -27,10 +26,7 @@ async function bootstrap() {
     credentials: true,
   });
 
-  // Serve static files from public directory
-  app.useStaticAssets(join(__dirname, "..", "public"), {
-    prefix: "/static/",
-  });
+  // Картинки и видео лежат в Selectel S3 — бэк файлов не отдаёт (см. anticore-client/src/lib/media.ts)
   // Для работы за прокси
   app.set("trust proxy", true);
 
