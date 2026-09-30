@@ -18,6 +18,7 @@ import { formatVehicleLabel } from "../common/crm-format.util";
 import { CrmSettingsService } from "../settings/crm-settings.service";
 import { CrmSmsService } from "../sms/crm-sms.service";
 import {
+  CompleteAppointmentDto,
   CreateAppointmentDto,
   UpdateAppointmentDto,
 } from "./dto/appointment.dto";
@@ -46,6 +47,7 @@ const appointmentInclude = {
     },
   },
   catalogServiceType: true,
+  siteLead: { select: { id: true, status: true } },
 } as const;
 
 @Injectable()
@@ -111,10 +113,11 @@ export class CrmAppointmentsService {
       serviceTypeId: dto.serviceTypeId ?? null,
       priceRub: dto.priceRub,
       managerName: dto.managerName?.trim() || null,
+      masterComment: dto.masterComment?.trim() || null,
       location,
     };
 
-    const row = dto.leadId
+    let row = dto.leadId
       ? await this.prisma.$transaction(async (tx) => {
           const visit = await tx.visitHistory.create({
             data: visitData,
@@ -136,6 +139,7 @@ export class CrmAppointmentsService {
               visitId: visit.id,
               status: SiteLeadStatus.SCHEDULED,
               processedAt: new Date(),
+              followUpAt: null,
             },
           });
 
@@ -154,6 +158,15 @@ export class CrmAppointmentsService {
           data: visitData,
           include: appointmentInclude,
         });
+
+    if (dto.leadId) {
+      // Запись на сегодня → заявка сразу «В работе».
+      await this.leads.syncVisitStatuses({ visitId: row.id });
+      row = await this.prisma.visitHistory.findUniqueOrThrow({
+        where: { id: row.id },
+        include: appointmentInclude,
+      });
+    }
 
     let smsError: string | null = null;
     try {
@@ -221,12 +234,26 @@ export class CrmAppointmentsService {
           managerName: dto.managerName?.trim() || null,
         }),
         ...(dto.location !== undefined && { location: dto.location }),
+        ...(dto.masterComment !== undefined && {
+          masterComment: dto.masterComment?.trim() || null,
+        }),
         ...(dto.diskLink !== undefined && {
           diskLink: dto.diskLink?.trim() || null,
         }),
       },
       include: appointmentInclude,
     });
+
+    if (row.siteLead) {
+      // Перенос на сегодня / на другой день меняет «В работе» ↔ «В календаре».
+      await this.leads.syncVisitStatuses({ visitId: id });
+      return this.toEvent(
+        await this.prisma.visitHistory.findUniqueOrThrow({
+          where: { id },
+          include: appointmentInclude,
+        }),
+      );
+    }
 
     return this.toEvent(row);
   }
@@ -236,8 +263,116 @@ export class CrmAppointmentsService {
       where: { id },
     });
     if (!existing) throw new NotFoundException("Запись не найдена");
-    await this.prisma.visitHistory.delete({ where: { id } });
+    await this.prisma.$transaction([
+      // Запись удалили — заявка возвращается админу, а не зависает «В календаре».
+      this.prisma.siteLead.updateMany({
+        where: {
+          visitId: id,
+          status: { in: [SiteLeadStatus.SCHEDULED, SiteLeadStatus.IN_PROGRESS] },
+        },
+        data: { status: SiteLeadStatus.PROCESSING },
+      }),
+      this.prisma.visitHistory.delete({ where: { id } }),
+    ]);
     return { message: "Удалено" };
+  }
+
+  /**
+   * Закрыть запись из календаря: работы выполнены.
+   * Связанная заявка автоматически становится «Выполнена»; ссылка на Яндекс.Диск обязательна.
+   */
+  async complete(id: number, dto: CompleteAppointmentDto) {
+    const visit = await this.prisma.visitHistory.findUnique({
+      where: { id },
+      include: { siteLead: true },
+    });
+    if (!visit) throw new NotFoundException("Запись не найдена");
+    if (visit.completedAt) {
+      throw new ConflictException("Запись уже закрыта");
+    }
+    const lead = visit.siteLead;
+    if (lead?.status === SiteLeadStatus.REJECTED) {
+      throw new BadRequestException(
+        `Заявка #${lead.id} отклонена — закрыть запись как выполненную нельзя`,
+      );
+    }
+
+    const diskLink = (
+      dto.diskLink?.trim() ||
+      visit.diskLink?.trim() ||
+      lead?.diskLink?.trim() ||
+      ""
+    ).trim();
+    if (!diskLink) {
+      throw new BadRequestException("Укажите ссылку на Яндекс.Диск");
+    }
+
+    const now = new Date();
+    await this.prisma.$transaction([
+      this.prisma.visitHistory.update({
+        where: { id },
+        data: { completedAt: now, diskLink },
+      }),
+      ...(lead && lead.status !== SiteLeadStatus.COMPLETED
+        ? [
+            this.prisma.siteLead.update({
+              where: { id: lead.id },
+              data: {
+                status: SiteLeadStatus.COMPLETED,
+                diskLink,
+                processedAt: now,
+                followUpAt: null,
+              },
+            }),
+          ]
+        : []),
+    ]);
+
+    return this.toEvent(
+      await this.prisma.visitHistory.findUniqueOrThrow({
+        where: { id },
+        include: appointmentInclude,
+      }),
+    );
+  }
+
+  /** Отменить закрытие (ошибочно закрыли): запись и заявка возвращаются в работу. */
+  async reopen(id: number) {
+    const visit = await this.prisma.visitHistory.findUnique({
+      where: { id },
+      include: { siteLead: true },
+    });
+    if (!visit) throw new NotFoundException("Запись не найдена");
+    if (!visit.completedAt) return this.toEvent(
+      await this.prisma.visitHistory.findUniqueOrThrow({
+        where: { id },
+        include: appointmentInclude,
+      }),
+    );
+
+    await this.prisma.$transaction([
+      this.prisma.visitHistory.update({
+        where: { id },
+        data: { completedAt: null },
+      }),
+      ...(visit.siteLead?.status === SiteLeadStatus.COMPLETED
+        ? [
+            this.prisma.siteLead.update({
+              where: { id: visit.siteLead.id },
+              // Точный статус («В работе» / «В календаре») выставит синхронизация ниже.
+              data: { status: SiteLeadStatus.SCHEDULED },
+            }),
+          ]
+        : []),
+    ]);
+    await this.leads.syncVisitStatuses({ visitId: id });
+
+    return this.toEvent(
+      await this.prisma.visitHistory.findUniqueOrThrow({
+        where: { id },
+        include: appointmentInclude,
+      }),
+    );
   }
 
   /** Ручная отправка SMS с запросом отзыва (один раз на запись). */
@@ -308,8 +443,12 @@ export class CrmAppointmentsService {
     priceRub: number | null;
     serviceTypeId: number | null;
     managerName: string | null;
+    masterComment: string | null;
     location?: CrmLocation | null;
     reviewSmsSentAt?: Date | null;
+    completedAt?: Date | null;
+    diskLink?: string | null;
+    siteLead?: { id: number; status: SiteLeadStatus } | null;
     user: {
       id: number;
       phone: string;
@@ -356,10 +495,16 @@ export class CrmAppointmentsService {
       catalogServiceType: row.catalogServiceType,
       priceRub: row.priceRub ?? 0,
       managerName: row.managerName,
+      masterComment: row.masterComment,
       location: (row.location ?? DEFAULT_CRM_LOCATION) as CrmLocationCode,
       title: row.serviceType,
       reviewSmsSentAt: row.reviewSmsSentAt
         ? row.reviewSmsSentAt.toISOString()
+        : null,
+      completedAt: row.completedAt ? row.completedAt.toISOString() : null,
+      diskLink: row.diskLink ?? null,
+      lead: row.siteLead
+        ? { id: row.siteLead.id, status: row.siteLead.status }
         : null,
     };
   }

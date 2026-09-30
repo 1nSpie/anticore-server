@@ -13,6 +13,12 @@ import {
 export class BlogService {
   constructor(private prisma: PrismaService) {}
 
+  findAdminPosts() {
+    return this.prisma.blogPost.findMany({
+      include: { category: true, tags: true }, orderBy: { date: 'desc' },
+    });
+  }
+
   // Blog Posts
   async createPost(createPostDto: CreateBlogPostDto) {
     const { tags, ...postData } = createPostDto;
@@ -113,7 +119,7 @@ export class BlogService {
       },
     });
 
-    if (!post) {
+    if (!post || !post.published) {
       throw new NotFoundException(`Post with ID ${id} not found`);
     }
 
@@ -129,7 +135,7 @@ export class BlogService {
       },
     });
 
-    if (!post) {
+    if (!post || !post.published) {
       throw new NotFoundException(`Post with slug ${slug} not found`);
     }
 

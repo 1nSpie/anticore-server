@@ -277,6 +277,9 @@ model ServiceType {
 
 enum SiteLeadStatus {
   NEW
+  /** Админ взял заявку и связывается с клиентом (кнопка «Взять в работу»). */
+  PROCESSING
+  /** Авто на подъёмнике: день записи наступил, запись ещё не закрыта. Ставится автоматически. */
   IN_PROGRESS
   NEEDS_CLARIFICATION
   SCHEDULED
@@ -302,6 +305,8 @@ model SiteLead {
   adminNote           String?        @db.Text
   diskLink            String?
   followUpAt          DateTime?
+  /** С какого момента считается срок реакции (30 мин): создание или возврат из «На уточнении». */
+  surfacedAt          DateTime?
   /** Город / филиал для записи */
   location            CrmLocation?
   visitId             Int?           @unique
@@ -331,7 +336,11 @@ model VisitHistory {
   location        CrmLocation @default(ZHUKOVSKY)
   /** Имя менеджера (только админка, не для ЛК) */
   managerName     String?   @db.VarChar(100)
+  /** Внутренний комментарий мастера к записи. */
+  masterComment   String?   @db.VarChar(2000)
   reviewSmsSentAt DateTime?
+  /** Работы по записи завершены (закрыта из календаря или из заявки). */
+  completedAt     DateTime?
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
 

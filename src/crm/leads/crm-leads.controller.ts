@@ -22,8 +22,12 @@ export class CrmLeadsController {
   constructor(private readonly leads: CrmLeadsService) {}
 
   @Get()
-  list(@Query("status") status?: SiteLeadStatus) {
-    return this.leads.list(status);
+  list(
+    @Query("status") status?: SiteLeadStatus,
+    /** Поиск по номеру телефона (любая часть, можно с 8 / +7). */
+    @Query("q") q?: string,
+  ) {
+    return this.leads.list(status, q);
   }
 
   @Get(":id")

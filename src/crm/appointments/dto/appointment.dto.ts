@@ -45,6 +45,11 @@ export class CreateAppointmentDto {
   managerName?: string;
 
   @IsOptional()
+  @IsString()
+  @MaxLength(2000)
+  masterComment?: string | null;
+
+  @IsOptional()
   @IsIn([...CRM_LOCATIONS])
   location?: (typeof CRM_LOCATIONS)[number];
 
@@ -95,6 +100,11 @@ export class UpdateAppointmentDto {
   managerName?: string | null;
 
   @IsOptional()
+  @IsString()
+  @MaxLength(2000)
+  masterComment?: string | null;
+
+  @IsOptional()
   @IsIn([...CRM_LOCATIONS])
   location?: (typeof CRM_LOCATIONS)[number];
 
@@ -102,4 +112,13 @@ export class UpdateAppointmentDto {
   @IsString()
   @MaxLength(2000)
   diskLink?: string | null;
+}
+
+/** Закрыть запись из календаря (связанная заявка → «Выполнена»). */
+export class CompleteAppointmentDto {
+  /** Ссылка на фотоотчёт (Яндекс.Диск). Обязательна; можно не передавать, если уже сохранена у записи или заявки. */
+  @IsOptional()
+  @IsString()
+  @MaxLength(500)
+  diskLink?: string;
 }

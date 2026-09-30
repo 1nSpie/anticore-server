@@ -1,13 +1,42 @@
-import { IsString, IsOptional, IsBoolean, IsInt, IsArray } from 'class-validator';
+import { Type } from "class-transformer";
+import {
+  IsString,
+  IsOptional,
+  IsBoolean,
+  IsInt,
+  IsArray,
+  ValidateNested,
+  Min,
+  ArrayMaxSize,
+  Matches,
+  IsNotEmpty,
+} from "class-validator";
+
+export class WorkImageDto {
+  @IsString()
+  @Matches(/^works\/[a-zA-Z0-9._/-]+$/)
+  url: string;
+
+  @IsOptional()
+  @IsString()
+  alt?: string;
+
+  @IsOptional()
+  @IsInt()
+  @Min(0)
+  order?: number;
+}
 
 export class CreateWorkDto {
   @IsString()
+  @IsNotEmpty()
   title: string;
 
   @IsString()
   description: string;
 
   @IsString()
+  @Matches(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)
   slug: string;
 
   @IsOptional()
@@ -31,6 +60,7 @@ export class CreateWorkDto {
   carModel: string;
 
   @IsInt()
+  @Min(1)
   categoryId: number;
 
   @IsOptional()
@@ -43,11 +73,15 @@ export class CreateWorkDto {
 
   @IsOptional()
   @IsArray()
+  @IsString({ each: true })
   services?: string[];
 
   @IsOptional()
   @IsArray()
-  images?: { url: string; alt?: string; order?: number }[];
+  @ArrayMaxSize(20)
+  @ValidateNested({ each: true })
+  @Type(() => WorkImageDto)
+  images?: WorkImageDto[];
 }
 
 export class UpdateWorkDto {
@@ -61,6 +95,7 @@ export class UpdateWorkDto {
 
   @IsOptional()
   @IsString()
+  @Matches(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)
   slug?: string;
 
   @IsOptional()
@@ -89,6 +124,7 @@ export class UpdateWorkDto {
 
   @IsOptional()
   @IsInt()
+  @Min(1)
   categoryId?: number;
 
   @IsOptional()
@@ -101,11 +137,15 @@ export class UpdateWorkDto {
 
   @IsOptional()
   @IsArray()
+  @IsString({ each: true })
   services?: string[];
 
   @IsOptional()
   @IsArray()
-  images?: { url: string; alt?: string; order?: number }[];
+  @ArrayMaxSize(20)
+  @ValidateNested({ each: true })
+  @Type(() => WorkImageDto)
+  images?: WorkImageDto[];
 }
 
 export class CreateWorkCategoryDto {
@@ -113,6 +153,7 @@ export class CreateWorkCategoryDto {
   name: string;
 
   @IsString()
+  @Matches(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)
   slug: string;
 }
 
@@ -123,5 +164,6 @@ export class UpdateWorkCategoryDto {
 
   @IsOptional()
   @IsString()
+  @Matches(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)
   slug?: string;
 }
