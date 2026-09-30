@@ -15,6 +15,7 @@ import {
 import { AdminJwtGuard } from "../../auth/admin-jwt.guard";
 import { CrmAppointmentsService } from "./crm-appointments.service";
 import {
+  CompleteAppointmentDto,
   CreateAppointmentDto,
   UpdateAppointmentDto,
 } from "./dto/appointment.dto";
@@ -50,6 +51,21 @@ export class CrmAppointmentsController {
   @Delete(":id")
   remove(@Param("id", ParseIntPipe) id: number) {
     return this.appointments.remove(id);
+  }
+
+  /** Закрыть запись (работы выполнены) — связанная заявка → «Выполнена». */
+  @Post(":id/complete")
+  complete(
+    @Param("id", ParseIntPipe) id: number,
+    @Body() dto: CompleteAppointmentDto,
+  ) {
+    return this.appointments.complete(id, dto);
+  }
+
+  /** Отменить закрытие записи. */
+  @Post(":id/reopen")
+  reopen(@Param("id", ParseIntPipe) id: number) {
+    return this.appointments.reopen(id);
   }
 
   @Post(":id/send-review-sms")

@@ -339,6 +339,7 @@ export const SiteLeadScalarFieldEnum = {
   adminNote: 'adminNote',
   diskLink: 'diskLink',
   followUpAt: 'followUpAt',
+  surfacedAt: 'surfacedAt',
   location: 'location',
   visitId: 'visitId',
   processedAt: 'processedAt',
@@ -362,7 +363,9 @@ export const VisitHistoryScalarFieldEnum = {
   serviceTypeId: 'serviceTypeId',
   location: 'location',
   managerName: 'managerName',
+  masterComment: 'masterComment',
   reviewSmsSentAt: 'reviewSmsSentAt',
+  completedAt: 'completedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

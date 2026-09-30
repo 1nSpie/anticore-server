@@ -14,6 +14,7 @@ import { CRM_LOCATIONS } from "../../common/crm-location";
 
 const SITE_LEAD_STATUSES = [
   "NEW",
+  "PROCESSING",
   "IN_PROGRESS",
   "NEEDS_CLARIFICATION",
   "SCHEDULED",
