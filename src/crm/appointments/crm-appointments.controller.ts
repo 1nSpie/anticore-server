@@ -35,6 +35,12 @@ export class CrmAppointmentsController {
     return this.appointments.list(from, to, location);
   }
 
+  /** Поиск записей по номеру клиента (любая часть, можно с 8 / +7) — по всем датам и филиалам. */
+  @Get("search")
+  search(@Query("q") q?: string) {
+    return this.appointments.search(q);
+  }
+
   @Post()
   create(@Body() dto: CreateAppointmentDto) {
     return this.appointments.create(dto);

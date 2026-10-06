@@ -50,6 +50,7 @@ export type SiteLeadMinAggregateOutputType = {
   diskLink: string | null
   followUpAt: Date | null
   surfacedAt: Date | null
+  archivedAt: Date | null
   location: $Enums.CrmLocation | null
   visitId: number | null
   processedAt: Date | null
@@ -71,6 +72,7 @@ export type SiteLeadMaxAggregateOutputType = {
   diskLink: string | null
   followUpAt: Date | null
   surfacedAt: Date | null
+  archivedAt: Date | null
   location: $Enums.CrmLocation | null
   visitId: number | null
   processedAt: Date | null
@@ -92,6 +94,7 @@ export type SiteLeadCountAggregateOutputType = {
   diskLink: number
   followUpAt: number
   surfacedAt: number
+  archivedAt: number
   location: number
   visitId: number
   processedAt: number
@@ -125,6 +128,7 @@ export type SiteLeadMinAggregateInputType = {
   diskLink?: true
   followUpAt?: true
   surfacedAt?: true
+  archivedAt?: true
   location?: true
   visitId?: true
   processedAt?: true
@@ -146,6 +150,7 @@ export type SiteLeadMaxAggregateInputType = {
   diskLink?: true
   followUpAt?: true
   surfacedAt?: true
+  archivedAt?: true
   location?: true
   visitId?: true
   processedAt?: true
@@ -167,6 +172,7 @@ export type SiteLeadCountAggregateInputType = {
   diskLink?: true
   followUpAt?: true
   surfacedAt?: true
+  archivedAt?: true
   location?: true
   visitId?: true
   processedAt?: true
@@ -275,6 +281,7 @@ export type SiteLeadGroupByOutputType = {
   diskLink: string | null
   followUpAt: Date | null
   surfacedAt: Date | null
+  archivedAt: Date | null
   location: $Enums.CrmLocation | null
   visitId: number | null
   processedAt: Date | null
@@ -319,6 +326,7 @@ export type SiteLeadWhereInput = {
   diskLink?: Prisma.StringNullableFilter<"SiteLead"> | string | null
   followUpAt?: Prisma.DateTimeNullableFilter<"SiteLead"> | Date | string | null
   surfacedAt?: Prisma.DateTimeNullableFilter<"SiteLead"> | Date | string | null
+  archivedAt?: Prisma.DateTimeNullableFilter<"SiteLead"> | Date | string | null
   location?: Prisma.EnumCrmLocationNullableFilter<"SiteLead"> | $Enums.CrmLocation | null
   visitId?: Prisma.IntNullableFilter<"SiteLead"> | number | null
   processedAt?: Prisma.DateTimeNullableFilter<"SiteLead"> | Date | string | null
@@ -341,6 +349,7 @@ export type SiteLeadOrderByWithRelationInput = {
   diskLink?: Prisma.SortOrderInput | Prisma.SortOrder
   followUpAt?: Prisma.SortOrderInput | Prisma.SortOrder
   surfacedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  archivedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   location?: Prisma.SortOrderInput | Prisma.SortOrder
   visitId?: Prisma.SortOrderInput | Prisma.SortOrder
   processedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -367,6 +376,7 @@ export type SiteLeadWhereUniqueInput = Prisma.AtLeast<{
   diskLink?: Prisma.StringNullableFilter<"SiteLead"> | string | null
   followUpAt?: Prisma.DateTimeNullableFilter<"SiteLead"> | Date | string | null
   surfacedAt?: Prisma.DateTimeNullableFilter<"SiteLead"> | Date | string | null
+  archivedAt?: Prisma.DateTimeNullableFilter<"SiteLead"> | Date | string | null
   location?: Prisma.EnumCrmLocationNullableFilter<"SiteLead"> | $Enums.CrmLocation | null
   processedAt?: Prisma.DateTimeNullableFilter<"SiteLead"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"SiteLead"> | Date | string
@@ -388,6 +398,7 @@ export type SiteLeadOrderByWithAggregationInput = {
   diskLink?: Prisma.SortOrderInput | Prisma.SortOrder
   followUpAt?: Prisma.SortOrderInput | Prisma.SortOrder
   surfacedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  archivedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   location?: Prisma.SortOrderInput | Prisma.SortOrder
   visitId?: Prisma.SortOrderInput | Prisma.SortOrder
   processedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -417,6 +428,7 @@ export type SiteLeadScalarWhereWithAggregatesInput = {
   diskLink?: Prisma.StringNullableWithAggregatesFilter<"SiteLead"> | string | null
   followUpAt?: Prisma.DateTimeNullableWithAggregatesFilter<"SiteLead"> | Date | string | null
   surfacedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"SiteLead"> | Date | string | null
+  archivedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"SiteLead"> | Date | string | null
   location?: Prisma.EnumCrmLocationNullableWithAggregatesFilter<"SiteLead"> | $Enums.CrmLocation | null
   visitId?: Prisma.IntNullableWithAggregatesFilter<"SiteLead"> | number | null
   processedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"SiteLead"> | Date | string | null
@@ -437,6 +449,7 @@ export type SiteLeadCreateInput = {
   diskLink?: string | null
   followUpAt?: Date | string | null
   surfacedAt?: Date | string | null
+  archivedAt?: Date | string | null
   location?: $Enums.CrmLocation | null
   processedAt?: Date | string | null
   createdAt?: Date | string
@@ -458,6 +471,7 @@ export type SiteLeadUncheckedCreateInput = {
   diskLink?: string | null
   followUpAt?: Date | string | null
   surfacedAt?: Date | string | null
+  archivedAt?: Date | string | null
   location?: $Enums.CrmLocation | null
   visitId?: number | null
   processedAt?: Date | string | null
@@ -478,6 +492,7 @@ export type SiteLeadUpdateInput = {
   diskLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   followUpAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   surfacedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   location?: Prisma.NullableEnumCrmLocationFieldUpdateOperationsInput | $Enums.CrmLocation | null
   processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -499,6 +514,7 @@ export type SiteLeadUncheckedUpdateInput = {
   diskLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   followUpAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   surfacedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   location?: Prisma.NullableEnumCrmLocationFieldUpdateOperationsInput | $Enums.CrmLocation | null
   visitId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -520,6 +536,7 @@ export type SiteLeadCreateManyInput = {
   diskLink?: string | null
   followUpAt?: Date | string | null
   surfacedAt?: Date | string | null
+  archivedAt?: Date | string | null
   location?: $Enums.CrmLocation | null
   visitId?: number | null
   processedAt?: Date | string | null
@@ -540,6 +557,7 @@ export type SiteLeadUpdateManyMutationInput = {
   diskLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   followUpAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   surfacedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   location?: Prisma.NullableEnumCrmLocationFieldUpdateOperationsInput | $Enums.CrmLocation | null
   processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -560,6 +578,7 @@ export type SiteLeadUncheckedUpdateManyInput = {
   diskLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   followUpAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   surfacedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   location?: Prisma.NullableEnumCrmLocationFieldUpdateOperationsInput | $Enums.CrmLocation | null
   visitId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -581,6 +600,7 @@ export type SiteLeadCountOrderByAggregateInput = {
   diskLink?: Prisma.SortOrder
   followUpAt?: Prisma.SortOrder
   surfacedAt?: Prisma.SortOrder
+  archivedAt?: Prisma.SortOrder
   location?: Prisma.SortOrder
   visitId?: Prisma.SortOrder
   processedAt?: Prisma.SortOrder
@@ -607,6 +627,7 @@ export type SiteLeadMaxOrderByAggregateInput = {
   diskLink?: Prisma.SortOrder
   followUpAt?: Prisma.SortOrder
   surfacedAt?: Prisma.SortOrder
+  archivedAt?: Prisma.SortOrder
   location?: Prisma.SortOrder
   visitId?: Prisma.SortOrder
   processedAt?: Prisma.SortOrder
@@ -628,6 +649,7 @@ export type SiteLeadMinOrderByAggregateInput = {
   diskLink?: Prisma.SortOrder
   followUpAt?: Prisma.SortOrder
   surfacedAt?: Prisma.SortOrder
+  archivedAt?: Prisma.SortOrder
   location?: Prisma.SortOrder
   visitId?: Prisma.SortOrder
   processedAt?: Prisma.SortOrder
@@ -702,6 +724,7 @@ export type SiteLeadCreateWithoutVisitInput = {
   diskLink?: string | null
   followUpAt?: Date | string | null
   surfacedAt?: Date | string | null
+  archivedAt?: Date | string | null
   location?: $Enums.CrmLocation | null
   processedAt?: Date | string | null
   createdAt?: Date | string
@@ -722,6 +745,7 @@ export type SiteLeadUncheckedCreateWithoutVisitInput = {
   diskLink?: string | null
   followUpAt?: Date | string | null
   surfacedAt?: Date | string | null
+  archivedAt?: Date | string | null
   location?: $Enums.CrmLocation | null
   processedAt?: Date | string | null
   createdAt?: Date | string
@@ -757,6 +781,7 @@ export type SiteLeadUpdateWithoutVisitInput = {
   diskLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   followUpAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   surfacedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   location?: Prisma.NullableEnumCrmLocationFieldUpdateOperationsInput | $Enums.CrmLocation | null
   processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -777,6 +802,7 @@ export type SiteLeadUncheckedUpdateWithoutVisitInput = {
   diskLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   followUpAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   surfacedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   location?: Prisma.NullableEnumCrmLocationFieldUpdateOperationsInput | $Enums.CrmLocation | null
   processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -799,6 +825,7 @@ export type SiteLeadSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   diskLink?: boolean
   followUpAt?: boolean
   surfacedAt?: boolean
+  archivedAt?: boolean
   location?: boolean
   visitId?: boolean
   processedAt?: boolean
@@ -821,6 +848,7 @@ export type SiteLeadSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   diskLink?: boolean
   followUpAt?: boolean
   surfacedAt?: boolean
+  archivedAt?: boolean
   location?: boolean
   visitId?: boolean
   processedAt?: boolean
@@ -843,6 +871,7 @@ export type SiteLeadSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   diskLink?: boolean
   followUpAt?: boolean
   surfacedAt?: boolean
+  archivedAt?: boolean
   location?: boolean
   visitId?: boolean
   processedAt?: boolean
@@ -865,6 +894,7 @@ export type SiteLeadSelectScalar = {
   diskLink?: boolean
   followUpAt?: boolean
   surfacedAt?: boolean
+  archivedAt?: boolean
   location?: boolean
   visitId?: boolean
   processedAt?: boolean
@@ -872,7 +902,7 @@ export type SiteLeadSelectScalar = {
   updatedAt?: boolean
 }
 
-export type SiteLeadOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "kind" | "name" | "phone" | "message" | "carDescription" | "communicationMethod" | "pageUrl" | "status" | "adminNote" | "diskLink" | "followUpAt" | "surfacedAt" | "location" | "visitId" | "processedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["siteLead"]>
+export type SiteLeadOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "kind" | "name" | "phone" | "message" | "carDescription" | "communicationMethod" | "pageUrl" | "status" | "adminNote" | "diskLink" | "followUpAt" | "surfacedAt" | "archivedAt" | "location" | "visitId" | "processedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["siteLead"]>
 export type SiteLeadInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   visit?: boolean | Prisma.SiteLead$visitArgs<ExtArgs>
 }
@@ -905,6 +935,10 @@ export type $SiteLeadPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
      * * С какого момента считается срок реакции (30 мин): создание или возврат из «На уточнении».
      */
     surfacedAt: Date | null
+    /**
+     * * Убрана из списка CRM крестиком. Запись остаётся в БД; профиль клиента не затрагивается.
+     */
+    archivedAt: Date | null
     /**
      * * Город / филиал для записи
      */
@@ -1350,6 +1384,7 @@ export interface SiteLeadFieldRefs {
   readonly diskLink: Prisma.FieldRef<"SiteLead", 'String'>
   readonly followUpAt: Prisma.FieldRef<"SiteLead", 'DateTime'>
   readonly surfacedAt: Prisma.FieldRef<"SiteLead", 'DateTime'>
+  readonly archivedAt: Prisma.FieldRef<"SiteLead", 'DateTime'>
   readonly location: Prisma.FieldRef<"SiteLead", 'CrmLocation'>
   readonly visitId: Prisma.FieldRef<"SiteLead", 'Int'>
   readonly processedAt: Prisma.FieldRef<"SiteLead", 'DateTime'>

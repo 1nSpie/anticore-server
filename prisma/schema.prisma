@@ -307,6 +307,8 @@ model SiteLead {
   followUpAt          DateTime?
   /** С какого момента считается срок реакции (30 мин): создание или возврат из «На уточнении». */
   surfacedAt          DateTime?
+  /** Убрана из списка CRM крестиком. Запись остаётся в БД; профиль клиента не затрагивается. */
+  archivedAt          DateTime?
   /** Город / филиал для записи */
   location            CrmLocation?
   visitId             Int?           @unique

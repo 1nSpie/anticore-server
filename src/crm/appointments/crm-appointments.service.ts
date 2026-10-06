@@ -15,6 +15,7 @@ import {
   type CrmLocationCode,
 } from "../common/crm-location";
 import { formatVehicleLabel } from "../common/crm-format.util";
+import { phoneSearchVariants } from "../common/phone-search";
 import { CrmSettingsService } from "../settings/crm-settings.service";
 import { CrmSmsService } from "../sms/crm-sms.service";
 import {
@@ -83,6 +84,29 @@ export class CrmAppointmentsService {
     });
 
     return rows.map((r) => this.toEvent(r));
+  }
+
+  /**
+   * Поиск записей по телефону клиента. Сначала ближайшие будущие, затем прошедшие (свежие первыми).
+   */
+  async search(q?: string) {
+    const variants = phoneSearchVariants(q);
+    if (variants.length === 0) return [];
+    const rows = await this.prisma.visitHistory.findMany({
+      where: {
+        // Старые визиты без времени в календаре не показываются — их не ищем
+        startsAt: { not: null },
+        user: { OR: variants.map((v) => ({ phone: { contains: v } })) },
+      },
+      orderBy: { startsAt: "desc" },
+      take: 60,
+      include: appointmentInclude,
+    });
+    const now = Date.now();
+    const time = (r: { startsAt: Date | null }) => r.startsAt!.getTime();
+    const upcoming = rows.filter((r) => time(r) >= now).sort((a, b) => time(a) - time(b));
+    const past = rows.filter((r) => time(r) < now);
+    return [...upcoming, ...past].slice(0, 30).map((r) => this.toEvent(r));
   }
 
   async create(dto: CreateAppointmentDto) {
@@ -160,7 +184,7 @@ export class CrmAppointmentsService {
         });
 
     if (dto.leadId) {
-      // Запись на сегодня → заявка сразу «В работе».
+      // Запись на сегодня → заявка сразу «На подъёмнике».
       await this.leads.syncVisitStatuses({ visitId: row.id });
       row = await this.prisma.visitHistory.findUniqueOrThrow({
         where: { id: row.id },
@@ -245,7 +269,7 @@ export class CrmAppointmentsService {
     });
 
     if (row.siteLead) {
-      // Перенос на сегодня / на другой день меняет «В работе» ↔ «В календаре».
+      // Перенос на сегодня / на другой день меняет «На подъёмнике» ↔ «В календаре».
       await this.leads.syncVisitStatuses({ visitId: id });
       return this.toEvent(
         await this.prisma.visitHistory.findUniqueOrThrow({
@@ -359,7 +383,7 @@ export class CrmAppointmentsService {
         ? [
             this.prisma.siteLead.update({
               where: { id: visit.siteLead.id },
-              // Точный статус («В работе» / «В календаре») выставит синхронизация ниже.
+              // Точный статус («На подъёмнике» / «В календаре») выставит синхронизация ниже.
               data: { status: SiteLeadStatus.SCHEDULED },
             }),
           ]

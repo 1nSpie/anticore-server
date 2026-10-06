@@ -8,6 +8,7 @@ import { SiteLeadKind, SiteLeadStatus } from "../../../generated/prisma/client";
 import { PrismaService } from "../../prisma/prisma.service";
 import { normalizePhoneRu } from "../../cabinet/common/phone.util";
 import { UpdateSiteLeadDto } from "./dto/site-lead.dto";
+import { phoneSearchVariants } from "../common/phone-search";
 import {
   MSK_OFFSET_MS,
   mskDateAsUtcMidnight,
@@ -30,18 +31,6 @@ export function normalizeFollowUpAt(raw: string): Date {
     .toISOString()
     .slice(0, 10);
   return workDayStartFor(mskYmd);
-}
-
-/**
- * Варианты подстроки для поиска по телефону (хранится как `79XXXXXXXXX`).
- * «8 916 …» ищем и как «7916…»; «+7 (916) 123» → «7916123».
- */
-export function leadPhoneSearchVariants(q?: string): string[] {
-  const digits = (q ?? "").replace(/\D/g, "");
-  if (!digits) return [];
-  const variants = [digits];
-  if (digits.length > 1 && digits.startsWith("8")) variants.push(`7${digits.slice(1)}`);
-  return variants;
 }
 
 /** Статусы, которые ставит только система по записи в календаре. */
@@ -110,9 +99,10 @@ export class CrmLeadsService {
   }
 
   async list(status?: SiteLeadStatus, q?: string) {
-    const phoneVariants = leadPhoneSearchVariants(q);
+    const phoneVariants = phoneSearchVariants(q);
     return this.prisma.siteLead.findMany({
       where: {
+        archivedAt: null,
         ...(status && { status }),
         ...(phoneVariants.length && {
           OR: phoneVariants.map((v) => ({ phone: { contains: v } })),
@@ -132,6 +122,31 @@ export class CrmLeadsService {
         },
       },
     });
+  }
+
+  /**
+   * Крестик в списке: заявка исчезает из CRM (и из «Моих заявок» клиента), но остаётся в БД.
+   * Профиль клиента (CabinetUser) и его записи в календаре не трогаем.
+   * Заявки, привязанные к календарю или выполненные, убрать нельзя — по ним есть работа и ссылка на фотоотчёт.
+   */
+  async archive(id: number) {
+    const lead = await this.get(id);
+    if (lead.archivedAt) return { message: "Заявка уже убрана" };
+    const blocked: SiteLeadStatus[] = [
+      SiteLeadStatus.SCHEDULED,
+      SiteLeadStatus.IN_PROGRESS,
+      SiteLeadStatus.COMPLETED,
+    ];
+    if (blocked.includes(lead.status)) {
+      throw new BadRequestException(
+        "Эту заявку убрать нельзя: она записана в календарь или уже выполнена",
+      );
+    }
+    await this.prisma.siteLead.update({
+      where: { id },
+      data: { archivedAt: new Date() },
+    });
+    return { message: "Заявка убрана из списка" };
   }
 
   async get(id: number) {
@@ -155,7 +170,7 @@ export class CrmLeadsService {
       !lead.visitId
     ) {
       throw new BadRequestException(
-        "Статусы «В календаре» и «В работе» ставятся автоматически после записи в календарь",
+        "Статусы «В календаре» и «На подъёмнике» ставятся автоматически после записи в календарь",
       );
     }
 
@@ -269,7 +284,7 @@ export class CrmLeadsService {
           },
         });
       }
-      // «В календаре» ↔ «В работе» по дню записи — сразу, не дожидаясь cron.
+      // «В календаре» ↔ «На подъёмнике» по дню записи — сразу, не дожидаясь cron.
       const synced = await this.syncVisitStatuses({ visitId: lead.visitId });
       if (synced.toInProgress || synced.toScheduled) return this.get(id);
     }
@@ -342,7 +357,7 @@ export class CrmLeadsService {
 
   async listForUserPhone(phone: string) {
     return this.prisma.siteLead.findMany({
-      where: { phone },
+      where: { phone, archivedAt: null },
       orderBy: { createdAt: "desc" },
       select: {
         id: true,
@@ -364,6 +379,7 @@ export class CrmLeadsService {
   async processDueFollowUps(now = new Date()): Promise<number> {
     const result = await this.prisma.siteLead.updateMany({
       where: {
+        archivedAt: null,
         followUpAt: { lte: now },
         status: {
           in: [
@@ -384,7 +400,7 @@ export class CrmLeadsService {
 
   /**
    * Статус заявки по её записи в календаре:
-   * день записи наступил (или прошёл), запись не закрыта → «В работе» (авто на подъёмнике);
+   * день записи наступил (или прошёл), запись не закрыта → «На подъёмнике» (авто на подъёмнике);
    * запись в будущем → «В календаре».
    */
   async syncVisitStatuses(
