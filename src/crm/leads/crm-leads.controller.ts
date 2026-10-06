@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseIntPipe,
@@ -28,6 +29,12 @@ export class CrmLeadsController {
     @Query("q") q?: string,
   ) {
     return this.leads.list(status, q);
+  }
+
+  /** Убрать заявку из списка (крестик). Клиент в общей базе остаётся. */
+  @Delete(":id")
+  archive(@Param("id", ParseIntPipe) id: number) {
+    return this.leads.archive(id);
   }
 
   @Get(":id")

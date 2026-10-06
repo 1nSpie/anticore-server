@@ -340,6 +340,7 @@ export const SiteLeadScalarFieldEnum = {
   diskLink: 'diskLink',
   followUpAt: 'followUpAt',
   surfacedAt: 'surfacedAt',
+  archivedAt: 'archivedAt',
   location: 'location',
   visitId: 'visitId',
   processedAt: 'processedAt',
