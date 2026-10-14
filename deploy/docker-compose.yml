@@ -1,0 +1,28 @@
+# Прод: кладётся на сервер в /opt/anticore вместе с .env.deploy, server.env, client.env.
+# Исходников на сервере нет — только готовые образы из GHCR.
+#
+# network_mode: host — контейнеры слушают те же порты, что раньше pm2 (4444 / 3000),
+# поэтому nginx и Postgres на хосте не перенастраиваются (DATABASE_URL с localhost работает).
+
+services:
+  server:
+    image: ghcr.io/1nspie/anticore-server:${SERVER_TAG:-latest}
+    network_mode: host
+    env_file: server.env
+    restart: unless-stopped
+    logging:
+      driver: json-file
+      options: { max-size: "20m", max-file: "5" }
+
+  client:
+    image: ghcr.io/1nspie/anticore-client:${CLIENT_TAG:-latest}
+    network_mode: host
+    env_file: client.env
+    environment:
+      PORT: "3000"
+      # Только локально — наружу отдаёт nginx
+      HOSTNAME: "127.0.0.1"
+    restart: unless-stopped
+    logging:
+      driver: json-file
+      options: { max-size: "20m", max-file: "5" }
