@@ -16,6 +16,7 @@ import {
 } from "../common/crm-location";
 import { formatVehicleLabel } from "../common/crm-format.util";
 import { phoneSearchVariants } from "../common/phone-search";
+import { mskDateAsUtcMidnight } from "../common/crm-work-hours";
 import { CrmSettingsService } from "../settings/crm-settings.service";
 import { CrmSmsService } from "../sms/crm-sms.service";
 import {
@@ -120,6 +121,7 @@ export class CrmAppointmentsService {
     const location = (dto.location ?? DEFAULT_CRM_LOCATION) as CrmLocation;
     await this.settings.assertDayCapacity(startsAt, {
       location: location as CrmLocationCode,
+      force: dto.ignoreDayLimit === true,
     });
 
     if (dto.leadId) {
@@ -232,10 +234,19 @@ export class CrmAppointmentsService {
     const endsAt = dto.endsAt ? new Date(dto.endsAt) : existing.endsAt;
     if (startsAt && endsAt) this.assertRange(startsAt, endsAt);
     const nextLocation = (dto.location ?? existing.location) as CrmLocation;
-    if (startsAt) {
+    // Лимит проверяем, только если запись попадает на другой день или в другой филиал:
+    // иначе нельзя было бы даже поправить комментарий в записи на день, уже занятый сверх лимита.
+    const slotUnchanged =
+      !!existing.startsAt &&
+      !!startsAt &&
+      existing.location === nextLocation &&
+      mskDateAsUtcMidnight(existing.startsAt).getTime() ===
+        mskDateAsUtcMidnight(startsAt).getTime();
+    if (startsAt && !slotUnchanged) {
       await this.settings.assertDayCapacity(startsAt, {
         excludeVisitId: id,
         location: nextLocation as CrmLocationCode,
+        force: dto.ignoreDayLimit === true,
       });
     }
 

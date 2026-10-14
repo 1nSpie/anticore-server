@@ -175,8 +175,10 @@ export class CrmSettingsService {
    */
   async assertDayCapacity(
     startsAt: Date,
-    opts: { location: string; excludeVisitId?: number },
+    opts: { location: string; excludeVisitId?: number; force?: boolean },
   ) {
+    // Админ подтвердил запись сверх лимита — проверку пропускаем
+    if (opts.force) return;
     const loc = this.parseLocation(opts.location);
     const day = this.moscowDateOnly(startsAt);
     const limit = await this.prisma.crmDayLimit.findUnique({
@@ -198,11 +200,15 @@ export class CrmSettingsService {
     if (count >= limit.maxAppointments) {
       const label = day.toISOString().slice(0, 10);
       const city = CRM_LOCATION_LABELS[loc];
-      throw new BadRequestException(
-        limit.maxAppointments === 0
-          ? `${city}: на ${label} запись закрыта (лимит 0)`
-          : `${city}: на ${label} достигнут лимит записей (${limit.maxAppointments})`,
-      );
+      // code нужен клиенту: по нему он предлагает записать сверх лимита (ignoreDayLimit: true)
+      throw new BadRequestException({
+        statusCode: 400,
+        code: "DAY_LIMIT_REACHED",
+        message:
+          limit.maxAppointments === 0
+            ? `${city}: на ${label} запись закрыта (лимит 0)`
+            : `${city}: на ${label} достигнут лимит записей (${limit.maxAppointments})`,
+      });
     }
   }
 

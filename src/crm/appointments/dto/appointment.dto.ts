@@ -1,4 +1,5 @@
 import {
+  IsBoolean,
   IsDateString,
   IsIn,
   IsInt,
@@ -58,9 +59,19 @@ export class CreateAppointmentDto {
   @IsInt()
   @Min(1)
   leadId?: number;
+
+  /** Админ подтвердил запись сверх дневного лимита филиала. */
+  @IsOptional()
+  @IsBoolean()
+  ignoreDayLimit?: boolean;
 }
 
 export class UpdateAppointmentDto {
+  /** Админ подтвердил перенос/запись сверх дневного лимита филиала. */
+  @IsOptional()
+  @IsBoolean()
+  ignoreDayLimit?: boolean;
+
   @IsOptional()
   @IsInt()
   @Min(1)
