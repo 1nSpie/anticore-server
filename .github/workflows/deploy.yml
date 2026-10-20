@@ -13,6 +13,10 @@ on:
         type: choice
         options: [none, stand, production]
         default: none
+      pull_only:
+        description: "Только скачать образ на сервер, не перезапускать (первое переключение с pm2)"
+        type: boolean
+        default: false
 
 concurrency:
   group: server-${{ github.event_name == 'workflow_dispatch' && inputs.environment || 'push' }}
@@ -102,20 +106,30 @@ jobs:
         env:
           TAG: ${{ github.sha }}
           DEPLOY_PATH: ${{ secrets.DEPLOY_PATH || '/opt/anticore' }}
+          PULL_ONLY: ${{ inputs.pull_only }}
+          # Одноразовый токен задания: сервер логинится в GHCR на время выкладки, отдельный токен не нужен
+          GHCR_USER: ${{ github.actor }}
+          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           host: ${{ secrets.DEPLOY_HOST }}
           port: ${{ secrets.DEPLOY_PORT || 22 }}
           username: ${{ secrets.DEPLOY_USER }}
           key: ${{ secrets.DEPLOY_SSH_KEY }}
-          envs: TAG,DEPLOY_PATH
+          envs: TAG,DEPLOY_PATH,PULL_ONLY,GHCR_USER,GHCR_TOKEN
           script: |
             set -euo pipefail
             cd "$DEPLOY_PATH"
             C="docker compose --env-file .env.deploy"
+            echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
+            trap 'docker logout ghcr.io >/dev/null 2>&1 || true' EXIT
             grep -q '^SERVER_TAG=' .env.deploy || echo 'SERVER_TAG=latest' >> .env.deploy
             prev=$(grep '^SERVER_TAG=' .env.deploy | cut -d= -f2)
             sed -i "s/^SERVER_TAG=.*/SERVER_TAG=${TAG}/" .env.deploy
             $C pull server
+            if [ "${PULL_ONLY:-false}" = "true" ]; then
+              echo "Образ ${TAG} скачан, тег записан в .env.deploy. Перезапуск не выполняется (pull_only)."
+              exit 0
+            fi
             # Миграции — до перезапуска: новый код ждёт новую схему
             $C run --rm --no-deps server npx prisma migrate deploy
             # --wait: ждём, пока контейнер станет healthy (/api/health); не поднялся — откат на прошлый образ

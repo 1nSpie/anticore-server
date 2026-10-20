@@ -1,33 +1,98 @@
 # Деплой: GitHub Actions → GHCR → сервер (Docker)
 
 Сборка идёт в GitHub. На сервере нет исходников и `node_modules` — только готовые образы
-и конфиги в `/opt/anticore` (для стенда — своя папка).
+и конфиги в `/opt/anticore`.
 
 ```
 push в master (оба репо) ─► проверки (tsc, тесты) ─► сборка образа ─► ghcr.io/1nspie/anticore-{server,client}:<sha>  (+ latest)
                             └─ само на сервер НЕ выкатывается (если не включён AUTO_DEPLOY_PRODUCTION)
 
-Run workflow (любая ветка + stand / production) ─► то же самое ─► ssh: pull → [prisma migrate deploy] → up -d --wait
-                                                                   └─ не стал healthy → автоматический откат на прошлый образ
+Run workflow (ветка + production) ─► то же самое ─► ssh: docker login → pull → [prisma migrate deploy] → up -d --wait
+                                                    └─ не стал healthy → автоматический откат на прошлый образ
 ```
 
-Контейнеры работают в `network_mode: host` на тех же портах, что раньше pm2 (API — `PORT` из `server.env`, фронт — `CLIENT_PORT`),
-поэтому **nginx и Postgres не перенастраиваются**.
+Контейнеры работают в `network_mode: host` на тех же портах, что раньше pm2 (API — `4444`, фронт — `3000`),
+поэтому **nginx и Postgres не перенастраиваются**. База остаётся прежней (`DATABASE_URL` из текущего `.env`) — данные копировать не нужно.
 
-## Как выкатить
+---
+
+## Первый запуск на проде (по порядку)
+
+> Пока старый сайт работает на pm2, его ничего не затрагивает до шага 6: простой — секунды, при сбое pm2 возвращается сам.
+
+**1. Смержить PR** с Docker-файлами в обоих репозиториях (запускать workflow вручную можно только когда файл попал в `master`).
+
+**2. Секреты и переменные GitHub** (у себя, в терминале; нужен `gh auth login`):
+
+```bash
+./scripts/setup-github-deploy.sh      # спросит адрес сервера, пользователя (deploy), порт, папку; занесёт DEPLOY_* в окружение production обоих репо
+```
+
+Variables клиента (только репозиторий `anticore-client`, Settings → Secrets and variables → Actions → **Variables**) —
+вшиваются в JS при сборке:
+
+| Имя | Пример |
+|---|---|
+| `NEXT_PUBLIC_BACKEND_API_URL` | `https://xn--80aaag6amsblus.xn--p1ai/api` |
+| `SITE_LINK` | `https://xn--80aaag6amsblus.xn--p1ai` |
+| `NEXT_PUBLIC_S3_URL` | публичный домен бакета Selectel |
+| `NEXT_PUBLIC_SMARTCAPTCHA_CLIENT_KEY` | `ysc1_…` |
+| `NEXT_PUBLIC_REACT_APP_YMAP_KEY` | ключ Яндекс.Карт |
+| `USE_YANDEX_METRICS` | `true` |
+
+**3. Подготовить сервер** (один раз). Скопировать скрипты с компьютера и выполнить на сервере:
+
+```bash
+scp bootstrap-server.sh cutover.sh valentin@87.228.97.171:~
+ssh valentin@87.228.97.171
+sudo bash bootstrap-server.sh /путь/к/текущему/anticore-server/.env
+```
+
+Скрипт ставит Docker, создаёт пользователя `deploy` для CI (с ключом GitHub Actions), папку `/opt/anticore`,
+`docker-compose.yml` и `server.env`, собранный из текущего `.env` бэка (кавычки сняты, `DATABASE_URL` раскрыт). Значения секретов не печатает.
+pm2, nginx и сайт не трогает.
+
+**4. Скачать образы на сервер.** GitHub → Actions → «Build & deploy server» → **Run workflow**: ветка `master`,
+environment `production`, **pull_only = true**. Затем то же для «Build & deploy client». Сервер сам залогинится в GHCR одноразовым токеном задания,
+отдельный токен не нужен. Перезапуска при `pull_only` нет.
+
+**5. ⚠️ Миграции Prisma** — `cutover.sh` сам покажет `prisma migrate status` и спросит подтверждение.
+Раньше схема применялась через `prisma db push`, история миграций в БД может быть неполной. Если статус просит накатить старые миграции,
+которые уже есть в схеме, — пометить их применёнными и только потом продолжать:
+
+```bash
+cd /opt/anticore
+docker compose --env-file .env.deploy run --rm --no-deps server \
+  npx prisma migrate resolve --applied 20250701084215_anticore
+# … и так для каждой старой миграции (кроме тех, которых в БД действительно нет)
+```
+
+**6. Переключение.** Выйти из ssh и зайти заново (чтобы заработала группа `docker`), затем:
+
+```bash
+bash cutover.sh
+```
+
+Скрипт: дамп базы (`~/anticore-before-docker-….dump`) → статус и применение миграций → остановка pm2 (спросит имена процессов) →
+`up -d --wait` → проверка. Не поднялось — вернёт pm2 само. Всё хорошо → `pm2 delete <имена> && pm2 save`.
+
+**7. Закрыть лишние порты** (см. «Безопасность сервера» ниже) и дальше выкатывать через Run workflow.
+
+---
+
+## Как выкатывать дальше
 
 1. GitHub → репозиторий → **Actions** → «Build & deploy server» (или «…client») → **Run workflow**.
-2. **Use workflow from** — выбрать нужную ветку (хоть feature-ветку).
-3. **environment**: `stand` — на стенд, `production` — на прод, `none` — только собрать образ.
-4. Порядок: **сначала сервер, потом клиент** (клиент зависит от новых эндпоинтов и миграций).
+2. **Use workflow from** — нужная ветка. **environment**: `production` — выкатить, `none` — только собрать образ.
+3. Порядок: **сначала сервер, потом клиент** (клиент зависит от новых эндпоинтов и миграций).
 
 Перед сборкой всегда идут проверки: `tsc` (оба репо) и тесты (сервер). Красные — образ не собирается и не выкатывается.
 
-- **Автовыкладка прода при push в master** выключена. Включить: Settings → Secrets and variables → Actions → **Variables** →
-  `AUTO_DEPLOY_PRODUCTION = true`.
-- **Теги образов:** `<sha>` — всегда; `latest` — только сборки из `master`. Клиент для стенда собирается отдельно: `<sha>-stand`
-  (адреса API и сайта вшиваются в JS при сборке, поэтому образ стенда нельзя запускать на проде и наоборот).
-- **Миграции** на сервере выполняются автоматически перед перезапуском бэка (`prisma migrate deploy`). Откат образа миграции **не откатывает**.
+- **Автовыкладка при push в master** выключена. Включить: Settings → Secrets and variables → Actions → **Variables** → `AUTO_DEPLOY_PRODUCTION = true`.
+- **Подтверждение перед прод-выкладкой:** Settings → Environments → production → Required reviewers.
+- **Теги образов:** `<sha>` — всегда; `latest` — только сборки из `master`.
+- **Миграции** выполняются автоматически перед перезапуском бэка (`prisma migrate deploy`). Откат образа миграции **не откатывает**.
+- Не стал healthy → CI сам возвращает прошлый образ и помечает задание красным.
 
 ## Файлы
 
@@ -35,145 +100,34 @@ Run workflow (любая ветка + stand / production) ─► то же са�
 |---|---|
 | `anticore-server/Dockerfile`, `anticore-client/Dockerfile` | сборка образов (Node 24) |
 | `*/.github/workflows/deploy.yml` | проверки → сборка → (по выбору) выкладка |
-| `deploy/docker-compose.yml` | копируется на сервер в `/opt/anticore/` (или папку стенда); healthcheck обоих сервисов |
+| `deploy/docker-compose.yml` | на сервере в `/opt/anticore/`; healthcheck обоих сервисов |
+| `deploy/bootstrap-server.sh` | разовая подготовка сервера (Docker, пользователь `deploy`, папка, env-файлы) |
+| `deploy/cutover.sh` | переключение с pm2: дамп БД, миграции, запуск, откат при сбое |
 | `deploy/.env.deploy.example` | какие теги образов запущены (CI обновляет сам) и `CLIENT_PORT` |
 | `deploy/server.env.example` | **все** переменные бэка с пояснениями: что обязательно, что нет |
 | `deploy/client.env.example` | runtime-переменные фронта |
 
 ---
 
-## Настройка GitHub (один раз)
+## Безопасность сервера: закрыть порты наружу
 
-### Окружения `stand` и `production`
+Проверка снаружи (20.10) показала, что на IP сервера **открыты 5432 (Postgres), 3000 и 4444**. Наружу нужны только 22, 80 и 443:
+фронт и API должны быть доступны только через nginx, база — только с самого сервера.
 
-Settings → **Environments** → создать `stand` и `production`. В **каждом** — свои **Secrets**:
-
-| Secret | Значение |
-|---|---|
-| `DEPLOY_HOST` | IP/домен сервера |
-| `DEPLOY_USER` | пользователь для SSH (`deploy`) |
-| `DEPLOY_SSH_KEY` | приватный ключ (см. «SSH-ключ» ниже) |
-| `DEPLOY_PORT` | порт SSH, если не 22 (необязательно) |
-| `DEPLOY_PATH` | папка с compose на сервере. По умолчанию `/opt/anticore`; для стенда на одном сервере с продом — `/opt/anticore-stand` |
-
-В окружении `production` удобно включить **Required reviewers** — выкладка на прод будет ждать подтверждения.
-Секреты добавлять в **обоих** репозиториях (сервер и клиент).
-
-### Variables клиента (только репозиторий anticore-client)
-
-Вшиваются в JS при сборке: поменял значение → перезапусти workflow.
-
-| Прод | Стенд (приоритет над прод-значением) | Пример |
-|---|---|---|
-| `NEXT_PUBLIC_BACKEND_API_URL` | **`STAND_NEXT_PUBLIC_BACKEND_API_URL`** — обязательна | `https://example.ru/api` |
-| `SITE_LINK` | **`STAND_SITE_LINK`** — обязательна | `https://example.ru` |
-| `NEXT_PUBLIC_S3_URL` | `STAND_NEXT_PUBLIC_S3_URL` (если нет — как на проде) | публичный домен бакета |
-| `NEXT_PUBLIC_SMARTCAPTCHA_CLIENT_KEY` | `STAND_NEXT_PUBLIC_SMARTCAPTCHA_CLIENT_KEY` | `ysc1_…` |
-| `NEXT_PUBLIC_REACT_APP_YMAP_KEY` | `STAND_NEXT_PUBLIC_REACT_APP_YMAP_KEY` | ключ Яндекс.Карт |
-| `USE_YANDEX_METRICS` | `STAND_USE_YANDEX_METRICS` (по умолчанию `false`) | `true` |
-
-Для стенда адрес API и сайта обязаны быть **свои** — без них сборка стенда падает с понятной ошибкой,
-чтобы стенд случайно не пошёл в боевой API.
+- **Postgres** — не слушать внешний интерфейс: в `postgresql.conf` `listen_addresses = 'localhost'`, перезапуск `sudo systemctl restart postgresql`.
+  Контейнеры работают в `network_mode: host`, поэтому `localhost` им доступен.
+- **3000 и 4444** — закрыть файрволом (`ufw`) или у провайдера, оставив 22/80/443. **Осторожно:** перед `ufw enable` обязательно разрешить SSH
+  (`sudo ufw allow OpenSSH`), иначе потеряешь доступ к серверу.
+- Проверка: с другого компьютера `nc -zv 87.228.97.171 5432` должен не подключаться.
 
 ---
 
-## Первый запуск прода (один раз)
+## Стенд (необязательно)
 
-### 1. Сервер
-
-```bash
-# Docker + compose plugin (Ubuntu)
-curl -fsSL https://get.docker.com | sh
-sudo usermod -aG docker deploy        # пользователь, под которым ходит CI
-
-sudo mkdir -p /opt/anticore && sudo chown -R deploy: /opt/anticore
-```
-
-Скопировать в `/opt/anticore/`:
-
-- `docker-compose.yml` (из `deploy/`)
-- `.env.deploy` (из `.env.deploy.example`)
-- `server.env` — по образцу `server.env.example`; для прода можно взять текущий `.env` бэка, **сняв кавычки** со значений
-  (Docker не снимает их, в отличие от dotenv). `DATABASE_URL` целиком, без `${...}`. Хост БД — `localhost` (работает благодаря `network_mode: host`).
-- `client.env` (из `client.env.example`)
-
-Картинок и видео на сервере нет — всё лежит в Selectel S3 (см. «Медиа» ниже). Папка `data/` не нужна.
-
-### 2. Доступ сервера к образам (GHCR)
-
-Образы приватные. На GitHub: Settings → Developer settings → Personal access tokens (classic) → токен
-только с `read:packages`. На сервере:
-
-```bash
-echo <TOKEN> | docker login ghcr.io -u <github-логин> --password-stdin
-```
-
-### 3. SSH-ключ для CI
-
-```bash
-ssh-keygen -t ed25519 -f deploy_key -N "" -C "github-actions"
-# deploy_key.pub → ~deploy/.ssh/authorized_keys на сервере
-# deploy_key (приватный) → секрет DEPLOY_SSH_KEY в окружениях GitHub, затем удалить локально
-```
-
-### 4. ⚠️ Миграции Prisma на проде (проверить до первой выкладки)
-
-Раньше схема применялась через `prisma db push`, и история миграций в БД может быть неполной.
-Тогда `prisma migrate deploy` в CI попытается накатить старые миграции заново и упадёт.
-
-```bash
-cd /opt/anticore
-docker compose --env-file .env.deploy run --rm --no-deps server npx prisma migrate status
-```
-
-- «Database schema is up to date» или в списке только свежие миграции → всё ок.
-- Если просит применить старые миграции, которые на самом деле уже в схеме, пометить каждую как применённую
-  (все, **кроме** новых, которых в БД действительно нет):
-
-  ```bash
-  docker compose --env-file .env.deploy run --rm --no-deps server \
-    npx prisma migrate resolve --applied 20250701084215_anticore
-  # … и так для каждой старой миграции
-  ```
-
-Сделать бэкап БД перед этим: `pg_dump -Fc anticore > /root/anticore-$(date +%F).dump`.
-
-### 5. Переключение с pm2
-
-Выкладка теперь ручная, поэтому первую выкладку можно провести спокойно и под контролем:
-
-1. В GitHub запустить **Run workflow** для сервера и клиента (ветка `master`, environment `none`) — дождаться зелёных проверок и сборки.
-2. На сервере:
-
-   ```bash
-   cd /opt/anticore
-   docker compose --env-file .env.deploy pull          # теги latest
-   pm2 stop all                                        # или конкретные процессы: pm2 ls
-   docker compose --env-file .env.deploy run --rm --no-deps server npx prisma migrate deploy
-   docker compose --env-file .env.deploy up -d --wait
-   docker compose --env-file .env.deploy ps            # оба сервиса healthy
-   curl -s localhost:4444/api/health                   # {"status":"ok"}
-   curl -sI localhost:3000 | head -1                   # 200
-   ```
-
-3. Проверить сайт через nginx. Всё ок → `pm2 delete all && pm2 save`, `pm2 unstartup`.
-   Не ок → `docker compose --env-file .env.deploy down && pm2 start all` — старое поднимется как было
-   (новые миграции только добавляют таблицы/колонки/статусы, старый код с ними работает).
-4. Дальше выкладывать через Run workflow (см. «Как выкатить»).
-
----
-
-## Стенд
-
-Стенд — те же образы, но **своя** база, свои секреты и (при желании) свой сервер.
-
-1. Папка на сервере: `/opt/anticore-stand` (`DEPLOY_PATH` в окружении `stand`), в ней те же файлы, что для прода (п. 1 выше).
-2. **Порты не должны пересекаться с продом**, если стенд на том же сервере: в `server.env` стенда другой `PORT` (например `4445`),
-   в `.env.deploy` стенда `CLIENT_PORT=3100`. Для nginx — отдельный `server_name` → `127.0.0.1:3100` (фронт) и `/api` → `127.0.0.1:4445`.
-3. `server.env` стенда: **другая БД** (`DATABASE_URL`), другие `JWT_SECRET` / `ADMIN_*`, `FRONTEND_BASE_URL` = адрес стенда.
-   Чтобы стенд не слал настоящие SMS и заявки: `SMS_RU_API_ID`, `TELEGRAM_*`, `VK_*` оставить **пустыми** (SMS пишутся в лог).
-4. В окружение `stand` добавить секреты `DEPLOY_*`, а в Variables клиента — `STAND_NEXT_PUBLIC_BACKEND_API_URL` и `STAND_SITE_LINK`.
-5. Run workflow → нужная ветка → `stand` (сначала сервер, потом клиент).
+Сейчас стенда нет, всё идёт сразу в прод. Если понадобится: workflow умеет `stand` (свои секреты в окружении `stand`,
+образ клиента `<sha>-stand` собирается из переменных `STAND_*`; `STAND_NEXT_PUBLIC_BACKEND_API_URL` и `STAND_SITE_LINK` обязательны),
+на сервере — отдельная папка (`DEPLOY_PATH`), другие порты (`PORT` в `server.env`, `CLIENT_PORT` в `.env.deploy`) и **своя база**.
+Окружения `stand` в GitHub сейчас нет — создать при необходимости.
 
 ---
 
