@@ -131,6 +131,45 @@ bash cutover.sh
 
 ---
 
+## Бэкап базы
+
+Ночной `pg_dump` в `/var/backups/anticore` (доступ только у root), формат custom, имя `anticore-ГГГГ-ММ-ДД_ЧЧММ.dump`.
+Перед сохранением архив проверяется (`pg_restore --list`), хранятся копии за 14 дней, но не меньше 5 последних.
+
+**Установка (один раз):**
+
+```bash
+scp backup-db.sh install-backup.sh restore-check.sh valentin@87.228.97.171:~
+ssh valentin@87.228.97.171
+sudo bash install-backup.sh
+```
+
+Скрипт ставит `postgresql-client` (если нет), кладёт `/usr/local/bin/anticore-backup`, вешает cron на **03:30** (время сервера) и сразу делает первую копию.
+
+| Задача | Команда |
+|---|---|
+| Сделать копию сейчас | `sudo anticore-backup` |
+| Посмотреть копии | `sudo ls -lh /var/backups/anticore` |
+| Лог | `tail /var/log/anticore-backup.log` |
+| **Проверить, что копия восстанавливается** (раз в месяц) | `sudo anticore-restore-check` — разворачивает последнюю копию во временную базу `anticore_restore_check`, считает строки, удаляет её. Боевая база не затрагивается. |
+
+**Восстановление боевой базы** (только в крайнем случае, предварительно остановив бэк, чтобы он не писал в базу во время восстановления):
+
+```bash
+cd /opt/anticore
+docker compose --env-file .env.deploy stop server
+sudo -u postgres pg_restore --clean --if-exists --no-owner --dbname=anticore < /var/backups/anticore/anticore-ДАТА.dump
+docker compose --env-file .env.deploy up -d --wait server
+```
+
+**Мониторинг (необязательно).** Если задать `PING_URL` (например, адрес проверки на healthchecks.io), скрипт дёргает его после успешной копии
+и `…/fail` при ошибке — придёт уведомление, если бэкап перестал выполняться. Чтобы включить: в `/etc/cron.d/anticore-backup` добавить перед командой `PING_URL=https://hc-ping.com/<uuid>`.
+
+> ⚠️ **Это защита от ошибок и порчи данных, но не от потери сервера:** копии лежат на том же диске.
+> Нужна копия вне сервера — в **отдельное закрытое хранилище**. Бакет с картинками сайта **публичный**, дампы туда класть нельзя.
+
+---
+
 ## Повседневное
 
 | Задача | Команда (в `/opt/anticore`) |
