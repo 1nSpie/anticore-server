@@ -1,12 +1,21 @@
 name: Build & deploy server
 
+# push в master        → проверки + сборка образа (в прод само не выкатывается,
+#                        если не включена переменная репозитория AUTO_DEPLOY_PRODUCTION=true)
+# ручной запуск (Run workflow) → выбираешь ветку и куда выкатить: stand / production / none (только собрать)
 on:
   push:
     branches: [master]
   workflow_dispatch:
+    inputs:
+      environment:
+        description: "Куда выкатить (none — только собрать образ)"
+        type: choice
+        options: [none, stand, production]
+        default: none
 
 concurrency:
-  group: deploy-server
+  group: server-${{ github.event_name == 'workflow_dispatch' && inputs.environment || 'push' }}
   cancel-in-progress: false
 
 permissions:
@@ -14,10 +23,48 @@ permissions:
   packages: write
 
 jobs:
-  build:
+  target:
     runs-on: ubuntu-latest
     outputs:
-      image: ${{ steps.img.outputs.name }}
+      environment: ${{ steps.t.outputs.environment }}
+      deploy: ${{ steps.t.outputs.deploy }}
+    steps:
+      - id: t
+        env:
+          EVENT: ${{ github.event_name }}
+          INPUT: ${{ inputs.environment }}
+          AUTO: ${{ vars.AUTO_DEPLOY_PRODUCTION }}
+        run: |
+          environment=production
+          deploy=false
+          if [ "$EVENT" = "workflow_dispatch" ]; then
+            if [ "$INPUT" != "none" ]; then environment="$INPUT"; deploy=true; fi
+          elif [ "$AUTO" = "true" ]; then
+            deploy=true
+          fi
+          echo "environment=$environment" >> "$GITHUB_OUTPUT"
+          echo "deploy=$deploy" >> "$GITHUB_OUTPUT"
+          echo "Цель: $environment, выкатывать: $deploy"
+
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npx prisma generate
+        env:
+          # generate не подключается к БД — нужна лишь правдоподобная строка (prisma.config.ts читает DATABASE_URL)
+          DATABASE_URL: postgresql://ci:ci@localhost:5432/ci
+      - run: npx tsc --noEmit -p tsconfig.json
+      - run: npm test
+
+  build:
+    needs: [target, checks]
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
@@ -32,36 +79,50 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      # Образ один для всех окружений (настройки — в server.env на сервере).
+      # Тег sha есть всегда, latest — только у master.
       - uses: docker/build-push-action@v6
         with:
           context: .
           push: true
           tags: |
             ${{ steps.img.outputs.name }}:${{ github.sha }}
-            ${{ steps.img.outputs.name }}:latest
+            ${{ github.ref == 'refs/heads/master' && format('{0}:latest', steps.img.outputs.name) || '' }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
   deploy:
-    needs: build
+    needs: [target, build]
+    if: needs.target.outputs.deploy == 'true'
     runs-on: ubuntu-latest
-    environment: production
+    # Секреты DEPLOY_* берутся из окружения (Settings → Environments → stand / production)
+    environment: ${{ needs.target.outputs.environment }}
     steps:
       - uses: appleboy/ssh-action@v1
         env:
           TAG: ${{ github.sha }}
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH || '/opt/anticore' }}
         with:
           host: ${{ secrets.DEPLOY_HOST }}
           port: ${{ secrets.DEPLOY_PORT || 22 }}
           username: ${{ secrets.DEPLOY_USER }}
           key: ${{ secrets.DEPLOY_SSH_KEY }}
-          envs: TAG
+          envs: TAG,DEPLOY_PATH
           script: |
             set -euo pipefail
-            cd /opt/anticore
+            cd "$DEPLOY_PATH"
+            C="docker compose --env-file .env.deploy"
+            grep -q '^SERVER_TAG=' .env.deploy || echo 'SERVER_TAG=latest' >> .env.deploy
+            prev=$(grep '^SERVER_TAG=' .env.deploy | cut -d= -f2)
             sed -i "s/^SERVER_TAG=.*/SERVER_TAG=${TAG}/" .env.deploy
-            docker compose --env-file .env.deploy pull server
+            $C pull server
             # Миграции — до перезапуска: новый код ждёт новую схему
-            docker compose --env-file .env.deploy run --rm --no-deps server npx prisma migrate deploy
-            docker compose --env-file .env.deploy up -d --no-deps server
+            $C run --rm --no-deps server npx prisma migrate deploy
+            # --wait: ждём, пока контейнер станет healthy (/api/health); не поднялся — откат на прошлый образ
+            if ! $C up -d --no-deps --wait --wait-timeout 120 server; then
+              echo "::error::Сервер не стал healthy, откатываю образ на ${prev}"
+              sed -i "s/^SERVER_TAG=.*/SERVER_TAG=${prev}/" .env.deploy
+              $C up -d --no-deps server
+              exit 1
+            fi
             docker image prune -f
