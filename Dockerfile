@@ -18,6 +18,10 @@ RUN npm prune --omit=dev \
 # ---- runtime ----
 FROM node:24-bookworm-slim
 ENV NODE_ENV=production
+# openssl нужен Prisma CLI (migrate): без него она не определяет версию libssl и пишет предупреждение
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends openssl \
+ && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 COPY --from=build --chown=node:node /app/package.json ./
 COPY --from=build --chown=node:node /app/node_modules ./node_modules

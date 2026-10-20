@@ -39,6 +39,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup("api/docs", app, document);
 
-  await app.listen(port);
+  // LISTEN_HOST=127.0.0.1 — слушать только локально (за nginx); без переменной — на всех интерфейсах, как раньше
+  await app.listen(port, process.env.LISTEN_HOST || "0.0.0.0");
 }
 bootstrap().catch((err) => console.error(err));
