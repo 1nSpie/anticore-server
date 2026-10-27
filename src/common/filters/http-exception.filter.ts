@@ -79,6 +79,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
     let status: number;
     let message: string;
     let error: string;
+    let code: string | undefined;
 
     if (exception instanceof HttpException) {
       status = exception.getStatus();
@@ -88,6 +89,11 @@ export class AllExceptionsFilter implements ExceptionFilter {
           ? errorResponse
           : (errorResponse as { message: string }).message || 'Http Exception';
       error = exception.name;
+      // строковый code из тела исключения (например DAY_LIMIT_REACHED) — по нему решает клиент
+      if (typeof errorResponse === 'object' && errorResponse !== null) {
+        const c = (errorResponse as { code?: unknown }).code;
+        if (typeof c === 'string') code = c;
+      }
     } else if (exception instanceof Prisma.PrismaClientKnownRequestError) {
       const prismaErr = exception as Prisma.PrismaClientKnownRequestError;
       status = HttpStatus.BAD_REQUEST;
@@ -158,6 +164,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
       method: request.method,
       message,
       error,
+      ...(code ? { code } : {}),
     });
   }
 }
