@@ -23,4 +23,16 @@ describe("branch-geo", () => {
     expect(nearestBranch(nearRamenskoye, [])).toBe("RAMENSKOYE");
     expect(nearestBranch(nearRamenskoye, ["ZHUKOVSKY", "KOLOMNA"])).toBe("ZHUKOVSKY");
   });
+
+  it("координаты филиалов: Раменское — как на карте сайта (офис на Транспортном проезде), а не прежняя точка в 139 м от него", () => {
+    expect(BRANCH_GEO.RAMENSKOYE).toEqual({ lat: 55.572421, lng: 38.26515 });
+    expect(distanceMeters(BRANCH_GEO.RAMENSKOYE, { lat: 55.573363, lng: 38.263704 })).toBeGreaterThan(130);
+  });
+
+  it("мастер у входа в раменский офис проходит чекин без пометки «вне радиуса» с запасом по GPS", () => {
+    const here = { lat: BRANCH_GEO.RAMENSKOYE.lat + 0.0004, lng: BRANCH_GEO.RAMENSKOYE.lng - 0.0003 }; // ≈ 55 м от точки
+    expect(distanceMeters(here, BRANCH_GEO.RAMENSKOYE)).toBeLessThan(CHECKIN_RADIUS_M / 2);
+    expect(nearestBranch(here, [])).toBe("RAMENSKOYE");
+  });
 });
+
