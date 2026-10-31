@@ -8,7 +8,7 @@ import { ObjectStorageService } from "../storage/object-storage.service";
 import { CreateTaskDto, TaskListQueryDto, UpdateTaskDto } from "./dto/task.dto";
 import { NotificationType, MASTER_HOME } from "./notification-types";
 import { NotificationsService } from "./notifications.service";
-import { StaffAuditAction, StaffAuditService } from "./staff-audit.service";
+import { StaffAuditAction, StaffAuditService, adminActor } from "./staff-audit.service";
 import { isOpenForMaster, taskDisplayStatus } from "./task-status";
 
 const taskSelect = {
@@ -71,7 +71,7 @@ export class TasksService {
     });
     await this.audit.log({
       action: StaffAuditAction.TASK_CREATED,
-      actor: "admin",
+      actor: adminActor(req),
       staffId: dto.staffId,
       req,
       meta: { taskId: task.id, title: task.title },
@@ -102,7 +102,7 @@ export class TasksService {
       },
       select: taskSelect,
     });
-    await this.audit.log({ action: StaffAuditAction.TASK_UPDATED, actor: "admin", staffId: task.staff.id, req, meta: { taskId: id } });
+    await this.audit.log({ action: StaffAuditAction.TASK_UPDATED, actor: adminActor(req), staffId: task.staff.id, req, meta: { taskId: id } });
     return this.present(task);
   }
 
@@ -112,7 +112,7 @@ export class TasksService {
     if (t.status !== TaskStatus.DONE) throw new BadRequestException("Мастер ещё не отметил задачу выполненной");
     if (t.confirmedAt) return this.present(await this.get(id));
     const task = await this.prisma.task.update({ where: { id }, data: { confirmedAt: new Date() }, select: taskSelect });
-    await this.audit.log({ action: StaffAuditAction.TASK_CONFIRMED, actor: "admin", staffId: t.staffId, req, meta: { taskId: id } });
+    await this.audit.log({ action: StaffAuditAction.TASK_CONFIRMED, actor: adminActor(req), staffId: t.staffId, req, meta: { taskId: id } });
     await this.notifications.notify([t.staffId], {
       type: NotificationType.TASK_CONFIRMED,
       title: "Выполнение подтверждено",
@@ -131,7 +131,7 @@ export class TasksService {
       data: { status: TaskStatus.IN_PROGRESS, doneAt: null, adminComment: comment || null },
       select: taskSelect,
     });
-    await this.audit.log({ action: StaffAuditAction.TASK_RETURNED, actor: "admin", staffId: t.staffId, req, meta: { taskId: id } });
+    await this.audit.log({ action: StaffAuditAction.TASK_RETURNED, actor: adminActor(req), staffId: t.staffId, req, meta: { taskId: id } });
     await this.notifications.notify([t.staffId], {
       type: NotificationType.TASK_RETURNED,
       title: "Задача возвращена в работу",
@@ -146,7 +146,7 @@ export class TasksService {
     if (t.status === TaskStatus.CANCELLED) return this.present(await this.get(id));
     if (t.confirmedAt) throw new BadRequestException("Подтверждённую задачу отменить нельзя");
     const task = await this.prisma.task.update({ where: { id }, data: { status: TaskStatus.CANCELLED }, select: taskSelect });
-    await this.audit.log({ action: StaffAuditAction.TASK_CANCELLED, actor: "admin", staffId: t.staffId, req, meta: { taskId: id } });
+    await this.audit.log({ action: StaffAuditAction.TASK_CANCELLED, actor: adminActor(req), staffId: t.staffId, req, meta: { taskId: id } });
     return this.present(task);
   }
 

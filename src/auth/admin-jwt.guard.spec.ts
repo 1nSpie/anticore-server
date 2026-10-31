@@ -92,10 +92,11 @@ describe('AdminJwtGuard — сотрудники с ролью ADMIN (sub = staf
   };
 
   it('активный сотрудник-админ проходит; в request.admin лежит его id', async () => {
-    const { service, guard } = setup({ role: 'ADMIN', blockedAt: null });
+    const { service, guard } = setup({ role: 'ADMIN', blockedAt: null, login: 'anna' });
     const { result, req } = call(guard, service.createToken('staff:8'));
     await expect(result).resolves.toBe(true);
-    expect(req.admin).toEqual({ id: 'staff:8', role: 'admin', staffId: 8 });
+    // login нужен журналу действий: там пишется, кто именно из админов совершил действие
+    expect(req.admin).toEqual({ id: 'staff:8', role: 'admin', staffId: 8, login: 'anna' });
   });
 
   it('заблокированный, удалённый и разжалованный в мастера теряют доступ сразу, а не через 12 часов', async () => {

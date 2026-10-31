@@ -55,7 +55,7 @@ export class AdminJwtGuard implements CanActivate {
       }
 
       const sub = validationResult.payload!.sub;
-      const admin = { id: sub, role: validationResult.payload!.role } as { id: string; role: string; staffId?: number };
+      const admin = { id: sub, role: validationResult.payload!.role } as { id: string; role: string; staffId?: number; login?: string };
 
       if (sub === ADMIN_ENV_SUBJECT) {
         request['admin'] = admin;
@@ -66,12 +66,12 @@ export class AdminJwtGuard implements CanActivate {
       const staffId = staffIdFromSubject(sub);
       if (staffId === null || !this.prisma) throw new UnauthorizedException('Недействительная авторизация');
       return this.prisma.staff
-        .findUnique({ where: { id: staffId }, select: { role: true, blockedAt: true } })
+        .findUnique({ where: { id: staffId }, select: { role: true, blockedAt: true, login: true } })
         .then((staff) => {
           if (!staff || staff.blockedAt || staff.role !== StaffRole.ADMIN) {
             throw new UnauthorizedException('Учётная запись недоступна');
           }
-          request['admin'] = { ...admin, staffId };
+          request['admin'] = { ...admin, staffId, login: staff.login };
           return true;
         });
     } catch (error) {

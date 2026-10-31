@@ -8,7 +8,7 @@ import { BRANCH_GEO, CHECKIN_RADIUS_M, GEO_RETENTION_DAYS, distanceMeters, neare
 import { CheckinDto, CheckinListQueryDto } from "./dto/checkin.dto";
 import { NotificationType, MASTER_HOME } from "./notification-types";
 import { NotificationsService } from "./notifications.service";
-import { StaffAuditAction, StaffAuditService } from "./staff-audit.service";
+import { StaffAuditAction, StaffAuditService, adminActor } from "./staff-audit.service";
 import { StaffPrincipal } from "./staff-jwt.guard";
 
 const mine = {
@@ -123,7 +123,7 @@ export class CheckinService {
     });
     await this.audit.log({
       action: status === "CONFIRMED" ? StaffAuditAction.CHECKIN_CONFIRMED : StaffAuditAction.CHECKIN_REJECTED,
-      actor: "admin",
+      actor: adminActor(req),
       staffId: checkin.staffId,
       req,
       meta: { checkinId: id },

@@ -3,7 +3,7 @@ import { Request } from "express";
 import { StaffRole } from "../../generated/prisma/client";
 import { mskDayStart } from "../crm/common/crm-work-hours";
 import { PrismaService } from "../prisma/prisma.service";
-import { StaffAuditAction, StaffAuditService } from "./staff-audit.service";
+import { StaffAuditAction, StaffAuditService, adminActor } from "./staff-audit.service";
 import { toMasterVisit } from "./master-visit.mapper";
 import { NotificationType, fmtMsk, MASTER_HOME } from "./notification-types";
 import { NotificationsService } from "./notifications.service";
@@ -53,7 +53,7 @@ export class StaffAssignmentsService {
     if (added.length || removed.length) {
       await this.audit.log({
         action: StaffAuditAction.ASSIGNMENT_CHANGED,
-        actor: "admin",
+        actor: adminActor(req),
         req,
         meta: { visitId, added, removed },
       });

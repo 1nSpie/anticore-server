@@ -9,7 +9,7 @@ import {
 } from "./dto/regulation.dto";
 import { NotificationType, MASTER_REGULATION } from "./notification-types";
 import { NotificationsService } from "./notifications.service";
-import { StaffAuditAction, StaffAuditService } from "./staff-audit.service";
+import { StaffAuditAction, StaffAuditService, adminActor } from "./staff-audit.service";
 
 export const MAX_PDF_BYTES = 10 * 1024 * 1024;
 const SNIPPET_RADIUS = 80;
@@ -158,7 +158,7 @@ export class RegulationService {
     });
     await this.audit.log({
       action: StaffAuditAction.REGULATION_PUBLISHED,
-      actor: "admin",
+      actor: adminActor(req),
       req,
       meta: { version: state.version, note: note || null },
     });
@@ -257,7 +257,7 @@ export class RegulationService {
   private async touched(what: string, meta: Record<string, unknown>, req: Request) {
     await this.state();
     await this.prisma.regulationState.update({ where: { id: 1 }, data: { dirty: true } });
-    await this.audit.log({ action: StaffAuditAction.REGULATION_CHANGED, actor: "admin", req, meta: { what, ...meta } as never });
+    await this.audit.log({ action: StaffAuditAction.REGULATION_CHANGED, actor: adminActor(req), req, meta: { what, ...meta } as never });
   }
 
   private async requireSection(id: number) {

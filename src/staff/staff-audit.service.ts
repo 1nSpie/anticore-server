@@ -30,6 +30,15 @@ export const StaffAuditAction = {
   REGULATION_ACKED: "REGULATION_ACKED",
 } as const;
 
+/**
+ * Подпись исполнителя для журнала по запросу, прошедшему `AdminJwtGuard`: логин сотрудника с ролью ADMIN
+ * или «admin» для администратора из env (а также если запроса нет — например, в cron и тестах).
+ */
+export function adminActor(req?: unknown): string {
+  const login = (req as { admin?: { login?: unknown } } | undefined)?.admin?.login;
+  return typeof login === "string" && login ? login : "admin";
+}
+
 interface AuditEntry {
   action: string;
   actor: string;

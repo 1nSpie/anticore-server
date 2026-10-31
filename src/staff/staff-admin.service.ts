@@ -4,11 +4,10 @@ import { randomInt } from "crypto";
 import { Prisma, Staff } from "../../generated/prisma/client";
 import { PrismaService } from "../prisma/prisma.service";
 import { CreateStaffDto, ResetStaffPasswordDto, StaffAuditQueryDto, UpdateStaffDto } from "./dto/staff.dto";
-import { StaffAuditAction, StaffAuditService } from "./staff-audit.service";
+import { StaffAuditAction, StaffAuditService, adminActor } from "./staff-audit.service";
 import { normalizeLogin } from "./staff-auth.service";
 import { Request } from "express";
 
-const ACTOR = "admin";
 const PASSWORD_ALPHABET = "abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 
 const publicSelect = {
@@ -57,7 +56,7 @@ export class StaffAdminService {
     });
     await this.audit.log({
       action: StaffAuditAction.STAFF_CREATED,
-      actor: ACTOR,
+      actor: adminActor(req),
       req,
       meta: { staffId: staff.id, login, role: staff.role },
     });
@@ -73,7 +72,7 @@ export class StaffAdminService {
     });
     await this.audit.log({
       action: StaffAuditAction.STAFF_UPDATED,
-      actor: ACTOR,
+      actor: adminActor(req),
       req,
       meta: { staffId: id, fullName: dto.fullName, locations: dto.locations },
     });
@@ -89,7 +88,7 @@ export class StaffAdminService {
     });
     await this.audit.log({
       action: blocked ? StaffAuditAction.STAFF_BLOCKED : StaffAuditAction.STAFF_UNBLOCKED,
-      actor: ACTOR,
+      actor: adminActor(req),
       req,
       meta: { staffId: id },
     });
@@ -101,7 +100,7 @@ export class StaffAdminService {
     await this.requireStaff(id);
     const password = dto.password ?? generatePassword();
     await this.prisma.staff.update({ where: { id }, data: { passwordHash: await bcrypt.hash(password, 10) } });
-    await this.audit.log({ action: StaffAuditAction.PASSWORD_RESET, actor: ACTOR, req, meta: { staffId: id } });
+    await this.audit.log({ action: StaffAuditAction.PASSWORD_RESET, actor: adminActor(req), req, meta: { staffId: id } });
     return { password };
   }
 
