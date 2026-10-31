@@ -200,29 +200,64 @@ docker compose --env-file .env.deploy up -d --wait server
 
 Cron-задачи (`@nestjs/schedule`) работают внутри контейнера `server` — держать **один** экземпляр.
 
-## ЛК мастера: WebSocket и PWA (этап 5)
+## nginx: что нужно для кабинета мастера
 
-Уведомления приходят мастеру по WebSocket (socket.io) на путь **`/api/socket.io`** (пространство имён `/staff`).
-Существующий `location /api` в nginx нужно дополнить заголовками апгрейда, иначе соединение молча
-деградирует до long-polling (уведомления всё равно будут приходить, но с задержкой и лишней нагрузкой):
+Кабинет мастера живёт внутри админки (`/admin/master/*`) и использует тот же фронт и тот же API, но ему нужны четыре вещи в nginx.
+Конфиг nginx лежит на сервере, вне репозитория: ниже — **что добавить** в существующие `server`/`location /api`, а не готовый файл.
+
+**1. Размер загрузок.** Фото задач (до 15 МБ) и PDF регламента (до 10 МБ) идут через API. nginx по умолчанию режет тело запроса до 1 МБ
+(ответ **413**), поэтому в `location /api/` (или `server`) нужно:
+
+```nginx
+client_max_body_size 20m;
+```
+
+**2. WebSocket.** Уведомления приходят по socket.io на путь **`/api/socket.io`** (пространство имён `/staff`). Без заголовков апгрейда
+соединение молча деградирует до long-polling (уведомления идут, но с задержкой и лишней нагрузкой). Отдельный блок, **рядом** с `location /api/`:
 
 ```nginx
 location /api/socket.io/ {
-    proxy_pass http://127.0.0.1:4444;
+    proxy_pass http://127.0.0.1:4444;          # без URI в конце — путь передаётся как есть
     proxy_http_version 1.1;
     proxy_set_header Upgrade $http_upgrade;
     proxy_set_header Connection "upgrade";
     proxy_set_header Host $host;
-    proxy_read_timeout 120s;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_read_timeout 120s;                   # socket.io шлёт ping раз в ~25 с
 }
 ```
 
-Проверка после выкладки: в браузере у залогиненного мастера в DevTools → Network → WS виден запрос
-`/api/socket.io/?EIO=4&transport=websocket` со статусом 101. Если инстансов API несколько — для socket.io нужен
-sticky-режим или Redis-адаптер (сейчас инстанс один).
+Если в конфиге есть regex-локации (`location ~ ...`), проверьте, что они не перехватывают `/api/socket.io/`: regex выигрывает у префикса.
 
-Клиент: `NEXT_PUBLIC_BACKEND_API_URL` должен быть абсолютным (origin берётся из него). Для установки как приложения
-нужен HTTPS; файлы PWA — `public/staff.webmanifest`, `public/staff-sw.js`, `public/staff-*.png`.
+**3. Реальный IP клиента.** API работает с `trust proxy` и считает лимиты запросов и блокировку перебора по IP. В **каждом** `location`,
+который проксирует на API (`/api/`, `/api/socket.io/`), должны быть заголовки `X-Forwarded-For` и `X-Forwarded-Proto` (см. блок выше).
+Иначе все мастера и админы будут выглядеть одним IP (адресом nginx) и делить общий лимит запросов.
+
+**4. HTTPS и кэш service worker.**
+- HTTPS обязателен: геолокация для чекина и установка PWA работают **только** в защищённом контексте (на `http://` браузер не даст определить местоположение).
+- Файлы PWA (`/staff-sw.js`, `/staff.webmanifest`) раздаёт Next. Если в nginx есть общее правило долгого кэша для статики
+  (`location ~* \.(js|json|webmanifest|png)$ { expires 30d; }`), **исключите** из него `/staff-sw.js` и `/staff.webmanifest`:
+  иначе обновления service worker не доедут до телефонов мастеров.
+- Если настроен `Content-Security-Policy`, разрешите: `connect-src wss://<домен>` (WebSocket) и `img-src https://<домен бакета Selectel>` (фото задач).
+
+После правок:
+
+```bash
+sudo nginx -t && sudo systemctl reload nginx
+```
+
+**Проверка после выкладки**
+- WebSocket: `curl -si -N -H "Connection: Upgrade" -H "Upgrade: websocket" -H "Sec-WebSocket-Version: 13" -H "Sec-WebSocket-Key: x3JJHMbDL1EzLkh9GBhXDw==" "https://<домен>/api/socket.io/?EIO=4&transport=websocket" | head -1` должен ответить `HTTP/1.1 101 Switching Protocols`
+  (в браузере: DevTools → Network → WS, у залогиненного мастера запрос со статусом 101).
+- Загрузка: фото 5–10 МБ к задаче прикрепляется без ошибки 413.
+- IP: в журнале входов (`/admin/staff` → «Журнал входов») виден реальный адрес мастера, а не `127.0.0.1`.
+
+Если инстансов API несколько — для socket.io нужен sticky-режим или Redis-адаптер (сейчас инстанс один, cron-задачи тоже рассчитаны на один).
+
+Клиент: `NEXT_PUBLIC_BACKEND_API_URL` должен быть абсолютным (origin для WebSocket берётся из него). Файлы PWA — `public/staff.webmanifest`
+(`start_url`/`scope` = `/admin/master`), `public/staff-sw.js`, `public/staff-*.png`.
 
 ## Файлы админки: фото задач (папка в публичном бакете)
 
@@ -252,4 +287,4 @@ sticky-режим или Redis-адаптер (сейчас инстанс од�
 
 - Для PWA на телефонах мастеров изменились `start_url` и `scope` (`/admin/master`): уже установленное приложение лучше переустановить («Добавить на главный экран» заново).
 - Сотрудники с ролью «Администратор» (создаются в «Сотрудники») входят в админку так же, как админ из `.env`; блокировка такой учётки отключает доступ немедленно.
-- nginx менять не нужно: `/admin/*` отдаёт тот же фронт, `/api/*` — тот же API.
+- Сам единый вход ничего нового в nginx не требует (`/admin/*` — тот же фронт, `/api/*` — тот же API); требования кабинета мастера (WebSocket, размер загрузок, реальный IP, HTTPS) — в разделе «nginx» выше.
