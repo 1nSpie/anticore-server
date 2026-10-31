@@ -351,6 +351,7 @@ model VisitHistory {
   catalogServiceType ServiceType?      @relation(fields: [serviceTypeId], references: [id], onDelete: SetNull)
   pendingReviewSms   PendingReviewSms?
   siteLead           SiteLead?
+  assignees          VisitStaff[]
 
   @@index([location, startsAt])
   @@index([vehicleId])
@@ -466,4 +467,239 @@ model CrmDayLimit {
   @@unique([date, location])
   @@index([location, date])
   @@map("crm_day_limits")
+}
+
+enum StaffRole {
+  ADMIN
+  MASTER
+}
+
+/// Сотрудник: мастер (ЛК /staff) или администратор. Env-админ остаётся запасным входом в CRM.
+model Staff {
+  id           Int           @id @default(autoincrement())
+  login        String        @unique @db.VarChar(64)
+  passwordHash String
+  fullName     String        @db.VarChar(120)
+  role         StaffRole     @default(MASTER)
+  /// Филиалы, где работает сотрудник
+  locations    CrmLocation[]
+  blockedAt    DateTime?
+  lastLoginAt  DateTime?
+  /// Согласие на обработку геолокации (152-ФЗ), даётся мастером один раз перед первым чекином
+  geoConsentAt DateTime?
+  /// Версия регламента, с которой мастер ознакомился (0 — не знакомился)
+  regulationAckVersion Int       @default(0)
+  regulationAckAt      DateTime?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  auditLogs StaffAuditLog[]
+  visits    VisitStaff[]
+  checkins  Checkin[]
+  tasks     Task[]
+  notifications Notification[]
+
+  @@map("staff")
+}
+
+/// Журнал входов и действий сотрудников/админа (ТЗ 6.6).
+model StaffAuditLog {
+  id        Int      @id @default(autoincrement())
+  /// Кто совершил действие; null — env-админ или неизвестный логин
+  staffId   Int?
+  /// Подпись исполнителя: логин сотрудника или "admin"
+  actor     String   @db.VarChar(64)
+  action    String   @db.VarChar(64)
+  ip        String?  @db.VarChar(64)
+  userAgent String?  @db.VarChar(300)
+  meta      Json?
+  createdAt DateTime @default(now())
+
+  staff Staff? @relation(fields: [staffId], references: [id], onDelete: SetNull)
+
+  @@index([staffId, createdAt])
+  @@index([action, createdAt])
+  @@map("staff_audit_logs")
+}
+
+/// Назначение мастера на запись: один мастер — несколько записей, несколько мастеров — одна запись.
+model VisitStaff {
+  id         Int      @id @default(autoincrement())
+  visitId    Int
+  staffId    Int
+  assignedAt DateTime @default(now())
+
+  visit VisitHistory @relation(fields: [visitId], references: [id], onDelete: Cascade)
+  staff Staff        @relation(fields: [staffId], references: [id], onDelete: Cascade)
+
+  @@unique([visitId, staffId])
+  @@index([staffId])
+  @@map("visit_staff")
+}
+
+enum CheckinStatus {
+  PENDING
+  CONFIRMED
+  REJECTED
+}
+
+/// Чекин = начало смены (один в сутки по Москве). Без подтверждения админом мастер «не на смене».
+model Checkin {
+  id          Int           @id @default(autoincrement())
+  staffId     Int
+  /// Московские сутки чекина
+  date        DateTime      @db.Date
+  location    CrmLocation
+  /// Координаты обнуляются через год (срок хранения геоданных)
+  lat         Float?
+  lng         Float?
+  accuracyM   Int?
+  distanceM   Int
+  /// Вне радиуса филиала — чекин разрешён, но с пометкой
+  outOfRadius Boolean       @default(false)
+  status      CheckinStatus @default(PENDING)
+  decidedAt   DateTime?
+  createdAt   DateTime      @default(now())
+
+  staff Staff @relation(fields: [staffId], references: [id], onDelete: Cascade)
+
+  @@unique([staffId, date])
+  @@index([date, location])
+  @@map("checkins")
+}
+
+enum TaskPriority {
+  LOW
+  NORMAL
+  HIGH
+}
+
+/// В БД — только рабочий статус. «Просрочена» вычисляется по сроку, «Подтверждена» — по confirmedAt.
+enum TaskStatus {
+  NEW
+  IN_PROGRESS
+  DONE
+  CANCELLED
+}
+
+/// Задача сотруднику. Создаёт только админ; мастер отмечает «Выполнена», админ подтверждает.
+model Task {
+  id           Int          @id @default(autoincrement())
+  staffId      Int
+  title        String       @db.VarChar(200)
+  description  String?      @db.VarChar(2000)
+  priority     TaskPriority @default(NORMAL)
+  status       TaskStatus   @default(NEW)
+  dueAt        DateTime?
+  /// Комментарий мастера при выполнении
+  masterComment String?     @db.VarChar(1000)
+  /// Комментарий админа при возврате в работу
+  adminComment String?      @db.VarChar(1000)
+  doneAt       DateTime?
+  confirmedAt  DateTime?
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  staff  Staff       @relation(fields: [staffId], references: [id], onDelete: Cascade)
+  photos TaskPhoto[]
+
+  @@index([staffId, status])
+  @@index([dueAt])
+  @@map("tasks")
+}
+
+/// Единственная строка (id=1): версия регламента. Растёт при каждой публикации — мастера обязаны ознакомиться заново.
+model RegulationState {
+  id          Int       @id @default(1)
+  version     Int       @default(0)
+  changeNote  String?   @db.VarChar(1000)
+  publishedAt DateTime?
+  /// Есть правки, ещё не опубликованные (мастера видят их сразу, но ознакомление не требуется)
+  dirty       Boolean   @default(false)
+
+  @@map("regulation_state")
+}
+
+/// Раздел регламента; подраздел — раздел с parentId (глубина не больше 2).
+model RegSection {
+  id        Int      @id @default(autoincrement())
+  parentId  Int?
+  title     String   @db.VarChar(200)
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  parent   RegSection?  @relation("RegSectionTree", fields: [parentId], references: [id], onDelete: Restrict)
+  children RegSection[] @relation("RegSectionTree")
+  articles RegArticle[]
+
+  @@index([parentId, sortOrder])
+  @@map("reg_sections")
+}
+
+model RegArticle {
+  id        Int      @id @default(autoincrement())
+  sectionId Int
+  title     String   @db.VarChar(200)
+  body      String   @default("") @db.Text
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  section     RegSection      @relation(fields: [sectionId], references: [id], onDelete: Restrict)
+  attachments RegAttachment[]
+
+  @@index([sectionId, sortOrder])
+  @@map("reg_articles")
+}
+
+/// PDF-вложение статьи. Хранится в БД и отдаётся только сотрудникам и админу (внутренний документ, не в публичный S3).
+model RegAttachment {
+  id        Int      @id @default(autoincrement())
+  articleId Int
+  fileName  String   @db.VarChar(200)
+  size      Int
+  data      Bytes
+  createdAt DateTime @default(now())
+
+  article RegArticle @relation(fields: [articleId], references: [id], onDelete: Cascade)
+
+  @@index([articleId])
+  @@map("reg_attachments")
+}
+
+/// Уведомление сотруднику в ЛК (лента + всплывающее окно по WebSocket).
+model Notification {
+  id        Int       @id @default(autoincrement())
+  staffId   Int
+  /// TASK_NEW, TASK_RETURNED, TASK_CONFIRMED, SCHEDULE_CHANGED, ASSIGNED, UNASSIGNED, REGULATION, CHECKIN_CONFIRMED, CHECKIN_REJECTED
+  type      String    @db.VarChar(40)
+  title     String    @db.VarChar(200)
+  body      String?   @db.VarChar(500)
+  /// Куда вести при нажатии (путь внутри /staff)
+  link      String?   @db.VarChar(200)
+  readAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  staff Staff @relation(fields: [staffId], references: [id], onDelete: Cascade)
+
+  @@index([staffId, readAt, createdAt])
+  @@map("notifications")
+}
+
+/// Фото к задаче в приватном хранилище Selectel. Объект лежит по `key`, наружу отдаётся только подписанная ссылка.
+model TaskPhoto {
+  id         Int      @id @default(autoincrement())
+  taskId     Int
+  /// Ключ объекта в приватном бакете: tasks/{taskId}/{uuid}.webp
+  key        String   @unique @db.VarChar(200)
+  size       Int
+  /// ADMIN — загрузил админ, MASTER — исполнитель
+  uploadedBy String   @db.VarChar(10)
+  createdAt  DateTime @default(now())
+
+  task Task @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  @@index([taskId])
+  @@map("task_photos")
 }

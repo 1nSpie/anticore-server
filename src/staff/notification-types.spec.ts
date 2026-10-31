@@ -1,4 +1,4 @@
-import { scheduleChangeText } from "./notification-types";
+import { MASTER_HOME, MASTER_REGULATION, scheduleChangeText } from "./notification-types";
 
 const T = (iso: string) => new Date(iso);
 const base = { startsAt: T("2026-10-10T07:00:00Z"), endsAt: T("2026-10-10T09:00:00Z"), location: "KOLOMNA", serviceType: "Антикор днища" };
@@ -19,5 +19,13 @@ describe("scheduleChangeText", () => {
   it("в тексте время по Москве", () => {
     const text = scheduleChangeText(base, { ...base, serviceType: "Комплекс" })!;
     expect(text).toMatch(/10:00/); // 07:00Z = 10:00 МСК
+  });
+});
+
+describe("ссылки уведомлений", () => {
+  it("кабинет мастера живёт в админке: ссылки ведут в /admin/master, а не на старый /staff", () => {
+    expect(MASTER_HOME).toBe("/admin/master");
+    expect(MASTER_REGULATION).toBe("/admin/master/regulation");
+    for (const link of [MASTER_HOME, MASTER_REGULATION]) expect(link.startsWith("/staff")).toBe(false);
   });
 });

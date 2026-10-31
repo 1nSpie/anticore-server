@@ -75,3 +75,55 @@ describe('AdminJwtGuard (SEC-1)', () => {
     expect(b.validateCredentials('undefined', 'undefined')).toBe(false);
   });
 });
+
+describe('AdminJwtGuard — сотрудники с ролью ADMIN (sub = staff:<id>)', () => {
+  const OLD_ENV = process.env;
+  afterEach(() => { process.env = OLD_ENV; });
+
+  function setup(row: any | null | undefined) {
+    process.env = { ...OLD_ENV, ADMIN_JWT_SECRET: 'admin-secret-for-tests', JWT_SECRET: undefined };
+    const service = new AdminAuthService();
+    const prisma: any = { staff: { findUnique: jest.fn(async () => row) } };
+    return { service, prisma, guard: new AdminJwtGuard(service, prisma) };
+  }
+  const call = (guard: AdminJwtGuard, token: string) => {
+    const { ctx, req } = ctxWith({ authorization: `Bearer ${token}` });
+    return { result: guard.canActivate(ctx), req };
+  };
+
+  it('активный сотрудник-админ проходит; в request.admin лежит его id', async () => {
+    const { service, guard } = setup({ role: 'ADMIN', blockedAt: null });
+    const { result, req } = call(guard, service.createToken('staff:8'));
+    await expect(result).resolves.toBe(true);
+    expect(req.admin).toEqual({ id: 'staff:8', role: 'admin', staffId: 8 });
+  });
+
+  it('заблокированный, удалённый и разжалованный в мастера теряют доступ сразу, а не через 12 часов', async () => {
+    for (const row of [{ role: 'ADMIN', blockedAt: new Date() }, null, { role: 'MASTER', blockedAt: null }]) {
+      const { service, guard } = setup(row);
+      await expect(call(guard, service.createToken('staff:8')).result).rejects.toBeInstanceOf(UnauthorizedException);
+    }
+  });
+
+  it('env-админ по-прежнему проверяется без БД и синхронно', () => {
+    const { service, prisma, guard } = setup(undefined);
+    const { result } = call(guard, service.createToken('admin'));
+    expect(result).toBe(true);
+    expect(prisma.staff.findUnique).not.toHaveBeenCalled();
+  });
+
+  it('любой другой субъект отклоняется, даже с верной подписью (кому выдан токен — неизвестно)', () => {
+    for (const sub of ['1', 'root', 'staff:', 'staff:abc', 'staff:1; drop', 'ADMIN', 'staff:8:9']) {
+      const { service, guard } = setup({ role: 'ADMIN', blockedAt: null });
+      expect(() => call(guard, service.createToken(sub))).toThrow(UnauthorizedException);
+    }
+  });
+
+  it('без доступа к БД токен сотрудника не принимается (отказываем, а не пропускаем)', () => {
+    process.env = { ...OLD_ENV, ADMIN_JWT_SECRET: 'admin-secret-for-tests' };
+    const service = new AdminAuthService();
+    const guard = new AdminJwtGuard(service);
+    expect(() => call(guard, service.createToken('staff:8'))).toThrow(UnauthorizedException);
+  });
+});
+

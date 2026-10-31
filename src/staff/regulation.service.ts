@@ -7,7 +7,7 @@ import {
   UpdateArticleDto,
   UpdateSectionDto,
 } from "./dto/regulation.dto";
-import { NotificationType } from "./notification-types";
+import { NotificationType, MASTER_REGULATION } from "./notification-types";
 import { NotificationsService } from "./notifications.service";
 import { StaffAuditAction, StaffAuditService } from "./staff-audit.service";
 
@@ -167,7 +167,7 @@ export class RegulationService {
       type: NotificationType.REGULATION,
       title: "Регламент изменён — ознакомьтесь",
       body: note || null,
-      link: "/staff/regulation",
+      link: MASTER_REGULATION,
     });
     return state;
   }

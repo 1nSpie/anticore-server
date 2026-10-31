@@ -10,6 +10,8 @@ import { RegulationService } from "./regulation.service";
 import { NotificationsService } from "./notifications.service";
 import { StaffNotificationsController } from "./notifications.controller";
 import { StaffEventsGateway } from "./staff-events.gateway";
+import { SessionController } from "./session.controller";
+import { SessionService } from "./session.service";
 import { StaffAdminController } from "./staff-admin.controller";
 import { StaffAdminService } from "./staff-admin.service";
 import { StaffAssignmentsService } from "./staff-assignments.service";
@@ -23,8 +25,8 @@ import { StaffTokenService } from "./staff-token.service";
 /** Учётные записи сотрудников (мастера): вход, роли, журнал. Админ управляет ими через `/crm/staff`. */
 @Module({
   imports: [AdminAuthModule, StorageModule],
-  controllers: [StaffAuthController, StaffAdminController, StaffScheduleController, AppointmentAssigneesController, StaffCheckinController, CrmCheckinsController, StaffTasksController, CrmTasksController, StaffRegulationController, CrmRegulationController, StaffNotificationsController],
-  providers: [StaffTokenService, StaffAuditService, StaffAuthService, StaffAdminService, StaffAssignmentsService, CheckinService, TasksService, RegulationService, NotificationsService, StaffEventsGateway, StaffJwtGuard],
+  controllers: [StaffAuthController, StaffAdminController, StaffScheduleController, AppointmentAssigneesController, StaffCheckinController, CrmCheckinsController, StaffTasksController, CrmTasksController, StaffRegulationController, CrmRegulationController, StaffNotificationsController, SessionController],
+  providers: [StaffTokenService, StaffAuditService, StaffAuthService, StaffAdminService, StaffAssignmentsService, CheckinService, TasksService, RegulationService, NotificationsService, StaffEventsGateway, SessionService, StaffJwtGuard],
   exports: [StaffJwtGuard, StaffTokenService, StaffAuditService, NotificationsService],
 })
 export class StaffModule {}

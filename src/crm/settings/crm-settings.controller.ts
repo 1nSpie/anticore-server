@@ -18,8 +18,10 @@ import {
   UpdateServiceTypesDto,
   UpdateSmsTemplatesDto,
 } from "./dto/crm-settings.dto";
+import { AdminThrottle } from "../../common/throttle";
 
 @Controller("crm/settings")
+@AdminThrottle()
 @UseGuards(AdminJwtGuard)
 @UsePipes(new ValidationPipe({ transform: true, whitelist: true }))
 export class CrmSettingsController {

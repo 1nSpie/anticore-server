@@ -13,6 +13,7 @@ import { CrmCheckinsController, StaffCheckinController } from "../staff/checkin.
 import { StaffNotificationsController } from "../staff/notifications.controller";
 import { CrmRegulationController, StaffRegulationController } from "../staff/regulation.controller";
 import { StaffAdminController } from "../staff/staff-admin.controller";
+import { SessionController } from "../staff/session.controller";
 import { StaffAuthController } from "../staff/staff-auth.controller";
 import { AppointmentAssigneesController, StaffScheduleController } from "../staff/staff-schedule.controller";
 import { CrmTasksController, StaffTasksController } from "../staff/tasks.controller";
@@ -42,8 +43,8 @@ describe("лимиты запросов", () => {
     expect(STAFF_RATE.limit).toBeGreaterThan(ADMIN_RATE.limit);
   });
 
-  it("вход мастера: свой лимит на метод перекрывает лимит класса, и он выше прежних 5", () => {
-    const login = StaffAuthController.prototype.login;
+  it("единый вход (/admin/login): свой лимит на метод перекрывает лимит класса, и он выше прежних 5", () => {
+    const login = SessionController.prototype.login;
     expect(limitOf(login)).toBe(STAFF_LOGIN_RATE.limit);
     expect(ttlOf(login)).toBe(STAFF_LOGIN_RATE.ttl);
     expect(STAFF_LOGIN_RATE.limit).toBeGreaterThan(5);

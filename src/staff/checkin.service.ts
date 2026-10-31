@@ -6,7 +6,7 @@ import { mskDateAsUtcMidnight } from "../crm/common/crm-work-hours";
 import { PrismaService } from "../prisma/prisma.service";
 import { BRANCH_GEO, CHECKIN_RADIUS_M, GEO_RETENTION_DAYS, distanceMeters, nearestBranch } from "./branch-geo";
 import { CheckinDto, CheckinListQueryDto } from "./dto/checkin.dto";
-import { NotificationType } from "./notification-types";
+import { NotificationType, MASTER_HOME } from "./notification-types";
 import { NotificationsService } from "./notifications.service";
 import { StaffAuditAction, StaffAuditService } from "./staff-audit.service";
 import { StaffPrincipal } from "./staff-jwt.guard";
@@ -132,7 +132,7 @@ export class CheckinService {
       type: status === "CONFIRMED" ? NotificationType.CHECKIN_CONFIRMED : NotificationType.CHECKIN_REJECTED,
       title: status === "CONFIRMED" ? "Чекин подтверждён — вы на смене" : "Чекин отклонён",
       body: status === "CONFIRMED" ? null : "Отметьтесь снова на месте или обратитесь к администратору",
-      link: "/staff",
+      link: MASTER_HOME,
     });
     return saved;
   }

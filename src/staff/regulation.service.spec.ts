@@ -118,7 +118,7 @@ describe("RegulationService — версия и ознакомление", () =>
     const { svc, notifications } = setup();
     await svc.publish("Новые правила", {} as any);
     expect(notifications.notifyAllMasters).toHaveBeenCalledWith(
-      expect.objectContaining({ type: "REGULATION", body: "Новые правила", link: "/staff/regulation" }),
+      expect.objectContaining({ type: "REGULATION", body: "Новые правила", link: "/admin/master/regulation" }),
     );
   });
 

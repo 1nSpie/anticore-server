@@ -16,19 +16,6 @@ import { CrmLocation, StaffRole } from "../../../generated/prisma/client";
 
 const trim = ({ value }: { value: unknown }) => (typeof value === "string" ? value.trim() : value);
 
-export class StaffLoginDto {
-  @Transform(trim)
-  @IsString()
-  @MinLength(1)
-  @MaxLength(64)
-  login: string;
-
-  @IsString()
-  @MinLength(1)
-  @MaxLength(128)
-  password: string;
-}
-
 export class CreateStaffDto {
   @Transform(trim)
   @Matches(/^[A-Za-z0-9._-]{3,64}$/, { message: "Логин: 3–64 символа, латиница, цифры и . _ -" })

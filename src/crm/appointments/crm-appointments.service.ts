@@ -19,6 +19,8 @@ import { phoneSearchVariants } from "../common/phone-search";
 import { mskDateAsUtcMidnight } from "../common/crm-work-hours";
 import { CrmSettingsService } from "../settings/crm-settings.service";
 import { CrmSmsService } from "../sms/crm-sms.service";
+import { NotificationType, fmtMsk, scheduleChangeText, MASTER_HOME } from "../../staff/notification-types";
+import { NotificationsService } from "../../staff/notifications.service";
 import {
   CompleteAppointmentDto,
   CreateAppointmentDto,
@@ -50,6 +52,10 @@ const appointmentInclude = {
   },
   catalogServiceType: true,
   siteLead: { select: { id: true, status: true } },
+  assignees: {
+    select: { staff: { select: { id: true, fullName: true } } },
+    orderBy: { assignedAt: "asc" },
+  },
 } as const;
 
 @Injectable()
@@ -62,6 +68,7 @@ export class CrmAppointmentsService {
     private readonly leads: CrmLeadsService,
     private readonly settings: CrmSettingsService,
     private readonly vehicles: ClientVehiclesService,
+    private readonly notifications: NotificationsService,
   ) {}
 
   async list(from?: string, to?: string, location?: string) {
@@ -279,6 +286,8 @@ export class CrmAppointmentsService {
       include: appointmentInclude,
     });
 
+    await this.notifyAssigneesAboutChange(id, existing, row);
+
     if (row.siteLead) {
       // Перенос на сегодня / на другой день меняет «На подъёмнике» ↔ «В календаре».
       await this.leads.syncVisitStatuses({ visitId: id });
@@ -298,6 +307,8 @@ export class CrmAppointmentsService {
       where: { id },
     });
     if (!existing) throw new NotFoundException("Запись не найдена");
+    // Назначения удалятся каскадом — мастеров собираем заранее
+    const assignees = await this.prisma.visitStaff.findMany({ where: { visitId: id }, select: { staffId: true } });
     await this.prisma.$transaction([
       // Запись удалили — заявка возвращается админу, а не зависает «В календаре».
       this.prisma.siteLead.updateMany({
@@ -309,6 +320,15 @@ export class CrmAppointmentsService {
       }),
       this.prisma.visitHistory.delete({ where: { id } }),
     ]);
+    await this.notifications.notify(
+      assignees.map((a) => a.staffId),
+      {
+        type: NotificationType.SCHEDULE_CHANGED,
+        title: "Запись отменена",
+        body: `${existing.serviceType}${existing.startsAt ? `, ${fmtMsk(existing.startsAt)}` : ""}`,
+        link: MASTER_HOME,
+      },
+    );
     return { message: "Удалено" };
   }
 
@@ -440,6 +460,21 @@ export class CrmAppointmentsService {
     return this.toEvent(updated!);
   }
 
+  /** Мастерам на записи — только о существенных изменениях (время, филиал, услуга); не о цене и комментариях. */
+  private async notifyAssigneesAboutChange(
+    id: number,
+    before: { startsAt: Date | null; endsAt: Date | null; location: string | null; serviceType: string },
+    after: { startsAt: Date | null; endsAt: Date | null; location: string | null; serviceType: string },
+  ) {
+    const text = scheduleChangeText(before, after);
+    if (!text) return;
+    const assignees = await this.prisma.visitStaff.findMany({ where: { visitId: id }, select: { staffId: true } });
+    await this.notifications.notify(
+      assignees.map((a) => a.staffId),
+      { type: NotificationType.SCHEDULE_CHANGED, title: "Изменение в расписании", body: text, link: MASTER_HOME },
+    );
+  }
+
   private assertRange(startsAt: Date, endsAt: Date) {
     if (endsAt <= startsAt) {
       throw new BadRequestException("Время окончания должно быть позже начала");
@@ -501,6 +536,7 @@ export class CrmAppointmentsService {
       car?: { model: string; brand?: { name: string } | null } | null;
     } | null;
     catalogServiceType?: { id: number; name: string } | null;
+    assignees?: { staff: { id: number; fullName: string } }[];
   }) {
     const start = row.startsAt ?? row.visitDate;
     const end =
@@ -541,6 +577,8 @@ export class CrmAppointmentsService {
       lead: row.siteLead
         ? { id: row.siteLead.id, status: row.siteLead.status }
         : null,
+      /** Назначенные мастера (кнопка «Назначить мастера» в календаре). */
+      assignees: (row.assignees ?? []).map((a) => a.staff),
     };
   }
 }

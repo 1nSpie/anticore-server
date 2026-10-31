@@ -14,8 +14,10 @@ import {
 import { AdminJwtGuard } from "../../auth/admin-jwt.guard";
 import { ClientVehiclesService } from "../../client-vehicles/client-vehicles.service";
 import { UpsertClientVehicleDto } from "../../client-vehicles/dto/upsert-client-vehicle.dto";
+import { AdminThrottle } from "../../common/throttle";
 
 @Controller("crm/clients/:clientId/vehicles")
+@AdminThrottle()
 @UseGuards(AdminJwtGuard)
 @UsePipes(new ValidationPipe({ transform: true, whitelist: true }))
 export class CrmClientVehiclesController {

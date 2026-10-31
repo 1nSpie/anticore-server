@@ -177,3 +177,58 @@ export type SmsLog = Prisma.SmsLogModel
  * * Лимит записей в календарь на день и филиал.
  */
 export type CrmDayLimit = Prisma.CrmDayLimitModel
+/**
+ * Model Staff
+ * Сотрудник: мастер (ЛК /staff) или администратор. Env-админ остаётся запасным входом в CRM.
+ */
+export type Staff = Prisma.StaffModel
+/**
+ * Model StaffAuditLog
+ * Журнал входов и действий сотрудников/админа (ТЗ 6.6).
+ */
+export type StaffAuditLog = Prisma.StaffAuditLogModel
+/**
+ * Model VisitStaff
+ * Назначение мастера на запись: один мастер — несколько записей, несколько мастеров — одна запись.
+ */
+export type VisitStaff = Prisma.VisitStaffModel
+/**
+ * Model Checkin
+ * Чекин = начало смены (один в сутки по Москве). Без подтверждения админом мастер «не на смене».
+ */
+export type Checkin = Prisma.CheckinModel
+/**
+ * Model Task
+ * Задача сотруднику. Создаёт только админ; мастер отмечает «Выполнена», админ подтверждает.
+ */
+export type Task = Prisma.TaskModel
+/**
+ * Model RegulationState
+ * Единственная строка (id=1): версия регламента. Растёт при каждой публикации — мастера обязаны ознакомиться заново.
+ */
+export type RegulationState = Prisma.RegulationStateModel
+/**
+ * Model RegSection
+ * Раздел регламента; подраздел — раздел с parentId (глубина не больше 2).
+ */
+export type RegSection = Prisma.RegSectionModel
+/**
+ * Model RegArticle
+ * 
+ */
+export type RegArticle = Prisma.RegArticleModel
+/**
+ * Model RegAttachment
+ * PDF-вложение статьи. Хранится в БД и отдаётся только сотрудникам и админу (внутренний документ, не в публичный S3).
+ */
+export type RegAttachment = Prisma.RegAttachmentModel
+/**
+ * Model Notification
+ * Уведомление сотруднику в ЛК (лента + всплывающее окно по WebSocket).
+ */
+export type Notification = Prisma.NotificationModel
+/**
+ * Model TaskPhoto
+ * Фото к задаче в приватном хранилище Selectel. Объект лежит по `key`, наружу отдаётся только подписанная ссылка.
+ */
+export type TaskPhoto = Prisma.TaskPhotoModel

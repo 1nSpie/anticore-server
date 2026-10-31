@@ -1,4 +1,5 @@
 // src/admin/admin-auth.controller.ts
+// Вход (`POST /admin/login`) и `GET /admin/me` — в `staff/session.controller.ts`: он отличает администратора от мастера.
 import {
   Body,
   Controller,
@@ -8,67 +9,14 @@ import {
   Post,
   Res,
   UseGuards,
-  UsePipes,
-  ValidationPipe,
 } from '@nestjs/common';
 import { Response } from 'express';
 import { AdminAuthService } from './admin-auth.service';
 import { AdminJwtGuard } from './admin-jwt.guard';
-import { LoginDto } from './login.dto';
 
 @Controller('admin')
 export class AdminAuthController {
   constructor(private readonly adminAuthService: AdminAuthService) {}
-
-  @Post('login')
-  @HttpCode(HttpStatus.OK)
-  @UsePipes(new ValidationPipe({ transform: true, whitelist: true }))
-  async login(
-    @Body() loginDto: LoginDto,
-    @Res() res: Response,
-  ) {
-    try {
-      const isValid = this.adminAuthService.validateCredentials(
-        loginDto.login,
-        loginDto.password,
-      );
-
-      if (!isValid) {
-        return res.status(HttpStatus.UNAUTHORIZED).json({
-          success: false,
-          message: 'Неверный логин или пароль',
-          timestamp: new Date().toISOString(),
-        });
-      }
-
-      // Создаем токен
-      const token = this.adminAuthService.createToken();
-
-      // Также устанавливаем куку (на всякий случай)
-      const isProd = process.env.NODE_ENV === 'production';
-      res.cookie('admin_token', token, {
-        httpOnly: true,
-        secure: isProd,
-        sameSite: isProd ? 'none' : 'lax',
-        maxAge: 12 * 60 * 60 * 1000,
-        path: '/',
-      });
-
-      // Возвращаем токен в теле ответа для сохранения в localStorage
-      return res.json({
-        success: true,
-        token, // <-- ВАЖНО: возвращаем токен!
-        message: 'Авторизация успешна',
-        timestamp: new Date().toISOString(),
-      });
-    } catch (error) {
-      return res.status(HttpStatus.UNAUTHORIZED).json({
-        success: false,
-        message: error.message || 'Ошибка авторизации',
-        timestamp: new Date().toISOString(),
-      });
-    }
-  }
 
   @Get('check-auth')
   @UseGuards(AdminJwtGuard)

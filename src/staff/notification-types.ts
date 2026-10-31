@@ -11,6 +11,10 @@ export const NotificationType = {
   CHECKIN_REJECTED: "CHECKIN_REJECTED",
 } as const;
 
+/** Куда ведут уведомления: кабинет мастера живёт внутри админки (`/admin/master/*`), вход единый. */
+export const MASTER_HOME = "/admin/master";
+export const MASTER_REGULATION = "/admin/master/regulation";
+
 export type NotificationTypeCode = (typeof NotificationType)[keyof typeof NotificationType];
 
 export interface NotificationInput {

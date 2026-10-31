@@ -3,16 +3,26 @@ import {
   CanActivate,
   ExecutionContext,
   Injectable,
+  Optional,
   UnauthorizedException,
 } from '@nestjs/common';
 import { Request } from 'express';
-import { AdminAuthService } from './admin-auth.service';
+import { StaffRole } from '../../generated/prisma/client';
+import { PrismaService } from '../prisma/prisma.service';
+import { ADMIN_ENV_SUBJECT, AdminAuthService, staffIdFromSubject } from './admin-auth.service';
 
 @Injectable()
 export class AdminJwtGuard implements CanActivate {
-  constructor(private readonly adminAuthService: AdminAuthService) {}
+  constructor(
+    private readonly adminAuthService: AdminAuthService,
+    @Optional() private readonly prisma?: PrismaService,
+  ) {}
 
-  canActivate(context: ExecutionContext): boolean {
+  /**
+   * Env-админ проверяется синхронно (подпись + claims). Сотрудник с ролью ADMIN (`sub = staff:<id>`) — дополнительно по БД:
+   * заблокированный, удалённый или разжалованный в мастера теряет доступ сразу, а не через 12 часов.
+   */
+  canActivate(context: ExecutionContext): boolean | Promise<boolean> {
     const request = context.switchToHttp().getRequest<Request>();
 
     // 1. Проверяем заголовок Authorization (Bearer token)
@@ -44,13 +54,26 @@ export class AdminJwtGuard implements CanActivate {
         );
       }
 
-      // Добавляем информацию о пользователе в request
-      request['admin'] = {
-        id: validationResult.payload!.sub,
-        role: validationResult.payload!.role,
-      };
+      const sub = validationResult.payload!.sub;
+      const admin = { id: sub, role: validationResult.payload!.role } as { id: string; role: string; staffId?: number };
 
-      return true;
+      if (sub === ADMIN_ENV_SUBJECT) {
+        request['admin'] = admin;
+        return true;
+      }
+
+      // Любой другой субъект, кроме staff:<id>, не принимаем: подпись верна, но кому выдан токен — неизвестно
+      const staffId = staffIdFromSubject(sub);
+      if (staffId === null || !this.prisma) throw new UnauthorizedException('Недействительная авторизация');
+      return this.prisma.staff
+        .findUnique({ where: { id: staffId }, select: { role: true, blockedAt: true } })
+        .then((staff) => {
+          if (!staff || staff.blockedAt || staff.role !== StaffRole.ADMIN) {
+            throw new UnauthorizedException('Учётная запись недоступна');
+          }
+          request['admin'] = { ...admin, staffId };
+          return true;
+        });
     } catch (error) {
       if (error instanceof UnauthorizedException) {
         throw error;

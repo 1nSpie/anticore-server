@@ -16,8 +16,10 @@ import { SiteLeadStatus } from "../../../generated/prisma/client";
 import { AdminJwtGuard } from "../../auth/admin-jwt.guard";
 import { CrmLeadsService } from "./crm-leads.service";
 import { ScheduleLeadDto, UpdateSiteLeadDto } from "./dto/site-lead.dto";
+import { AdminThrottle } from "../../common/throttle";
 
 @Controller("crm/leads")
+@AdminThrottle()
 @UseGuards(AdminJwtGuard)
 export class CrmLeadsController {
   constructor(private readonly leads: CrmLeadsService) {}

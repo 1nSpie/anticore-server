@@ -6,7 +6,7 @@ import { PrismaService } from "../prisma/prisma.service";
 import { normalizePhoto } from "../storage/normalize-image";
 import { ObjectStorageService } from "../storage/object-storage.service";
 import { CreateTaskDto, TaskListQueryDto, UpdateTaskDto } from "./dto/task.dto";
-import { NotificationType } from "./notification-types";
+import { NotificationType, MASTER_HOME } from "./notification-types";
 import { NotificationsService } from "./notifications.service";
 import { StaffAuditAction, StaffAuditService } from "./staff-audit.service";
 import { isOpenForMaster, taskDisplayStatus } from "./task-status";
@@ -80,7 +80,7 @@ export class TasksService {
       type: NotificationType.TASK_NEW,
       title: "Новая задача",
       body: task.title,
-      link: "/staff",
+      link: MASTER_HOME,
     });
     return this.present(task);
   }
@@ -117,7 +117,7 @@ export class TasksService {
       type: NotificationType.TASK_CONFIRMED,
       title: "Выполнение подтверждено",
       body: task.title,
-      link: "/staff",
+      link: MASTER_HOME,
     });
     return this.present(task);
   }
@@ -136,7 +136,7 @@ export class TasksService {
       type: NotificationType.TASK_RETURNED,
       title: "Задача возвращена в работу",
       body: comment ? `${task.title}: ${comment}` : task.title,
-      link: "/staff",
+      link: MASTER_HOME,
     });
     return this.present(task);
   }

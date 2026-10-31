@@ -8,9 +8,7 @@ import {
 import * as bcrypt from "bcrypt";
 import { Request } from "express";
 import { PrismaService } from "../prisma/prisma.service";
-import { StaffLoginDto } from "./dto/staff.dto";
 import { StaffAuditAction, StaffAuditService } from "./staff-audit.service";
-import { StaffTokenService } from "./staff-token.service";
 
 export const LOGIN_MAX_FAILURES = 5;
 export const LOGIN_FAILURE_WINDOW_MS = 15 * 60 * 1000;
@@ -26,13 +24,11 @@ export function normalizeLogin(login: string): string {
 export class StaffAuthService {
   constructor(
     private readonly prisma: PrismaService,
-    private readonly tokens: StaffTokenService,
     private readonly audit: StaffAuditService,
   ) {}
 
-  async login(dto: StaffLoginDto, req: Request) {
-    const login = normalizeLogin(dto.login);
-
+  /** 5 неудачных попыток по одному логину за 15 минут → 429 (в том числе для логина env-админа: перебор режется и там). */
+  async assertNotLocked(login: string): Promise<void> {
     const since = new Date(Date.now() - LOGIN_FAILURE_WINDOW_MS);
     if ((await this.audit.countRecentFailures(login, since)) >= LOGIN_MAX_FAILURES) {
       throw new HttpException(
@@ -40,9 +36,18 @@ export class StaffAuthService {
         HttpStatus.TOO_MANY_REQUESTS,
       );
     }
+  }
+
+  /**
+   * Проверяет логин и пароль сотрудника (мастер или администратор), пишет вход/неудачу в журнал.
+   * Токен не выдаёт: какой именно токен нужен (кабинет мастера или админка), решает `SessionService` по роли.
+   */
+  async authenticate(rawLogin: string, password: string, req: Request) {
+    const login = normalizeLogin(rawLogin);
+    await this.assertNotLocked(login);
 
     const staff = await this.prisma.staff.findUnique({ where: { login } });
-    const passwordOk = await bcrypt.compare(dto.password, staff?.passwordHash ?? DUMMY_HASH);
+    const passwordOk = await bcrypt.compare(password, staff?.passwordHash ?? DUMMY_HASH);
 
     if (!staff || !passwordOk) {
       await this.audit.log({
@@ -68,8 +73,7 @@ export class StaffAuthService {
 
     await this.prisma.staff.update({ where: { id: staff.id }, data: { lastLoginAt: new Date() } });
     await this.audit.log({ action: StaffAuditAction.LOGIN, actor: staff.login, staffId: staff.id, req });
-
-    return { token: this.tokens.sign(staff.id, staff.role), staff: toPublic(staff) };
+    return staff;
   }
 }
 

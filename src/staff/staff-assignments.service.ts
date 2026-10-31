@@ -5,7 +5,7 @@ import { mskDayStart } from "../crm/common/crm-work-hours";
 import { PrismaService } from "../prisma/prisma.service";
 import { StaffAuditAction, StaffAuditService } from "./staff-audit.service";
 import { toMasterVisit } from "./master-visit.mapper";
-import { NotificationType, fmtMsk } from "./notification-types";
+import { NotificationType, fmtMsk, MASTER_HOME } from "./notification-types";
 import { NotificationsService } from "./notifications.service";
 
 const DEFAULT_WINDOW_DAYS = 14;
@@ -58,8 +58,8 @@ export class StaffAssignmentsService {
         meta: { visitId, added, removed },
       });
       const what = `${visit.serviceType}${visit.startsAt ? `, ${fmtMsk(visit.startsAt)}` : ""}`;
-      await this.notifications.notify(added, { type: NotificationType.ASSIGNED, title: "Вас назначили на запись", body: what, link: "/staff" });
-      await this.notifications.notify(removed, { type: NotificationType.UNASSIGNED, title: "Вас сняли с записи", body: what, link: "/staff" });
+      await this.notifications.notify(added, { type: NotificationType.ASSIGNED, title: "Вас назначили на запись", body: what, link: MASTER_HOME });
+      await this.notifications.notify(removed, { type: NotificationType.UNASSIGNED, title: "Вас сняли с записи", body: what, link: MASTER_HOME });
     }
 
     const rows = await this.prisma.visitStaff.findMany({

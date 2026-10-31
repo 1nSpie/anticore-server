@@ -16,6 +16,7 @@ import { CrmSettingsController } from "./settings/crm-settings.controller";
 import { CrmSettingsService } from "./settings/crm-settings.service";
 import { CrmSmsScheduler } from "./sms/crm-sms.scheduler";
 import { CrmSmsService } from "./sms/crm-sms.service";
+import { StaffModule } from "../staff/staff.module";
 
 /** CRM API — доступ только с JWT админ-панели (`/admin/login`). */
 @Module({
@@ -25,6 +26,7 @@ import { CrmSmsService } from "./sms/crm-sms.service";
     CabinetAuthModule,
     SmsModule,
     ClientVehiclesModule,
+    StaffModule,
   ],
   controllers: [
     CrmClientsController,
