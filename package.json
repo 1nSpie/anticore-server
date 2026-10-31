@@ -22,6 +22,7 @@
     "import-cars": "ts-node prisma/import-cars.ts",
     "seed-blog": "ts-node prisma/blog-seed.ts",
     "seed-works": "ts-node prisma/works-seed.ts",
+    "seed-test-staff": "ts-node --transpile-only prisma/seed-test-staff.ts",
     "seed-segments": "ts-node prisma/segment-seed.ts",
     "birthday-sms": "ts-node --transpile-only -r tsconfig-paths/register prisma/run-birthday-sms.ts"
   },
