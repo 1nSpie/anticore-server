@@ -205,6 +205,8 @@ Cron-задачи (`@nestjs/schedule`) работают внутри конте�
 Кабинет мастера живёт внутри админки (`/admin/master/*`) и использует тот же фронт и тот же API, но ему нужны четыре вещи в nginx.
 Конфиг nginx лежит на сервере, вне репозитория: ниже — **что добавить** в существующие `server`/`location /api`, а не готовый файл.
 
+> **Статус боевого nginx на 87.228.97.171 (проверено 31.10.2026, `/etc/nginx/sites-available/default`): менять ничего не нужно.** Уже есть `client_max_body_size 20M`, в `location /api/` — заголовки `Upgrade`/`Connection` (WebSocket по `/api/socket.io/` идёт через него), `X-Forwarded-For`/`-Proto`/`X-Real-IP`, `proxy_read_timeout 120s`, HTTPS; CSP нет. Отдельный `location /api/socket.io/` не нужен. Пункты ниже — справочные: для нового сервера или если конфиг будут переписывать.
+
 **1. Размер загрузок.** Фото задач (до 15 МБ) и PDF регламента (до 10 МБ) идут через API. nginx по умолчанию режет тело запроса до 1 МБ
 (ответ **413**), поэтому в `location /api/` (или `server`) нужно:
 
@@ -248,8 +250,8 @@ location /api/socket.io/ {
 sudo nginx -t && sudo systemctl reload nginx
 ```
 
-**Проверка после выкладки**
-- WebSocket: `curl -si -N -H "Connection: Upgrade" -H "Upgrade: websocket" -H "Sec-WebSocket-Version: 13" -H "Sec-WebSocket-Key: x3JJHMbDL1EzLkh9GBhXDw==" "https://<домен>/api/socket.io/?EIO=4&transport=websocket" | head -1` должен ответить `HTTP/1.1 101 Switching Protocols`
+**Проверка после выкладки** (`--http1.1` обязателен: по умолчанию curl идёт по HTTP/2, где «Upgrade» не существует; браузеры для WebSocket сами выбирают HTTP/1.1)
+- WebSocket: `curl --http1.1 -si -N -H "Connection: Upgrade" -H "Upgrade: websocket" -H "Sec-WebSocket-Version: 13" -H "Sec-WebSocket-Key: x3JJHMbDL1EzLkh9GBhXDw==" "https://<домен>/api/socket.io/?EIO=4&transport=websocket" | head -1` должен ответить `HTTP/1.1 101 Switching Protocols`
   (в браузере: DevTools → Network → WS, у залогиненного мастера запрос со статусом 101).
 - Загрузка: фото 5–10 МБ к задаче прикрепляется без ошибки 413.
 - IP: в журнале входов (`/admin/staff` → «Журнал входов») виден реальный адрес мастера, а не `127.0.0.1`.
