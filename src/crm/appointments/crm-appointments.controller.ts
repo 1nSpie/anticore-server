@@ -19,8 +19,10 @@ import {
   CreateAppointmentDto,
   UpdateAppointmentDto,
 } from "./dto/appointment.dto";
+import { AdminThrottle } from "../../common/throttle";
 
 @Controller("crm/appointments")
+@AdminThrottle()
 @UseGuards(AdminJwtGuard)
 @UsePipes(new ValidationPipe({ transform: true, whitelist: true }))
 export class CrmAppointmentsController {

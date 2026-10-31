@@ -78,7 +78,18 @@ export const ModelName = {
   SmsTemplate: 'SmsTemplate',
   CompanySettings: 'CompanySettings',
   SmsLog: 'SmsLog',
-  CrmDayLimit: 'CrmDayLimit'
+  CrmDayLimit: 'CrmDayLimit',
+  Staff: 'Staff',
+  StaffAuditLog: 'StaffAuditLog',
+  VisitStaff: 'VisitStaff',
+  Checkin: 'Checkin',
+  Task: 'Task',
+  RegulationState: 'RegulationState',
+  RegSection: 'RegSection',
+  RegArticle: 'RegArticle',
+  RegAttachment: 'RegAttachment',
+  Notification: 'Notification',
+  TaskPhoto: 'TaskPhoto'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -468,6 +479,160 @@ export const CrmDayLimitScalarFieldEnum = {
 } as const
 
 export type CrmDayLimitScalarFieldEnum = (typeof CrmDayLimitScalarFieldEnum)[keyof typeof CrmDayLimitScalarFieldEnum]
+
+
+export const StaffScalarFieldEnum = {
+  id: 'id',
+  login: 'login',
+  passwordHash: 'passwordHash',
+  fullName: 'fullName',
+  role: 'role',
+  locations: 'locations',
+  blockedAt: 'blockedAt',
+  lastLoginAt: 'lastLoginAt',
+  geoConsentAt: 'geoConsentAt',
+  regulationAckVersion: 'regulationAckVersion',
+  regulationAckAt: 'regulationAckAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type StaffScalarFieldEnum = (typeof StaffScalarFieldEnum)[keyof typeof StaffScalarFieldEnum]
+
+
+export const StaffAuditLogScalarFieldEnum = {
+  id: 'id',
+  staffId: 'staffId',
+  actor: 'actor',
+  action: 'action',
+  ip: 'ip',
+  userAgent: 'userAgent',
+  meta: 'meta',
+  createdAt: 'createdAt'
+} as const
+
+export type StaffAuditLogScalarFieldEnum = (typeof StaffAuditLogScalarFieldEnum)[keyof typeof StaffAuditLogScalarFieldEnum]
+
+
+export const VisitStaffScalarFieldEnum = {
+  id: 'id',
+  visitId: 'visitId',
+  staffId: 'staffId',
+  assignedAt: 'assignedAt'
+} as const
+
+export type VisitStaffScalarFieldEnum = (typeof VisitStaffScalarFieldEnum)[keyof typeof VisitStaffScalarFieldEnum]
+
+
+export const CheckinScalarFieldEnum = {
+  id: 'id',
+  staffId: 'staffId',
+  date: 'date',
+  location: 'location',
+  lat: 'lat',
+  lng: 'lng',
+  accuracyM: 'accuracyM',
+  distanceM: 'distanceM',
+  outOfRadius: 'outOfRadius',
+  status: 'status',
+  decidedAt: 'decidedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type CheckinScalarFieldEnum = (typeof CheckinScalarFieldEnum)[keyof typeof CheckinScalarFieldEnum]
+
+
+export const TaskScalarFieldEnum = {
+  id: 'id',
+  staffId: 'staffId',
+  title: 'title',
+  description: 'description',
+  priority: 'priority',
+  status: 'status',
+  dueAt: 'dueAt',
+  masterComment: 'masterComment',
+  adminComment: 'adminComment',
+  doneAt: 'doneAt',
+  confirmedAt: 'confirmedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TaskScalarFieldEnum = (typeof TaskScalarFieldEnum)[keyof typeof TaskScalarFieldEnum]
+
+
+export const RegulationStateScalarFieldEnum = {
+  id: 'id',
+  version: 'version',
+  changeNote: 'changeNote',
+  publishedAt: 'publishedAt',
+  dirty: 'dirty'
+} as const
+
+export type RegulationStateScalarFieldEnum = (typeof RegulationStateScalarFieldEnum)[keyof typeof RegulationStateScalarFieldEnum]
+
+
+export const RegSectionScalarFieldEnum = {
+  id: 'id',
+  parentId: 'parentId',
+  title: 'title',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type RegSectionScalarFieldEnum = (typeof RegSectionScalarFieldEnum)[keyof typeof RegSectionScalarFieldEnum]
+
+
+export const RegArticleScalarFieldEnum = {
+  id: 'id',
+  sectionId: 'sectionId',
+  title: 'title',
+  body: 'body',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type RegArticleScalarFieldEnum = (typeof RegArticleScalarFieldEnum)[keyof typeof RegArticleScalarFieldEnum]
+
+
+export const RegAttachmentScalarFieldEnum = {
+  id: 'id',
+  articleId: 'articleId',
+  fileName: 'fileName',
+  size: 'size',
+  data: 'data',
+  createdAt: 'createdAt'
+} as const
+
+export type RegAttachmentScalarFieldEnum = (typeof RegAttachmentScalarFieldEnum)[keyof typeof RegAttachmentScalarFieldEnum]
+
+
+export const NotificationScalarFieldEnum = {
+  id: 'id',
+  staffId: 'staffId',
+  type: 'type',
+  title: 'title',
+  body: 'body',
+  link: 'link',
+  readAt: 'readAt',
+  createdAt: 'createdAt'
+} as const
+
+export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
+
+
+export const TaskPhotoScalarFieldEnum = {
+  id: 'id',
+  taskId: 'taskId',
+  key: 'key',
+  size: 'size',
+  uploadedBy: 'uploadedBy',
+  createdAt: 'createdAt'
+} as const
+
+export type TaskPhotoScalarFieldEnum = (typeof TaskPhotoScalarFieldEnum)[keyof typeof TaskPhotoScalarFieldEnum]
 
 
 export const SortOrder = {

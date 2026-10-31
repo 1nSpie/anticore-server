@@ -13,6 +13,14 @@ interface JwtPayload {
 }
 
 export const ADMIN_JWT_AUDIENCE = 'anticore-admin';
+/** Администратор из env (запасной вход). Сотрудник с ролью ADMIN — `staff:<id>`. */
+export const ADMIN_ENV_SUBJECT = 'admin';
+
+/** id сотрудника из субъекта токена админки; null — это env-админ или недопустимый субъект. */
+export function staffIdFromSubject(sub: string): number | null {
+  const m = /^staff:(\d{1,9})$/.exec(sub);
+  return m ? Number(m[1]) : null;
+}
 export const ADMIN_JWT_ISSUER = 'anticore-server';
 
 function safeEqual(a: string, b: string): boolean {
@@ -49,9 +57,10 @@ export class AdminAuthService {
     return loginOk && passwordOk;
   }
 
-  createToken(): string {
+  /** `subject`: `admin` (env-админ) или `staff:<id>` (сотрудник с ролью ADMIN). */
+  createToken(subject: string = ADMIN_ENV_SUBJECT): string {
     const payload: Omit<JwtPayload, 'iat' | 'exp'> = {
-      sub: 'admin',
+      sub: subject,
       role: 'admin',
       typ: 'admin_access',
     };

@@ -333,6 +333,7 @@ export type VisitHistoryWhereInput = {
   catalogServiceType?: Prisma.XOR<Prisma.ServiceTypeNullableScalarRelationFilter, Prisma.ServiceTypeWhereInput> | null
   pendingReviewSms?: Prisma.XOR<Prisma.PendingReviewSmsNullableScalarRelationFilter, Prisma.PendingReviewSmsWhereInput> | null
   siteLead?: Prisma.XOR<Prisma.SiteLeadNullableScalarRelationFilter, Prisma.SiteLeadWhereInput> | null
+  assignees?: Prisma.VisitStaffListRelationFilter
 }
 
 export type VisitHistoryOrderByWithRelationInput = {
@@ -358,6 +359,7 @@ export type VisitHistoryOrderByWithRelationInput = {
   catalogServiceType?: Prisma.ServiceTypeOrderByWithRelationInput
   pendingReviewSms?: Prisma.PendingReviewSmsOrderByWithRelationInput
   siteLead?: Prisma.SiteLeadOrderByWithRelationInput
+  assignees?: Prisma.VisitStaffOrderByRelationAggregateInput
 }
 
 export type VisitHistoryWhereUniqueInput = Prisma.AtLeast<{
@@ -386,6 +388,7 @@ export type VisitHistoryWhereUniqueInput = Prisma.AtLeast<{
   catalogServiceType?: Prisma.XOR<Prisma.ServiceTypeNullableScalarRelationFilter, Prisma.ServiceTypeWhereInput> | null
   pendingReviewSms?: Prisma.XOR<Prisma.PendingReviewSmsNullableScalarRelationFilter, Prisma.PendingReviewSmsWhereInput> | null
   siteLead?: Prisma.XOR<Prisma.SiteLeadNullableScalarRelationFilter, Prisma.SiteLeadWhereInput> | null
+  assignees?: Prisma.VisitStaffListRelationFilter
 }, "id">
 
 export type VisitHistoryOrderByWithAggregationInput = {
@@ -455,6 +458,7 @@ export type VisitHistoryCreateInput = {
   catalogServiceType?: Prisma.ServiceTypeCreateNestedOneWithoutVisitsInput
   pendingReviewSms?: Prisma.PendingReviewSmsCreateNestedOneWithoutVisitInput
   siteLead?: Prisma.SiteLeadCreateNestedOneWithoutVisitInput
+  assignees?: Prisma.VisitStaffCreateNestedManyWithoutVisitInput
 }
 
 export type VisitHistoryUncheckedCreateInput = {
@@ -477,6 +481,7 @@ export type VisitHistoryUncheckedCreateInput = {
   updatedAt?: Date | string
   pendingReviewSms?: Prisma.PendingReviewSmsUncheckedCreateNestedOneWithoutVisitInput
   siteLead?: Prisma.SiteLeadUncheckedCreateNestedOneWithoutVisitInput
+  assignees?: Prisma.VisitStaffUncheckedCreateNestedManyWithoutVisitInput
 }
 
 export type VisitHistoryUpdateInput = {
@@ -498,6 +503,7 @@ export type VisitHistoryUpdateInput = {
   catalogServiceType?: Prisma.ServiceTypeUpdateOneWithoutVisitsNestedInput
   pendingReviewSms?: Prisma.PendingReviewSmsUpdateOneWithoutVisitNestedInput
   siteLead?: Prisma.SiteLeadUpdateOneWithoutVisitNestedInput
+  assignees?: Prisma.VisitStaffUpdateManyWithoutVisitNestedInput
 }
 
 export type VisitHistoryUncheckedUpdateInput = {
@@ -520,6 +526,7 @@ export type VisitHistoryUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   pendingReviewSms?: Prisma.PendingReviewSmsUncheckedUpdateOneWithoutVisitNestedInput
   siteLead?: Prisma.SiteLeadUncheckedUpdateOneWithoutVisitNestedInput
+  assignees?: Prisma.VisitStaffUncheckedUpdateManyWithoutVisitNestedInput
 }
 
 export type VisitHistoryCreateManyInput = {
@@ -834,6 +841,20 @@ export type VisitHistoryUpdateOneRequiredWithoutPendingReviewSmsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.VisitHistoryUpdateToOneWithWhereWithoutPendingReviewSmsInput, Prisma.VisitHistoryUpdateWithoutPendingReviewSmsInput>, Prisma.VisitHistoryUncheckedUpdateWithoutPendingReviewSmsInput>
 }
 
+export type VisitHistoryCreateNestedOneWithoutAssigneesInput = {
+  create?: Prisma.XOR<Prisma.VisitHistoryCreateWithoutAssigneesInput, Prisma.VisitHistoryUncheckedCreateWithoutAssigneesInput>
+  connectOrCreate?: Prisma.VisitHistoryCreateOrConnectWithoutAssigneesInput
+  connect?: Prisma.VisitHistoryWhereUniqueInput
+}
+
+export type VisitHistoryUpdateOneRequiredWithoutAssigneesNestedInput = {
+  create?: Prisma.XOR<Prisma.VisitHistoryCreateWithoutAssigneesInput, Prisma.VisitHistoryUncheckedCreateWithoutAssigneesInput>
+  connectOrCreate?: Prisma.VisitHistoryCreateOrConnectWithoutAssigneesInput
+  upsert?: Prisma.VisitHistoryUpsertWithoutAssigneesInput
+  connect?: Prisma.VisitHistoryWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.VisitHistoryUpdateToOneWithWhereWithoutAssigneesInput, Prisma.VisitHistoryUpdateWithoutAssigneesInput>, Prisma.VisitHistoryUncheckedUpdateWithoutAssigneesInput>
+}
+
 export type VisitHistoryCreateWithoutUserInput = {
   visitDate: Date | string
   serviceType: string
@@ -852,6 +873,7 @@ export type VisitHistoryCreateWithoutUserInput = {
   catalogServiceType?: Prisma.ServiceTypeCreateNestedOneWithoutVisitsInput
   pendingReviewSms?: Prisma.PendingReviewSmsCreateNestedOneWithoutVisitInput
   siteLead?: Prisma.SiteLeadCreateNestedOneWithoutVisitInput
+  assignees?: Prisma.VisitStaffCreateNestedManyWithoutVisitInput
 }
 
 export type VisitHistoryUncheckedCreateWithoutUserInput = {
@@ -873,6 +895,7 @@ export type VisitHistoryUncheckedCreateWithoutUserInput = {
   updatedAt?: Date | string
   pendingReviewSms?: Prisma.PendingReviewSmsUncheckedCreateNestedOneWithoutVisitInput
   siteLead?: Prisma.SiteLeadUncheckedCreateNestedOneWithoutVisitInput
+  assignees?: Prisma.VisitStaffUncheckedCreateNestedManyWithoutVisitInput
 }
 
 export type VisitHistoryCreateOrConnectWithoutUserInput = {
@@ -942,6 +965,7 @@ export type VisitHistoryCreateWithoutVehicleInput = {
   catalogServiceType?: Prisma.ServiceTypeCreateNestedOneWithoutVisitsInput
   pendingReviewSms?: Prisma.PendingReviewSmsCreateNestedOneWithoutVisitInput
   siteLead?: Prisma.SiteLeadCreateNestedOneWithoutVisitInput
+  assignees?: Prisma.VisitStaffCreateNestedManyWithoutVisitInput
 }
 
 export type VisitHistoryUncheckedCreateWithoutVehicleInput = {
@@ -963,6 +987,7 @@ export type VisitHistoryUncheckedCreateWithoutVehicleInput = {
   updatedAt?: Date | string
   pendingReviewSms?: Prisma.PendingReviewSmsUncheckedCreateNestedOneWithoutVisitInput
   siteLead?: Prisma.SiteLeadUncheckedCreateNestedOneWithoutVisitInput
+  assignees?: Prisma.VisitStaffUncheckedCreateNestedManyWithoutVisitInput
 }
 
 export type VisitHistoryCreateOrConnectWithoutVehicleInput = {
@@ -1009,6 +1034,7 @@ export type VisitHistoryCreateWithoutCatalogServiceTypeInput = {
   vehicle?: Prisma.ClientVehicleCreateNestedOneWithoutVisitsInput
   pendingReviewSms?: Prisma.PendingReviewSmsCreateNestedOneWithoutVisitInput
   siteLead?: Prisma.SiteLeadCreateNestedOneWithoutVisitInput
+  assignees?: Prisma.VisitStaffCreateNestedManyWithoutVisitInput
 }
 
 export type VisitHistoryUncheckedCreateWithoutCatalogServiceTypeInput = {
@@ -1030,6 +1056,7 @@ export type VisitHistoryUncheckedCreateWithoutCatalogServiceTypeInput = {
   updatedAt?: Date | string
   pendingReviewSms?: Prisma.PendingReviewSmsUncheckedCreateNestedOneWithoutVisitInput
   siteLead?: Prisma.SiteLeadUncheckedCreateNestedOneWithoutVisitInput
+  assignees?: Prisma.VisitStaffUncheckedCreateNestedManyWithoutVisitInput
 }
 
 export type VisitHistoryCreateOrConnectWithoutCatalogServiceTypeInput = {
@@ -1076,6 +1103,7 @@ export type VisitHistoryCreateWithoutSiteLeadInput = {
   vehicle?: Prisma.ClientVehicleCreateNestedOneWithoutVisitsInput
   catalogServiceType?: Prisma.ServiceTypeCreateNestedOneWithoutVisitsInput
   pendingReviewSms?: Prisma.PendingReviewSmsCreateNestedOneWithoutVisitInput
+  assignees?: Prisma.VisitStaffCreateNestedManyWithoutVisitInput
 }
 
 export type VisitHistoryUncheckedCreateWithoutSiteLeadInput = {
@@ -1097,6 +1125,7 @@ export type VisitHistoryUncheckedCreateWithoutSiteLeadInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   pendingReviewSms?: Prisma.PendingReviewSmsUncheckedCreateNestedOneWithoutVisitInput
+  assignees?: Prisma.VisitStaffUncheckedCreateNestedManyWithoutVisitInput
 }
 
 export type VisitHistoryCreateOrConnectWithoutSiteLeadInput = {
@@ -1133,6 +1162,7 @@ export type VisitHistoryUpdateWithoutSiteLeadInput = {
   vehicle?: Prisma.ClientVehicleUpdateOneWithoutVisitsNestedInput
   catalogServiceType?: Prisma.ServiceTypeUpdateOneWithoutVisitsNestedInput
   pendingReviewSms?: Prisma.PendingReviewSmsUpdateOneWithoutVisitNestedInput
+  assignees?: Prisma.VisitStaffUpdateManyWithoutVisitNestedInput
 }
 
 export type VisitHistoryUncheckedUpdateWithoutSiteLeadInput = {
@@ -1154,6 +1184,7 @@ export type VisitHistoryUncheckedUpdateWithoutSiteLeadInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   pendingReviewSms?: Prisma.PendingReviewSmsUncheckedUpdateOneWithoutVisitNestedInput
+  assignees?: Prisma.VisitStaffUncheckedUpdateManyWithoutVisitNestedInput
 }
 
 export type VisitHistoryCreateWithoutPendingReviewSmsInput = {
@@ -1174,6 +1205,7 @@ export type VisitHistoryCreateWithoutPendingReviewSmsInput = {
   vehicle?: Prisma.ClientVehicleCreateNestedOneWithoutVisitsInput
   catalogServiceType?: Prisma.ServiceTypeCreateNestedOneWithoutVisitsInput
   siteLead?: Prisma.SiteLeadCreateNestedOneWithoutVisitInput
+  assignees?: Prisma.VisitStaffCreateNestedManyWithoutVisitInput
 }
 
 export type VisitHistoryUncheckedCreateWithoutPendingReviewSmsInput = {
@@ -1195,6 +1227,7 @@ export type VisitHistoryUncheckedCreateWithoutPendingReviewSmsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   siteLead?: Prisma.SiteLeadUncheckedCreateNestedOneWithoutVisitInput
+  assignees?: Prisma.VisitStaffUncheckedCreateNestedManyWithoutVisitInput
 }
 
 export type VisitHistoryCreateOrConnectWithoutPendingReviewSmsInput = {
@@ -1231,6 +1264,7 @@ export type VisitHistoryUpdateWithoutPendingReviewSmsInput = {
   vehicle?: Prisma.ClientVehicleUpdateOneWithoutVisitsNestedInput
   catalogServiceType?: Prisma.ServiceTypeUpdateOneWithoutVisitsNestedInput
   siteLead?: Prisma.SiteLeadUpdateOneWithoutVisitNestedInput
+  assignees?: Prisma.VisitStaffUpdateManyWithoutVisitNestedInput
 }
 
 export type VisitHistoryUncheckedUpdateWithoutPendingReviewSmsInput = {
@@ -1251,6 +1285,109 @@ export type VisitHistoryUncheckedUpdateWithoutPendingReviewSmsInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  siteLead?: Prisma.SiteLeadUncheckedUpdateOneWithoutVisitNestedInput
+  assignees?: Prisma.VisitStaffUncheckedUpdateManyWithoutVisitNestedInput
+}
+
+export type VisitHistoryCreateWithoutAssigneesInput = {
+  visitDate: Date | string
+  serviceType: string
+  diskLink?: string | null
+  startsAt?: Date | string | null
+  endsAt?: Date | string | null
+  priceRub?: number | null
+  location?: $Enums.CrmLocation
+  managerName?: string | null
+  masterComment?: string | null
+  reviewSmsSentAt?: Date | string | null
+  completedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.CabinetUserCreateNestedOneWithoutVisitsInput
+  vehicle?: Prisma.ClientVehicleCreateNestedOneWithoutVisitsInput
+  catalogServiceType?: Prisma.ServiceTypeCreateNestedOneWithoutVisitsInput
+  pendingReviewSms?: Prisma.PendingReviewSmsCreateNestedOneWithoutVisitInput
+  siteLead?: Prisma.SiteLeadCreateNestedOneWithoutVisitInput
+}
+
+export type VisitHistoryUncheckedCreateWithoutAssigneesInput = {
+  id?: number
+  userId: number
+  vehicleId?: number | null
+  visitDate: Date | string
+  serviceType: string
+  diskLink?: string | null
+  startsAt?: Date | string | null
+  endsAt?: Date | string | null
+  priceRub?: number | null
+  serviceTypeId?: number | null
+  location?: $Enums.CrmLocation
+  managerName?: string | null
+  masterComment?: string | null
+  reviewSmsSentAt?: Date | string | null
+  completedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  pendingReviewSms?: Prisma.PendingReviewSmsUncheckedCreateNestedOneWithoutVisitInput
+  siteLead?: Prisma.SiteLeadUncheckedCreateNestedOneWithoutVisitInput
+}
+
+export type VisitHistoryCreateOrConnectWithoutAssigneesInput = {
+  where: Prisma.VisitHistoryWhereUniqueInput
+  create: Prisma.XOR<Prisma.VisitHistoryCreateWithoutAssigneesInput, Prisma.VisitHistoryUncheckedCreateWithoutAssigneesInput>
+}
+
+export type VisitHistoryUpsertWithoutAssigneesInput = {
+  update: Prisma.XOR<Prisma.VisitHistoryUpdateWithoutAssigneesInput, Prisma.VisitHistoryUncheckedUpdateWithoutAssigneesInput>
+  create: Prisma.XOR<Prisma.VisitHistoryCreateWithoutAssigneesInput, Prisma.VisitHistoryUncheckedCreateWithoutAssigneesInput>
+  where?: Prisma.VisitHistoryWhereInput
+}
+
+export type VisitHistoryUpdateToOneWithWhereWithoutAssigneesInput = {
+  where?: Prisma.VisitHistoryWhereInput
+  data: Prisma.XOR<Prisma.VisitHistoryUpdateWithoutAssigneesInput, Prisma.VisitHistoryUncheckedUpdateWithoutAssigneesInput>
+}
+
+export type VisitHistoryUpdateWithoutAssigneesInput = {
+  visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  serviceType?: Prisma.StringFieldUpdateOperationsInput | string
+  diskLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  priceRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  location?: Prisma.EnumCrmLocationFieldUpdateOperationsInput | $Enums.CrmLocation
+  managerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  masterComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewSmsSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.CabinetUserUpdateOneRequiredWithoutVisitsNestedInput
+  vehicle?: Prisma.ClientVehicleUpdateOneWithoutVisitsNestedInput
+  catalogServiceType?: Prisma.ServiceTypeUpdateOneWithoutVisitsNestedInput
+  pendingReviewSms?: Prisma.PendingReviewSmsUpdateOneWithoutVisitNestedInput
+  siteLead?: Prisma.SiteLeadUpdateOneWithoutVisitNestedInput
+}
+
+export type VisitHistoryUncheckedUpdateWithoutAssigneesInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  userId?: Prisma.IntFieldUpdateOperationsInput | number
+  vehicleId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  serviceType?: Prisma.StringFieldUpdateOperationsInput | string
+  diskLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  priceRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  serviceTypeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  location?: Prisma.EnumCrmLocationFieldUpdateOperationsInput | $Enums.CrmLocation
+  managerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  masterComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewSmsSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pendingReviewSms?: Prisma.PendingReviewSmsUncheckedUpdateOneWithoutVisitNestedInput
   siteLead?: Prisma.SiteLeadUncheckedUpdateOneWithoutVisitNestedInput
 }
 
@@ -1291,6 +1428,7 @@ export type VisitHistoryUpdateWithoutUserInput = {
   catalogServiceType?: Prisma.ServiceTypeUpdateOneWithoutVisitsNestedInput
   pendingReviewSms?: Prisma.PendingReviewSmsUpdateOneWithoutVisitNestedInput
   siteLead?: Prisma.SiteLeadUpdateOneWithoutVisitNestedInput
+  assignees?: Prisma.VisitStaffUpdateManyWithoutVisitNestedInput
 }
 
 export type VisitHistoryUncheckedUpdateWithoutUserInput = {
@@ -1312,6 +1450,7 @@ export type VisitHistoryUncheckedUpdateWithoutUserInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   pendingReviewSms?: Prisma.PendingReviewSmsUncheckedUpdateOneWithoutVisitNestedInput
   siteLead?: Prisma.SiteLeadUncheckedUpdateOneWithoutVisitNestedInput
+  assignees?: Prisma.VisitStaffUncheckedUpdateManyWithoutVisitNestedInput
 }
 
 export type VisitHistoryUncheckedUpdateManyWithoutUserInput = {
@@ -1370,6 +1509,7 @@ export type VisitHistoryUpdateWithoutVehicleInput = {
   catalogServiceType?: Prisma.ServiceTypeUpdateOneWithoutVisitsNestedInput
   pendingReviewSms?: Prisma.PendingReviewSmsUpdateOneWithoutVisitNestedInput
   siteLead?: Prisma.SiteLeadUpdateOneWithoutVisitNestedInput
+  assignees?: Prisma.VisitStaffUpdateManyWithoutVisitNestedInput
 }
 
 export type VisitHistoryUncheckedUpdateWithoutVehicleInput = {
@@ -1391,6 +1531,7 @@ export type VisitHistoryUncheckedUpdateWithoutVehicleInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   pendingReviewSms?: Prisma.PendingReviewSmsUncheckedUpdateOneWithoutVisitNestedInput
   siteLead?: Prisma.SiteLeadUncheckedUpdateOneWithoutVisitNestedInput
+  assignees?: Prisma.VisitStaffUncheckedUpdateManyWithoutVisitNestedInput
 }
 
 export type VisitHistoryUncheckedUpdateManyWithoutVehicleInput = {
@@ -1449,6 +1590,7 @@ export type VisitHistoryUpdateWithoutCatalogServiceTypeInput = {
   vehicle?: Prisma.ClientVehicleUpdateOneWithoutVisitsNestedInput
   pendingReviewSms?: Prisma.PendingReviewSmsUpdateOneWithoutVisitNestedInput
   siteLead?: Prisma.SiteLeadUpdateOneWithoutVisitNestedInput
+  assignees?: Prisma.VisitStaffUpdateManyWithoutVisitNestedInput
 }
 
 export type VisitHistoryUncheckedUpdateWithoutCatalogServiceTypeInput = {
@@ -1470,6 +1612,7 @@ export type VisitHistoryUncheckedUpdateWithoutCatalogServiceTypeInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   pendingReviewSms?: Prisma.PendingReviewSmsUncheckedUpdateOneWithoutVisitNestedInput
   siteLead?: Prisma.SiteLeadUncheckedUpdateOneWithoutVisitNestedInput
+  assignees?: Prisma.VisitStaffUncheckedUpdateManyWithoutVisitNestedInput
 }
 
 export type VisitHistoryUncheckedUpdateManyWithoutCatalogServiceTypeInput = {
@@ -1491,6 +1634,35 @@ export type VisitHistoryUncheckedUpdateManyWithoutCatalogServiceTypeInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
+
+/**
+ * Count Type VisitHistoryCountOutputType
+ */
+
+export type VisitHistoryCountOutputType = {
+  assignees: number
+}
+
+export type VisitHistoryCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  assignees?: boolean | VisitHistoryCountOutputTypeCountAssigneesArgs
+}
+
+/**
+ * VisitHistoryCountOutputType without action
+ */
+export type VisitHistoryCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the VisitHistoryCountOutputType
+   */
+  select?: Prisma.VisitHistoryCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * VisitHistoryCountOutputType without action
+ */
+export type VisitHistoryCountOutputTypeCountAssigneesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.VisitStaffWhereInput
+}
 
 
 export type VisitHistorySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1516,6 +1688,8 @@ export type VisitHistorySelect<ExtArgs extends runtime.Types.Extensions.Internal
   catalogServiceType?: boolean | Prisma.VisitHistory$catalogServiceTypeArgs<ExtArgs>
   pendingReviewSms?: boolean | Prisma.VisitHistory$pendingReviewSmsArgs<ExtArgs>
   siteLead?: boolean | Prisma.VisitHistory$siteLeadArgs<ExtArgs>
+  assignees?: boolean | Prisma.VisitHistory$assigneesArgs<ExtArgs>
+  _count?: boolean | Prisma.VisitHistoryCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["visitHistory"]>
 
 export type VisitHistorySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1591,6 +1765,8 @@ export type VisitHistoryInclude<ExtArgs extends runtime.Types.Extensions.Interna
   catalogServiceType?: boolean | Prisma.VisitHistory$catalogServiceTypeArgs<ExtArgs>
   pendingReviewSms?: boolean | Prisma.VisitHistory$pendingReviewSmsArgs<ExtArgs>
   siteLead?: boolean | Prisma.VisitHistory$siteLeadArgs<ExtArgs>
+  assignees?: boolean | Prisma.VisitHistory$assigneesArgs<ExtArgs>
+  _count?: boolean | Prisma.VisitHistoryCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type VisitHistoryIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.CabinetUserDefaultArgs<ExtArgs>
@@ -1611,6 +1787,7 @@ export type $VisitHistoryPayload<ExtArgs extends runtime.Types.Extensions.Intern
     catalogServiceType: Prisma.$ServiceTypePayload<ExtArgs> | null
     pendingReviewSms: Prisma.$PendingReviewSmsPayload<ExtArgs> | null
     siteLead: Prisma.$SiteLeadPayload<ExtArgs> | null
+    assignees: Prisma.$VisitStaffPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -2044,6 +2221,7 @@ export interface Prisma__VisitHistoryClient<T, Null = never, ExtArgs extends run
   catalogServiceType<T extends Prisma.VisitHistory$catalogServiceTypeArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.VisitHistory$catalogServiceTypeArgs<ExtArgs>>): Prisma.Prisma__ServiceTypeClient<runtime.Types.Result.GetResult<Prisma.$ServiceTypePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   pendingReviewSms<T extends Prisma.VisitHistory$pendingReviewSmsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.VisitHistory$pendingReviewSmsArgs<ExtArgs>>): Prisma.Prisma__PendingReviewSmsClient<runtime.Types.Result.GetResult<Prisma.$PendingReviewSmsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   siteLead<T extends Prisma.VisitHistory$siteLeadArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.VisitHistory$siteLeadArgs<ExtArgs>>): Prisma.Prisma__SiteLeadClient<runtime.Types.Result.GetResult<Prisma.$SiteLeadPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  assignees<T extends Prisma.VisitHistory$assigneesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.VisitHistory$assigneesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VisitStaffPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2559,6 +2737,30 @@ export type VisitHistory$siteLeadArgs<ExtArgs extends runtime.Types.Extensions.I
    */
   include?: Prisma.SiteLeadInclude<ExtArgs> | null
   where?: Prisma.SiteLeadWhereInput
+}
+
+/**
+ * VisitHistory.assignees
+ */
+export type VisitHistory$assigneesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the VisitStaff
+   */
+  select?: Prisma.VisitStaffSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the VisitStaff
+   */
+  omit?: Prisma.VisitStaffOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.VisitStaffInclude<ExtArgs> | null
+  where?: Prisma.VisitStaffWhereInput
+  orderBy?: Prisma.VisitStaffOrderByWithRelationInput | Prisma.VisitStaffOrderByWithRelationInput[]
+  cursor?: Prisma.VisitStaffWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.VisitStaffScalarFieldEnum | Prisma.VisitStaffScalarFieldEnum[]
 }
 
 /**

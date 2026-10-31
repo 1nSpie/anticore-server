@@ -21,11 +21,13 @@ describe('Appointment master comment', () => {
         create: jest.fn(async ({ data }) => (row = { ...row, ...data })),
         update: jest.fn(async ({ data }) => (row = { ...row, ...data })),
       },
+      visitStaff: { findMany: jest.fn(async () => []) },
     };
     service = new CrmAppointmentsService(
       prisma as never, { sendAppointmentSms: jest.fn() } as never, {} as never,
       { assertDayCapacity: jest.fn() } as never,
       { listForUser: jest.fn().mockResolvedValue([]) } as never,
+      { notify: jest.fn() } as never,
     );
   });
   it('returns a saved multiline comment when the calendar is loaded again', async () => {

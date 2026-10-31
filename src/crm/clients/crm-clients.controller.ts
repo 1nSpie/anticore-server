@@ -23,8 +23,10 @@ import {
   ListCrmClientsQueryDto,
   UpdateCrmClientDto,
 } from "./dto/crm-client.dto";
+import { AdminThrottle } from "../../common/throttle";
 
 @Controller("crm/clients")
+@AdminThrottle()
 @UseGuards(AdminJwtGuard)
 @UsePipes(new ValidationPipe({ transform: true, whitelist: true }))
 export class CrmClientsController {

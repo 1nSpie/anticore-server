@@ -26,7 +26,8 @@ describe("Upload HTTP authorization and limits", () => {
           useValue: {
             verifyToken: (token: string) => ({
               isValid: token !== "bad",
-              payload: { sub: "1", role: token === "admin" ? "admin" : "USER" },
+              // Субъект токена админки — всегда "admin" (env) или "staff:<id>"; прочие охранник не принимает
+              payload: { sub: "admin", role: token === "admin" ? "admin" : "USER" },
             }),
           },
         },

@@ -22,6 +22,7 @@ import { UpdateVisitDto } from "./dto/update-visit.dto";
 import { AdminUpdateUserDto } from "./dto/admin-update-user.dto";
 import { BroadcastSmsDto } from "./dto/broadcast-sms.dto";
 import { clientIpFromRequest } from "../common/client-ip.util";
+import { AdminThrottle } from "../../common/throttle";
 
 function adminSubject(req: Request): string {
   const admin = (req as Request & { admin?: { id: string } }).admin;
@@ -33,6 +34,7 @@ function adminSubject(req: Request): string {
  * В карточке клиента — только визиты (история обслуживания).
  */
 @Controller("admin/users")
+@AdminThrottle()
 @UseGuards(AdminJwtGuard)
 @UsePipes(new ValidationPipe({ transform: true, whitelist: true }))
 export class CabinetAdminController {

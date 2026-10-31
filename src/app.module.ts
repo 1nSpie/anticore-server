@@ -20,6 +20,7 @@ import { CabinetAuthModule } from './cabinet/auth/cabinet-auth.module';
 import { CabinetUserModule } from './cabinet/user/cabinet-user.module';
 import { CabinetAdminModule } from './cabinet/admin/cabinet-admin.module';
 import { CrmModule } from './crm/crm.module';
+import { StaffModule } from './staff/staff.module';
 
 @Module({
   imports: [
@@ -45,6 +46,7 @@ import { CrmModule } from './crm/crm.module';
     CabinetUserModule,
     CabinetAdminModule,
     CrmModule,
+    StaffModule,
   ],
   providers: [
     {

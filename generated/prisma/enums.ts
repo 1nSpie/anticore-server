@@ -61,3 +61,39 @@ export const SmsTemplateKind = {
 } as const
 
 export type SmsTemplateKind = (typeof SmsTemplateKind)[keyof typeof SmsTemplateKind]
+
+
+export const StaffRole = {
+  ADMIN: 'ADMIN',
+  MASTER: 'MASTER'
+} as const
+
+export type StaffRole = (typeof StaffRole)[keyof typeof StaffRole]
+
+
+export const CheckinStatus = {
+  PENDING: 'PENDING',
+  CONFIRMED: 'CONFIRMED',
+  REJECTED: 'REJECTED'
+} as const
+
+export type CheckinStatus = (typeof CheckinStatus)[keyof typeof CheckinStatus]
+
+
+export const TaskPriority = {
+  LOW: 'LOW',
+  NORMAL: 'NORMAL',
+  HIGH: 'HIGH'
+} as const
+
+export type TaskPriority = (typeof TaskPriority)[keyof typeof TaskPriority]
+
+
+export const TaskStatus = {
+  NEW: 'NEW',
+  IN_PROGRESS: 'IN_PROGRESS',
+  DONE: 'DONE',
+  CANCELLED: 'CANCELLED'
+} as const
+
+export type TaskStatus = (typeof TaskStatus)[keyof typeof TaskStatus]

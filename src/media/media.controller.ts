@@ -9,8 +9,10 @@ import {
 import { FileInterceptor } from "@nestjs/platform-express";
 import { ContentAdminGuard } from "./content-admin.guard";
 import { MAX_IMAGE_BYTES, MediaService } from "./media.service";
+import { AdminThrottle } from "../common/throttle";
 
 @Controller("admin/media")
+@AdminThrottle()
 @UseGuards(ContentAdminGuard)
 export class MediaController {
   constructor(private readonly media: MediaService) {}

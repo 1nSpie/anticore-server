@@ -1,17 +1,16 @@
-// src/admin/dto/login.dto.ts
-import { IsString, IsNotEmpty, Length, Matches } from 'class-validator';
+// Единый вход: администратор из env, сотрудник-админ или мастер.
+// Формат логина и пароля проверяется при создании учётки, при входе — только непустота и разумные пределы
+// (иначе логин мастера с точкой или длиннее 50 символов не прошёл бы валидацию формы).
+import { IsString, IsNotEmpty, MaxLength } from 'class-validator';
 
 export class LoginDto {
   @IsString()
   @IsNotEmpty({ message: 'Логин обязателен' })
-  @Length(3, 50, { message: 'Логин должен быть от 3 до 50 символов' })
-  @Matches(/^[a-zA-Z0-9_-]+$/, {
-    message: 'Логин может содержать только буквы, цифры, дефисы и подчеркивания',
-  })
+  @MaxLength(64, { message: 'Логин не длиннее 64 символов' })
   login: string;
 
   @IsString()
   @IsNotEmpty({ message: 'Пароль обязателен' })
-  @Length(5, 100, { message: 'Пароль должен быть от 5 до 100 символов' })
+  @MaxLength(128, { message: 'Пароль не длиннее 128 символов' })
   password: string;
 }
