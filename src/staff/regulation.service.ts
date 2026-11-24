@@ -237,7 +237,7 @@ export class RegulationService {
     // multer отдаёт имя в latin1 — возвращаем кириллицу
     const fileName = Buffer.from(file.originalname, "latin1").toString("utf8").replace(/[\r\n\\/"]/g, "_").slice(0, 200) || "document.pdf";
     const saved = await this.prisma.regAttachment.create({
-      data: { articleId, fileName, size: file.buffer.length, data: file.buffer },
+      data: { articleId, fileName, size: file.buffer.length, data: Uint8Array.from(file.buffer) },
       select: attachmentMeta,
     });
     await this.touched("ATTACHMENT_ADDED", { articleId, attachmentId: saved.id, fileName }, req);
