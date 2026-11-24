@@ -220,7 +220,7 @@ export type PendingRegistrationGroupByOutputType = {
   _max: PendingRegistrationMaxAggregateOutputType | null
 }
 
-type GetPendingRegistrationGroupByPayload<T extends PendingRegistrationGroupByArgs> = Prisma.PrismaPromise<
+export type GetPendingRegistrationGroupByPayload<T extends PendingRegistrationGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<PendingRegistrationGroupByOutputType, T['by']> &
       {
@@ -1111,6 +1111,11 @@ export type PendingRegistrationFindManyArgs<ExtArgs extends runtime.Types.Extens
    * Skip the first `n` PendingRegistrations.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of PendingRegistrations.
+   */
   distinct?: Prisma.PendingRegistrationScalarFieldEnum | Prisma.PendingRegistrationScalarFieldEnum[]
 }
 

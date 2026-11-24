@@ -200,7 +200,7 @@ export type WorkImageGroupByOutputType = {
   _max: WorkImageMaxAggregateOutputType | null
 }
 
-type GetWorkImageGroupByPayload<T extends WorkImageGroupByArgs> = Prisma.PrismaPromise<
+export type GetWorkImageGroupByPayload<T extends WorkImageGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<WorkImageGroupByOutputType, T['by']> &
       {
@@ -1173,6 +1173,11 @@ export type WorkImageFindManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Skip the first `n` WorkImages.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of WorkImages.
+   */
   distinct?: Prisma.WorkImageScalarFieldEnum | Prisma.WorkImageScalarFieldEnum[]
 }
 

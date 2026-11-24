@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseIntPipe,
@@ -49,6 +50,12 @@ export class StaffAdminController {
   @Patch(":id")
   update(@Param("id", ParseIntPipe) id: number, @Body() dto: UpdateStaffDto, @Req() req: Request) {
     return this.staff.update(id, dto, req);
+  }
+
+  /** Только администратор из env; остальным 403. */
+  @Delete(":id")
+  remove(@Param("id", ParseIntPipe) id: number, @Req() req: Request) {
+    return this.staff.remove(id, req);
   }
 
   @Post(":id/block")

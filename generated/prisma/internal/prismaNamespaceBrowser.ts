@@ -77,6 +77,8 @@ export const ModelName = {
   CrmAdmin: 'CrmAdmin',
   SmsTemplate: 'SmsTemplate',
   CompanySettings: 'CompanySettings',
+  Organization: 'Organization',
+  Branch: 'Branch',
   SmsLog: 'SmsLog',
   CrmDayLimit: 'CrmDayLimit',
   Staff: 'Staff',
@@ -89,7 +91,25 @@ export const ModelName = {
   RegArticle: 'RegArticle',
   RegAttachment: 'RegAttachment',
   Notification: 'Notification',
-  TaskPhoto: 'TaskPhoto'
+  TaskPhoto: 'TaskPhoto',
+  VehicleInspection: 'VehicleInspection',
+  InspectionMark: 'InspectionMark',
+  VisitPhoto: 'VisitPhoto',
+  DocumentCounter: 'DocumentCounter',
+  Document: 'Document',
+  DocumentVersion: 'DocumentVersion',
+  ServiceCategory: 'ServiceCategory',
+  ServiceOptionGroup: 'ServiceOptionGroup',
+  ServiceOption: 'ServiceOption',
+  VisitWorkItem: 'VisitWorkItem',
+  VisitHandover: 'VisitHandover',
+  PayrollSettings: 'PayrollSettings',
+  PayrollBonusType: 'PayrollBonusType',
+  PayrollEntry: 'PayrollEntry',
+  PayrollBonus: 'PayrollBonus',
+  CashEntry: 'CashEntry',
+  StockItem: 'StockItem',
+  StockMovement: 'StockMovement'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -281,6 +301,8 @@ export const ClientVehicleScalarFieldEnum = {
   carId: 'carId',
   customLabel: 'customLabel',
   vin: 'vin',
+  year: 'year',
+  plate: 'plate',
   isPrimary: 'isPrimary',
   archivedAt: 'archivedAt',
   createdAt: 'createdAt',
@@ -379,7 +401,14 @@ export const VisitHistoryScalarFieldEnum = {
   reviewSmsSentAt: 'reviewSmsSentAt',
   completedAt: 'completedAt',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  docNumber: 'docNumber',
+  docDate: 'docDate',
+  discountPercent: 'discountPercent',
+  discountRub: 'discountRub',
+  paymentMethod: 'paymentMethod',
+  paidRub: 'paidRub',
+  receiverId: 'receiverId'
 } as const
 
 export type VisitHistoryScalarFieldEnum = (typeof VisitHistoryScalarFieldEnum)[keyof typeof VisitHistoryScalarFieldEnum]
@@ -455,6 +484,33 @@ export const CompanySettingsScalarFieldEnum = {
 } as const
 
 export type CompanySettingsScalarFieldEnum = (typeof CompanySettingsScalarFieldEnum)[keyof typeof CompanySettingsScalarFieldEnum]
+
+
+export const OrganizationScalarFieldEnum = {
+  id: 'id',
+  fullName: 'fullName',
+  brandName: 'brandName',
+  inn: 'inn',
+  ogrnip: 'ogrnip',
+  legalAddress: 'legalAddress',
+  phone: 'phone',
+  email: 'email',
+  signerName: 'signerName',
+  updatedAt: 'updatedAt'
+} as const
+
+export type OrganizationScalarFieldEnum = (typeof OrganizationScalarFieldEnum)[keyof typeof OrganizationScalarFieldEnum]
+
+
+export const BranchScalarFieldEnum = {
+  location: 'location',
+  city: 'city',
+  address: 'address',
+  docPrefix: 'docPrefix',
+  updatedAt: 'updatedAt'
+} as const
+
+export type BranchScalarFieldEnum = (typeof BranchScalarFieldEnum)[keyof typeof BranchScalarFieldEnum]
 
 
 export const SmsLogScalarFieldEnum = {
@@ -633,6 +689,279 @@ export const TaskPhotoScalarFieldEnum = {
 } as const
 
 export type TaskPhotoScalarFieldEnum = (typeof TaskPhotoScalarFieldEnum)[keyof typeof TaskPhotoScalarFieldEnum]
+
+
+export const VehicleInspectionScalarFieldEnum = {
+  id: 'id',
+  visitId: 'visitId',
+  receivedAt: 'receivedAt',
+  receivedById: 'receivedById',
+  mileageKm: 'mileageKm',
+  fuelPercent: 'fuelPercent',
+  keysCount: 'keysCount',
+  noDefectsConfirmed: 'noDefectsConfirmed',
+  exteriorNote: 'exteriorNote',
+  interior: 'interior',
+  interiorNote: 'interiorNote',
+  systems: 'systems',
+  systemsNote: 'systemsNote',
+  specialTerms: 'specialTerms',
+  note: 'note',
+  dataVerifiedAt: 'dataVerifiedAt',
+  dataVerifiedBy: 'dataVerifiedBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type VehicleInspectionScalarFieldEnum = (typeof VehicleInspectionScalarFieldEnum)[keyof typeof VehicleInspectionScalarFieldEnum]
+
+
+export const InspectionMarkScalarFieldEnum = {
+  id: 'id',
+  inspectionId: 'inspectionId',
+  type: 'type',
+  x: 'x',
+  y: 'y',
+  element: 'element',
+  note: 'note',
+  createdAt: 'createdAt'
+} as const
+
+export type InspectionMarkScalarFieldEnum = (typeof InspectionMarkScalarFieldEnum)[keyof typeof InspectionMarkScalarFieldEnum]
+
+
+export const VisitPhotoScalarFieldEnum = {
+  id: 'id',
+  visitId: 'visitId',
+  stage: 'stage',
+  section: 'section',
+  markId: 'markId',
+  workItemId: 'workItemId',
+  key: 'key',
+  size: 'size',
+  uploadedBy: 'uploadedBy',
+  createdAt: 'createdAt'
+} as const
+
+export type VisitPhotoScalarFieldEnum = (typeof VisitPhotoScalarFieldEnum)[keyof typeof VisitPhotoScalarFieldEnum]
+
+
+export const DocumentCounterScalarFieldEnum = {
+  prefix: 'prefix',
+  lastSeq: 'lastSeq'
+} as const
+
+export type DocumentCounterScalarFieldEnum = (typeof DocumentCounterScalarFieldEnum)[keyof typeof DocumentCounterScalarFieldEnum]
+
+
+export const DocumentScalarFieldEnum = {
+  id: 'id',
+  visitId: 'visitId',
+  kind: 'kind',
+  createdAt: 'createdAt'
+} as const
+
+export type DocumentScalarFieldEnum = (typeof DocumentScalarFieldEnum)[keyof typeof DocumentScalarFieldEnum]
+
+
+export const DocumentVersionScalarFieldEnum = {
+  id: 'id',
+  documentId: 'documentId',
+  version: 'version',
+  status: 'status',
+  snapshot: 'snapshot',
+  schemaVersion: 'schemaVersion',
+  formedAt: 'formedAt',
+  formedBy: 'formedBy',
+  signedAt: 'signedAt',
+  signedBy: 'signedBy',
+  scanKey: 'scanKey',
+  voidedAt: 'voidedAt',
+  voidedBy: 'voidedBy',
+  voidReason: 'voidReason'
+} as const
+
+export type DocumentVersionScalarFieldEnum = (typeof DocumentVersionScalarFieldEnum)[keyof typeof DocumentVersionScalarFieldEnum]
+
+
+export const ServiceCategoryScalarFieldEnum = {
+  id: 'id',
+  code: 'code',
+  name: 'name',
+  sortOrder: 'sortOrder',
+  active: 'active'
+} as const
+
+export type ServiceCategoryScalarFieldEnum = (typeof ServiceCategoryScalarFieldEnum)[keyof typeof ServiceCategoryScalarFieldEnum]
+
+
+export const ServiceOptionGroupScalarFieldEnum = {
+  id: 'id',
+  categoryId: 'categoryId',
+  key: 'key',
+  label: 'label',
+  multiple: 'multiple',
+  allowCustom: 'allowCustom',
+  sortOrder: 'sortOrder'
+} as const
+
+export type ServiceOptionGroupScalarFieldEnum = (typeof ServiceOptionGroupScalarFieldEnum)[keyof typeof ServiceOptionGroupScalarFieldEnum]
+
+
+export const ServiceOptionScalarFieldEnum = {
+  id: 'id',
+  groupId: 'groupId',
+  name: 'name',
+  sortOrder: 'sortOrder',
+  active: 'active'
+} as const
+
+export type ServiceOptionScalarFieldEnum = (typeof ServiceOptionScalarFieldEnum)[keyof typeof ServiceOptionScalarFieldEnum]
+
+
+export const VisitWorkItemScalarFieldEnum = {
+  id: 'id',
+  visitId: 'visitId',
+  categoryId: 'categoryId',
+  selections: 'selections',
+  comment: 'comment',
+  priceRub: 'priceRub',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  kind: 'kind',
+  status: 'status',
+  masterId: 'masterId',
+  startedAt: 'startedAt',
+  finishedAt: 'finishedAt',
+  actualVolume: 'actualVolume',
+  workNote: 'workNote',
+  defectPlace: 'defectPlace',
+  termChangeNote: 'termChangeNote',
+  approvalStatus: 'approvalStatus',
+  approvedAt: 'approvedAt',
+  approvedBy: 'approvedBy',
+  approvalChannel: 'approvalChannel',
+  approvalNote: 'approvalNote'
+} as const
+
+export type VisitWorkItemScalarFieldEnum = (typeof VisitWorkItemScalarFieldEnum)[keyof typeof VisitWorkItemScalarFieldEnum]
+
+
+export const VisitHandoverScalarFieldEnum = {
+  id: 'id',
+  visitId: 'visitId',
+  issuedAt: 'issuedAt',
+  issuedById: 'issuedById',
+  mileageKm: 'mileageKm',
+  fuelPercent: 'fuelPercent',
+  warrantyBookIssued: 'warrantyBookIssued',
+  warrantyTermsExplained: 'warrantyTermsExplained',
+  warrantyMonths: 'warrantyMonths',
+  warrantyStartsAt: 'warrantyStartsAt',
+  warrantyTerms: 'warrantyTerms',
+  careRecommendations: 'careRecommendations',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type VisitHandoverScalarFieldEnum = (typeof VisitHandoverScalarFieldEnum)[keyof typeof VisitHandoverScalarFieldEnum]
+
+
+export const PayrollSettingsScalarFieldEnum = {
+  id: 'id',
+  masterBaseRub: 'masterBaseRub',
+  receiverBaseRub: 'receiverBaseRub',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PayrollSettingsScalarFieldEnum = (typeof PayrollSettingsScalarFieldEnum)[keyof typeof PayrollSettingsScalarFieldEnum]
+
+
+export const PayrollBonusTypeScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  amountRub: 'amountRub',
+  role: 'role',
+  active: 'active',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt'
+} as const
+
+export type PayrollBonusTypeScalarFieldEnum = (typeof PayrollBonusTypeScalarFieldEnum)[keyof typeof PayrollBonusTypeScalarFieldEnum]
+
+
+export const PayrollEntryScalarFieldEnum = {
+  id: 'id',
+  visitId: 'visitId',
+  staffId: 'staffId',
+  staffName: 'staffName',
+  role: 'role',
+  baseRub: 'baseRub',
+  accruedAt: 'accruedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type PayrollEntryScalarFieldEnum = (typeof PayrollEntryScalarFieldEnum)[keyof typeof PayrollEntryScalarFieldEnum]
+
+
+export const PayrollBonusScalarFieldEnum = {
+  id: 'id',
+  entryId: 'entryId',
+  typeId: 'typeId',
+  title: 'title',
+  amountRub: 'amountRub',
+  grantedBy: 'grantedBy',
+  createdAt: 'createdAt'
+} as const
+
+export type PayrollBonusScalarFieldEnum = (typeof PayrollBonusScalarFieldEnum)[keyof typeof PayrollBonusScalarFieldEnum]
+
+
+export const CashEntryScalarFieldEnum = {
+  id: 'id',
+  location: 'location',
+  direction: 'direction',
+  amountRub: 'amountRub',
+  category: 'category',
+  comment: 'comment',
+  date: 'date',
+  visitId: 'visitId',
+  createdBy: 'createdBy',
+  createdAt: 'createdAt',
+  voidedAt: 'voidedAt',
+  voidedBy: 'voidedBy',
+  voidReason: 'voidReason'
+} as const
+
+export type CashEntryScalarFieldEnum = (typeof CashEntryScalarFieldEnum)[keyof typeof CashEntryScalarFieldEnum]
+
+
+export const StockItemScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  unit: 'unit',
+  minQty: 'minQty',
+  active: 'active',
+  createdAt: 'createdAt'
+} as const
+
+export type StockItemScalarFieldEnum = (typeof StockItemScalarFieldEnum)[keyof typeof StockItemScalarFieldEnum]
+
+
+export const StockMovementScalarFieldEnum = {
+  id: 'id',
+  itemId: 'itemId',
+  location: 'location',
+  kind: 'kind',
+  delta: 'delta',
+  comment: 'comment',
+  visitId: 'visitId',
+  createdBy: 'createdBy',
+  createdAt: 'createdAt'
+} as const
+
+export type StockMovementScalarFieldEnum = (typeof StockMovementScalarFieldEnum)[keyof typeof StockMovementScalarFieldEnum]
 
 
 export const SortOrder = {

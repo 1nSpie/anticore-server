@@ -248,7 +248,7 @@ export type StaffGroupByOutputType = {
   _max: StaffMaxAggregateOutputType | null
 }
 
-type GetStaffGroupByPayload<T extends StaffGroupByArgs> = Prisma.PrismaPromise<
+export type GetStaffGroupByPayload<T extends StaffGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<StaffGroupByOutputType, T['by']> &
       {
@@ -285,6 +285,11 @@ export type StaffWhereInput = {
   checkins?: Prisma.CheckinListRelationFilter
   tasks?: Prisma.TaskListRelationFilter
   notifications?: Prisma.NotificationListRelationFilter
+  inspectionsReceived?: Prisma.VehicleInspectionListRelationFilter
+  workItems?: Prisma.VisitWorkItemListRelationFilter
+  handovers?: Prisma.VisitHandoverListRelationFilter
+  receivedVisits?: Prisma.VisitHistoryListRelationFilter
+  payrollEntries?: Prisma.PayrollEntryListRelationFilter
 }
 
 export type StaffOrderByWithRelationInput = {
@@ -306,6 +311,11 @@ export type StaffOrderByWithRelationInput = {
   checkins?: Prisma.CheckinOrderByRelationAggregateInput
   tasks?: Prisma.TaskOrderByRelationAggregateInput
   notifications?: Prisma.NotificationOrderByRelationAggregateInput
+  inspectionsReceived?: Prisma.VehicleInspectionOrderByRelationAggregateInput
+  workItems?: Prisma.VisitWorkItemOrderByRelationAggregateInput
+  handovers?: Prisma.VisitHandoverOrderByRelationAggregateInput
+  receivedVisits?: Prisma.VisitHistoryOrderByRelationAggregateInput
+  payrollEntries?: Prisma.PayrollEntryOrderByRelationAggregateInput
 }
 
 export type StaffWhereUniqueInput = Prisma.AtLeast<{
@@ -330,6 +340,11 @@ export type StaffWhereUniqueInput = Prisma.AtLeast<{
   checkins?: Prisma.CheckinListRelationFilter
   tasks?: Prisma.TaskListRelationFilter
   notifications?: Prisma.NotificationListRelationFilter
+  inspectionsReceived?: Prisma.VehicleInspectionListRelationFilter
+  workItems?: Prisma.VisitWorkItemListRelationFilter
+  handovers?: Prisma.VisitHandoverListRelationFilter
+  receivedVisits?: Prisma.VisitHistoryListRelationFilter
+  payrollEntries?: Prisma.PayrollEntryListRelationFilter
 }, "id" | "login">
 
 export type StaffOrderByWithAggregationInput = {
@@ -390,6 +405,11 @@ export type StaffCreateInput = {
   checkins?: Prisma.CheckinCreateNestedManyWithoutStaffInput
   tasks?: Prisma.TaskCreateNestedManyWithoutStaffInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutStaffInput
+  inspectionsReceived?: Prisma.VehicleInspectionCreateNestedManyWithoutReceivedByInput
+  workItems?: Prisma.VisitWorkItemCreateNestedManyWithoutMasterInput
+  handovers?: Prisma.VisitHandoverCreateNestedManyWithoutIssuedByInput
+  receivedVisits?: Prisma.VisitHistoryCreateNestedManyWithoutReceiverInput
+  payrollEntries?: Prisma.PayrollEntryCreateNestedManyWithoutStaffInput
 }
 
 export type StaffUncheckedCreateInput = {
@@ -411,6 +431,11 @@ export type StaffUncheckedCreateInput = {
   checkins?: Prisma.CheckinUncheckedCreateNestedManyWithoutStaffInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutStaffInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutStaffInput
+  inspectionsReceived?: Prisma.VehicleInspectionUncheckedCreateNestedManyWithoutReceivedByInput
+  workItems?: Prisma.VisitWorkItemUncheckedCreateNestedManyWithoutMasterInput
+  handovers?: Prisma.VisitHandoverUncheckedCreateNestedManyWithoutIssuedByInput
+  receivedVisits?: Prisma.VisitHistoryUncheckedCreateNestedManyWithoutReceiverInput
+  payrollEntries?: Prisma.PayrollEntryUncheckedCreateNestedManyWithoutStaffInput
 }
 
 export type StaffUpdateInput = {
@@ -431,6 +456,11 @@ export type StaffUpdateInput = {
   checkins?: Prisma.CheckinUpdateManyWithoutStaffNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutStaffNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutStaffNestedInput
+  inspectionsReceived?: Prisma.VehicleInspectionUpdateManyWithoutReceivedByNestedInput
+  workItems?: Prisma.VisitWorkItemUpdateManyWithoutMasterNestedInput
+  handovers?: Prisma.VisitHandoverUpdateManyWithoutIssuedByNestedInput
+  receivedVisits?: Prisma.VisitHistoryUpdateManyWithoutReceiverNestedInput
+  payrollEntries?: Prisma.PayrollEntryUpdateManyWithoutStaffNestedInput
 }
 
 export type StaffUncheckedUpdateInput = {
@@ -452,6 +482,11 @@ export type StaffUncheckedUpdateInput = {
   checkins?: Prisma.CheckinUncheckedUpdateManyWithoutStaffNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutStaffNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutStaffNestedInput
+  inspectionsReceived?: Prisma.VehicleInspectionUncheckedUpdateManyWithoutReceivedByNestedInput
+  workItems?: Prisma.VisitWorkItemUncheckedUpdateManyWithoutMasterNestedInput
+  handovers?: Prisma.VisitHandoverUncheckedUpdateManyWithoutIssuedByNestedInput
+  receivedVisits?: Prisma.VisitHistoryUncheckedUpdateManyWithoutReceiverNestedInput
+  payrollEntries?: Prisma.PayrollEntryUncheckedUpdateManyWithoutStaffNestedInput
 }
 
 export type StaffCreateManyInput = {
@@ -499,6 +534,11 @@ export type StaffUncheckedUpdateManyInput = {
   regulationAckAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type StaffNullableScalarRelationFilter = {
+  is?: Prisma.StaffWhereInput | null
+  isNot?: Prisma.StaffWhereInput | null
 }
 
 export type EnumCrmLocationNullableListFilter<$PrismaModel = never> = {
@@ -565,14 +605,25 @@ export type StaffSumOrderByAggregateInput = {
   regulationAckVersion?: Prisma.SortOrder
 }
 
-export type StaffNullableScalarRelationFilter = {
-  is?: Prisma.StaffWhereInput | null
-  isNot?: Prisma.StaffWhereInput | null
-}
-
 export type StaffScalarRelationFilter = {
   is?: Prisma.StaffWhereInput
   isNot?: Prisma.StaffWhereInput
+}
+
+export type StaffCreateNestedOneWithoutReceivedVisitsInput = {
+  create?: Prisma.XOR<Prisma.StaffCreateWithoutReceivedVisitsInput, Prisma.StaffUncheckedCreateWithoutReceivedVisitsInput>
+  connectOrCreate?: Prisma.StaffCreateOrConnectWithoutReceivedVisitsInput
+  connect?: Prisma.StaffWhereUniqueInput
+}
+
+export type StaffUpdateOneWithoutReceivedVisitsNestedInput = {
+  create?: Prisma.XOR<Prisma.StaffCreateWithoutReceivedVisitsInput, Prisma.StaffUncheckedCreateWithoutReceivedVisitsInput>
+  connectOrCreate?: Prisma.StaffCreateOrConnectWithoutReceivedVisitsInput
+  upsert?: Prisma.StaffUpsertWithoutReceivedVisitsInput
+  disconnect?: Prisma.StaffWhereInput | boolean
+  delete?: Prisma.StaffWhereInput | boolean
+  connect?: Prisma.StaffWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.StaffUpdateToOneWithWhereWithoutReceivedVisitsInput, Prisma.StaffUpdateWithoutReceivedVisitsInput>, Prisma.StaffUncheckedUpdateWithoutReceivedVisitsInput>
 }
 
 export type StaffCreatelocationsInput = {
@@ -660,6 +711,184 @@ export type StaffUpdateOneRequiredWithoutNotificationsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.StaffUpdateToOneWithWhereWithoutNotificationsInput, Prisma.StaffUpdateWithoutNotificationsInput>, Prisma.StaffUncheckedUpdateWithoutNotificationsInput>
 }
 
+export type StaffCreateNestedOneWithoutInspectionsReceivedInput = {
+  create?: Prisma.XOR<Prisma.StaffCreateWithoutInspectionsReceivedInput, Prisma.StaffUncheckedCreateWithoutInspectionsReceivedInput>
+  connectOrCreate?: Prisma.StaffCreateOrConnectWithoutInspectionsReceivedInput
+  connect?: Prisma.StaffWhereUniqueInput
+}
+
+export type StaffUpdateOneWithoutInspectionsReceivedNestedInput = {
+  create?: Prisma.XOR<Prisma.StaffCreateWithoutInspectionsReceivedInput, Prisma.StaffUncheckedCreateWithoutInspectionsReceivedInput>
+  connectOrCreate?: Prisma.StaffCreateOrConnectWithoutInspectionsReceivedInput
+  upsert?: Prisma.StaffUpsertWithoutInspectionsReceivedInput
+  disconnect?: Prisma.StaffWhereInput | boolean
+  delete?: Prisma.StaffWhereInput | boolean
+  connect?: Prisma.StaffWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.StaffUpdateToOneWithWhereWithoutInspectionsReceivedInput, Prisma.StaffUpdateWithoutInspectionsReceivedInput>, Prisma.StaffUncheckedUpdateWithoutInspectionsReceivedInput>
+}
+
+export type StaffCreateNestedOneWithoutWorkItemsInput = {
+  create?: Prisma.XOR<Prisma.StaffCreateWithoutWorkItemsInput, Prisma.StaffUncheckedCreateWithoutWorkItemsInput>
+  connectOrCreate?: Prisma.StaffCreateOrConnectWithoutWorkItemsInput
+  connect?: Prisma.StaffWhereUniqueInput
+}
+
+export type StaffUpdateOneWithoutWorkItemsNestedInput = {
+  create?: Prisma.XOR<Prisma.StaffCreateWithoutWorkItemsInput, Prisma.StaffUncheckedCreateWithoutWorkItemsInput>
+  connectOrCreate?: Prisma.StaffCreateOrConnectWithoutWorkItemsInput
+  upsert?: Prisma.StaffUpsertWithoutWorkItemsInput
+  disconnect?: Prisma.StaffWhereInput | boolean
+  delete?: Prisma.StaffWhereInput | boolean
+  connect?: Prisma.StaffWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.StaffUpdateToOneWithWhereWithoutWorkItemsInput, Prisma.StaffUpdateWithoutWorkItemsInput>, Prisma.StaffUncheckedUpdateWithoutWorkItemsInput>
+}
+
+export type StaffCreateNestedOneWithoutHandoversInput = {
+  create?: Prisma.XOR<Prisma.StaffCreateWithoutHandoversInput, Prisma.StaffUncheckedCreateWithoutHandoversInput>
+  connectOrCreate?: Prisma.StaffCreateOrConnectWithoutHandoversInput
+  connect?: Prisma.StaffWhereUniqueInput
+}
+
+export type StaffUpdateOneWithoutHandoversNestedInput = {
+  create?: Prisma.XOR<Prisma.StaffCreateWithoutHandoversInput, Prisma.StaffUncheckedCreateWithoutHandoversInput>
+  connectOrCreate?: Prisma.StaffCreateOrConnectWithoutHandoversInput
+  upsert?: Prisma.StaffUpsertWithoutHandoversInput
+  disconnect?: Prisma.StaffWhereInput | boolean
+  delete?: Prisma.StaffWhereInput | boolean
+  connect?: Prisma.StaffWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.StaffUpdateToOneWithWhereWithoutHandoversInput, Prisma.StaffUpdateWithoutHandoversInput>, Prisma.StaffUncheckedUpdateWithoutHandoversInput>
+}
+
+export type StaffCreateNestedOneWithoutPayrollEntriesInput = {
+  create?: Prisma.XOR<Prisma.StaffCreateWithoutPayrollEntriesInput, Prisma.StaffUncheckedCreateWithoutPayrollEntriesInput>
+  connectOrCreate?: Prisma.StaffCreateOrConnectWithoutPayrollEntriesInput
+  connect?: Prisma.StaffWhereUniqueInput
+}
+
+export type StaffUpdateOneWithoutPayrollEntriesNestedInput = {
+  create?: Prisma.XOR<Prisma.StaffCreateWithoutPayrollEntriesInput, Prisma.StaffUncheckedCreateWithoutPayrollEntriesInput>
+  connectOrCreate?: Prisma.StaffCreateOrConnectWithoutPayrollEntriesInput
+  upsert?: Prisma.StaffUpsertWithoutPayrollEntriesInput
+  disconnect?: Prisma.StaffWhereInput | boolean
+  delete?: Prisma.StaffWhereInput | boolean
+  connect?: Prisma.StaffWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.StaffUpdateToOneWithWhereWithoutPayrollEntriesInput, Prisma.StaffUpdateWithoutPayrollEntriesInput>, Prisma.StaffUncheckedUpdateWithoutPayrollEntriesInput>
+}
+
+export type StaffCreateWithoutReceivedVisitsInput = {
+  login: string
+  passwordHash: string
+  fullName: string
+  role?: $Enums.StaffRole
+  locations?: Prisma.StaffCreatelocationsInput | $Enums.CrmLocation[]
+  blockedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  geoConsentAt?: Date | string | null
+  regulationAckVersion?: number
+  regulationAckAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  auditLogs?: Prisma.StaffAuditLogCreateNestedManyWithoutStaffInput
+  visits?: Prisma.VisitStaffCreateNestedManyWithoutStaffInput
+  checkins?: Prisma.CheckinCreateNestedManyWithoutStaffInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutStaffInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutStaffInput
+  inspectionsReceived?: Prisma.VehicleInspectionCreateNestedManyWithoutReceivedByInput
+  workItems?: Prisma.VisitWorkItemCreateNestedManyWithoutMasterInput
+  handovers?: Prisma.VisitHandoverCreateNestedManyWithoutIssuedByInput
+  payrollEntries?: Prisma.PayrollEntryCreateNestedManyWithoutStaffInput
+}
+
+export type StaffUncheckedCreateWithoutReceivedVisitsInput = {
+  id?: number
+  login: string
+  passwordHash: string
+  fullName: string
+  role?: $Enums.StaffRole
+  locations?: Prisma.StaffCreatelocationsInput | $Enums.CrmLocation[]
+  blockedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  geoConsentAt?: Date | string | null
+  regulationAckVersion?: number
+  regulationAckAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  auditLogs?: Prisma.StaffAuditLogUncheckedCreateNestedManyWithoutStaffInput
+  visits?: Prisma.VisitStaffUncheckedCreateNestedManyWithoutStaffInput
+  checkins?: Prisma.CheckinUncheckedCreateNestedManyWithoutStaffInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutStaffInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutStaffInput
+  inspectionsReceived?: Prisma.VehicleInspectionUncheckedCreateNestedManyWithoutReceivedByInput
+  workItems?: Prisma.VisitWorkItemUncheckedCreateNestedManyWithoutMasterInput
+  handovers?: Prisma.VisitHandoverUncheckedCreateNestedManyWithoutIssuedByInput
+  payrollEntries?: Prisma.PayrollEntryUncheckedCreateNestedManyWithoutStaffInput
+}
+
+export type StaffCreateOrConnectWithoutReceivedVisitsInput = {
+  where: Prisma.StaffWhereUniqueInput
+  create: Prisma.XOR<Prisma.StaffCreateWithoutReceivedVisitsInput, Prisma.StaffUncheckedCreateWithoutReceivedVisitsInput>
+}
+
+export type StaffUpsertWithoutReceivedVisitsInput = {
+  update: Prisma.XOR<Prisma.StaffUpdateWithoutReceivedVisitsInput, Prisma.StaffUncheckedUpdateWithoutReceivedVisitsInput>
+  create: Prisma.XOR<Prisma.StaffCreateWithoutReceivedVisitsInput, Prisma.StaffUncheckedCreateWithoutReceivedVisitsInput>
+  where?: Prisma.StaffWhereInput
+}
+
+export type StaffUpdateToOneWithWhereWithoutReceivedVisitsInput = {
+  where?: Prisma.StaffWhereInput
+  data: Prisma.XOR<Prisma.StaffUpdateWithoutReceivedVisitsInput, Prisma.StaffUncheckedUpdateWithoutReceivedVisitsInput>
+}
+
+export type StaffUpdateWithoutReceivedVisitsInput = {
+  login?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumStaffRoleFieldUpdateOperationsInput | $Enums.StaffRole
+  locations?: Prisma.StaffUpdatelocationsInput | $Enums.CrmLocation[]
+  blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  geoConsentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  regulationAckVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  regulationAckAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  auditLogs?: Prisma.StaffAuditLogUpdateManyWithoutStaffNestedInput
+  visits?: Prisma.VisitStaffUpdateManyWithoutStaffNestedInput
+  checkins?: Prisma.CheckinUpdateManyWithoutStaffNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutStaffNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutStaffNestedInput
+  inspectionsReceived?: Prisma.VehicleInspectionUpdateManyWithoutReceivedByNestedInput
+  workItems?: Prisma.VisitWorkItemUpdateManyWithoutMasterNestedInput
+  handovers?: Prisma.VisitHandoverUpdateManyWithoutIssuedByNestedInput
+  payrollEntries?: Prisma.PayrollEntryUpdateManyWithoutStaffNestedInput
+}
+
+export type StaffUncheckedUpdateWithoutReceivedVisitsInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  login?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumStaffRoleFieldUpdateOperationsInput | $Enums.StaffRole
+  locations?: Prisma.StaffUpdatelocationsInput | $Enums.CrmLocation[]
+  blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  geoConsentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  regulationAckVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  regulationAckAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  auditLogs?: Prisma.StaffAuditLogUncheckedUpdateManyWithoutStaffNestedInput
+  visits?: Prisma.VisitStaffUncheckedUpdateManyWithoutStaffNestedInput
+  checkins?: Prisma.CheckinUncheckedUpdateManyWithoutStaffNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutStaffNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutStaffNestedInput
+  inspectionsReceived?: Prisma.VehicleInspectionUncheckedUpdateManyWithoutReceivedByNestedInput
+  workItems?: Prisma.VisitWorkItemUncheckedUpdateManyWithoutMasterNestedInput
+  handovers?: Prisma.VisitHandoverUncheckedUpdateManyWithoutIssuedByNestedInput
+  payrollEntries?: Prisma.PayrollEntryUncheckedUpdateManyWithoutStaffNestedInput
+}
+
 export type StaffCreateWithoutAuditLogsInput = {
   login: string
   passwordHash: string
@@ -677,6 +906,11 @@ export type StaffCreateWithoutAuditLogsInput = {
   checkins?: Prisma.CheckinCreateNestedManyWithoutStaffInput
   tasks?: Prisma.TaskCreateNestedManyWithoutStaffInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutStaffInput
+  inspectionsReceived?: Prisma.VehicleInspectionCreateNestedManyWithoutReceivedByInput
+  workItems?: Prisma.VisitWorkItemCreateNestedManyWithoutMasterInput
+  handovers?: Prisma.VisitHandoverCreateNestedManyWithoutIssuedByInput
+  receivedVisits?: Prisma.VisitHistoryCreateNestedManyWithoutReceiverInput
+  payrollEntries?: Prisma.PayrollEntryCreateNestedManyWithoutStaffInput
 }
 
 export type StaffUncheckedCreateWithoutAuditLogsInput = {
@@ -697,6 +931,11 @@ export type StaffUncheckedCreateWithoutAuditLogsInput = {
   checkins?: Prisma.CheckinUncheckedCreateNestedManyWithoutStaffInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutStaffInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutStaffInput
+  inspectionsReceived?: Prisma.VehicleInspectionUncheckedCreateNestedManyWithoutReceivedByInput
+  workItems?: Prisma.VisitWorkItemUncheckedCreateNestedManyWithoutMasterInput
+  handovers?: Prisma.VisitHandoverUncheckedCreateNestedManyWithoutIssuedByInput
+  receivedVisits?: Prisma.VisitHistoryUncheckedCreateNestedManyWithoutReceiverInput
+  payrollEntries?: Prisma.PayrollEntryUncheckedCreateNestedManyWithoutStaffInput
 }
 
 export type StaffCreateOrConnectWithoutAuditLogsInput = {
@@ -732,6 +971,11 @@ export type StaffUpdateWithoutAuditLogsInput = {
   checkins?: Prisma.CheckinUpdateManyWithoutStaffNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutStaffNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutStaffNestedInput
+  inspectionsReceived?: Prisma.VehicleInspectionUpdateManyWithoutReceivedByNestedInput
+  workItems?: Prisma.VisitWorkItemUpdateManyWithoutMasterNestedInput
+  handovers?: Prisma.VisitHandoverUpdateManyWithoutIssuedByNestedInput
+  receivedVisits?: Prisma.VisitHistoryUpdateManyWithoutReceiverNestedInput
+  payrollEntries?: Prisma.PayrollEntryUpdateManyWithoutStaffNestedInput
 }
 
 export type StaffUncheckedUpdateWithoutAuditLogsInput = {
@@ -752,6 +996,11 @@ export type StaffUncheckedUpdateWithoutAuditLogsInput = {
   checkins?: Prisma.CheckinUncheckedUpdateManyWithoutStaffNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutStaffNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutStaffNestedInput
+  inspectionsReceived?: Prisma.VehicleInspectionUncheckedUpdateManyWithoutReceivedByNestedInput
+  workItems?: Prisma.VisitWorkItemUncheckedUpdateManyWithoutMasterNestedInput
+  handovers?: Prisma.VisitHandoverUncheckedUpdateManyWithoutIssuedByNestedInput
+  receivedVisits?: Prisma.VisitHistoryUncheckedUpdateManyWithoutReceiverNestedInput
+  payrollEntries?: Prisma.PayrollEntryUncheckedUpdateManyWithoutStaffNestedInput
 }
 
 export type StaffCreateWithoutVisitsInput = {
@@ -771,6 +1020,11 @@ export type StaffCreateWithoutVisitsInput = {
   checkins?: Prisma.CheckinCreateNestedManyWithoutStaffInput
   tasks?: Prisma.TaskCreateNestedManyWithoutStaffInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutStaffInput
+  inspectionsReceived?: Prisma.VehicleInspectionCreateNestedManyWithoutReceivedByInput
+  workItems?: Prisma.VisitWorkItemCreateNestedManyWithoutMasterInput
+  handovers?: Prisma.VisitHandoverCreateNestedManyWithoutIssuedByInput
+  receivedVisits?: Prisma.VisitHistoryCreateNestedManyWithoutReceiverInput
+  payrollEntries?: Prisma.PayrollEntryCreateNestedManyWithoutStaffInput
 }
 
 export type StaffUncheckedCreateWithoutVisitsInput = {
@@ -791,6 +1045,11 @@ export type StaffUncheckedCreateWithoutVisitsInput = {
   checkins?: Prisma.CheckinUncheckedCreateNestedManyWithoutStaffInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutStaffInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutStaffInput
+  inspectionsReceived?: Prisma.VehicleInspectionUncheckedCreateNestedManyWithoutReceivedByInput
+  workItems?: Prisma.VisitWorkItemUncheckedCreateNestedManyWithoutMasterInput
+  handovers?: Prisma.VisitHandoverUncheckedCreateNestedManyWithoutIssuedByInput
+  receivedVisits?: Prisma.VisitHistoryUncheckedCreateNestedManyWithoutReceiverInput
+  payrollEntries?: Prisma.PayrollEntryUncheckedCreateNestedManyWithoutStaffInput
 }
 
 export type StaffCreateOrConnectWithoutVisitsInput = {
@@ -826,6 +1085,11 @@ export type StaffUpdateWithoutVisitsInput = {
   checkins?: Prisma.CheckinUpdateManyWithoutStaffNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutStaffNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutStaffNestedInput
+  inspectionsReceived?: Prisma.VehicleInspectionUpdateManyWithoutReceivedByNestedInput
+  workItems?: Prisma.VisitWorkItemUpdateManyWithoutMasterNestedInput
+  handovers?: Prisma.VisitHandoverUpdateManyWithoutIssuedByNestedInput
+  receivedVisits?: Prisma.VisitHistoryUpdateManyWithoutReceiverNestedInput
+  payrollEntries?: Prisma.PayrollEntryUpdateManyWithoutStaffNestedInput
 }
 
 export type StaffUncheckedUpdateWithoutVisitsInput = {
@@ -846,6 +1110,11 @@ export type StaffUncheckedUpdateWithoutVisitsInput = {
   checkins?: Prisma.CheckinUncheckedUpdateManyWithoutStaffNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutStaffNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutStaffNestedInput
+  inspectionsReceived?: Prisma.VehicleInspectionUncheckedUpdateManyWithoutReceivedByNestedInput
+  workItems?: Prisma.VisitWorkItemUncheckedUpdateManyWithoutMasterNestedInput
+  handovers?: Prisma.VisitHandoverUncheckedUpdateManyWithoutIssuedByNestedInput
+  receivedVisits?: Prisma.VisitHistoryUncheckedUpdateManyWithoutReceiverNestedInput
+  payrollEntries?: Prisma.PayrollEntryUncheckedUpdateManyWithoutStaffNestedInput
 }
 
 export type StaffCreateWithoutCheckinsInput = {
@@ -865,6 +1134,11 @@ export type StaffCreateWithoutCheckinsInput = {
   visits?: Prisma.VisitStaffCreateNestedManyWithoutStaffInput
   tasks?: Prisma.TaskCreateNestedManyWithoutStaffInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutStaffInput
+  inspectionsReceived?: Prisma.VehicleInspectionCreateNestedManyWithoutReceivedByInput
+  workItems?: Prisma.VisitWorkItemCreateNestedManyWithoutMasterInput
+  handovers?: Prisma.VisitHandoverCreateNestedManyWithoutIssuedByInput
+  receivedVisits?: Prisma.VisitHistoryCreateNestedManyWithoutReceiverInput
+  payrollEntries?: Prisma.PayrollEntryCreateNestedManyWithoutStaffInput
 }
 
 export type StaffUncheckedCreateWithoutCheckinsInput = {
@@ -885,6 +1159,11 @@ export type StaffUncheckedCreateWithoutCheckinsInput = {
   visits?: Prisma.VisitStaffUncheckedCreateNestedManyWithoutStaffInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutStaffInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutStaffInput
+  inspectionsReceived?: Prisma.VehicleInspectionUncheckedCreateNestedManyWithoutReceivedByInput
+  workItems?: Prisma.VisitWorkItemUncheckedCreateNestedManyWithoutMasterInput
+  handovers?: Prisma.VisitHandoverUncheckedCreateNestedManyWithoutIssuedByInput
+  receivedVisits?: Prisma.VisitHistoryUncheckedCreateNestedManyWithoutReceiverInput
+  payrollEntries?: Prisma.PayrollEntryUncheckedCreateNestedManyWithoutStaffInput
 }
 
 export type StaffCreateOrConnectWithoutCheckinsInput = {
@@ -920,6 +1199,11 @@ export type StaffUpdateWithoutCheckinsInput = {
   visits?: Prisma.VisitStaffUpdateManyWithoutStaffNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutStaffNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutStaffNestedInput
+  inspectionsReceived?: Prisma.VehicleInspectionUpdateManyWithoutReceivedByNestedInput
+  workItems?: Prisma.VisitWorkItemUpdateManyWithoutMasterNestedInput
+  handovers?: Prisma.VisitHandoverUpdateManyWithoutIssuedByNestedInput
+  receivedVisits?: Prisma.VisitHistoryUpdateManyWithoutReceiverNestedInput
+  payrollEntries?: Prisma.PayrollEntryUpdateManyWithoutStaffNestedInput
 }
 
 export type StaffUncheckedUpdateWithoutCheckinsInput = {
@@ -940,6 +1224,11 @@ export type StaffUncheckedUpdateWithoutCheckinsInput = {
   visits?: Prisma.VisitStaffUncheckedUpdateManyWithoutStaffNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutStaffNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutStaffNestedInput
+  inspectionsReceived?: Prisma.VehicleInspectionUncheckedUpdateManyWithoutReceivedByNestedInput
+  workItems?: Prisma.VisitWorkItemUncheckedUpdateManyWithoutMasterNestedInput
+  handovers?: Prisma.VisitHandoverUncheckedUpdateManyWithoutIssuedByNestedInput
+  receivedVisits?: Prisma.VisitHistoryUncheckedUpdateManyWithoutReceiverNestedInput
+  payrollEntries?: Prisma.PayrollEntryUncheckedUpdateManyWithoutStaffNestedInput
 }
 
 export type StaffCreateWithoutTasksInput = {
@@ -959,6 +1248,11 @@ export type StaffCreateWithoutTasksInput = {
   visits?: Prisma.VisitStaffCreateNestedManyWithoutStaffInput
   checkins?: Prisma.CheckinCreateNestedManyWithoutStaffInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutStaffInput
+  inspectionsReceived?: Prisma.VehicleInspectionCreateNestedManyWithoutReceivedByInput
+  workItems?: Prisma.VisitWorkItemCreateNestedManyWithoutMasterInput
+  handovers?: Prisma.VisitHandoverCreateNestedManyWithoutIssuedByInput
+  receivedVisits?: Prisma.VisitHistoryCreateNestedManyWithoutReceiverInput
+  payrollEntries?: Prisma.PayrollEntryCreateNestedManyWithoutStaffInput
 }
 
 export type StaffUncheckedCreateWithoutTasksInput = {
@@ -979,6 +1273,11 @@ export type StaffUncheckedCreateWithoutTasksInput = {
   visits?: Prisma.VisitStaffUncheckedCreateNestedManyWithoutStaffInput
   checkins?: Prisma.CheckinUncheckedCreateNestedManyWithoutStaffInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutStaffInput
+  inspectionsReceived?: Prisma.VehicleInspectionUncheckedCreateNestedManyWithoutReceivedByInput
+  workItems?: Prisma.VisitWorkItemUncheckedCreateNestedManyWithoutMasterInput
+  handovers?: Prisma.VisitHandoverUncheckedCreateNestedManyWithoutIssuedByInput
+  receivedVisits?: Prisma.VisitHistoryUncheckedCreateNestedManyWithoutReceiverInput
+  payrollEntries?: Prisma.PayrollEntryUncheckedCreateNestedManyWithoutStaffInput
 }
 
 export type StaffCreateOrConnectWithoutTasksInput = {
@@ -1014,6 +1313,11 @@ export type StaffUpdateWithoutTasksInput = {
   visits?: Prisma.VisitStaffUpdateManyWithoutStaffNestedInput
   checkins?: Prisma.CheckinUpdateManyWithoutStaffNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutStaffNestedInput
+  inspectionsReceived?: Prisma.VehicleInspectionUpdateManyWithoutReceivedByNestedInput
+  workItems?: Prisma.VisitWorkItemUpdateManyWithoutMasterNestedInput
+  handovers?: Prisma.VisitHandoverUpdateManyWithoutIssuedByNestedInput
+  receivedVisits?: Prisma.VisitHistoryUpdateManyWithoutReceiverNestedInput
+  payrollEntries?: Prisma.PayrollEntryUpdateManyWithoutStaffNestedInput
 }
 
 export type StaffUncheckedUpdateWithoutTasksInput = {
@@ -1034,6 +1338,11 @@ export type StaffUncheckedUpdateWithoutTasksInput = {
   visits?: Prisma.VisitStaffUncheckedUpdateManyWithoutStaffNestedInput
   checkins?: Prisma.CheckinUncheckedUpdateManyWithoutStaffNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutStaffNestedInput
+  inspectionsReceived?: Prisma.VehicleInspectionUncheckedUpdateManyWithoutReceivedByNestedInput
+  workItems?: Prisma.VisitWorkItemUncheckedUpdateManyWithoutMasterNestedInput
+  handovers?: Prisma.VisitHandoverUncheckedUpdateManyWithoutIssuedByNestedInput
+  receivedVisits?: Prisma.VisitHistoryUncheckedUpdateManyWithoutReceiverNestedInput
+  payrollEntries?: Prisma.PayrollEntryUncheckedUpdateManyWithoutStaffNestedInput
 }
 
 export type StaffCreateWithoutNotificationsInput = {
@@ -1053,6 +1362,11 @@ export type StaffCreateWithoutNotificationsInput = {
   visits?: Prisma.VisitStaffCreateNestedManyWithoutStaffInput
   checkins?: Prisma.CheckinCreateNestedManyWithoutStaffInput
   tasks?: Prisma.TaskCreateNestedManyWithoutStaffInput
+  inspectionsReceived?: Prisma.VehicleInspectionCreateNestedManyWithoutReceivedByInput
+  workItems?: Prisma.VisitWorkItemCreateNestedManyWithoutMasterInput
+  handovers?: Prisma.VisitHandoverCreateNestedManyWithoutIssuedByInput
+  receivedVisits?: Prisma.VisitHistoryCreateNestedManyWithoutReceiverInput
+  payrollEntries?: Prisma.PayrollEntryCreateNestedManyWithoutStaffInput
 }
 
 export type StaffUncheckedCreateWithoutNotificationsInput = {
@@ -1073,6 +1387,11 @@ export type StaffUncheckedCreateWithoutNotificationsInput = {
   visits?: Prisma.VisitStaffUncheckedCreateNestedManyWithoutStaffInput
   checkins?: Prisma.CheckinUncheckedCreateNestedManyWithoutStaffInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutStaffInput
+  inspectionsReceived?: Prisma.VehicleInspectionUncheckedCreateNestedManyWithoutReceivedByInput
+  workItems?: Prisma.VisitWorkItemUncheckedCreateNestedManyWithoutMasterInput
+  handovers?: Prisma.VisitHandoverUncheckedCreateNestedManyWithoutIssuedByInput
+  receivedVisits?: Prisma.VisitHistoryUncheckedCreateNestedManyWithoutReceiverInput
+  payrollEntries?: Prisma.PayrollEntryUncheckedCreateNestedManyWithoutStaffInput
 }
 
 export type StaffCreateOrConnectWithoutNotificationsInput = {
@@ -1108,6 +1427,11 @@ export type StaffUpdateWithoutNotificationsInput = {
   visits?: Prisma.VisitStaffUpdateManyWithoutStaffNestedInput
   checkins?: Prisma.CheckinUpdateManyWithoutStaffNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutStaffNestedInput
+  inspectionsReceived?: Prisma.VehicleInspectionUpdateManyWithoutReceivedByNestedInput
+  workItems?: Prisma.VisitWorkItemUpdateManyWithoutMasterNestedInput
+  handovers?: Prisma.VisitHandoverUpdateManyWithoutIssuedByNestedInput
+  receivedVisits?: Prisma.VisitHistoryUpdateManyWithoutReceiverNestedInput
+  payrollEntries?: Prisma.PayrollEntryUpdateManyWithoutStaffNestedInput
 }
 
 export type StaffUncheckedUpdateWithoutNotificationsInput = {
@@ -1128,6 +1452,467 @@ export type StaffUncheckedUpdateWithoutNotificationsInput = {
   visits?: Prisma.VisitStaffUncheckedUpdateManyWithoutStaffNestedInput
   checkins?: Prisma.CheckinUncheckedUpdateManyWithoutStaffNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutStaffNestedInput
+  inspectionsReceived?: Prisma.VehicleInspectionUncheckedUpdateManyWithoutReceivedByNestedInput
+  workItems?: Prisma.VisitWorkItemUncheckedUpdateManyWithoutMasterNestedInput
+  handovers?: Prisma.VisitHandoverUncheckedUpdateManyWithoutIssuedByNestedInput
+  receivedVisits?: Prisma.VisitHistoryUncheckedUpdateManyWithoutReceiverNestedInput
+  payrollEntries?: Prisma.PayrollEntryUncheckedUpdateManyWithoutStaffNestedInput
+}
+
+export type StaffCreateWithoutInspectionsReceivedInput = {
+  login: string
+  passwordHash: string
+  fullName: string
+  role?: $Enums.StaffRole
+  locations?: Prisma.StaffCreatelocationsInput | $Enums.CrmLocation[]
+  blockedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  geoConsentAt?: Date | string | null
+  regulationAckVersion?: number
+  regulationAckAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  auditLogs?: Prisma.StaffAuditLogCreateNestedManyWithoutStaffInput
+  visits?: Prisma.VisitStaffCreateNestedManyWithoutStaffInput
+  checkins?: Prisma.CheckinCreateNestedManyWithoutStaffInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutStaffInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutStaffInput
+  workItems?: Prisma.VisitWorkItemCreateNestedManyWithoutMasterInput
+  handovers?: Prisma.VisitHandoverCreateNestedManyWithoutIssuedByInput
+  receivedVisits?: Prisma.VisitHistoryCreateNestedManyWithoutReceiverInput
+  payrollEntries?: Prisma.PayrollEntryCreateNestedManyWithoutStaffInput
+}
+
+export type StaffUncheckedCreateWithoutInspectionsReceivedInput = {
+  id?: number
+  login: string
+  passwordHash: string
+  fullName: string
+  role?: $Enums.StaffRole
+  locations?: Prisma.StaffCreatelocationsInput | $Enums.CrmLocation[]
+  blockedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  geoConsentAt?: Date | string | null
+  regulationAckVersion?: number
+  regulationAckAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  auditLogs?: Prisma.StaffAuditLogUncheckedCreateNestedManyWithoutStaffInput
+  visits?: Prisma.VisitStaffUncheckedCreateNestedManyWithoutStaffInput
+  checkins?: Prisma.CheckinUncheckedCreateNestedManyWithoutStaffInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutStaffInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutStaffInput
+  workItems?: Prisma.VisitWorkItemUncheckedCreateNestedManyWithoutMasterInput
+  handovers?: Prisma.VisitHandoverUncheckedCreateNestedManyWithoutIssuedByInput
+  receivedVisits?: Prisma.VisitHistoryUncheckedCreateNestedManyWithoutReceiverInput
+  payrollEntries?: Prisma.PayrollEntryUncheckedCreateNestedManyWithoutStaffInput
+}
+
+export type StaffCreateOrConnectWithoutInspectionsReceivedInput = {
+  where: Prisma.StaffWhereUniqueInput
+  create: Prisma.XOR<Prisma.StaffCreateWithoutInspectionsReceivedInput, Prisma.StaffUncheckedCreateWithoutInspectionsReceivedInput>
+}
+
+export type StaffUpsertWithoutInspectionsReceivedInput = {
+  update: Prisma.XOR<Prisma.StaffUpdateWithoutInspectionsReceivedInput, Prisma.StaffUncheckedUpdateWithoutInspectionsReceivedInput>
+  create: Prisma.XOR<Prisma.StaffCreateWithoutInspectionsReceivedInput, Prisma.StaffUncheckedCreateWithoutInspectionsReceivedInput>
+  where?: Prisma.StaffWhereInput
+}
+
+export type StaffUpdateToOneWithWhereWithoutInspectionsReceivedInput = {
+  where?: Prisma.StaffWhereInput
+  data: Prisma.XOR<Prisma.StaffUpdateWithoutInspectionsReceivedInput, Prisma.StaffUncheckedUpdateWithoutInspectionsReceivedInput>
+}
+
+export type StaffUpdateWithoutInspectionsReceivedInput = {
+  login?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumStaffRoleFieldUpdateOperationsInput | $Enums.StaffRole
+  locations?: Prisma.StaffUpdatelocationsInput | $Enums.CrmLocation[]
+  blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  geoConsentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  regulationAckVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  regulationAckAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  auditLogs?: Prisma.StaffAuditLogUpdateManyWithoutStaffNestedInput
+  visits?: Prisma.VisitStaffUpdateManyWithoutStaffNestedInput
+  checkins?: Prisma.CheckinUpdateManyWithoutStaffNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutStaffNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutStaffNestedInput
+  workItems?: Prisma.VisitWorkItemUpdateManyWithoutMasterNestedInput
+  handovers?: Prisma.VisitHandoverUpdateManyWithoutIssuedByNestedInput
+  receivedVisits?: Prisma.VisitHistoryUpdateManyWithoutReceiverNestedInput
+  payrollEntries?: Prisma.PayrollEntryUpdateManyWithoutStaffNestedInput
+}
+
+export type StaffUncheckedUpdateWithoutInspectionsReceivedInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  login?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumStaffRoleFieldUpdateOperationsInput | $Enums.StaffRole
+  locations?: Prisma.StaffUpdatelocationsInput | $Enums.CrmLocation[]
+  blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  geoConsentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  regulationAckVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  regulationAckAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  auditLogs?: Prisma.StaffAuditLogUncheckedUpdateManyWithoutStaffNestedInput
+  visits?: Prisma.VisitStaffUncheckedUpdateManyWithoutStaffNestedInput
+  checkins?: Prisma.CheckinUncheckedUpdateManyWithoutStaffNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutStaffNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutStaffNestedInput
+  workItems?: Prisma.VisitWorkItemUncheckedUpdateManyWithoutMasterNestedInput
+  handovers?: Prisma.VisitHandoverUncheckedUpdateManyWithoutIssuedByNestedInput
+  receivedVisits?: Prisma.VisitHistoryUncheckedUpdateManyWithoutReceiverNestedInput
+  payrollEntries?: Prisma.PayrollEntryUncheckedUpdateManyWithoutStaffNestedInput
+}
+
+export type StaffCreateWithoutWorkItemsInput = {
+  login: string
+  passwordHash: string
+  fullName: string
+  role?: $Enums.StaffRole
+  locations?: Prisma.StaffCreatelocationsInput | $Enums.CrmLocation[]
+  blockedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  geoConsentAt?: Date | string | null
+  regulationAckVersion?: number
+  regulationAckAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  auditLogs?: Prisma.StaffAuditLogCreateNestedManyWithoutStaffInput
+  visits?: Prisma.VisitStaffCreateNestedManyWithoutStaffInput
+  checkins?: Prisma.CheckinCreateNestedManyWithoutStaffInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutStaffInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutStaffInput
+  inspectionsReceived?: Prisma.VehicleInspectionCreateNestedManyWithoutReceivedByInput
+  handovers?: Prisma.VisitHandoverCreateNestedManyWithoutIssuedByInput
+  receivedVisits?: Prisma.VisitHistoryCreateNestedManyWithoutReceiverInput
+  payrollEntries?: Prisma.PayrollEntryCreateNestedManyWithoutStaffInput
+}
+
+export type StaffUncheckedCreateWithoutWorkItemsInput = {
+  id?: number
+  login: string
+  passwordHash: string
+  fullName: string
+  role?: $Enums.StaffRole
+  locations?: Prisma.StaffCreatelocationsInput | $Enums.CrmLocation[]
+  blockedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  geoConsentAt?: Date | string | null
+  regulationAckVersion?: number
+  regulationAckAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  auditLogs?: Prisma.StaffAuditLogUncheckedCreateNestedManyWithoutStaffInput
+  visits?: Prisma.VisitStaffUncheckedCreateNestedManyWithoutStaffInput
+  checkins?: Prisma.CheckinUncheckedCreateNestedManyWithoutStaffInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutStaffInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutStaffInput
+  inspectionsReceived?: Prisma.VehicleInspectionUncheckedCreateNestedManyWithoutReceivedByInput
+  handovers?: Prisma.VisitHandoverUncheckedCreateNestedManyWithoutIssuedByInput
+  receivedVisits?: Prisma.VisitHistoryUncheckedCreateNestedManyWithoutReceiverInput
+  payrollEntries?: Prisma.PayrollEntryUncheckedCreateNestedManyWithoutStaffInput
+}
+
+export type StaffCreateOrConnectWithoutWorkItemsInput = {
+  where: Prisma.StaffWhereUniqueInput
+  create: Prisma.XOR<Prisma.StaffCreateWithoutWorkItemsInput, Prisma.StaffUncheckedCreateWithoutWorkItemsInput>
+}
+
+export type StaffUpsertWithoutWorkItemsInput = {
+  update: Prisma.XOR<Prisma.StaffUpdateWithoutWorkItemsInput, Prisma.StaffUncheckedUpdateWithoutWorkItemsInput>
+  create: Prisma.XOR<Prisma.StaffCreateWithoutWorkItemsInput, Prisma.StaffUncheckedCreateWithoutWorkItemsInput>
+  where?: Prisma.StaffWhereInput
+}
+
+export type StaffUpdateToOneWithWhereWithoutWorkItemsInput = {
+  where?: Prisma.StaffWhereInput
+  data: Prisma.XOR<Prisma.StaffUpdateWithoutWorkItemsInput, Prisma.StaffUncheckedUpdateWithoutWorkItemsInput>
+}
+
+export type StaffUpdateWithoutWorkItemsInput = {
+  login?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumStaffRoleFieldUpdateOperationsInput | $Enums.StaffRole
+  locations?: Prisma.StaffUpdatelocationsInput | $Enums.CrmLocation[]
+  blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  geoConsentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  regulationAckVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  regulationAckAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  auditLogs?: Prisma.StaffAuditLogUpdateManyWithoutStaffNestedInput
+  visits?: Prisma.VisitStaffUpdateManyWithoutStaffNestedInput
+  checkins?: Prisma.CheckinUpdateManyWithoutStaffNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutStaffNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutStaffNestedInput
+  inspectionsReceived?: Prisma.VehicleInspectionUpdateManyWithoutReceivedByNestedInput
+  handovers?: Prisma.VisitHandoverUpdateManyWithoutIssuedByNestedInput
+  receivedVisits?: Prisma.VisitHistoryUpdateManyWithoutReceiverNestedInput
+  payrollEntries?: Prisma.PayrollEntryUpdateManyWithoutStaffNestedInput
+}
+
+export type StaffUncheckedUpdateWithoutWorkItemsInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  login?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumStaffRoleFieldUpdateOperationsInput | $Enums.StaffRole
+  locations?: Prisma.StaffUpdatelocationsInput | $Enums.CrmLocation[]
+  blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  geoConsentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  regulationAckVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  regulationAckAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  auditLogs?: Prisma.StaffAuditLogUncheckedUpdateManyWithoutStaffNestedInput
+  visits?: Prisma.VisitStaffUncheckedUpdateManyWithoutStaffNestedInput
+  checkins?: Prisma.CheckinUncheckedUpdateManyWithoutStaffNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutStaffNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutStaffNestedInput
+  inspectionsReceived?: Prisma.VehicleInspectionUncheckedUpdateManyWithoutReceivedByNestedInput
+  handovers?: Prisma.VisitHandoverUncheckedUpdateManyWithoutIssuedByNestedInput
+  receivedVisits?: Prisma.VisitHistoryUncheckedUpdateManyWithoutReceiverNestedInput
+  payrollEntries?: Prisma.PayrollEntryUncheckedUpdateManyWithoutStaffNestedInput
+}
+
+export type StaffCreateWithoutHandoversInput = {
+  login: string
+  passwordHash: string
+  fullName: string
+  role?: $Enums.StaffRole
+  locations?: Prisma.StaffCreatelocationsInput | $Enums.CrmLocation[]
+  blockedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  geoConsentAt?: Date | string | null
+  regulationAckVersion?: number
+  regulationAckAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  auditLogs?: Prisma.StaffAuditLogCreateNestedManyWithoutStaffInput
+  visits?: Prisma.VisitStaffCreateNestedManyWithoutStaffInput
+  checkins?: Prisma.CheckinCreateNestedManyWithoutStaffInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutStaffInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutStaffInput
+  inspectionsReceived?: Prisma.VehicleInspectionCreateNestedManyWithoutReceivedByInput
+  workItems?: Prisma.VisitWorkItemCreateNestedManyWithoutMasterInput
+  receivedVisits?: Prisma.VisitHistoryCreateNestedManyWithoutReceiverInput
+  payrollEntries?: Prisma.PayrollEntryCreateNestedManyWithoutStaffInput
+}
+
+export type StaffUncheckedCreateWithoutHandoversInput = {
+  id?: number
+  login: string
+  passwordHash: string
+  fullName: string
+  role?: $Enums.StaffRole
+  locations?: Prisma.StaffCreatelocationsInput | $Enums.CrmLocation[]
+  blockedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  geoConsentAt?: Date | string | null
+  regulationAckVersion?: number
+  regulationAckAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  auditLogs?: Prisma.StaffAuditLogUncheckedCreateNestedManyWithoutStaffInput
+  visits?: Prisma.VisitStaffUncheckedCreateNestedManyWithoutStaffInput
+  checkins?: Prisma.CheckinUncheckedCreateNestedManyWithoutStaffInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutStaffInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutStaffInput
+  inspectionsReceived?: Prisma.VehicleInspectionUncheckedCreateNestedManyWithoutReceivedByInput
+  workItems?: Prisma.VisitWorkItemUncheckedCreateNestedManyWithoutMasterInput
+  receivedVisits?: Prisma.VisitHistoryUncheckedCreateNestedManyWithoutReceiverInput
+  payrollEntries?: Prisma.PayrollEntryUncheckedCreateNestedManyWithoutStaffInput
+}
+
+export type StaffCreateOrConnectWithoutHandoversInput = {
+  where: Prisma.StaffWhereUniqueInput
+  create: Prisma.XOR<Prisma.StaffCreateWithoutHandoversInput, Prisma.StaffUncheckedCreateWithoutHandoversInput>
+}
+
+export type StaffUpsertWithoutHandoversInput = {
+  update: Prisma.XOR<Prisma.StaffUpdateWithoutHandoversInput, Prisma.StaffUncheckedUpdateWithoutHandoversInput>
+  create: Prisma.XOR<Prisma.StaffCreateWithoutHandoversInput, Prisma.StaffUncheckedCreateWithoutHandoversInput>
+  where?: Prisma.StaffWhereInput
+}
+
+export type StaffUpdateToOneWithWhereWithoutHandoversInput = {
+  where?: Prisma.StaffWhereInput
+  data: Prisma.XOR<Prisma.StaffUpdateWithoutHandoversInput, Prisma.StaffUncheckedUpdateWithoutHandoversInput>
+}
+
+export type StaffUpdateWithoutHandoversInput = {
+  login?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumStaffRoleFieldUpdateOperationsInput | $Enums.StaffRole
+  locations?: Prisma.StaffUpdatelocationsInput | $Enums.CrmLocation[]
+  blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  geoConsentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  regulationAckVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  regulationAckAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  auditLogs?: Prisma.StaffAuditLogUpdateManyWithoutStaffNestedInput
+  visits?: Prisma.VisitStaffUpdateManyWithoutStaffNestedInput
+  checkins?: Prisma.CheckinUpdateManyWithoutStaffNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutStaffNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutStaffNestedInput
+  inspectionsReceived?: Prisma.VehicleInspectionUpdateManyWithoutReceivedByNestedInput
+  workItems?: Prisma.VisitWorkItemUpdateManyWithoutMasterNestedInput
+  receivedVisits?: Prisma.VisitHistoryUpdateManyWithoutReceiverNestedInput
+  payrollEntries?: Prisma.PayrollEntryUpdateManyWithoutStaffNestedInput
+}
+
+export type StaffUncheckedUpdateWithoutHandoversInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  login?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumStaffRoleFieldUpdateOperationsInput | $Enums.StaffRole
+  locations?: Prisma.StaffUpdatelocationsInput | $Enums.CrmLocation[]
+  blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  geoConsentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  regulationAckVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  regulationAckAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  auditLogs?: Prisma.StaffAuditLogUncheckedUpdateManyWithoutStaffNestedInput
+  visits?: Prisma.VisitStaffUncheckedUpdateManyWithoutStaffNestedInput
+  checkins?: Prisma.CheckinUncheckedUpdateManyWithoutStaffNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutStaffNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutStaffNestedInput
+  inspectionsReceived?: Prisma.VehicleInspectionUncheckedUpdateManyWithoutReceivedByNestedInput
+  workItems?: Prisma.VisitWorkItemUncheckedUpdateManyWithoutMasterNestedInput
+  receivedVisits?: Prisma.VisitHistoryUncheckedUpdateManyWithoutReceiverNestedInput
+  payrollEntries?: Prisma.PayrollEntryUncheckedUpdateManyWithoutStaffNestedInput
+}
+
+export type StaffCreateWithoutPayrollEntriesInput = {
+  login: string
+  passwordHash: string
+  fullName: string
+  role?: $Enums.StaffRole
+  locations?: Prisma.StaffCreatelocationsInput | $Enums.CrmLocation[]
+  blockedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  geoConsentAt?: Date | string | null
+  regulationAckVersion?: number
+  regulationAckAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  auditLogs?: Prisma.StaffAuditLogCreateNestedManyWithoutStaffInput
+  visits?: Prisma.VisitStaffCreateNestedManyWithoutStaffInput
+  checkins?: Prisma.CheckinCreateNestedManyWithoutStaffInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutStaffInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutStaffInput
+  inspectionsReceived?: Prisma.VehicleInspectionCreateNestedManyWithoutReceivedByInput
+  workItems?: Prisma.VisitWorkItemCreateNestedManyWithoutMasterInput
+  handovers?: Prisma.VisitHandoverCreateNestedManyWithoutIssuedByInput
+  receivedVisits?: Prisma.VisitHistoryCreateNestedManyWithoutReceiverInput
+}
+
+export type StaffUncheckedCreateWithoutPayrollEntriesInput = {
+  id?: number
+  login: string
+  passwordHash: string
+  fullName: string
+  role?: $Enums.StaffRole
+  locations?: Prisma.StaffCreatelocationsInput | $Enums.CrmLocation[]
+  blockedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  geoConsentAt?: Date | string | null
+  regulationAckVersion?: number
+  regulationAckAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  auditLogs?: Prisma.StaffAuditLogUncheckedCreateNestedManyWithoutStaffInput
+  visits?: Prisma.VisitStaffUncheckedCreateNestedManyWithoutStaffInput
+  checkins?: Prisma.CheckinUncheckedCreateNestedManyWithoutStaffInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutStaffInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutStaffInput
+  inspectionsReceived?: Prisma.VehicleInspectionUncheckedCreateNestedManyWithoutReceivedByInput
+  workItems?: Prisma.VisitWorkItemUncheckedCreateNestedManyWithoutMasterInput
+  handovers?: Prisma.VisitHandoverUncheckedCreateNestedManyWithoutIssuedByInput
+  receivedVisits?: Prisma.VisitHistoryUncheckedCreateNestedManyWithoutReceiverInput
+}
+
+export type StaffCreateOrConnectWithoutPayrollEntriesInput = {
+  where: Prisma.StaffWhereUniqueInput
+  create: Prisma.XOR<Prisma.StaffCreateWithoutPayrollEntriesInput, Prisma.StaffUncheckedCreateWithoutPayrollEntriesInput>
+}
+
+export type StaffUpsertWithoutPayrollEntriesInput = {
+  update: Prisma.XOR<Prisma.StaffUpdateWithoutPayrollEntriesInput, Prisma.StaffUncheckedUpdateWithoutPayrollEntriesInput>
+  create: Prisma.XOR<Prisma.StaffCreateWithoutPayrollEntriesInput, Prisma.StaffUncheckedCreateWithoutPayrollEntriesInput>
+  where?: Prisma.StaffWhereInput
+}
+
+export type StaffUpdateToOneWithWhereWithoutPayrollEntriesInput = {
+  where?: Prisma.StaffWhereInput
+  data: Prisma.XOR<Prisma.StaffUpdateWithoutPayrollEntriesInput, Prisma.StaffUncheckedUpdateWithoutPayrollEntriesInput>
+}
+
+export type StaffUpdateWithoutPayrollEntriesInput = {
+  login?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumStaffRoleFieldUpdateOperationsInput | $Enums.StaffRole
+  locations?: Prisma.StaffUpdatelocationsInput | $Enums.CrmLocation[]
+  blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  geoConsentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  regulationAckVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  regulationAckAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  auditLogs?: Prisma.StaffAuditLogUpdateManyWithoutStaffNestedInput
+  visits?: Prisma.VisitStaffUpdateManyWithoutStaffNestedInput
+  checkins?: Prisma.CheckinUpdateManyWithoutStaffNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutStaffNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutStaffNestedInput
+  inspectionsReceived?: Prisma.VehicleInspectionUpdateManyWithoutReceivedByNestedInput
+  workItems?: Prisma.VisitWorkItemUpdateManyWithoutMasterNestedInput
+  handovers?: Prisma.VisitHandoverUpdateManyWithoutIssuedByNestedInput
+  receivedVisits?: Prisma.VisitHistoryUpdateManyWithoutReceiverNestedInput
+}
+
+export type StaffUncheckedUpdateWithoutPayrollEntriesInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  login?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumStaffRoleFieldUpdateOperationsInput | $Enums.StaffRole
+  locations?: Prisma.StaffUpdatelocationsInput | $Enums.CrmLocation[]
+  blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  geoConsentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  regulationAckVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  regulationAckAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  auditLogs?: Prisma.StaffAuditLogUncheckedUpdateManyWithoutStaffNestedInput
+  visits?: Prisma.VisitStaffUncheckedUpdateManyWithoutStaffNestedInput
+  checkins?: Prisma.CheckinUncheckedUpdateManyWithoutStaffNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutStaffNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutStaffNestedInput
+  inspectionsReceived?: Prisma.VehicleInspectionUncheckedUpdateManyWithoutReceivedByNestedInput
+  workItems?: Prisma.VisitWorkItemUncheckedUpdateManyWithoutMasterNestedInput
+  handovers?: Prisma.VisitHandoverUncheckedUpdateManyWithoutIssuedByNestedInput
+  receivedVisits?: Prisma.VisitHistoryUncheckedUpdateManyWithoutReceiverNestedInput
 }
 
 
@@ -1141,6 +1926,11 @@ export type StaffCountOutputType = {
   checkins: number
   tasks: number
   notifications: number
+  inspectionsReceived: number
+  workItems: number
+  handovers: number
+  receivedVisits: number
+  payrollEntries: number
 }
 
 export type StaffCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1149,6 +1939,11 @@ export type StaffCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.
   checkins?: boolean | StaffCountOutputTypeCountCheckinsArgs
   tasks?: boolean | StaffCountOutputTypeCountTasksArgs
   notifications?: boolean | StaffCountOutputTypeCountNotificationsArgs
+  inspectionsReceived?: boolean | StaffCountOutputTypeCountInspectionsReceivedArgs
+  workItems?: boolean | StaffCountOutputTypeCountWorkItemsArgs
+  handovers?: boolean | StaffCountOutputTypeCountHandoversArgs
+  receivedVisits?: boolean | StaffCountOutputTypeCountReceivedVisitsArgs
+  payrollEntries?: boolean | StaffCountOutputTypeCountPayrollEntriesArgs
 }
 
 /**
@@ -1196,6 +1991,41 @@ export type StaffCountOutputTypeCountNotificationsArgs<ExtArgs extends runtime.T
   where?: Prisma.NotificationWhereInput
 }
 
+/**
+ * StaffCountOutputType without action
+ */
+export type StaffCountOutputTypeCountInspectionsReceivedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.VehicleInspectionWhereInput
+}
+
+/**
+ * StaffCountOutputType without action
+ */
+export type StaffCountOutputTypeCountWorkItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.VisitWorkItemWhereInput
+}
+
+/**
+ * StaffCountOutputType without action
+ */
+export type StaffCountOutputTypeCountHandoversArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.VisitHandoverWhereInput
+}
+
+/**
+ * StaffCountOutputType without action
+ */
+export type StaffCountOutputTypeCountReceivedVisitsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.VisitHistoryWhereInput
+}
+
+/**
+ * StaffCountOutputType without action
+ */
+export type StaffCountOutputTypeCountPayrollEntriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PayrollEntryWhereInput
+}
+
 
 export type StaffSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1216,6 +2046,11 @@ export type StaffSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   checkins?: boolean | Prisma.Staff$checkinsArgs<ExtArgs>
   tasks?: boolean | Prisma.Staff$tasksArgs<ExtArgs>
   notifications?: boolean | Prisma.Staff$notificationsArgs<ExtArgs>
+  inspectionsReceived?: boolean | Prisma.Staff$inspectionsReceivedArgs<ExtArgs>
+  workItems?: boolean | Prisma.Staff$workItemsArgs<ExtArgs>
+  handovers?: boolean | Prisma.Staff$handoversArgs<ExtArgs>
+  receivedVisits?: boolean | Prisma.Staff$receivedVisitsArgs<ExtArgs>
+  payrollEntries?: boolean | Prisma.Staff$payrollEntriesArgs<ExtArgs>
   _count?: boolean | Prisma.StaffCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["staff"]>
 
@@ -1274,6 +2109,11 @@ export type StaffInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   checkins?: boolean | Prisma.Staff$checkinsArgs<ExtArgs>
   tasks?: boolean | Prisma.Staff$tasksArgs<ExtArgs>
   notifications?: boolean | Prisma.Staff$notificationsArgs<ExtArgs>
+  inspectionsReceived?: boolean | Prisma.Staff$inspectionsReceivedArgs<ExtArgs>
+  workItems?: boolean | Prisma.Staff$workItemsArgs<ExtArgs>
+  handovers?: boolean | Prisma.Staff$handoversArgs<ExtArgs>
+  receivedVisits?: boolean | Prisma.Staff$receivedVisitsArgs<ExtArgs>
+  payrollEntries?: boolean | Prisma.Staff$payrollEntriesArgs<ExtArgs>
   _count?: boolean | Prisma.StaffCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type StaffIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1287,6 +2127,11 @@ export type $StaffPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     checkins: Prisma.$CheckinPayload<ExtArgs>[]
     tasks: Prisma.$TaskPayload<ExtArgs>[]
     notifications: Prisma.$NotificationPayload<ExtArgs>[]
+    inspectionsReceived: Prisma.$VehicleInspectionPayload<ExtArgs>[]
+    workItems: Prisma.$VisitWorkItemPayload<ExtArgs>[]
+    handovers: Prisma.$VisitHandoverPayload<ExtArgs>[]
+    receivedVisits: Prisma.$VisitHistoryPayload<ExtArgs>[]
+    payrollEntries: Prisma.$PayrollEntryPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -1710,6 +2555,11 @@ export interface Prisma__StaffClient<T, Null = never, ExtArgs extends runtime.Ty
   checkins<T extends Prisma.Staff$checkinsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Staff$checkinsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CheckinPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   tasks<T extends Prisma.Staff$tasksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Staff$tasksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   notifications<T extends Prisma.Staff$notificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Staff$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  inspectionsReceived<T extends Prisma.Staff$inspectionsReceivedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Staff$inspectionsReceivedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VehicleInspectionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  workItems<T extends Prisma.Staff$workItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Staff$workItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VisitWorkItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  handovers<T extends Prisma.Staff$handoversArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Staff$handoversArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VisitHandoverPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  receivedVisits<T extends Prisma.Staff$receivedVisitsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Staff$receivedVisitsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VisitHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  payrollEntries<T extends Prisma.Staff$payrollEntriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Staff$payrollEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PayrollEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1948,6 +2798,11 @@ export type StaffFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    * Skip the first `n` Staff.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of Staff.
+   */
   distinct?: Prisma.StaffScalarFieldEnum | Prisma.StaffScalarFieldEnum[]
 }
 
@@ -2257,6 +3112,126 @@ export type Staff$notificationsArgs<ExtArgs extends runtime.Types.Extensions.Int
   take?: number
   skip?: number
   distinct?: Prisma.NotificationScalarFieldEnum | Prisma.NotificationScalarFieldEnum[]
+}
+
+/**
+ * Staff.inspectionsReceived
+ */
+export type Staff$inspectionsReceivedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the VehicleInspection
+   */
+  select?: Prisma.VehicleInspectionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the VehicleInspection
+   */
+  omit?: Prisma.VehicleInspectionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.VehicleInspectionInclude<ExtArgs> | null
+  where?: Prisma.VehicleInspectionWhereInput
+  orderBy?: Prisma.VehicleInspectionOrderByWithRelationInput | Prisma.VehicleInspectionOrderByWithRelationInput[]
+  cursor?: Prisma.VehicleInspectionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.VehicleInspectionScalarFieldEnum | Prisma.VehicleInspectionScalarFieldEnum[]
+}
+
+/**
+ * Staff.workItems
+ */
+export type Staff$workItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the VisitWorkItem
+   */
+  select?: Prisma.VisitWorkItemSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the VisitWorkItem
+   */
+  omit?: Prisma.VisitWorkItemOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.VisitWorkItemInclude<ExtArgs> | null
+  where?: Prisma.VisitWorkItemWhereInput
+  orderBy?: Prisma.VisitWorkItemOrderByWithRelationInput | Prisma.VisitWorkItemOrderByWithRelationInput[]
+  cursor?: Prisma.VisitWorkItemWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.VisitWorkItemScalarFieldEnum | Prisma.VisitWorkItemScalarFieldEnum[]
+}
+
+/**
+ * Staff.handovers
+ */
+export type Staff$handoversArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the VisitHandover
+   */
+  select?: Prisma.VisitHandoverSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the VisitHandover
+   */
+  omit?: Prisma.VisitHandoverOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.VisitHandoverInclude<ExtArgs> | null
+  where?: Prisma.VisitHandoverWhereInput
+  orderBy?: Prisma.VisitHandoverOrderByWithRelationInput | Prisma.VisitHandoverOrderByWithRelationInput[]
+  cursor?: Prisma.VisitHandoverWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.VisitHandoverScalarFieldEnum | Prisma.VisitHandoverScalarFieldEnum[]
+}
+
+/**
+ * Staff.receivedVisits
+ */
+export type Staff$receivedVisitsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the VisitHistory
+   */
+  select?: Prisma.VisitHistorySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the VisitHistory
+   */
+  omit?: Prisma.VisitHistoryOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.VisitHistoryInclude<ExtArgs> | null
+  where?: Prisma.VisitHistoryWhereInput
+  orderBy?: Prisma.VisitHistoryOrderByWithRelationInput | Prisma.VisitHistoryOrderByWithRelationInput[]
+  cursor?: Prisma.VisitHistoryWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.VisitHistoryScalarFieldEnum | Prisma.VisitHistoryScalarFieldEnum[]
+}
+
+/**
+ * Staff.payrollEntries
+ */
+export type Staff$payrollEntriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PayrollEntry
+   */
+  select?: Prisma.PayrollEntrySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PayrollEntry
+   */
+  omit?: Prisma.PayrollEntryOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PayrollEntryInclude<ExtArgs> | null
+  where?: Prisma.PayrollEntryWhereInput
+  orderBy?: Prisma.PayrollEntryOrderByWithRelationInput | Prisma.PayrollEntryOrderByWithRelationInput[]
+  cursor?: Prisma.PayrollEntryWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PayrollEntryScalarFieldEnum | Prisma.PayrollEntryScalarFieldEnum[]
 }
 
 /**

@@ -7,6 +7,7 @@ import { StaffAuditAction, StaffAuditService, adminActor } from "./staff-audit.s
 import { toMasterVisit } from "./master-visit.mapper";
 import { NotificationType, fmtMsk, MASTER_HOME } from "./notification-types";
 import { NotificationsService } from "./notifications.service";
+import { PayrollService } from "../payroll/payroll.service";
 
 const DEFAULT_WINDOW_DAYS = 14;
 const MAX_WINDOW_DAYS = 62;
@@ -17,6 +18,7 @@ export class StaffAssignmentsService {
     private readonly prisma: PrismaService,
     private readonly audit: StaffAuditService,
     private readonly notifications: NotificationsService,
+    private readonly payroll: PayrollService,
   ) {}
 
   /** Админ: задать мастеров записи (кнопка «Назначить мастера» в календаре). */
@@ -51,6 +53,8 @@ export class StaffAssignmentsService {
     ]);
 
     if (added.length || removed.length) {
+      // Базовая ставка считается сразу при назначении; снятому мастеру начисление удаляется
+      await this.payroll.syncMasters(visitId, added, removed);
       await this.audit.log({
         action: StaffAuditAction.ASSIGNMENT_CHANGED,
         actor: adminActor(req),

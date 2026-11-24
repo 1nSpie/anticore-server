@@ -182,7 +182,7 @@ export type WorkServiceGroupByOutputType = {
   _max: WorkServiceMaxAggregateOutputType | null
 }
 
-type GetWorkServiceGroupByPayload<T extends WorkServiceGroupByArgs> = Prisma.PrismaPromise<
+export type GetWorkServiceGroupByPayload<T extends WorkServiceGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<WorkServiceGroupByOutputType, T['by']> &
       {
@@ -1097,6 +1097,11 @@ export type WorkServiceFindManyArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Skip the first `n` WorkServices.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of WorkServices.
+   */
   distinct?: Prisma.WorkServiceScalarFieldEnum | Prisma.WorkServiceScalarFieldEnum[]
 }
 

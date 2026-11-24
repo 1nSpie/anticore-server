@@ -21,6 +21,7 @@ import { CrmSettingsService } from "../settings/crm-settings.service";
 import { CrmSmsService } from "../sms/crm-sms.service";
 import { NotificationType, fmtMsk, scheduleChangeText, MASTER_HOME } from "../../staff/notification-types";
 import { NotificationsService } from "../../staff/notifications.service";
+import { closingChecklist, closingMissing } from "../../payroll/payroll.rules";
 import {
   CompleteAppointmentDto,
   CreateAppointmentDto,
@@ -92,6 +93,15 @@ export class CrmAppointmentsService {
     });
 
     return rows.map((r) => this.toEvent(r));
+  }
+
+  async get(id: number) {
+    const row = await this.prisma.visitHistory.findUnique({
+      where: { id },
+      include: appointmentInclude,
+    });
+    if (!row) throw new NotFoundException("Запись не найдена");
+    return this.toEvent(row);
   }
 
   /**
@@ -218,9 +228,19 @@ export class CrmAppointmentsService {
   async update(id: number, dto: UpdateAppointmentDto) {
     const existing = await this.prisma.visitHistory.findUnique({
       where: { id },
-      include: { user: true },
+      include: { user: true, workItems: { where: { kind: "AGREED" }, select: { priceRub: true } } },
     });
     if (!existing) throw new NotFoundException("Запись не найдена");
+    // Есть перечень согласованных работ — название услуги и цена считаются из него, а не из формы
+    const hasWorks = existing.workItems.length > 0;
+    const worksPriced = hasWorks && existing.workItems.every((i) => i.priceRub != null);
+
+    // Номер договора несёт префикс филиала: после его выдачи филиал менять нельзя (ТЗ §16)
+    if (existing.docNumber && dto.location !== undefined && dto.location !== existing.location) {
+      throw new BadRequestException(
+        `По записи уже выдан номер документов ${existing.docNumber}: филиал изменить нельзя`,
+      );
+    }
 
     const clientId = dto.clientId ?? existing.userId;
     if (dto.clientId) await this.ensureClient(dto.clientId);
@@ -267,11 +287,11 @@ export class CrmAppointmentsService {
           visitDate: startsAt!,
         }),
         ...(dto.endsAt !== undefined && { endsAt }),
-        ...(dto.serviceType !== undefined && { serviceType: dto.serviceType }),
+        ...(dto.serviceType !== undefined && !hasWorks && { serviceType: dto.serviceType }),
         ...(dto.serviceTypeId !== undefined && {
           serviceTypeId: dto.serviceTypeId,
         }),
-        ...(dto.priceRub !== undefined && { priceRub: dto.priceRub }),
+        ...(dto.priceRub !== undefined && !worksPriced && { priceRub: dto.priceRub }),
         ...(dto.managerName !== undefined && {
           managerName: dto.managerName?.trim() || null,
         }),
@@ -307,6 +327,11 @@ export class CrmAppointmentsService {
       where: { id },
     });
     if (!existing) throw new NotFoundException("Запись не найдена");
+    if (existing.docNumber) {
+      throw new ConflictException(
+        `По записи оформлены документы (${existing.docNumber}): удалить её нельзя`,
+      );
+    }
     // Назначения удалятся каскадом — мастеров собираем заранее
     const assignees = await this.prisma.visitStaff.findMany({ where: { visitId: id }, select: { staffId: true } });
     await this.prisma.$transaction([
@@ -362,12 +387,38 @@ export class CrmAppointmentsService {
       throw new BadRequestException("Укажите ссылку на Яндекс.Диск");
     }
 
+    // Закрыть машину можно только с фотоотчётом и подписанными документами: от этого зависит начисление зарплаты
+    const [photos, docs] = await Promise.all([
+      this.prisma.visitPhoto.findMany({ where: { visitId: id }, select: { stage: true } }),
+      this.prisma.document.findMany({
+        where: { visitId: id },
+        select: { kind: true, versions: { orderBy: { version: "desc" }, take: 1, select: { status: true } } },
+      }),
+    ]);
+    const missing = closingMissing(
+      closingChecklist({
+        photoStages: photos.map((p) => p.stage),
+        diskLink,
+        signedKinds: docs.filter((d) => d.versions[0]?.status === "SIGNED").map((d) => d.kind),
+      }),
+    );
+    if (missing.length) {
+      throw new BadRequestException({
+        statusCode: 400,
+        message: `Машину нельзя закрыть. Не хватает: ${missing.join("; ")}`,
+        code: "CLOSING_REQUIREMENTS",
+        missing,
+      });
+    }
+
     const now = new Date();
     await this.prisma.$transaction([
       this.prisma.visitHistory.update({
         where: { id },
         data: { completedAt: now, diskLink },
       }),
+      // Ставки мастеру и приёмщику, посчитанные при назначении, становятся начисленными
+      this.prisma.payrollEntry.updateMany({ where: { visitId: id, accruedAt: null }, data: { accruedAt: now } }),
       ...(lead && lead.status !== SiteLeadStatus.COMPLETED
         ? [
             this.prisma.siteLead.update({
@@ -410,6 +461,7 @@ export class CrmAppointmentsService {
         where: { id },
         data: { completedAt: null },
       }),
+      this.prisma.payrollEntry.updateMany({ where: { visitId: id }, data: { accruedAt: null } }),
       ...(visit.siteLead?.status === SiteLeadStatus.COMPLETED
         ? [
             this.prisma.siteLead.update({
@@ -533,6 +585,8 @@ export class CrmAppointmentsService {
       id: number;
       customLabel: string | null;
       vin: string | null;
+      year: number | null;
+      plate: string | null;
       car?: { model: string; brand?: { name: string } | null } | null;
     } | null;
     catalogServiceType?: { id: number; name: string } | null;
@@ -553,6 +607,8 @@ export class CrmAppointmentsService {
             id: row.vehicle.id,
             label: vehicleLabel,
             vin: row.vehicle.vin,
+            year: row.vehicle.year,
+            plate: row.vehicle.plate,
             customLabel: row.vehicle.customLabel,
             carBrand: row.vehicle.car?.brand?.name ?? null,
             carModelName: row.vehicle.car?.model ?? null,

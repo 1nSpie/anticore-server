@@ -43,6 +43,12 @@ export class CrmAppointmentsController {
     return this.appointments.search(q);
   }
 
+  /** Одна запись — для страницы записи с прямой ссылкой. */
+  @Get(":id")
+  get(@Param("id", ParseIntPipe) id: number) {
+    return this.appointments.get(id);
+  }
+
   @Post()
   create(@Body() dto: CreateAppointmentDto) {
     return this.appointments.create(dto);

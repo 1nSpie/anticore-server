@@ -193,7 +193,7 @@ export type CarGroupByOutputType = {
   _max: CarMaxAggregateOutputType | null
 }
 
-type GetCarGroupByPayload<T extends CarGroupByArgs> = Prisma.PrismaPromise<
+export type GetCarGroupByPayload<T extends CarGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<CarGroupByOutputType, T['by']> &
       {
@@ -712,7 +712,8 @@ export type $CarPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   objects: {
     brand: Prisma.$BrandPayload<ExtArgs> | null
     /**
-     * * @deprecated legacy single-car slot on CabinetUser — prefer ClientVehicle
+     * *
+     *    * @deprecated legacy single-car slot on CabinetUser — prefer ClientVehicle
      */
     cabinetUsers: Prisma.$CabinetUserPayload<ExtArgs>[]
     clientVehicles: Prisma.$ClientVehiclePayload<ExtArgs>[]
@@ -1348,6 +1349,11 @@ export type CarFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
    * Skip the first `n` Cars.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of Cars.
+   */
   distinct?: Prisma.CarScalarFieldEnum | Prisma.CarScalarFieldEnum[]
 }
 

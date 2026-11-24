@@ -26,7 +26,9 @@ export * from "./enums"
  * Type-safe database client for TypeScript
  * @example
  * ```
- * const prisma = new PrismaClient()
+ * const prisma = new PrismaClient({
+ *   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL })
+ * })
  * // Fetch zero or more Brands
  * const brands = await prisma.brand.findMany()
  * ```
@@ -99,7 +101,8 @@ export type PendingRegistration = Prisma.PendingRegistrationModel
 export type CabinetUser = Prisma.CabinetUserModel
 /**
  * Model ClientVehicle
- * * Автомобиль клиента (экземпляр); каталог Car — только марка/модель/сегмент.
+ * *
+ *  * Автомобиль клиента (экземпляр); каталог Car — только марка/модель/сегмент.
  */
 export type ClientVehicle = Prisma.ClientVehicleModel
 /**
@@ -168,13 +171,24 @@ export type SmsTemplate = Prisma.SmsTemplateModel
  */
 export type CompanySettings = Prisma.CompanySettingsModel
 /**
+ * Model Organization
+ * Реквизиты исполнителя (ИП): единственная строка id=1, общая для договора и актов.
+ */
+export type Organization = Prisma.OrganizationModel
+/**
+ * Model Branch
+ * Филиал для документов: город, адрес и префикс номера. Ключ — тот же `CrmLocation`, что у записи.
+ */
+export type Branch = Prisma.BranchModel
+/**
  * Model SmsLog
  * 
  */
 export type SmsLog = Prisma.SmsLogModel
 /**
  * Model CrmDayLimit
- * * Лимит записей в календарь на день и филиал.
+ * *
+ *  * Лимит записей в календарь на день и филиал.
  */
 export type CrmDayLimit = Prisma.CrmDayLimitModel
 /**
@@ -232,3 +246,98 @@ export type Notification = Prisma.NotificationModel
  * Фото к задаче в приватном хранилище Selectel. Объект лежит по `key`, наружу отдаётся только подписанная ссылка.
  */
 export type TaskPhoto = Prisma.TaskPhotoModel
+/**
+ * Model VehicleInspection
+ * Приёмка конкретного визита: значения этого посещения, история не перезаписывается.
+ * Единственный источник данных для акта приёма-передачи.
+ */
+export type VehicleInspection = Prisma.VehicleInspectionModel
+/**
+ * Model InspectionMark
+ * Отметка на схеме автомобиля. Координаты — доли от размера схемы (0..1).
+ */
+export type InspectionMark = Prisma.InspectionMarkModel
+/**
+ * Model VisitPhoto
+ * Фото визита: клиент и автомобиль определяются по записи; этап и (при необходимости) повреждение — здесь.
+ * Файл в публичном бакете под случайным UUID (как фото задач).
+ */
+export type VisitPhoto = Prisma.VisitPhotoModel
+/**
+ * Model DocumentCounter
+ * Счётчик номеров по префиксу филиала. Растёт атомарно (INSERT … ON CONFLICT DO UPDATE).
+ */
+export type DocumentCounter = Prisma.DocumentCounterModel
+/**
+ * Model Document
+ * Документ записи определённого вида; сами данные — в версиях.
+ */
+export type Document = Prisma.DocumentModel
+/**
+ * Model DocumentVersion
+ * Версия документа со снимком всех данных на момент формирования. Снимок не меняется никогда:
+ * подписанная версия остаётся прежней, даже если потом исправили карточку клиента или автомобиля.
+ */
+export type DocumentVersion = Prisma.DocumentVersionModel
+/**
+ * Model ServiceCategory
+ * Категория услуг: антикоррозийная обработка, сварочные работы, лазерная очистка, мойка днища, диагностика.
+ */
+export type ServiceCategory = Prisma.ServiceCategoryModel
+/**
+ * Model ServiceOptionGroup
+ * Группа параметров категории («Основные виды», «Зоны автомобиля»…): множественный выбор и/или свой вариант.
+ */
+export type ServiceOptionGroup = Prisma.ServiceOptionGroupModel
+/**
+ * Model ServiceOption
+ * Значение справочника. Расширяется из админки без правки кода.
+ */
+export type ServiceOption = Prisma.ServiceOptionModel
+/**
+ * Model VisitWorkItem
+ * Позиция согласованных работ по записи. Значения параметров хранятся текстом (а не ссылками):
+ * переименование справочника не меняет уже согласованные работы.
+ */
+export type VisitWorkItem = Prisma.VisitWorkItemModel
+/**
+ * Model VisitHandover
+ * Выдача автомобиля и гарантия. Все значения вносятся явно: гарантийный срок не назначается автоматически,
+ * а время выдачи не берётся из предварительной записи (ТЗ §14.6–14.7).
+ */
+export type VisitHandover = Prisma.VisitHandoverModel
+/**
+ * Model PayrollSettings
+ * Единственная строка (id = 1): базовые ставки за заказ, в рублях. Начисление копирует ставку на момент назначения.
+ */
+export type PayrollSettings = Prisma.PayrollSettingsModel
+/**
+ * Model PayrollBonusType
+ * Справочник доп. выплат («Чистота», «Отзыв» …): сумма и для кого применяется.
+ */
+export type PayrollBonusType = Prisma.PayrollBonusTypeModel
+/**
+ * Model PayrollEntry
+ * Начисление сотруднику по записи: ставка зафиксирована при назначении, «начислено» — когда машина закрыта.
+ */
+export type PayrollEntry = Prisma.PayrollEntryModel
+/**
+ * Model PayrollBonus
+ * Доп. выплата, отмеченная управляющим; название и сумма копируются из справочника.
+ */
+export type PayrollBonus = Prisma.PayrollBonusModel
+/**
+ * Model CashEntry
+ * Приход и расход наличных по филиалу. Запись не удаляется, а аннулируется с причиной.
+ */
+export type CashEntry = Prisma.CashEntryModel
+/**
+ * Model StockItem
+ * Номенклатура склада (материалы, расходники).
+ */
+export type StockItem = Prisma.StockItemModel
+/**
+ * Model StockMovement
+ * Движение по складу филиала. `delta` со знаком: приход +, расход −, инвентаризация ±. Остаток = сумма delta.
+ */
+export type StockMovement = Prisma.StockMovementModel

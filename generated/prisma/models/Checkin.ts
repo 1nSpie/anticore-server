@@ -261,7 +261,7 @@ export type CheckinGroupByOutputType = {
   _max: CheckinMaxAggregateOutputType | null
 }
 
-type GetCheckinGroupByPayload<T extends CheckinGroupByArgs> = Prisma.PrismaPromise<
+export type GetCheckinGroupByPayload<T extends CheckinGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<CheckinGroupByOutputType, T['by']> &
       {
@@ -588,14 +588,6 @@ export type CheckinUncheckedUpdateManyWithoutStaffNestedInput = {
   update?: Prisma.CheckinUpdateWithWhereUniqueWithoutStaffInput | Prisma.CheckinUpdateWithWhereUniqueWithoutStaffInput[]
   updateMany?: Prisma.CheckinUpdateManyWithWhereWithoutStaffInput | Prisma.CheckinUpdateManyWithWhereWithoutStaffInput[]
   deleteMany?: Prisma.CheckinScalarWhereInput | Prisma.CheckinScalarWhereInput[]
-}
-
-export type NullableFloatFieldUpdateOperationsInput = {
-  set?: number | null
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
 }
 
 export type EnumCheckinStatusFieldUpdateOperationsInput = {
@@ -1463,6 +1455,11 @@ export type CheckinFindManyArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * Skip the first `n` Checkins.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of Checkins.
+   */
   distinct?: Prisma.CheckinScalarFieldEnum | Prisma.CheckinScalarFieldEnum[]
 }
 

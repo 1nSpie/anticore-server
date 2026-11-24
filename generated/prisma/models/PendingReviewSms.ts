@@ -189,7 +189,7 @@ export type PendingReviewSmsGroupByOutputType = {
   _max: PendingReviewSmsMaxAggregateOutputType | null
 }
 
-type GetPendingReviewSmsGroupByPayload<T extends PendingReviewSmsGroupByArgs> = Prisma.PrismaPromise<
+export type GetPendingReviewSmsGroupByPayload<T extends PendingReviewSmsGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<PendingReviewSmsGroupByOutputType, T['by']> &
       {
@@ -1085,6 +1085,11 @@ export type PendingReviewSmsFindManyArgs<ExtArgs extends runtime.Types.Extension
    * Skip the first `n` PendingReviewSms.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of PendingReviewSms.
+   */
   distinct?: Prisma.PendingReviewSmsScalarFieldEnum | Prisma.PendingReviewSmsScalarFieldEnum[]
 }
 

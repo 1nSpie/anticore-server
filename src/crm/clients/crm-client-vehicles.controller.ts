@@ -33,7 +33,7 @@ export class CrmClientVehiclesController {
     @Param("clientId", ParseIntPipe) clientId: number,
     @Body() dto: UpsertClientVehicleDto,
   ) {
-    return this.vehicles.create(clientId, dto);
+    return this.vehicles.create(clientId, dto, { requireComplete: true });
   }
 
   @Patch(":vehicleId")

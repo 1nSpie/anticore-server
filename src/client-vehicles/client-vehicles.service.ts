@@ -9,6 +9,7 @@ import {
   formatVehicleLabel,
   validateVin,
 } from "../crm/common/crm-format.util";
+import { validatePlate, validateVehicleYear } from "../common/vehicle.util";
 
 export type VehicleCarInclude = {
   model: string;
@@ -22,6 +23,8 @@ export type VehicleRow = {
   carId: number | null;
   customLabel: string | null;
   vin: string | null;
+  year: number | null;
+  plate: string | null;
   isPrimary: boolean;
   archivedAt: Date | null;
   createdAt: Date;
@@ -33,8 +36,13 @@ export type UpsertVehicleInput = {
   carId?: number | null;
   customLabel?: string | null;
   vin?: string | null;
+  year?: number | null;
+  plate?: string | null;
   isPrimary?: boolean;
 };
+
+/** Что обязательно при создании автомобиля через CRM: марка/модель и год выпуска. */
+export type CreateVehicleOptions = { requireComplete?: boolean };
 
 const vehicleInclude = {
   car: {
@@ -57,6 +65,8 @@ export class ClientVehiclesService {
       carId: v.carId,
       customLabel: v.customLabel,
       vin: v.vin,
+      year: v.year,
+      plate: v.plate,
       isPrimary: v.isPrimary,
       archivedAt: v.archivedAt,
       createdAt: v.createdAt,
@@ -101,9 +111,14 @@ export class ClientVehiclesService {
     return row;
   }
 
-  async create(userId: number, input: UpsertVehicleInput) {
+  async create(
+    userId: number,
+    input: UpsertVehicleInput,
+    opts: CreateVehicleOptions = {},
+  ) {
     await this.ensureUser(userId);
     const data = await this.normalizeInput(input);
+    if (opts.requireComplete) assertVehicleComplete(data);
     const count = await this.prisma.clientVehicle.count({
       where: { userId, archivedAt: null },
     });
@@ -122,6 +137,8 @@ export class ClientVehiclesService {
         carId: data.carId,
         customLabel: data.customLabel,
         vin: data.vin,
+        year: data.year,
+        plate: data.plate,
         isPrimary: makePrimary,
       },
       include: vehicleInclude,
@@ -156,6 +173,8 @@ export class ClientVehiclesService {
           ? { carId: data.carId, customLabel: data.customLabel }
           : {}),
         ...(input.vin !== undefined && { vin: data.vin }),
+        ...(input.year !== undefined && { year: data.year }),
+        ...(input.plate !== undefined && { plate: data.plate }),
         ...(input.isPrimary === true && { isPrimary: true }),
       },
       include: vehicleInclude,
@@ -200,10 +219,18 @@ export class ClientVehiclesService {
    */
   async ensurePrimaryFromLegacy(
     userId: number,
-    legacy: { carId?: number | null; customCar?: string | null; vin?: string | null },
+    legacy: {
+      carId?: number | null;
+      customCar?: string | null;
+      vin?: string | null;
+      year?: number | null;
+      plate?: string | null;
+    },
     tx?: Prisma.TransactionClient,
   ) {
     const db = tx ?? this.prisma;
+    const year = legacy.year != null ? validateVehicleYear(legacy.year) : undefined;
+    const plate = legacy.plate?.trim() ? validatePlate(legacy.plate) : undefined;
     const hasCar =
       legacy.carId != null ||
       Boolean(legacy.customCar?.trim()) ||
@@ -229,6 +256,8 @@ export class ClientVehiclesService {
                 ? validateVin(legacy.vin)
                 : null
               : existing.vin,
+          ...(year !== undefined && { year }),
+          ...(plate !== undefined && { plate }),
           isPrimary: true,
         },
         include: vehicleInclude,
@@ -241,6 +270,8 @@ export class ClientVehiclesService {
         carId: legacy.carId ?? null,
         customLabel: legacy.customCar?.trim() || null,
         vin: legacy.vin?.trim() ? validateVin(legacy.vin) : null,
+        year: year ?? null,
+        plate: plate ?? null,
         isPrimary: true,
       },
       include: vehicleInclude,
@@ -280,7 +311,13 @@ export class ClientVehiclesService {
 
   private async normalizeInput(
     input: UpsertVehicleInput,
-    existing?: { carId: number | null; customLabel: string | null; vin: string | null },
+    existing?: {
+      carId: number | null;
+      customLabel: string | null;
+      vin: string | null;
+      year?: number | null;
+      plate?: string | null;
+    },
   ) {
     let carId =
       input.carId !== undefined ? input.carId : (existing?.carId ?? null);
@@ -294,6 +331,18 @@ export class ClientVehiclesService {
           ? validateVin(input.vin)
           : null
         : (existing?.vin ?? null);
+    const year =
+      input.year !== undefined
+        ? input.year != null
+          ? validateVehicleYear(input.year)
+          : null
+        : (existing?.year ?? null);
+    const plate =
+      input.plate !== undefined
+        ? input.plate?.trim()
+          ? validatePlate(input.plate)
+          : null
+        : (existing?.plate ?? null);
 
     if (input.customLabel !== undefined && customLabel) {
       carId = null;
@@ -309,7 +358,7 @@ export class ClientVehiclesService {
       );
     }
 
-    return { carId, customLabel, vin };
+    return { carId, customLabel, vin, year, plate };
   }
 
   private async assertCatalogCar(carId: number) {
@@ -317,5 +366,19 @@ export class ClientVehiclesService {
     if (!car) {
       throw new BadRequestException("Автомобиль не найден в каталоге");
     }
+  }
+}
+
+/** Марка/модель (каталог или текст) и год — минимум для карточки автомобиля по ТЗ. */
+export function assertVehicleComplete(data: {
+  carId: number | null;
+  customLabel: string | null;
+  year: number | null;
+}) {
+  const missing: string[] = [];
+  if (!data.carId && !data.customLabel) missing.push("марка и модель");
+  if (data.year == null) missing.push("год выпуска");
+  if (missing.length) {
+    throw new BadRequestException(`Не заполнено: ${missing.join(", ")}`);
   }
 }

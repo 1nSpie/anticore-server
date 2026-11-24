@@ -199,7 +199,7 @@ export type AdminAuditLogGroupByOutputType = {
   _max: AdminAuditLogMaxAggregateOutputType | null
 }
 
-type GetAdminAuditLogGroupByPayload<T extends AdminAuditLogGroupByArgs> = Prisma.PrismaPromise<
+export type GetAdminAuditLogGroupByPayload<T extends AdminAuditLogGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<AdminAuditLogGroupByOutputType, T['by']> &
       {
@@ -1023,6 +1023,11 @@ export type AdminAuditLogFindManyArgs<ExtArgs extends runtime.Types.Extensions.I
    * Skip the first `n` AdminAuditLogs.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of AdminAuditLogs.
+   */
   distinct?: Prisma.AdminAuditLogScalarFieldEnum | Prisma.AdminAuditLogScalarFieldEnum[]
 }
 

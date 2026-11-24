@@ -171,7 +171,7 @@ export type CompanySettingsGroupByOutputType = {
   _max: CompanySettingsMaxAggregateOutputType | null
 }
 
-type GetCompanySettingsGroupByPayload<T extends CompanySettingsGroupByArgs> = Prisma.PrismaPromise<
+export type GetCompanySettingsGroupByPayload<T extends CompanySettingsGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<CompanySettingsGroupByOutputType, T['by']> &
       {
@@ -914,6 +914,11 @@ export type CompanySettingsFindManyArgs<ExtArgs extends runtime.Types.Extensions
    * Skip the first `n` CompanySettings.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of CompanySettings.
+   */
   distinct?: Prisma.CompanySettingsScalarFieldEnum | Prisma.CompanySettingsScalarFieldEnum[]
 }
 

@@ -97,3 +97,125 @@ export const TaskStatus = {
 } as const
 
 export type TaskStatus = (typeof TaskStatus)[keyof typeof TaskStatus]
+
+
+export const DamageType = {
+  SCRATCH: 'SCRATCH',
+  DENT: 'DENT',
+  CORROSION: 'CORROSION',
+  CHIP: 'CHIP',
+  OTHER: 'OTHER'
+} as const
+
+export type DamageType = (typeof DamageType)[keyof typeof DamageType]
+
+
+export const PhotoStage = {
+  RECEPTION: 'RECEPTION',
+  WORK_BEFORE: 'WORK_BEFORE',
+  WORK_AFTER: 'WORK_AFTER',
+  ISSUE: 'ISSUE'
+} as const
+
+export type PhotoStage = (typeof PhotoStage)[keyof typeof PhotoStage]
+
+
+export const PhotoSection = {
+  GENERAL: 'GENERAL',
+  EXTERIOR: 'EXTERIOR',
+  INTERIOR: 'INTERIOR'
+} as const
+
+export type PhotoSection = (typeof PhotoSection)[keyof typeof PhotoSection]
+
+
+export const DocumentKind = {
+  CONTRACT: 'CONTRACT',
+  ACCEPTANCE: 'ACCEPTANCE',
+  WORKS: 'WORKS'
+} as const
+
+export type DocumentKind = (typeof DocumentKind)[keyof typeof DocumentKind]
+
+
+export const DocumentVersionStatus = {
+  READY: 'READY',
+  SIGNED: 'SIGNED',
+  VOID: 'VOID'
+} as const
+
+export type DocumentVersionStatus = (typeof DocumentVersionStatus)[keyof typeof DocumentVersionStatus]
+
+
+export const PaymentMethod = {
+  CASH: 'CASH',
+  CARD_SBP: 'CARD_SBP',
+  INVOICE_IP: 'INVOICE_IP'
+} as const
+
+export type PaymentMethod = (typeof PaymentMethod)[keyof typeof PaymentMethod]
+
+
+export const WorkItemKind = {
+  AGREED: 'AGREED',
+  EXTRA: 'EXTRA'
+} as const
+
+export type WorkItemKind = (typeof WorkItemKind)[keyof typeof WorkItemKind]
+
+
+export const WorkStatus = {
+  WAITING: 'WAITING',
+  IN_PROGRESS: 'IN_PROGRESS',
+  DONE: 'DONE',
+  PAUSED: 'PAUSED',
+  NEEDS_APPROVAL: 'NEEDS_APPROVAL',
+  CANCELLED: 'CANCELLED'
+} as const
+
+export type WorkStatus = (typeof WorkStatus)[keyof typeof WorkStatus]
+
+
+export const ApprovalStatus = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED'
+} as const
+
+export type ApprovalStatus = (typeof ApprovalStatus)[keyof typeof ApprovalStatus]
+
+
+export const ApprovalChannel = {
+  PHONE: 'PHONE',
+  MESSENGER: 'MESSENGER',
+  EMAIL: 'EMAIL',
+  IN_PERSON: 'IN_PERSON',
+  OTHER: 'OTHER'
+} as const
+
+export type ApprovalChannel = (typeof ApprovalChannel)[keyof typeof ApprovalChannel]
+
+
+export const PayrollRole = {
+  MASTER: 'MASTER',
+  RECEIVER: 'RECEIVER'
+} as const
+
+export type PayrollRole = (typeof PayrollRole)[keyof typeof PayrollRole]
+
+
+export const CashDirection = {
+  IN: 'IN',
+  OUT: 'OUT'
+} as const
+
+export type CashDirection = (typeof CashDirection)[keyof typeof CashDirection]
+
+
+export const StockMoveKind = {
+  IN: 'IN',
+  OUT: 'OUT',
+  ADJUST: 'ADJUST'
+} as const
+
+export type StockMoveKind = (typeof StockMoveKind)[keyof typeof StockMoveKind]

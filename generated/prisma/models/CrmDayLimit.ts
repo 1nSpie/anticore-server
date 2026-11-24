@@ -14,7 +14,8 @@ import type * as Prisma from "../internal/prismaNamespace"
 
 /**
  * Model CrmDayLimit
- * * Лимит записей в календарь на день и филиал.
+ * *
+ *  * Лимит записей в календарь на день и филиал.
  */
 export type CrmDayLimitModel = runtime.Types.Result.DefaultSelection<Prisma.$CrmDayLimitPayload>
 
@@ -203,7 +204,7 @@ export type CrmDayLimitGroupByOutputType = {
   _max: CrmDayLimitMaxAggregateOutputType | null
 }
 
-type GetCrmDayLimitGroupByPayload<T extends CrmDayLimitGroupByArgs> = Prisma.PrismaPromise<
+export type GetCrmDayLimitGroupByPayload<T extends CrmDayLimitGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<CrmDayLimitGroupByOutputType, T['by']> &
       {
@@ -1035,6 +1036,11 @@ export type CrmDayLimitFindManyArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Skip the first `n` CrmDayLimits.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of CrmDayLimits.
+   */
   distinct?: Prisma.CrmDayLimitScalarFieldEnum | Prisma.CrmDayLimitScalarFieldEnum[]
 }
 

@@ -4,7 +4,7 @@ const initial = {
   id: 1, userId: 1, vehicleId: null, visitDate: new Date("2026-10-10T07:00:00Z"),
   startsAt: new Date("2026-10-10T07:00:00Z"), endsAt: new Date("2026-10-10T09:00:00Z"),
   serviceType: "Антикор днища", serviceTypeId: null, priceRub: 15000, managerName: null,
-  masterComment: null as string | null, location: "KOLOMNA", user: { id: 1, phone: "test" }, siteLead: null,
+  masterComment: null as string | null, location: "KOLOMNA", user: { id: 1, phone: "test" }, siteLead: null, workItems: [],
 };
 
 function setup(assignees: { staffId: number }[]) {
