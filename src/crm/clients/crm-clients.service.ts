@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ConflictException,
   Injectable,
   NotFoundException,
 } from "@nestjs/common";
@@ -134,6 +135,7 @@ export class CrmClientsService {
 
   async create(dto: CreateCrmClientDto) {
     const phone = normalizePhoneRu(dto.phone);
+    assertQuickCreateComplete(dto);
     if (dto.vin?.trim()) validateVin(dto.vin);
     if (dto.carId != null) await this.assertCarExists(dto.carId);
 
@@ -166,6 +168,8 @@ export class CrmClientsService {
       carId: dto.carId ?? null,
       customCar: dto.customCar ?? null,
       vin: dto.vin ?? null,
+      year: dto.year,
+      plate: dto.plate,
     });
     await this.vehicles.syncLegacyFields(user.id);
 
@@ -251,6 +255,14 @@ export class CrmClientsService {
   async remove(id: number) {
     const user = await this.prisma.cabinetUser.findUnique({ where: { id } });
     if (!user) throw new NotFoundException("Клиент не найден");
+    const withDocuments = await this.prisma.visitHistory.count({
+      where: { userId: id, docNumber: { not: null } },
+    });
+    if (withDocuments > 0) {
+      throw new ConflictException(
+        "У клиента есть оформленные документы: удалить его нельзя",
+      );
+    }
     await this.prisma.cabinetUser.delete({ where: { id } });
     return { message: "Удалено" };
   }
@@ -322,6 +334,8 @@ export class CrmClientsService {
       carId: number | null;
       customLabel: string | null;
       vin: string | null;
+      year: number | null;
+      plate: string | null;
       isPrimary: boolean;
       archivedAt: Date | null;
       createdAt: Date;
@@ -408,5 +422,20 @@ export class CrmClientsService {
         vehicleVin: v.vehicle?.vin ?? null,
       })),
     };
+  }
+}
+
+/**
+ * Обязательные поля быстрого создания: телефон, фамилия, имя, марка, модель, год.
+ * Отчество необязательно (решение заказчика, отступление от ТЗ §1).
+ */
+export function assertQuickCreateComplete(dto: CreateCrmClientDto) {
+  const missing: string[] = [];
+  if (!dto.lastName?.trim()) missing.push("фамилия");
+  if (!dto.firstName?.trim()) missing.push("имя");
+  if (dto.carId == null && !dto.customCar?.trim()) missing.push("марка и модель");
+  if (dto.year == null) missing.push("год выпуска");
+  if (missing.length) {
+    throw new BadRequestException(`Не заполнено: ${missing.join(", ")}`);
   }
 }

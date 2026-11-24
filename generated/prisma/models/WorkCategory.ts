@@ -192,7 +192,7 @@ export type WorkCategoryGroupByOutputType = {
   _max: WorkCategoryMaxAggregateOutputType | null
 }
 
-type GetWorkCategoryGroupByPayload<T extends WorkCategoryGroupByArgs> = Prisma.PrismaPromise<
+export type GetWorkCategoryGroupByPayload<T extends WorkCategoryGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<WorkCategoryGroupByOutputType, T['by']> &
       {
@@ -1127,6 +1127,11 @@ export type WorkCategoryFindManyArgs<ExtArgs extends runtime.Types.Extensions.In
    * Skip the first `n` WorkCategories.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of WorkCategories.
+   */
   distinct?: Prisma.WorkCategoryScalarFieldEnum | Prisma.WorkCategoryScalarFieldEnum[]
 }
 

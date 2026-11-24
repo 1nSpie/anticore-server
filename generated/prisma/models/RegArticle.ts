@@ -214,7 +214,7 @@ export type RegArticleGroupByOutputType = {
   _max: RegArticleMaxAggregateOutputType | null
 }
 
-type GetRegArticleGroupByPayload<T extends RegArticleGroupByArgs> = Prisma.PrismaPromise<
+export type GetRegArticleGroupByPayload<T extends RegArticleGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<RegArticleGroupByOutputType, T['by']> &
       {
@@ -1362,6 +1362,11 @@ export type RegArticleFindManyArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Skip the first `n` RegArticles.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of RegArticles.
+   */
   distinct?: Prisma.RegArticleScalarFieldEnum | Prisma.RegArticleScalarFieldEnum[]
 }
 

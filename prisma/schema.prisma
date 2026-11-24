@@ -14,13 +14,15 @@ model Brand {
 }
 
 model Car {
-  id      Int    @id @default(autoincrement())
-  model   String
-  brandId Int?
-  segment Int
-  brand   Brand? @relation(fields: [brandId], references: [id])
-  /** @deprecated legacy single-car slot on CabinetUser — prefer ClientVehicle */
-  cabinetUsers CabinetUser[]
+  id             Int             @id @default(autoincrement())
+  model          String
+  brandId        Int?
+  segment        Int
+  brand          Brand?          @relation(fields: [brandId], references: [id])
+  /**
+   * @deprecated legacy single-car slot on CabinetUser — prefer ClientVehicle
+   */
+  cabinetUsers   CabinetUser[]
   clientVehicles ClientVehicle[]
 }
 
@@ -34,72 +36,72 @@ model BodyTypePrice {
 }
 
 model BlogPost {
-  id        Int      @id @default(autoincrement())
-  title     String
-  excerpt   String
-  content   Json
-  slug      String   @unique
-  date      DateTime @default(now())
-  readTime  String
+  id         Int      @id @default(autoincrement())
+  title      String
+  excerpt    String
+  content    Json
+  slug       String   @unique
+  date       DateTime @default(now())
+  readTime   String
   categoryId Int
-  image     String?
-  author    String   @default("Эксперт Anticore")
-  featured  Boolean  @default(false)
-  published Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  
+  image      String?
+  author     String   @default("Эксперт Anticore")
+  featured   Boolean  @default(false)
+  published  Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
   category BlogCategory @relation(fields: [categoryId], references: [id])
   tags     BlogTag[]    @relation("BlogPostTags")
-  
+
   @@map("blog_posts")
 }
 
 model BlogCategory {
-  id        Int        @id @default(autoincrement())
-  name      String     @unique
-  slug      String     @unique
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  slug      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   posts BlogPost[]
-  
+
   @@map("blog_categories")
 }
 
 model BlogTag {
-  id        Int        @id @default(autoincrement())
-  name      String     @unique
-  slug      String     @unique
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  slug      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   posts BlogPost[] @relation("BlogPostTags")
-  
+
   @@map("blog_tags")
 }
 
 model Work {
-  id            Int      @id @default(autoincrement())
-  title         String
-  description   String
-  slug          String   @unique
-  beforeImage   String?
-  afterImage    String?
-  duration      String   // например "6 часов"
-  year          String   // например "2024"
-  carBrand      String   // например "Toyota"
-  carModel      String   // например "Camry 2018"
-  categoryId    Int
-  featured      Boolean  @default(false)
-  published     Boolean  @default(true)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  
-  category      WorkCategory @relation(fields: [categoryId], references: [id])
-  services      WorkService[]
-  images        WorkImage[]
-  
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  slug        String   @unique
+  beforeImage String?
+  afterImage  String?
+  duration    String // например "6 часов"
+  year        String // например "2024"
+  carBrand    String // например "Toyota"
+  carModel    String // например "Camry 2018"
+  categoryId  Int
+  featured    Boolean  @default(false)
+  published   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  category WorkCategory  @relation(fields: [categoryId], references: [id])
+  services WorkService[]
+  images   WorkImage[]
+
   @@map("works")
 }
 
@@ -109,31 +111,31 @@ model WorkCategory {
   slug      String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  
+
   works Work[]
-  
+
   @@map("work_categories")
 }
 
 model WorkService {
-  id      Int    @id @default(autoincrement())
-  name    String
-  workId  Int
-  
+  id     Int    @id @default(autoincrement())
+  name   String
+  workId Int
+
   work Work @relation(fields: [workId], references: [id], onDelete: Cascade)
-  
+
   @@map("work_services")
 }
 
 model WorkImage {
-  id       Int    @id @default(autoincrement())
-  url      String
-  alt      String?
-  order    Int    @default(0)
-  workId   Int
-  
+  id     Int     @id @default(autoincrement())
+  url    String
+  alt    String?
+  order  Int     @default(0)
+  workId Int
+
   work Work @relation(fields: [workId], references: [id], onDelete: Cascade)
-  
+
   @@map("work_images")
 }
 
@@ -150,68 +152,88 @@ enum SmsPurpose {
 
 /// Ожидание подтверждения регистрации по SMS
 model PendingRegistration {
-  id                     Int       @id @default(autoincrement())
-  phone                  String    @unique
-  passwordHash           String
-  code                   String
-  expiresAt              DateTime
+  id                      Int       @id @default(autoincrement())
+  phone                   String    @unique
+  passwordHash            String
+  code                    String
+  expiresAt               DateTime
   privacyPolicyAcceptedAt DateTime?
-  personalDataConsentAt  DateTime?
-  termsAcceptedAt        DateTime?
-  createdAt              DateTime  @default(now())
+  personalDataConsentAt   DateTime?
+  termsAcceptedAt         DateTime?
+  createdAt               DateTime  @default(now())
 
   @@map("pending_registrations")
 }
 
 model CabinetUser {
-  id            Int       @id @default(autoincrement())
-  phone         String    @unique
-  passwordHash  String
-  firstName     String?
-  lastName      String?
-  patronymic    String?
-  birthDate           DateTime? @db.Date
-  /** Последняя смена даты рождения пользователем (лимит раз в сутки) */
-  birthDateChangedAt  DateTime?
-  /** @deprecated use ClientVehicle — kept synced from primary vehicle */
-  carId               Int?
-  /** @deprecated use ClientVehicle.customLabel */
-  customCar     String?   @db.VarChar(200)
-  /** @deprecated use ClientVehicle.vin */
-  vin             String?   @db.VarChar(17)
-  /** Заметки администратора (CRM) */
-  adminComment    String?   @db.Text
-  /** Ссылка на фотоотчёт (Яндекс.Диск), одна на клиента */
-  photoReportUrl  String?   @db.VarChar(2000)
-  phoneVerified Boolean   @default(false)
-  blocked       Boolean   @default(false)
-  blockedAt     DateTime?
+  id                      Int             @id @default(autoincrement())
+  phone                   String          @unique
+  passwordHash            String
+  firstName               String?
+  lastName                String?
+  patronymic              String?
+  birthDate               DateTime?       @db.Date
+  /**
+   * Последняя смена даты рождения пользователем (лимит раз в сутки)
+   */
+  birthDateChangedAt      DateTime?
+  /**
+   * @deprecated use ClientVehicle — kept synced from primary vehicle
+   */
+  carId                   Int?
+  /**
+   * @deprecated use ClientVehicle.customLabel
+   */
+  customCar               String?         @db.VarChar(200)
+  /**
+   * @deprecated use ClientVehicle.vin
+   */
+  vin                     String?         @db.VarChar(17)
+  /**
+   * Заметки администратора (CRM)
+   */
+  adminComment            String?         @db.Text
+  /**
+   * Ссылка на фотоотчёт (Яндекс.Диск), одна на клиента
+   */
+  photoReportUrl          String?         @db.VarChar(2000)
+  phoneVerified           Boolean         @default(false)
+  blocked                 Boolean         @default(false)
+  blockedAt               DateTime?
   privacyPolicyAcceptedAt DateTime?
   personalDataConsentAt   DateTime?
   termsAcceptedAt         DateTime?
-  role          CabinetUserRole @default(USER)
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  role                    CabinetUserRole @default(USER)
+  createdAt               DateTime        @default(now())
+  updatedAt               DateTime        @updatedAt
 
-  car                   Car?                 @relation(fields: [carId], references: [id], onDelete: SetNull)
-  vehicles              ClientVehicle[]
-  refreshTokens         UserRefreshToken[]
-  visits                VisitHistory[]
-  documents             UserDocument[]
-  payments              PaymentHistory[]
-  notificationSettings  NotificationSettings?
+  car                  Car?                  @relation(fields: [carId], references: [id], onDelete: SetNull)
+  vehicles             ClientVehicle[]
+  refreshTokens        UserRefreshToken[]
+  visits               VisitHistory[]
+  documents            UserDocument[]
+  payments             PaymentHistory[]
+  notificationSettings NotificationSettings?
 
   @@map("cabinet_users")
 }
 
-/** Автомобиль клиента (экземпляр); каталог Car — только марка/модель/сегмент. */
+/**
+ * Автомобиль клиента (экземпляр); каталог Car — только марка/модель/сегмент.
+ */
 model ClientVehicle {
   id          Int       @id @default(autoincrement())
   userId      Int
   carId       Int?
-  /** Свободный текст, если авто нет в каталоге */
+  /**
+   * Свободный текст, если авто нет в каталоге
+   */
   customLabel String?   @db.VarChar(200)
   vin         String?   @db.VarChar(17)
+  /// Год выпуска (обязателен при создании через CRM; у старых записей может быть пуст)
+  year        Int?
+  /// Государственный номер: заглавные, без пробелов
+  plate       String?   @db.VarChar(15)
   isPrimary   Boolean   @default(false)
   archivedAt  DateTime?
   createdAt   DateTime  @default(now())
@@ -238,14 +260,14 @@ model UserRefreshToken {
 }
 
 model SmsCode {
-  id         Int       @id @default(autoincrement())
+  id         Int        @id @default(autoincrement())
   phone      String
   purpose    SmsPurpose
   code       String
   userId     Int?
   expiresAt  DateTime
   consumedAt DateTime?
-  createdAt  DateTime  @default(now())
+  createdAt  DateTime   @default(now())
 
   @@index([phone, purpose])
   @@map("sms_codes")
@@ -277,9 +299,13 @@ model ServiceType {
 
 enum SiteLeadStatus {
   NEW
-  /** Админ взял заявку и связывается с клиентом (кнопка «Взять в работу»). */
+  /**
+   * Админ взял заявку и связывается с клиентом (кнопка «Взять в работу»).
+   */
   PROCESSING
-  /** Авто на подъёмнике: день записи наступил, запись ещё не закрыта. Ставится автоматически. */
+  /**
+   * Авто на подъёмнике: день записи наступил, запись ещё не закрыта. Ставится автоматически.
+   */
   IN_PROGRESS
   NEEDS_CLARIFICATION
   SCHEDULED
@@ -305,11 +331,17 @@ model SiteLead {
   adminNote           String?        @db.Text
   diskLink            String?
   followUpAt          DateTime?
-  /** С какого момента считается срок реакции (30 мин): создание или возврат из «На уточнении». */
+  /**
+   * С какого момента считается срок реакции (30 мин): создание или возврат из «На уточнении».
+   */
   surfacedAt          DateTime?
-  /** Убрана из списка CRM крестиком. Запись остаётся в БД; профиль клиента не затрагивается. */
+  /**
+   * Убрана из списка CRM крестиком. Запись остаётся в БД; профиль клиента не затрагивается.
+   */
   archivedAt          DateTime?
-  /** Город / филиал для записи */
+  /**
+   * Город / филиал для записи
+   */
   location            CrmLocation?
   visitId             Int?           @unique
   processedAt         DateTime?
@@ -323,35 +355,66 @@ model SiteLead {
 }
 
 model VisitHistory {
-  id              Int       @id @default(autoincrement())
+  id              Int         @id @default(autoincrement())
   userId          Int
-  /** Автомобиль, по которому визит / обслуживание */
+  /**
+   * Автомобиль, по которому визит / обслуживание
+   */
   vehicleId       Int?
-  visitDate       DateTime  @db.Date
+  visitDate       DateTime    @db.Date
   serviceType     String
   diskLink        String?
   startsAt        DateTime?
   endsAt          DateTime?
   priceRub        Int?
   serviceTypeId   Int?
-  /** Филиал / площадка записи */
+  /**
+   * Филиал / площадка записи
+   */
   location        CrmLocation @default(ZHUKOVSKY)
-  /** Имя менеджера (только админка, не для ЛК) */
-  managerName     String?   @db.VarChar(100)
-  /** Внутренний комментарий мастера к записи. */
-  masterComment   String?   @db.VarChar(2000)
+  /**
+   * Имя менеджера (только админка, не для ЛК)
+   */
+  managerName     String?     @db.VarChar(100)
+  /**
+   * Внутренний комментарий мастера к записи.
+   */
+  masterComment   String?     @db.VarChar(2000)
   reviewSmsSentAt DateTime?
-  /** Работы по записи завершены (закрыта из календаря или из заявки). */
+  /**
+   * Работы по записи завершены (закрыта из календаря или из заявки).
+   */
   completedAt     DateTime?
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
 
-  user               CabinetUser       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  vehicle            ClientVehicle?    @relation(fields: [vehicleId], references: [id], onDelete: SetNull)
-  catalogServiceType ServiceType?      @relation(fields: [serviceTypeId], references: [id], onDelete: SetNull)
+  user               CabinetUser        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  vehicle            ClientVehicle?     @relation(fields: [vehicleId], references: [id], onDelete: SetNull)
+  catalogServiceType ServiceType?       @relation(fields: [serviceTypeId], references: [id], onDelete: SetNull)
   pendingReviewSms   PendingReviewSms?
   siteLead           SiteLead?
   assignees          VisitStaff[]
+  inspection         VehicleInspection?
+  photos             VisitPhoto[]
+  /// Единый номер договора и связанных актов (ТЗ §16); выдаётся один раз и не меняется
+  docNumber          String?            @unique @db.VarChar(20)
+  /// Дата договора — день, когда выдан номер
+  docDate            DateTime?
+  documents          Document[]
+  workItems          VisitWorkItem[]
+  handover           VisitHandover?
+  /// Скидка: задаётся либо в процентах, либо в рублях (второе значение считается), ТЗ §8.5
+  discountPercent    Float?
+  discountRub        Int?
+  paymentMethod      PaymentMethod?
+  /// Фактически полученная оплата
+  paidRub            Int?
+  /// Мастер-приёмщик записи (сотрудник с ролью ADMIN): ему считается ставка приёмщика
+  receiverId         Int?
+  receiver           Staff?             @relation("VisitReceiver", fields: [receiverId], references: [id], onDelete: SetNull)
+  payrollEntries     PayrollEntry[]
+  cashEntries        CashEntry[]
+  stockMovements     StockMovement[]
 
   @@index([location, startsAt])
   @@index([vehicleId])
@@ -365,8 +428,8 @@ enum CrmLocation {
 }
 
 model PendingReviewSms {
-  id      Int       @id @default(autoincrement())
-  visitId Int       @unique
+  id      Int          @id @default(autoincrement())
+  visitId Int          @unique
   sendAt  DateTime
   sentAt  DateTime?
   visit   VisitHistory @relation(fields: [visitId], references: [id], onDelete: Cascade)
@@ -376,13 +439,13 @@ model PendingReviewSms {
 }
 
 model PaymentHistory {
-  id          Int      @id @default(autoincrement())
-  userId      Int
+  id           Int      @id @default(autoincrement())
+  userId       Int
   amountKopeks Int
-  currency    String   @default("RUB")
-  description String
-  status      String   @default("completed")
-  paidAt      DateTime @default(now())
+  currency     String   @default("RUB")
+  description  String
+  status       String   @default("completed")
+  paidAt       DateTime @default(now())
 
   user CabinetUser @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -400,12 +463,12 @@ model NotificationSettings {
 }
 
 model AdminAuditLog {
-  id             Int      @id @default(autoincrement())
-  action         String
-  adminSubject   String
-  targetUserId   Int?
-  meta           Json?
-  createdAt      DateTime @default(now())
+  id           Int      @id @default(autoincrement())
+  action       String
+  adminSubject String
+  targetUserId Int?
+  meta         Json?
+  createdAt    DateTime @default(now())
 
   @@map("admin_audit_logs")
 }
@@ -443,6 +506,37 @@ model CompanySettings {
   @@map("company_settings")
 }
 
+/// Реквизиты исполнителя (ИП): единственная строка id=1, общая для договора и актов.
+model Organization {
+  id           Int      @id @default(1)
+  /// «ИП Стражников А.Л.»
+  fullName     String   @db.VarChar(200)
+  /// «АванКор»
+  brandName    String   @db.VarChar(100)
+  inn          String   @db.VarChar(12)
+  ogrnip       String   @db.VarChar(15)
+  legalAddress String   @db.VarChar(300)
+  phone        String   @db.VarChar(32)
+  email        String   @db.VarChar(120)
+  /// Подпись в документах: «Стражников А.Л.»
+  signerName   String   @db.VarChar(100)
+  updatedAt    DateTime @updatedAt
+
+  @@map("organization")
+}
+
+/// Филиал для документов: город, адрес и префикс номера. Ключ — тот же `CrmLocation`, что у записи.
+model Branch {
+  location  CrmLocation @id
+  city      String      @db.VarChar(100)
+  address   String      @db.VarChar(300)
+  /// Префикс номера договора (Ж / Р / К); уникален между филиалами
+  docPrefix String      @unique @db.VarChar(4)
+  updatedAt DateTime    @updatedAt
+
+  @@map("branches")
+}
+
 model SmsLog {
   id      Int      @id @default(autoincrement())
   phone   String
@@ -455,14 +549,16 @@ model SmsLog {
   @@map("sms_logs")
 }
 
-/** Лимит записей в календарь на день и филиал. */
+/**
+ * Лимит записей в календарь на день и филиал.
+ */
 model CrmDayLimit {
-  id               Int         @id @default(autoincrement())
-  date             DateTime    @db.Date
-  location         CrmLocation
-  maxAppointments  Int
-  note             String?     @db.VarChar(300)
-  updatedAt        DateTime    @updatedAt
+  id              Int         @id @default(autoincrement())
+  date            DateTime    @db.Date
+  location        CrmLocation
+  maxAppointments Int
+  note            String?     @db.VarChar(300)
+  updatedAt       DateTime    @updatedAt
 
   @@unique([date, location])
   @@index([location, date])
@@ -476,28 +572,33 @@ enum StaffRole {
 
 /// Сотрудник: мастер (ЛК /staff) или администратор. Env-админ остаётся запасным входом в CRM.
 model Staff {
-  id           Int           @id @default(autoincrement())
-  login        String        @unique @db.VarChar(64)
-  passwordHash String
-  fullName     String        @db.VarChar(120)
-  role         StaffRole     @default(MASTER)
+  id                   Int           @id @default(autoincrement())
+  login                String        @unique @db.VarChar(64)
+  passwordHash         String
+  fullName             String        @db.VarChar(120)
+  role                 StaffRole     @default(MASTER)
   /// Филиалы, где работает сотрудник
-  locations    CrmLocation[]
-  blockedAt    DateTime?
-  lastLoginAt  DateTime?
+  locations            CrmLocation[]
+  blockedAt            DateTime?
+  lastLoginAt          DateTime?
   /// Согласие на обработку геолокации (152-ФЗ), даётся мастером один раз перед первым чекином
-  geoConsentAt DateTime?
+  geoConsentAt         DateTime?
   /// Версия регламента, с которой мастер ознакомился (0 — не знакомился)
-  regulationAckVersion Int       @default(0)
+  regulationAckVersion Int           @default(0)
   regulationAckAt      DateTime?
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
+  createdAt            DateTime      @default(now())
+  updatedAt            DateTime      @updatedAt
 
-  auditLogs StaffAuditLog[]
-  visits    VisitStaff[]
-  checkins  Checkin[]
-  tasks     Task[]
-  notifications Notification[]
+  auditLogs           StaffAuditLog[]
+  visits              VisitStaff[]
+  checkins            Checkin[]
+  tasks               Task[]
+  notifications       Notification[]
+  inspectionsReceived VehicleInspection[]
+  workItems           VisitWorkItem[]
+  handovers           VisitHandover[]
+  receivedVisits      VisitHistory[]      @relation("VisitReceiver")
+  payrollEntries      PayrollEntry[]
 
   @@map("staff")
 }
@@ -584,21 +685,21 @@ enum TaskStatus {
 
 /// Задача сотруднику. Создаёт только админ; мастер отмечает «Выполнена», админ подтверждает.
 model Task {
-  id           Int          @id @default(autoincrement())
-  staffId      Int
-  title        String       @db.VarChar(200)
-  description  String?      @db.VarChar(2000)
-  priority     TaskPriority @default(NORMAL)
-  status       TaskStatus   @default(NEW)
-  dueAt        DateTime?
+  id            Int          @id @default(autoincrement())
+  staffId       Int
+  title         String       @db.VarChar(200)
+  description   String?      @db.VarChar(2000)
+  priority      TaskPriority @default(NORMAL)
+  status        TaskStatus   @default(NEW)
+  dueAt         DateTime?
   /// Комментарий мастера при выполнении
-  masterComment String?     @db.VarChar(1000)
+  masterComment String?      @db.VarChar(1000)
   /// Комментарий админа при возврате в работу
-  adminComment String?      @db.VarChar(1000)
-  doneAt       DateTime?
-  confirmedAt  DateTime?
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
+  adminComment  String?      @db.VarChar(1000)
+  doneAt        DateTime?
+  confirmedAt   DateTime?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
 
   staff  Staff       @relation(fields: [staffId], references: [id], onDelete: Cascade)
   photos TaskPhoto[]
@@ -702,4 +803,474 @@ model TaskPhoto {
 
   @@index([taskId])
   @@map("task_photos")
+}
+
+// --- Приёмка автомобиля (ТЗ «Документооборот», §10, §12) ---
+
+enum DamageType {
+  /// X — царапина
+  SCRATCH
+  /// O — вмятина
+  DENT
+  /// K — коррозия
+  CORROSION
+  /// S — скол
+  CHIP
+  /// D — иное повреждение
+  OTHER
+}
+
+enum PhotoStage {
+  RECEPTION
+  WORK_BEFORE
+  WORK_AFTER
+  ISSUE
+}
+
+enum PhotoSection {
+  GENERAL
+  EXTERIOR
+  INTERIOR
+}
+
+/// Приёмка конкретного визита: значения этого посещения, история не перезаписывается.
+/// Единственный источник данных для акта приёма-передачи.
+model VehicleInspection {
+  id                 Int       @id @default(autoincrement())
+  visitId            Int       @unique
+  /// Фактические дата и время приёма (не плановое время записи)
+  receivedAt         DateTime
+  /// Мастер-приёмщик
+  receivedById       Int?
+  mileageKm          Int?
+  fuelPercent        Int?
+  keysCount          Int?
+  /// Сотрудник явно подтвердил, что дефектов нет (пустая схема не значит «исправно»)
+  noDefectsConfirmed Boolean   @default(false)
+  exteriorNote       String?   @db.VarChar(2000)
+  /// {dirt, damage, upholstery, smell}: "NONE" | "PRESENT"; null — не заполнено
+  interior           Json?
+  interiorNote       String?   @db.VarChar(2000)
+  /// {lights, turnSignals, brakeLights, wipers, horn, climate, fan, dashboard}: {status: "OK"|"FAULTY"|"NOT_CHECKED", note?}
+  systems            Json?
+  systemsNote        String?   @db.VarChar(2000)
+  /// Индивидуально согласованные особенности приёмки
+  specialTerms       String?   @db.VarChar(2000)
+  /// Комментарий приёмщика (не внутренняя заметка мастера)
+  note               String?   @db.VarChar(2000)
+  /// Кто и когда проверил карточку клиента и автомобиля (в т.ч. VIN с маркировкой)
+  dataVerifiedAt     DateTime?
+  dataVerifiedBy     String?   @db.VarChar(64)
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  visit      VisitHistory     @relation(fields: [visitId], references: [id], onDelete: Cascade)
+  receivedBy Staff?           @relation(fields: [receivedById], references: [id], onDelete: SetNull)
+  marks      InspectionMark[]
+
+  @@map("vehicle_inspections")
+}
+
+/// Отметка на схеме автомобиля. Координаты — доли от размера схемы (0..1).
+model InspectionMark {
+  id           Int        @id @default(autoincrement())
+  inspectionId Int
+  type         DamageType
+  x            Float
+  y            Float
+  /// Кузовной элемент: «Капот», «Дверь передняя левая» и т.д.
+  element      String     @db.VarChar(100)
+  note         String?    @db.VarChar(500)
+  createdAt    DateTime   @default(now())
+
+  inspection VehicleInspection @relation(fields: [inspectionId], references: [id], onDelete: Cascade)
+  photos     VisitPhoto[]
+
+  @@index([inspectionId])
+  @@map("inspection_marks")
+}
+
+/// Фото визита: клиент и автомобиль определяются по записи; этап и (при необходимости) повреждение — здесь.
+/// Файл в публичном бакете под случайным UUID (как фото задач).
+model VisitPhoto {
+  id         Int          @id @default(autoincrement())
+  visitId    Int
+  stage      PhotoStage   @default(RECEPTION)
+  section    PhotoSection @default(GENERAL)
+  markId     Int?
+  /// Фото «до» и «после» привязано к позиции работ (ТЗ §13.1)
+  workItemId Int?
+  key        String       @unique @db.VarChar(200)
+  size       Int
+  uploadedBy String       @db.VarChar(64)
+  createdAt  DateTime     @default(now())
+
+  visit    VisitHistory    @relation(fields: [visitId], references: [id], onDelete: Cascade)
+  mark     InspectionMark? @relation(fields: [markId], references: [id], onDelete: Cascade)
+  workItem VisitWorkItem?  @relation(fields: [workItemId], references: [id], onDelete: Cascade)
+
+  @@index([workItemId])
+  @@index([visitId, stage])
+  @@index([markId])
+  @@map("visit_photos")
+}
+
+// --- Документы по записи: номер, версии, снимок данных, подписание (ТЗ §16–18, §23) ---
+
+enum DocumentKind {
+  CONTRACT
+  ACCEPTANCE
+  WORKS
+}
+
+enum DocumentVersionStatus {
+  /// Сформирован, ждёт подписания
+  READY
+  SIGNED
+  /// Аннулирован или заменён новой версией
+  VOID
+}
+
+/// Счётчик номеров по префиксу филиала. Растёт атомарно (INSERT … ON CONFLICT DO UPDATE).
+model DocumentCounter {
+  prefix  String @id @db.VarChar(4)
+  lastSeq Int    @default(0)
+
+  @@map("document_counters")
+}
+
+/// Документ записи определённого вида; сами данные — в версиях.
+model Document {
+  id        Int          @id @default(autoincrement())
+  visitId   Int
+  kind      DocumentKind
+  createdAt DateTime     @default(now())
+
+  visit    VisitHistory      @relation(fields: [visitId], references: [id], onDelete: Restrict)
+  versions DocumentVersion[]
+
+  @@unique([visitId, kind])
+  @@map("documents")
+}
+
+/// Версия документа со снимком всех данных на момент формирования. Снимок не меняется никогда:
+/// подписанная версия остаётся прежней, даже если потом исправили карточку клиента или автомобиля.
+model DocumentVersion {
+  id            Int                   @id @default(autoincrement())
+  documentId    Int
+  version       Int
+  status        DocumentVersionStatus @default(READY)
+  snapshot      Json
+  schemaVersion Int                   @default(1)
+  formedAt      DateTime              @default(now())
+  formedBy      String                @db.VarChar(64)
+  signedAt      DateTime?
+  signedBy      String?               @db.VarChar(64)
+  /// Скан подписанного документа (публичный бакет, случайное имя)
+  scanKey       String?               @db.VarChar(200)
+  voidedAt      DateTime?
+  voidedBy      String?               @db.VarChar(64)
+  voidReason    String?               @db.VarChar(300)
+
+  document Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  @@unique([documentId, version])
+  @@map("document_versions")
+}
+
+// --- Услуги и перечень работ (ТЗ §8.5, §9) ---
+
+enum PaymentMethod {
+  CASH
+  CARD_SBP
+  INVOICE_IP
+}
+
+/// Категория услуг: антикоррозийная обработка, сварочные работы, лазерная очистка, мойка днища, диагностика.
+model ServiceCategory {
+  id        Int     @id @default(autoincrement())
+  code      String  @unique @db.VarChar(30)
+  name      String  @db.VarChar(120)
+  sortOrder Int     @default(0)
+  active    Boolean @default(true)
+
+  groups ServiceOptionGroup[]
+  items  VisitWorkItem[]
+
+  @@map("service_categories")
+}
+
+/// Группа параметров категории («Основные виды», «Зоны автомобиля»…): множественный выбор и/или свой вариант.
+model ServiceOptionGroup {
+  id          Int     @id @default(autoincrement())
+  categoryId  Int
+  key         String  @db.VarChar(30)
+  label       String  @db.VarChar(120)
+  multiple    Boolean @default(true)
+  /// Можно ввести значение, которого нет в справочнике
+  allowCustom Boolean @default(false)
+  sortOrder   Int     @default(0)
+
+  category ServiceCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  options  ServiceOption[]
+
+  @@unique([categoryId, key])
+  @@map("service_option_groups")
+}
+
+/// Значение справочника. Расширяется из админки без правки кода.
+model ServiceOption {
+  id        Int     @id @default(autoincrement())
+  groupId   Int
+  name      String  @db.VarChar(100)
+  sortOrder Int     @default(0)
+  active    Boolean @default(true)
+
+  group ServiceOptionGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+
+  @@unique([groupId, name])
+  @@map("service_options")
+}
+
+/// Позиция согласованных работ по записи. Значения параметров хранятся текстом (а не ссылками):
+/// переименование справочника не меняет уже согласованные работы.
+model VisitWorkItem {
+  id         Int      @id @default(autoincrement())
+  visitId    Int
+  categoryId Int
+  /// {groupKey: ["Комплексная обработка", ...]}
+  selections Json
+  comment    String?  @db.VarChar(500)
+  /// null — стоимость не определена; 0 — бесплатно (это разные состояния)
+  priceRub   Int?
+  sortOrder  Int      @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  /// AGREED — согласовано до работ (договор); EXTRA — дополнительная работа по найденному дефекту (ТЗ §13.2)
+  kind            WorkItemKind     @default(AGREED)
+  status          WorkStatus       @default(WAITING)
+  /// Ответственный мастер
+  masterId        Int?
+  startedAt       DateTime?
+  finishedAt      DateTime?
+  /// Фактически выполненный объём
+  actualVolume    String?          @db.VarChar(300)
+  /// Комментарий мастера по выполнению; для отменённой работы — причина
+  workNote        String?          @db.VarChar(500)
+  /// Допработа: место обнаруженного дефекта (описание дефекта — в `comment`)
+  defectPlace     String?          @db.VarChar(200)
+  /// Допработа: предполагаемое изменение срока
+  termChangeNote  String?          @db.VarChar(200)
+  /// Допработа: согласование с клиентом. Несогласованная не входит в сумму к оплате.
+  approvalStatus  ApprovalStatus?
+  approvedAt      DateTime?
+  /// Кто из сотрудников получил решение клиента
+  approvedBy      String?          @db.VarChar(120)
+  approvalChannel ApprovalChannel?
+  /// Подтверждение (например, «сообщение в WhatsApp от 22.11 14:05»)
+  approvalNote    String?          @db.VarChar(300)
+
+  visit    VisitHistory    @relation(fields: [visitId], references: [id], onDelete: Cascade)
+  category ServiceCategory @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  master   Staff?          @relation(fields: [masterId], references: [id], onDelete: SetNull)
+  photos   VisitPhoto[]
+
+  @@index([visitId, sortOrder])
+  @@map("visit_work_items")
+}
+
+// --- Выполнение работ и выдача автомобиля (ТЗ §13–14) ---
+
+enum WorkItemKind {
+  AGREED
+  EXTRA
+}
+
+enum WorkStatus {
+  WAITING
+  IN_PROGRESS
+  DONE
+  PAUSED
+  NEEDS_APPROVAL
+  /// отменено по согласованию
+  CANCELLED
+}
+
+enum ApprovalStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum ApprovalChannel {
+  PHONE
+  MESSENGER
+  EMAIL
+  IN_PERSON
+  OTHER
+}
+
+/// Выдача автомобиля и гарантия. Все значения вносятся явно: гарантийный срок не назначается автоматически,
+/// а время выдачи не берётся из предварительной записи (ТЗ §14.6–14.7).
+model VisitHandover {
+  id                     Int       @id @default(autoincrement())
+  visitId                Int       @unique
+  /// Фактические дата и время возврата автомобиля
+  issuedAt               DateTime?
+  issuedById             Int?
+  /// Заполняются, только если значение изменилось к выдаче; иначе действуют показатели приёмки
+  mileageKm              Int?
+  fuelPercent            Int?
+  warrantyBookIssued     Boolean?
+  warrantyTermsExplained Boolean?
+  warrantyMonths         Int?
+  warrantyStartsAt       DateTime? @db.Date
+  warrantyTerms          String?   @db.VarChar(1000)
+  careRecommendations    String?   @db.VarChar(1000)
+  createdAt              DateTime  @default(now())
+  updatedAt              DateTime  @updatedAt
+
+  visit    VisitHistory @relation(fields: [visitId], references: [id], onDelete: Cascade)
+  issuedBy Staff?       @relation(fields: [issuedById], references: [id], onDelete: SetNull)
+
+  @@map("visit_handovers")
+}
+
+// --- Зарплата мастеров и приёмщиков, касса, склад ---
+
+enum PayrollRole {
+  MASTER
+  RECEIVER
+}
+
+/// Единственная строка (id = 1): базовые ставки за заказ, в рублях. Начисление копирует ставку на момент назначения.
+model PayrollSettings {
+  id              Int      @id @default(1)
+  masterBaseRub   Int      @default(0)
+  receiverBaseRub Int      @default(0)
+  updatedAt       DateTime @updatedAt
+
+  @@map("payroll_settings")
+}
+
+/// Справочник доп. выплат («Чистота», «Отзыв» …): сумма и для кого применяется.
+model PayrollBonusType {
+  id        Int         @id @default(autoincrement())
+  title     String      @db.VarChar(80)
+  amountRub Int
+  role      PayrollRole
+  active    Boolean     @default(true)
+  sortOrder Int         @default(0)
+  createdAt DateTime    @default(now())
+
+  bonuses PayrollBonus[]
+
+  @@map("payroll_bonus_types")
+}
+
+/// Начисление сотруднику по записи: ставка зафиксирована при назначении, «начислено» — когда машина закрыта.
+model PayrollEntry {
+  id        Int         @id @default(autoincrement())
+  visitId   Int
+  /// null — сотрудник удалён; имя остаётся в `staffName`
+  staffId   Int?
+  staffName String      @db.VarChar(120)
+  role      PayrollRole
+  baseRub   Int
+  accruedAt DateTime?
+  createdAt DateTime    @default(now())
+
+  visit   VisitHistory   @relation(fields: [visitId], references: [id], onDelete: Cascade)
+  staff   Staff?         @relation(fields: [staffId], references: [id], onDelete: SetNull)
+  bonuses PayrollBonus[]
+
+  @@unique([visitId, staffId, role])
+  @@index([staffId, accruedAt])
+  @@map("payroll_entries")
+}
+
+/// Доп. выплата, отмеченная управляющим; название и сумма копируются из справочника.
+model PayrollBonus {
+  id        Int      @id @default(autoincrement())
+  entryId   Int
+  typeId    Int?
+  title     String   @db.VarChar(80)
+  amountRub Int
+  grantedBy String   @db.VarChar(64)
+  createdAt DateTime @default(now())
+
+  entry PayrollEntry      @relation(fields: [entryId], references: [id], onDelete: Cascade)
+  type  PayrollBonusType? @relation(fields: [typeId], references: [id], onDelete: SetNull)
+
+  @@unique([entryId, typeId])
+  @@map("payroll_bonuses")
+}
+
+enum CashDirection {
+  IN
+  OUT
+}
+
+/// Приход и расход наличных по филиалу. Запись не удаляется, а аннулируется с причиной.
+model CashEntry {
+  id         Int           @id @default(autoincrement())
+  location   CrmLocation
+  direction  CashDirection
+  amountRub  Int
+  category   String?       @db.VarChar(60)
+  comment    String?       @db.VarChar(300)
+  /// Дата операции по Москве
+  date       DateTime      @db.Date
+  visitId    Int?
+  createdBy  String        @db.VarChar(64)
+  createdAt  DateTime      @default(now())
+  voidedAt   DateTime?
+  voidedBy   String?       @db.VarChar(64)
+  voidReason String?       @db.VarChar(300)
+
+  visit VisitHistory? @relation(fields: [visitId], references: [id], onDelete: SetNull)
+
+  @@index([location, date])
+  @@map("cash_entries")
+}
+
+/// Номенклатура склада (материалы, расходники).
+model StockItem {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique @db.VarChar(120)
+  unit      String   @db.VarChar(16)
+  /// Порог: при остатке ниже на складе показывается предупреждение
+  minQty    Decimal  @default(0) @db.Decimal(12, 3)
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  movements StockMovement[]
+
+  @@map("stock_items")
+}
+
+enum StockMoveKind {
+  IN
+  OUT
+  ADJUST
+}
+
+/// Движение по складу филиала. `delta` со знаком: приход +, расход −, инвентаризация ±. Остаток = сумма delta.
+model StockMovement {
+  id        Int           @id @default(autoincrement())
+  itemId    Int
+  location  CrmLocation
+  kind      StockMoveKind
+  delta     Decimal       @db.Decimal(12, 3)
+  comment   String?       @db.VarChar(300)
+  visitId   Int?
+  createdBy String        @db.VarChar(64)
+  createdAt DateTime      @default(now())
+
+  item  StockItem     @relation(fields: [itemId], references: [id], onDelete: Restrict)
+  visit VisitHistory? @relation(fields: [visitId], references: [id], onDelete: SetNull)
+
+  @@index([itemId, location])
+  @@map("stock_movements")
 }

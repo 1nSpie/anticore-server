@@ -207,7 +207,7 @@ export type RegAttachmentGroupByOutputType = {
   _max: RegAttachmentMaxAggregateOutputType | null
 }
 
-type GetRegAttachmentGroupByPayload<T extends RegAttachmentGroupByArgs> = Prisma.PrismaPromise<
+export type GetRegAttachmentGroupByPayload<T extends RegAttachmentGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<RegAttachmentGroupByOutputType, T['by']> &
       {
@@ -1212,6 +1212,11 @@ export type RegAttachmentFindManyArgs<ExtArgs extends runtime.Types.Extensions.I
    * Skip the first `n` RegAttachments.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of RegAttachments.
+   */
   distinct?: Prisma.RegAttachmentScalarFieldEnum | Prisma.RegAttachmentScalarFieldEnum[]
 }
 

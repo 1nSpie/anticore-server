@@ -30,6 +30,18 @@ export class UpsertClientVehicleDto {
   vin?: string | null;
 
   @IsOptional()
+  @ValidateIf((_, v) => v !== null && v !== undefined)
+  @Type(() => Number)
+  @IsInt()
+  year?: number | null;
+
+  @IsOptional()
+  @ValidateIf((_, v) => v !== null && v !== undefined)
+  @IsString()
+  @MaxLength(20)
+  plate?: string | null;
+
+  @IsOptional()
   @IsBoolean()
   isPrimary?: boolean;
 }

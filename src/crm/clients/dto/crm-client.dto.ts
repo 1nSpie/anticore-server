@@ -54,6 +54,17 @@ export class CreateCrmClientDto {
   @IsVin()
   vin?: string;
 
+  /** Год выпуска автомобиля — обязателен при создании клиента. */
+  @IsOptional()
+  @Type(() => Number)
+  @IsInt()
+  year?: number;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(20)
+  plate?: string;
+
   @IsOptional()
   @IsString()
   @MaxLength(5000)

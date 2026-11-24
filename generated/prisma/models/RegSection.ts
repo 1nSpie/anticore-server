@@ -207,7 +207,7 @@ export type RegSectionGroupByOutputType = {
   _max: RegSectionMaxAggregateOutputType | null
 }
 
-type GetRegSectionGroupByPayload<T extends RegSectionGroupByArgs> = Prisma.PrismaPromise<
+export type GetRegSectionGroupByPayload<T extends RegSectionGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<RegSectionGroupByOutputType, T['by']> &
       {
@@ -1426,6 +1426,11 @@ export type RegSectionFindManyArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Skip the first `n` RegSections.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of RegSections.
+   */
   distinct?: Prisma.RegSectionScalarFieldEnum | Prisma.RegSectionScalarFieldEnum[]
 }
 

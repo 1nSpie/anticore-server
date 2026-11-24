@@ -144,7 +144,7 @@ export type SmsTemplateGroupByOutputType = {
   _max: SmsTemplateMaxAggregateOutputType | null
 }
 
-type GetSmsTemplateGroupByPayload<T extends SmsTemplateGroupByArgs> = Prisma.PrismaPromise<
+export type GetSmsTemplateGroupByPayload<T extends SmsTemplateGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<SmsTemplateGroupByOutputType, T['by']> &
       {
@@ -902,6 +902,11 @@ export type SmsTemplateFindManyArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Skip the first `n` SmsTemplates.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of SmsTemplates.
+   */
   distinct?: Prisma.SmsTemplateScalarFieldEnum | Prisma.SmsTemplateScalarFieldEnum[]
 }
 

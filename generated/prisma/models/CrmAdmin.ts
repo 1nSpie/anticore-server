@@ -192,7 +192,7 @@ export type CrmAdminGroupByOutputType = {
   _max: CrmAdminMaxAggregateOutputType | null
 }
 
-type GetCrmAdminGroupByPayload<T extends CrmAdminGroupByArgs> = Prisma.PrismaPromise<
+export type GetCrmAdminGroupByPayload<T extends CrmAdminGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<CrmAdminGroupByOutputType, T['by']> &
       {
@@ -995,6 +995,11 @@ export type CrmAdminFindManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * Skip the first `n` CrmAdmins.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of CrmAdmins.
+   */
   distinct?: Prisma.CrmAdminScalarFieldEnum | Prisma.CrmAdminScalarFieldEnum[]
 }
 

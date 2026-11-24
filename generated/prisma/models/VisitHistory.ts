@@ -32,6 +32,10 @@ export type VisitHistoryAvgAggregateOutputType = {
   vehicleId: number | null
   priceRub: number | null
   serviceTypeId: number | null
+  discountPercent: number | null
+  discountRub: number | null
+  paidRub: number | null
+  receiverId: number | null
 }
 
 export type VisitHistorySumAggregateOutputType = {
@@ -40,6 +44,10 @@ export type VisitHistorySumAggregateOutputType = {
   vehicleId: number | null
   priceRub: number | null
   serviceTypeId: number | null
+  discountPercent: number | null
+  discountRub: number | null
+  paidRub: number | null
+  receiverId: number | null
 }
 
 export type VisitHistoryMinAggregateOutputType = {
@@ -60,6 +68,13 @@ export type VisitHistoryMinAggregateOutputType = {
   completedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
+  docNumber: string | null
+  docDate: Date | null
+  discountPercent: number | null
+  discountRub: number | null
+  paymentMethod: $Enums.PaymentMethod | null
+  paidRub: number | null
+  receiverId: number | null
 }
 
 export type VisitHistoryMaxAggregateOutputType = {
@@ -80,6 +95,13 @@ export type VisitHistoryMaxAggregateOutputType = {
   completedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
+  docNumber: string | null
+  docDate: Date | null
+  discountPercent: number | null
+  discountRub: number | null
+  paymentMethod: $Enums.PaymentMethod | null
+  paidRub: number | null
+  receiverId: number | null
 }
 
 export type VisitHistoryCountAggregateOutputType = {
@@ -100,6 +122,13 @@ export type VisitHistoryCountAggregateOutputType = {
   completedAt: number
   createdAt: number
   updatedAt: number
+  docNumber: number
+  docDate: number
+  discountPercent: number
+  discountRub: number
+  paymentMethod: number
+  paidRub: number
+  receiverId: number
   _all: number
 }
 
@@ -110,6 +139,10 @@ export type VisitHistoryAvgAggregateInputType = {
   vehicleId?: true
   priceRub?: true
   serviceTypeId?: true
+  discountPercent?: true
+  discountRub?: true
+  paidRub?: true
+  receiverId?: true
 }
 
 export type VisitHistorySumAggregateInputType = {
@@ -118,6 +151,10 @@ export type VisitHistorySumAggregateInputType = {
   vehicleId?: true
   priceRub?: true
   serviceTypeId?: true
+  discountPercent?: true
+  discountRub?: true
+  paidRub?: true
+  receiverId?: true
 }
 
 export type VisitHistoryMinAggregateInputType = {
@@ -138,6 +175,13 @@ export type VisitHistoryMinAggregateInputType = {
   completedAt?: true
   createdAt?: true
   updatedAt?: true
+  docNumber?: true
+  docDate?: true
+  discountPercent?: true
+  discountRub?: true
+  paymentMethod?: true
+  paidRub?: true
+  receiverId?: true
 }
 
 export type VisitHistoryMaxAggregateInputType = {
@@ -158,6 +202,13 @@ export type VisitHistoryMaxAggregateInputType = {
   completedAt?: true
   createdAt?: true
   updatedAt?: true
+  docNumber?: true
+  docDate?: true
+  discountPercent?: true
+  discountRub?: true
+  paymentMethod?: true
+  paidRub?: true
+  receiverId?: true
 }
 
 export type VisitHistoryCountAggregateInputType = {
@@ -178,6 +229,13 @@ export type VisitHistoryCountAggregateInputType = {
   completedAt?: true
   createdAt?: true
   updatedAt?: true
+  docNumber?: true
+  docDate?: true
+  discountPercent?: true
+  discountRub?: true
+  paymentMethod?: true
+  paidRub?: true
+  receiverId?: true
   _all?: true
 }
 
@@ -285,6 +343,13 @@ export type VisitHistoryGroupByOutputType = {
   completedAt: Date | null
   createdAt: Date
   updatedAt: Date
+  docNumber: string | null
+  docDate: Date | null
+  discountPercent: number | null
+  discountRub: number | null
+  paymentMethod: $Enums.PaymentMethod | null
+  paidRub: number | null
+  receiverId: number | null
   _count: VisitHistoryCountAggregateOutputType | null
   _avg: VisitHistoryAvgAggregateOutputType | null
   _sum: VisitHistorySumAggregateOutputType | null
@@ -292,7 +357,7 @@ export type VisitHistoryGroupByOutputType = {
   _max: VisitHistoryMaxAggregateOutputType | null
 }
 
-type GetVisitHistoryGroupByPayload<T extends VisitHistoryGroupByArgs> = Prisma.PrismaPromise<
+export type GetVisitHistoryGroupByPayload<T extends VisitHistoryGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<VisitHistoryGroupByOutputType, T['by']> &
       {
@@ -328,12 +393,28 @@ export type VisitHistoryWhereInput = {
   completedAt?: Prisma.DateTimeNullableFilter<"VisitHistory"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"VisitHistory"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"VisitHistory"> | Date | string
+  docNumber?: Prisma.StringNullableFilter<"VisitHistory"> | string | null
+  docDate?: Prisma.DateTimeNullableFilter<"VisitHistory"> | Date | string | null
+  discountPercent?: Prisma.FloatNullableFilter<"VisitHistory"> | number | null
+  discountRub?: Prisma.IntNullableFilter<"VisitHistory"> | number | null
+  paymentMethod?: Prisma.EnumPaymentMethodNullableFilter<"VisitHistory"> | $Enums.PaymentMethod | null
+  paidRub?: Prisma.IntNullableFilter<"VisitHistory"> | number | null
+  receiverId?: Prisma.IntNullableFilter<"VisitHistory"> | number | null
   user?: Prisma.XOR<Prisma.CabinetUserScalarRelationFilter, Prisma.CabinetUserWhereInput>
   vehicle?: Prisma.XOR<Prisma.ClientVehicleNullableScalarRelationFilter, Prisma.ClientVehicleWhereInput> | null
   catalogServiceType?: Prisma.XOR<Prisma.ServiceTypeNullableScalarRelationFilter, Prisma.ServiceTypeWhereInput> | null
   pendingReviewSms?: Prisma.XOR<Prisma.PendingReviewSmsNullableScalarRelationFilter, Prisma.PendingReviewSmsWhereInput> | null
   siteLead?: Prisma.XOR<Prisma.SiteLeadNullableScalarRelationFilter, Prisma.SiteLeadWhereInput> | null
   assignees?: Prisma.VisitStaffListRelationFilter
+  inspection?: Prisma.XOR<Prisma.VehicleInspectionNullableScalarRelationFilter, Prisma.VehicleInspectionWhereInput> | null
+  photos?: Prisma.VisitPhotoListRelationFilter
+  documents?: Prisma.DocumentListRelationFilter
+  workItems?: Prisma.VisitWorkItemListRelationFilter
+  handover?: Prisma.XOR<Prisma.VisitHandoverNullableScalarRelationFilter, Prisma.VisitHandoverWhereInput> | null
+  receiver?: Prisma.XOR<Prisma.StaffNullableScalarRelationFilter, Prisma.StaffWhereInput> | null
+  payrollEntries?: Prisma.PayrollEntryListRelationFilter
+  cashEntries?: Prisma.CashEntryListRelationFilter
+  stockMovements?: Prisma.StockMovementListRelationFilter
 }
 
 export type VisitHistoryOrderByWithRelationInput = {
@@ -354,16 +435,33 @@ export type VisitHistoryOrderByWithRelationInput = {
   completedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  docNumber?: Prisma.SortOrderInput | Prisma.SortOrder
+  docDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  discountPercent?: Prisma.SortOrderInput | Prisma.SortOrder
+  discountRub?: Prisma.SortOrderInput | Prisma.SortOrder
+  paymentMethod?: Prisma.SortOrderInput | Prisma.SortOrder
+  paidRub?: Prisma.SortOrderInput | Prisma.SortOrder
+  receiverId?: Prisma.SortOrderInput | Prisma.SortOrder
   user?: Prisma.CabinetUserOrderByWithRelationInput
   vehicle?: Prisma.ClientVehicleOrderByWithRelationInput
   catalogServiceType?: Prisma.ServiceTypeOrderByWithRelationInput
   pendingReviewSms?: Prisma.PendingReviewSmsOrderByWithRelationInput
   siteLead?: Prisma.SiteLeadOrderByWithRelationInput
   assignees?: Prisma.VisitStaffOrderByRelationAggregateInput
+  inspection?: Prisma.VehicleInspectionOrderByWithRelationInput
+  photos?: Prisma.VisitPhotoOrderByRelationAggregateInput
+  documents?: Prisma.DocumentOrderByRelationAggregateInput
+  workItems?: Prisma.VisitWorkItemOrderByRelationAggregateInput
+  handover?: Prisma.VisitHandoverOrderByWithRelationInput
+  receiver?: Prisma.StaffOrderByWithRelationInput
+  payrollEntries?: Prisma.PayrollEntryOrderByRelationAggregateInput
+  cashEntries?: Prisma.CashEntryOrderByRelationAggregateInput
+  stockMovements?: Prisma.StockMovementOrderByRelationAggregateInput
 }
 
 export type VisitHistoryWhereUniqueInput = Prisma.AtLeast<{
   id?: number
+  docNumber?: string
   AND?: Prisma.VisitHistoryWhereInput | Prisma.VisitHistoryWhereInput[]
   OR?: Prisma.VisitHistoryWhereInput[]
   NOT?: Prisma.VisitHistoryWhereInput | Prisma.VisitHistoryWhereInput[]
@@ -383,13 +481,28 @@ export type VisitHistoryWhereUniqueInput = Prisma.AtLeast<{
   completedAt?: Prisma.DateTimeNullableFilter<"VisitHistory"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"VisitHistory"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"VisitHistory"> | Date | string
+  docDate?: Prisma.DateTimeNullableFilter<"VisitHistory"> | Date | string | null
+  discountPercent?: Prisma.FloatNullableFilter<"VisitHistory"> | number | null
+  discountRub?: Prisma.IntNullableFilter<"VisitHistory"> | number | null
+  paymentMethod?: Prisma.EnumPaymentMethodNullableFilter<"VisitHistory"> | $Enums.PaymentMethod | null
+  paidRub?: Prisma.IntNullableFilter<"VisitHistory"> | number | null
+  receiverId?: Prisma.IntNullableFilter<"VisitHistory"> | number | null
   user?: Prisma.XOR<Prisma.CabinetUserScalarRelationFilter, Prisma.CabinetUserWhereInput>
   vehicle?: Prisma.XOR<Prisma.ClientVehicleNullableScalarRelationFilter, Prisma.ClientVehicleWhereInput> | null
   catalogServiceType?: Prisma.XOR<Prisma.ServiceTypeNullableScalarRelationFilter, Prisma.ServiceTypeWhereInput> | null
   pendingReviewSms?: Prisma.XOR<Prisma.PendingReviewSmsNullableScalarRelationFilter, Prisma.PendingReviewSmsWhereInput> | null
   siteLead?: Prisma.XOR<Prisma.SiteLeadNullableScalarRelationFilter, Prisma.SiteLeadWhereInput> | null
   assignees?: Prisma.VisitStaffListRelationFilter
-}, "id">
+  inspection?: Prisma.XOR<Prisma.VehicleInspectionNullableScalarRelationFilter, Prisma.VehicleInspectionWhereInput> | null
+  photos?: Prisma.VisitPhotoListRelationFilter
+  documents?: Prisma.DocumentListRelationFilter
+  workItems?: Prisma.VisitWorkItemListRelationFilter
+  handover?: Prisma.XOR<Prisma.VisitHandoverNullableScalarRelationFilter, Prisma.VisitHandoverWhereInput> | null
+  receiver?: Prisma.XOR<Prisma.StaffNullableScalarRelationFilter, Prisma.StaffWhereInput> | null
+  payrollEntries?: Prisma.PayrollEntryListRelationFilter
+  cashEntries?: Prisma.CashEntryListRelationFilter
+  stockMovements?: Prisma.StockMovementListRelationFilter
+}, "id" | "docNumber">
 
 export type VisitHistoryOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -409,6 +522,13 @@ export type VisitHistoryOrderByWithAggregationInput = {
   completedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  docNumber?: Prisma.SortOrderInput | Prisma.SortOrder
+  docDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  discountPercent?: Prisma.SortOrderInput | Prisma.SortOrder
+  discountRub?: Prisma.SortOrderInput | Prisma.SortOrder
+  paymentMethod?: Prisma.SortOrderInput | Prisma.SortOrder
+  paidRub?: Prisma.SortOrderInput | Prisma.SortOrder
+  receiverId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.VisitHistoryCountOrderByAggregateInput
   _avg?: Prisma.VisitHistoryAvgOrderByAggregateInput
   _max?: Prisma.VisitHistoryMaxOrderByAggregateInput
@@ -437,6 +557,13 @@ export type VisitHistoryScalarWhereWithAggregatesInput = {
   completedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"VisitHistory"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"VisitHistory"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"VisitHistory"> | Date | string
+  docNumber?: Prisma.StringNullableWithAggregatesFilter<"VisitHistory"> | string | null
+  docDate?: Prisma.DateTimeNullableWithAggregatesFilter<"VisitHistory"> | Date | string | null
+  discountPercent?: Prisma.FloatNullableWithAggregatesFilter<"VisitHistory"> | number | null
+  discountRub?: Prisma.IntNullableWithAggregatesFilter<"VisitHistory"> | number | null
+  paymentMethod?: Prisma.EnumPaymentMethodNullableWithAggregatesFilter<"VisitHistory"> | $Enums.PaymentMethod | null
+  paidRub?: Prisma.IntNullableWithAggregatesFilter<"VisitHistory"> | number | null
+  receiverId?: Prisma.IntNullableWithAggregatesFilter<"VisitHistory"> | number | null
 }
 
 export type VisitHistoryCreateInput = {
@@ -453,12 +580,27 @@ export type VisitHistoryCreateInput = {
   completedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  docNumber?: string | null
+  docDate?: Date | string | null
+  discountPercent?: number | null
+  discountRub?: number | null
+  paymentMethod?: $Enums.PaymentMethod | null
+  paidRub?: number | null
   user: Prisma.CabinetUserCreateNestedOneWithoutVisitsInput
   vehicle?: Prisma.ClientVehicleCreateNestedOneWithoutVisitsInput
   catalogServiceType?: Prisma.ServiceTypeCreateNestedOneWithoutVisitsInput
   pendingReviewSms?: Prisma.PendingReviewSmsCreateNestedOneWithoutVisitInput
   siteLead?: Prisma.SiteLeadCreateNestedOneWithoutVisitInput
   assignees?: Prisma.VisitStaffCreateNestedManyWithoutVisitInput
+  inspection?: Prisma.VehicleInspectionCreateNestedOneWithoutVisitInput
+  photos?: Prisma.VisitPhotoCreateNestedManyWithoutVisitInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutVisitInput
+  workItems?: Prisma.VisitWorkItemCreateNestedManyWithoutVisitInput
+  handover?: Prisma.VisitHandoverCreateNestedOneWithoutVisitInput
+  receiver?: Prisma.StaffCreateNestedOneWithoutReceivedVisitsInput
+  payrollEntries?: Prisma.PayrollEntryCreateNestedManyWithoutVisitInput
+  cashEntries?: Prisma.CashEntryCreateNestedManyWithoutVisitInput
+  stockMovements?: Prisma.StockMovementCreateNestedManyWithoutVisitInput
 }
 
 export type VisitHistoryUncheckedCreateInput = {
@@ -479,9 +621,24 @@ export type VisitHistoryUncheckedCreateInput = {
   completedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  docNumber?: string | null
+  docDate?: Date | string | null
+  discountPercent?: number | null
+  discountRub?: number | null
+  paymentMethod?: $Enums.PaymentMethod | null
+  paidRub?: number | null
+  receiverId?: number | null
   pendingReviewSms?: Prisma.PendingReviewSmsUncheckedCreateNestedOneWithoutVisitInput
   siteLead?: Prisma.SiteLeadUncheckedCreateNestedOneWithoutVisitInput
   assignees?: Prisma.VisitStaffUncheckedCreateNestedManyWithoutVisitInput
+  inspection?: Prisma.VehicleInspectionUncheckedCreateNestedOneWithoutVisitInput
+  photos?: Prisma.VisitPhotoUncheckedCreateNestedManyWithoutVisitInput
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutVisitInput
+  workItems?: Prisma.VisitWorkItemUncheckedCreateNestedManyWithoutVisitInput
+  handover?: Prisma.VisitHandoverUncheckedCreateNestedOneWithoutVisitInput
+  payrollEntries?: Prisma.PayrollEntryUncheckedCreateNestedManyWithoutVisitInput
+  cashEntries?: Prisma.CashEntryUncheckedCreateNestedManyWithoutVisitInput
+  stockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutVisitInput
 }
 
 export type VisitHistoryUpdateInput = {
@@ -498,12 +655,27 @@ export type VisitHistoryUpdateInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  docNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  docDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  discountPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  discountRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethod?: Prisma.NullableEnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod | null
+  paidRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   user?: Prisma.CabinetUserUpdateOneRequiredWithoutVisitsNestedInput
   vehicle?: Prisma.ClientVehicleUpdateOneWithoutVisitsNestedInput
   catalogServiceType?: Prisma.ServiceTypeUpdateOneWithoutVisitsNestedInput
   pendingReviewSms?: Prisma.PendingReviewSmsUpdateOneWithoutVisitNestedInput
   siteLead?: Prisma.SiteLeadUpdateOneWithoutVisitNestedInput
   assignees?: Prisma.VisitStaffUpdateManyWithoutVisitNestedInput
+  inspection?: Prisma.VehicleInspectionUpdateOneWithoutVisitNestedInput
+  photos?: Prisma.VisitPhotoUpdateManyWithoutVisitNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutVisitNestedInput
+  workItems?: Prisma.VisitWorkItemUpdateManyWithoutVisitNestedInput
+  handover?: Prisma.VisitHandoverUpdateOneWithoutVisitNestedInput
+  receiver?: Prisma.StaffUpdateOneWithoutReceivedVisitsNestedInput
+  payrollEntries?: Prisma.PayrollEntryUpdateManyWithoutVisitNestedInput
+  cashEntries?: Prisma.CashEntryUpdateManyWithoutVisitNestedInput
+  stockMovements?: Prisma.StockMovementUpdateManyWithoutVisitNestedInput
 }
 
 export type VisitHistoryUncheckedUpdateInput = {
@@ -524,9 +696,24 @@ export type VisitHistoryUncheckedUpdateInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  docNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  docDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  discountPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  discountRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethod?: Prisma.NullableEnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod | null
+  paidRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  receiverId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pendingReviewSms?: Prisma.PendingReviewSmsUncheckedUpdateOneWithoutVisitNestedInput
   siteLead?: Prisma.SiteLeadUncheckedUpdateOneWithoutVisitNestedInput
   assignees?: Prisma.VisitStaffUncheckedUpdateManyWithoutVisitNestedInput
+  inspection?: Prisma.VehicleInspectionUncheckedUpdateOneWithoutVisitNestedInput
+  photos?: Prisma.VisitPhotoUncheckedUpdateManyWithoutVisitNestedInput
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutVisitNestedInput
+  workItems?: Prisma.VisitWorkItemUncheckedUpdateManyWithoutVisitNestedInput
+  handover?: Prisma.VisitHandoverUncheckedUpdateOneWithoutVisitNestedInput
+  payrollEntries?: Prisma.PayrollEntryUncheckedUpdateManyWithoutVisitNestedInput
+  cashEntries?: Prisma.CashEntryUncheckedUpdateManyWithoutVisitNestedInput
+  stockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutVisitNestedInput
 }
 
 export type VisitHistoryCreateManyInput = {
@@ -547,6 +734,13 @@ export type VisitHistoryCreateManyInput = {
   completedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  docNumber?: string | null
+  docDate?: Date | string | null
+  discountPercent?: number | null
+  discountRub?: number | null
+  paymentMethod?: $Enums.PaymentMethod | null
+  paidRub?: number | null
+  receiverId?: number | null
 }
 
 export type VisitHistoryUpdateManyMutationInput = {
@@ -563,6 +757,12 @@ export type VisitHistoryUpdateManyMutationInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  docNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  docDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  discountPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  discountRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethod?: Prisma.NullableEnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod | null
+  paidRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type VisitHistoryUncheckedUpdateManyInput = {
@@ -583,6 +783,13 @@ export type VisitHistoryUncheckedUpdateManyInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  docNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  docDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  discountPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  discountRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethod?: Prisma.NullableEnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod | null
+  paidRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  receiverId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type VisitHistoryListRelationFilter = {
@@ -618,6 +825,13 @@ export type VisitHistoryCountOrderByAggregateInput = {
   completedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  docNumber?: Prisma.SortOrder
+  docDate?: Prisma.SortOrder
+  discountPercent?: Prisma.SortOrder
+  discountRub?: Prisma.SortOrder
+  paymentMethod?: Prisma.SortOrder
+  paidRub?: Prisma.SortOrder
+  receiverId?: Prisma.SortOrder
 }
 
 export type VisitHistoryAvgOrderByAggregateInput = {
@@ -626,6 +840,10 @@ export type VisitHistoryAvgOrderByAggregateInput = {
   vehicleId?: Prisma.SortOrder
   priceRub?: Prisma.SortOrder
   serviceTypeId?: Prisma.SortOrder
+  discountPercent?: Prisma.SortOrder
+  discountRub?: Prisma.SortOrder
+  paidRub?: Prisma.SortOrder
+  receiverId?: Prisma.SortOrder
 }
 
 export type VisitHistoryMaxOrderByAggregateInput = {
@@ -646,6 +864,13 @@ export type VisitHistoryMaxOrderByAggregateInput = {
   completedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  docNumber?: Prisma.SortOrder
+  docDate?: Prisma.SortOrder
+  discountPercent?: Prisma.SortOrder
+  discountRub?: Prisma.SortOrder
+  paymentMethod?: Prisma.SortOrder
+  paidRub?: Prisma.SortOrder
+  receiverId?: Prisma.SortOrder
 }
 
 export type VisitHistoryMinOrderByAggregateInput = {
@@ -666,6 +891,13 @@ export type VisitHistoryMinOrderByAggregateInput = {
   completedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  docNumber?: Prisma.SortOrder
+  docDate?: Prisma.SortOrder
+  discountPercent?: Prisma.SortOrder
+  discountRub?: Prisma.SortOrder
+  paymentMethod?: Prisma.SortOrder
+  paidRub?: Prisma.SortOrder
+  receiverId?: Prisma.SortOrder
 }
 
 export type VisitHistorySumOrderByAggregateInput = {
@@ -674,6 +906,10 @@ export type VisitHistorySumOrderByAggregateInput = {
   vehicleId?: Prisma.SortOrder
   priceRub?: Prisma.SortOrder
   serviceTypeId?: Prisma.SortOrder
+  discountPercent?: Prisma.SortOrder
+  discountRub?: Prisma.SortOrder
+  paidRub?: Prisma.SortOrder
+  receiverId?: Prisma.SortOrder
 }
 
 export type VisitHistoryScalarRelationFilter = {
@@ -827,6 +1063,18 @@ export type EnumCrmLocationFieldUpdateOperationsInput = {
   set?: $Enums.CrmLocation
 }
 
+export type NullableFloatFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
+}
+
+export type NullableEnumPaymentMethodFieldUpdateOperationsInput = {
+  set?: $Enums.PaymentMethod | null
+}
+
 export type VisitHistoryCreateNestedOneWithoutPendingReviewSmsInput = {
   create?: Prisma.XOR<Prisma.VisitHistoryCreateWithoutPendingReviewSmsInput, Prisma.VisitHistoryUncheckedCreateWithoutPendingReviewSmsInput>
   connectOrCreate?: Prisma.VisitHistoryCreateOrConnectWithoutPendingReviewSmsInput
@@ -839,6 +1087,48 @@ export type VisitHistoryUpdateOneRequiredWithoutPendingReviewSmsNestedInput = {
   upsert?: Prisma.VisitHistoryUpsertWithoutPendingReviewSmsInput
   connect?: Prisma.VisitHistoryWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.VisitHistoryUpdateToOneWithWhereWithoutPendingReviewSmsInput, Prisma.VisitHistoryUpdateWithoutPendingReviewSmsInput>, Prisma.VisitHistoryUncheckedUpdateWithoutPendingReviewSmsInput>
+}
+
+export type VisitHistoryCreateNestedManyWithoutReceiverInput = {
+  create?: Prisma.XOR<Prisma.VisitHistoryCreateWithoutReceiverInput, Prisma.VisitHistoryUncheckedCreateWithoutReceiverInput> | Prisma.VisitHistoryCreateWithoutReceiverInput[] | Prisma.VisitHistoryUncheckedCreateWithoutReceiverInput[]
+  connectOrCreate?: Prisma.VisitHistoryCreateOrConnectWithoutReceiverInput | Prisma.VisitHistoryCreateOrConnectWithoutReceiverInput[]
+  createMany?: Prisma.VisitHistoryCreateManyReceiverInputEnvelope
+  connect?: Prisma.VisitHistoryWhereUniqueInput | Prisma.VisitHistoryWhereUniqueInput[]
+}
+
+export type VisitHistoryUncheckedCreateNestedManyWithoutReceiverInput = {
+  create?: Prisma.XOR<Prisma.VisitHistoryCreateWithoutReceiverInput, Prisma.VisitHistoryUncheckedCreateWithoutReceiverInput> | Prisma.VisitHistoryCreateWithoutReceiverInput[] | Prisma.VisitHistoryUncheckedCreateWithoutReceiverInput[]
+  connectOrCreate?: Prisma.VisitHistoryCreateOrConnectWithoutReceiverInput | Prisma.VisitHistoryCreateOrConnectWithoutReceiverInput[]
+  createMany?: Prisma.VisitHistoryCreateManyReceiverInputEnvelope
+  connect?: Prisma.VisitHistoryWhereUniqueInput | Prisma.VisitHistoryWhereUniqueInput[]
+}
+
+export type VisitHistoryUpdateManyWithoutReceiverNestedInput = {
+  create?: Prisma.XOR<Prisma.VisitHistoryCreateWithoutReceiverInput, Prisma.VisitHistoryUncheckedCreateWithoutReceiverInput> | Prisma.VisitHistoryCreateWithoutReceiverInput[] | Prisma.VisitHistoryUncheckedCreateWithoutReceiverInput[]
+  connectOrCreate?: Prisma.VisitHistoryCreateOrConnectWithoutReceiverInput | Prisma.VisitHistoryCreateOrConnectWithoutReceiverInput[]
+  upsert?: Prisma.VisitHistoryUpsertWithWhereUniqueWithoutReceiverInput | Prisma.VisitHistoryUpsertWithWhereUniqueWithoutReceiverInput[]
+  createMany?: Prisma.VisitHistoryCreateManyReceiverInputEnvelope
+  set?: Prisma.VisitHistoryWhereUniqueInput | Prisma.VisitHistoryWhereUniqueInput[]
+  disconnect?: Prisma.VisitHistoryWhereUniqueInput | Prisma.VisitHistoryWhereUniqueInput[]
+  delete?: Prisma.VisitHistoryWhereUniqueInput | Prisma.VisitHistoryWhereUniqueInput[]
+  connect?: Prisma.VisitHistoryWhereUniqueInput | Prisma.VisitHistoryWhereUniqueInput[]
+  update?: Prisma.VisitHistoryUpdateWithWhereUniqueWithoutReceiverInput | Prisma.VisitHistoryUpdateWithWhereUniqueWithoutReceiverInput[]
+  updateMany?: Prisma.VisitHistoryUpdateManyWithWhereWithoutReceiverInput | Prisma.VisitHistoryUpdateManyWithWhereWithoutReceiverInput[]
+  deleteMany?: Prisma.VisitHistoryScalarWhereInput | Prisma.VisitHistoryScalarWhereInput[]
+}
+
+export type VisitHistoryUncheckedUpdateManyWithoutReceiverNestedInput = {
+  create?: Prisma.XOR<Prisma.VisitHistoryCreateWithoutReceiverInput, Prisma.VisitHistoryUncheckedCreateWithoutReceiverInput> | Prisma.VisitHistoryCreateWithoutReceiverInput[] | Prisma.VisitHistoryUncheckedCreateWithoutReceiverInput[]
+  connectOrCreate?: Prisma.VisitHistoryCreateOrConnectWithoutReceiverInput | Prisma.VisitHistoryCreateOrConnectWithoutReceiverInput[]
+  upsert?: Prisma.VisitHistoryUpsertWithWhereUniqueWithoutReceiverInput | Prisma.VisitHistoryUpsertWithWhereUniqueWithoutReceiverInput[]
+  createMany?: Prisma.VisitHistoryCreateManyReceiverInputEnvelope
+  set?: Prisma.VisitHistoryWhereUniqueInput | Prisma.VisitHistoryWhereUniqueInput[]
+  disconnect?: Prisma.VisitHistoryWhereUniqueInput | Prisma.VisitHistoryWhereUniqueInput[]
+  delete?: Prisma.VisitHistoryWhereUniqueInput | Prisma.VisitHistoryWhereUniqueInput[]
+  connect?: Prisma.VisitHistoryWhereUniqueInput | Prisma.VisitHistoryWhereUniqueInput[]
+  update?: Prisma.VisitHistoryUpdateWithWhereUniqueWithoutReceiverInput | Prisma.VisitHistoryUpdateWithWhereUniqueWithoutReceiverInput[]
+  updateMany?: Prisma.VisitHistoryUpdateManyWithWhereWithoutReceiverInput | Prisma.VisitHistoryUpdateManyWithWhereWithoutReceiverInput[]
+  deleteMany?: Prisma.VisitHistoryScalarWhereInput | Prisma.VisitHistoryScalarWhereInput[]
 }
 
 export type VisitHistoryCreateNestedOneWithoutAssigneesInput = {
@@ -855,6 +1145,122 @@ export type VisitHistoryUpdateOneRequiredWithoutAssigneesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.VisitHistoryUpdateToOneWithWhereWithoutAssigneesInput, Prisma.VisitHistoryUpdateWithoutAssigneesInput>, Prisma.VisitHistoryUncheckedUpdateWithoutAssigneesInput>
 }
 
+export type VisitHistoryCreateNestedOneWithoutInspectionInput = {
+  create?: Prisma.XOR<Prisma.VisitHistoryCreateWithoutInspectionInput, Prisma.VisitHistoryUncheckedCreateWithoutInspectionInput>
+  connectOrCreate?: Prisma.VisitHistoryCreateOrConnectWithoutInspectionInput
+  connect?: Prisma.VisitHistoryWhereUniqueInput
+}
+
+export type VisitHistoryUpdateOneRequiredWithoutInspectionNestedInput = {
+  create?: Prisma.XOR<Prisma.VisitHistoryCreateWithoutInspectionInput, Prisma.VisitHistoryUncheckedCreateWithoutInspectionInput>
+  connectOrCreate?: Prisma.VisitHistoryCreateOrConnectWithoutInspectionInput
+  upsert?: Prisma.VisitHistoryUpsertWithoutInspectionInput
+  connect?: Prisma.VisitHistoryWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.VisitHistoryUpdateToOneWithWhereWithoutInspectionInput, Prisma.VisitHistoryUpdateWithoutInspectionInput>, Prisma.VisitHistoryUncheckedUpdateWithoutInspectionInput>
+}
+
+export type VisitHistoryCreateNestedOneWithoutPhotosInput = {
+  create?: Prisma.XOR<Prisma.VisitHistoryCreateWithoutPhotosInput, Prisma.VisitHistoryUncheckedCreateWithoutPhotosInput>
+  connectOrCreate?: Prisma.VisitHistoryCreateOrConnectWithoutPhotosInput
+  connect?: Prisma.VisitHistoryWhereUniqueInput
+}
+
+export type VisitHistoryUpdateOneRequiredWithoutPhotosNestedInput = {
+  create?: Prisma.XOR<Prisma.VisitHistoryCreateWithoutPhotosInput, Prisma.VisitHistoryUncheckedCreateWithoutPhotosInput>
+  connectOrCreate?: Prisma.VisitHistoryCreateOrConnectWithoutPhotosInput
+  upsert?: Prisma.VisitHistoryUpsertWithoutPhotosInput
+  connect?: Prisma.VisitHistoryWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.VisitHistoryUpdateToOneWithWhereWithoutPhotosInput, Prisma.VisitHistoryUpdateWithoutPhotosInput>, Prisma.VisitHistoryUncheckedUpdateWithoutPhotosInput>
+}
+
+export type VisitHistoryCreateNestedOneWithoutDocumentsInput = {
+  create?: Prisma.XOR<Prisma.VisitHistoryCreateWithoutDocumentsInput, Prisma.VisitHistoryUncheckedCreateWithoutDocumentsInput>
+  connectOrCreate?: Prisma.VisitHistoryCreateOrConnectWithoutDocumentsInput
+  connect?: Prisma.VisitHistoryWhereUniqueInput
+}
+
+export type VisitHistoryUpdateOneRequiredWithoutDocumentsNestedInput = {
+  create?: Prisma.XOR<Prisma.VisitHistoryCreateWithoutDocumentsInput, Prisma.VisitHistoryUncheckedCreateWithoutDocumentsInput>
+  connectOrCreate?: Prisma.VisitHistoryCreateOrConnectWithoutDocumentsInput
+  upsert?: Prisma.VisitHistoryUpsertWithoutDocumentsInput
+  connect?: Prisma.VisitHistoryWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.VisitHistoryUpdateToOneWithWhereWithoutDocumentsInput, Prisma.VisitHistoryUpdateWithoutDocumentsInput>, Prisma.VisitHistoryUncheckedUpdateWithoutDocumentsInput>
+}
+
+export type VisitHistoryCreateNestedOneWithoutWorkItemsInput = {
+  create?: Prisma.XOR<Prisma.VisitHistoryCreateWithoutWorkItemsInput, Prisma.VisitHistoryUncheckedCreateWithoutWorkItemsInput>
+  connectOrCreate?: Prisma.VisitHistoryCreateOrConnectWithoutWorkItemsInput
+  connect?: Prisma.VisitHistoryWhereUniqueInput
+}
+
+export type VisitHistoryUpdateOneRequiredWithoutWorkItemsNestedInput = {
+  create?: Prisma.XOR<Prisma.VisitHistoryCreateWithoutWorkItemsInput, Prisma.VisitHistoryUncheckedCreateWithoutWorkItemsInput>
+  connectOrCreate?: Prisma.VisitHistoryCreateOrConnectWithoutWorkItemsInput
+  upsert?: Prisma.VisitHistoryUpsertWithoutWorkItemsInput
+  connect?: Prisma.VisitHistoryWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.VisitHistoryUpdateToOneWithWhereWithoutWorkItemsInput, Prisma.VisitHistoryUpdateWithoutWorkItemsInput>, Prisma.VisitHistoryUncheckedUpdateWithoutWorkItemsInput>
+}
+
+export type VisitHistoryCreateNestedOneWithoutHandoverInput = {
+  create?: Prisma.XOR<Prisma.VisitHistoryCreateWithoutHandoverInput, Prisma.VisitHistoryUncheckedCreateWithoutHandoverInput>
+  connectOrCreate?: Prisma.VisitHistoryCreateOrConnectWithoutHandoverInput
+  connect?: Prisma.VisitHistoryWhereUniqueInput
+}
+
+export type VisitHistoryUpdateOneRequiredWithoutHandoverNestedInput = {
+  create?: Prisma.XOR<Prisma.VisitHistoryCreateWithoutHandoverInput, Prisma.VisitHistoryUncheckedCreateWithoutHandoverInput>
+  connectOrCreate?: Prisma.VisitHistoryCreateOrConnectWithoutHandoverInput
+  upsert?: Prisma.VisitHistoryUpsertWithoutHandoverInput
+  connect?: Prisma.VisitHistoryWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.VisitHistoryUpdateToOneWithWhereWithoutHandoverInput, Prisma.VisitHistoryUpdateWithoutHandoverInput>, Prisma.VisitHistoryUncheckedUpdateWithoutHandoverInput>
+}
+
+export type VisitHistoryCreateNestedOneWithoutPayrollEntriesInput = {
+  create?: Prisma.XOR<Prisma.VisitHistoryCreateWithoutPayrollEntriesInput, Prisma.VisitHistoryUncheckedCreateWithoutPayrollEntriesInput>
+  connectOrCreate?: Prisma.VisitHistoryCreateOrConnectWithoutPayrollEntriesInput
+  connect?: Prisma.VisitHistoryWhereUniqueInput
+}
+
+export type VisitHistoryUpdateOneRequiredWithoutPayrollEntriesNestedInput = {
+  create?: Prisma.XOR<Prisma.VisitHistoryCreateWithoutPayrollEntriesInput, Prisma.VisitHistoryUncheckedCreateWithoutPayrollEntriesInput>
+  connectOrCreate?: Prisma.VisitHistoryCreateOrConnectWithoutPayrollEntriesInput
+  upsert?: Prisma.VisitHistoryUpsertWithoutPayrollEntriesInput
+  connect?: Prisma.VisitHistoryWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.VisitHistoryUpdateToOneWithWhereWithoutPayrollEntriesInput, Prisma.VisitHistoryUpdateWithoutPayrollEntriesInput>, Prisma.VisitHistoryUncheckedUpdateWithoutPayrollEntriesInput>
+}
+
+export type VisitHistoryCreateNestedOneWithoutCashEntriesInput = {
+  create?: Prisma.XOR<Prisma.VisitHistoryCreateWithoutCashEntriesInput, Prisma.VisitHistoryUncheckedCreateWithoutCashEntriesInput>
+  connectOrCreate?: Prisma.VisitHistoryCreateOrConnectWithoutCashEntriesInput
+  connect?: Prisma.VisitHistoryWhereUniqueInput
+}
+
+export type VisitHistoryUpdateOneWithoutCashEntriesNestedInput = {
+  create?: Prisma.XOR<Prisma.VisitHistoryCreateWithoutCashEntriesInput, Prisma.VisitHistoryUncheckedCreateWithoutCashEntriesInput>
+  connectOrCreate?: Prisma.VisitHistoryCreateOrConnectWithoutCashEntriesInput
+  upsert?: Prisma.VisitHistoryUpsertWithoutCashEntriesInput
+  disconnect?: Prisma.VisitHistoryWhereInput | boolean
+  delete?: Prisma.VisitHistoryWhereInput | boolean
+  connect?: Prisma.VisitHistoryWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.VisitHistoryUpdateToOneWithWhereWithoutCashEntriesInput, Prisma.VisitHistoryUpdateWithoutCashEntriesInput>, Prisma.VisitHistoryUncheckedUpdateWithoutCashEntriesInput>
+}
+
+export type VisitHistoryCreateNestedOneWithoutStockMovementsInput = {
+  create?: Prisma.XOR<Prisma.VisitHistoryCreateWithoutStockMovementsInput, Prisma.VisitHistoryUncheckedCreateWithoutStockMovementsInput>
+  connectOrCreate?: Prisma.VisitHistoryCreateOrConnectWithoutStockMovementsInput
+  connect?: Prisma.VisitHistoryWhereUniqueInput
+}
+
+export type VisitHistoryUpdateOneWithoutStockMovementsNestedInput = {
+  create?: Prisma.XOR<Prisma.VisitHistoryCreateWithoutStockMovementsInput, Prisma.VisitHistoryUncheckedCreateWithoutStockMovementsInput>
+  connectOrCreate?: Prisma.VisitHistoryCreateOrConnectWithoutStockMovementsInput
+  upsert?: Prisma.VisitHistoryUpsertWithoutStockMovementsInput
+  disconnect?: Prisma.VisitHistoryWhereInput | boolean
+  delete?: Prisma.VisitHistoryWhereInput | boolean
+  connect?: Prisma.VisitHistoryWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.VisitHistoryUpdateToOneWithWhereWithoutStockMovementsInput, Prisma.VisitHistoryUpdateWithoutStockMovementsInput>, Prisma.VisitHistoryUncheckedUpdateWithoutStockMovementsInput>
+}
+
 export type VisitHistoryCreateWithoutUserInput = {
   visitDate: Date | string
   serviceType: string
@@ -869,11 +1275,26 @@ export type VisitHistoryCreateWithoutUserInput = {
   completedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  docNumber?: string | null
+  docDate?: Date | string | null
+  discountPercent?: number | null
+  discountRub?: number | null
+  paymentMethod?: $Enums.PaymentMethod | null
+  paidRub?: number | null
   vehicle?: Prisma.ClientVehicleCreateNestedOneWithoutVisitsInput
   catalogServiceType?: Prisma.ServiceTypeCreateNestedOneWithoutVisitsInput
   pendingReviewSms?: Prisma.PendingReviewSmsCreateNestedOneWithoutVisitInput
   siteLead?: Prisma.SiteLeadCreateNestedOneWithoutVisitInput
   assignees?: Prisma.VisitStaffCreateNestedManyWithoutVisitInput
+  inspection?: Prisma.VehicleInspectionCreateNestedOneWithoutVisitInput
+  photos?: Prisma.VisitPhotoCreateNestedManyWithoutVisitInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutVisitInput
+  workItems?: Prisma.VisitWorkItemCreateNestedManyWithoutVisitInput
+  handover?: Prisma.VisitHandoverCreateNestedOneWithoutVisitInput
+  receiver?: Prisma.StaffCreateNestedOneWithoutReceivedVisitsInput
+  payrollEntries?: Prisma.PayrollEntryCreateNestedManyWithoutVisitInput
+  cashEntries?: Prisma.CashEntryCreateNestedManyWithoutVisitInput
+  stockMovements?: Prisma.StockMovementCreateNestedManyWithoutVisitInput
 }
 
 export type VisitHistoryUncheckedCreateWithoutUserInput = {
@@ -893,9 +1314,24 @@ export type VisitHistoryUncheckedCreateWithoutUserInput = {
   completedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  docNumber?: string | null
+  docDate?: Date | string | null
+  discountPercent?: number | null
+  discountRub?: number | null
+  paymentMethod?: $Enums.PaymentMethod | null
+  paidRub?: number | null
+  receiverId?: number | null
   pendingReviewSms?: Prisma.PendingReviewSmsUncheckedCreateNestedOneWithoutVisitInput
   siteLead?: Prisma.SiteLeadUncheckedCreateNestedOneWithoutVisitInput
   assignees?: Prisma.VisitStaffUncheckedCreateNestedManyWithoutVisitInput
+  inspection?: Prisma.VehicleInspectionUncheckedCreateNestedOneWithoutVisitInput
+  photos?: Prisma.VisitPhotoUncheckedCreateNestedManyWithoutVisitInput
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutVisitInput
+  workItems?: Prisma.VisitWorkItemUncheckedCreateNestedManyWithoutVisitInput
+  handover?: Prisma.VisitHandoverUncheckedCreateNestedOneWithoutVisitInput
+  payrollEntries?: Prisma.PayrollEntryUncheckedCreateNestedManyWithoutVisitInput
+  cashEntries?: Prisma.CashEntryUncheckedCreateNestedManyWithoutVisitInput
+  stockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutVisitInput
 }
 
 export type VisitHistoryCreateOrConnectWithoutUserInput = {
@@ -945,6 +1381,13 @@ export type VisitHistoryScalarWhereInput = {
   completedAt?: Prisma.DateTimeNullableFilter<"VisitHistory"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"VisitHistory"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"VisitHistory"> | Date | string
+  docNumber?: Prisma.StringNullableFilter<"VisitHistory"> | string | null
+  docDate?: Prisma.DateTimeNullableFilter<"VisitHistory"> | Date | string | null
+  discountPercent?: Prisma.FloatNullableFilter<"VisitHistory"> | number | null
+  discountRub?: Prisma.IntNullableFilter<"VisitHistory"> | number | null
+  paymentMethod?: Prisma.EnumPaymentMethodNullableFilter<"VisitHistory"> | $Enums.PaymentMethod | null
+  paidRub?: Prisma.IntNullableFilter<"VisitHistory"> | number | null
+  receiverId?: Prisma.IntNullableFilter<"VisitHistory"> | number | null
 }
 
 export type VisitHistoryCreateWithoutVehicleInput = {
@@ -961,11 +1404,26 @@ export type VisitHistoryCreateWithoutVehicleInput = {
   completedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  docNumber?: string | null
+  docDate?: Date | string | null
+  discountPercent?: number | null
+  discountRub?: number | null
+  paymentMethod?: $Enums.PaymentMethod | null
+  paidRub?: number | null
   user: Prisma.CabinetUserCreateNestedOneWithoutVisitsInput
   catalogServiceType?: Prisma.ServiceTypeCreateNestedOneWithoutVisitsInput
   pendingReviewSms?: Prisma.PendingReviewSmsCreateNestedOneWithoutVisitInput
   siteLead?: Prisma.SiteLeadCreateNestedOneWithoutVisitInput
   assignees?: Prisma.VisitStaffCreateNestedManyWithoutVisitInput
+  inspection?: Prisma.VehicleInspectionCreateNestedOneWithoutVisitInput
+  photos?: Prisma.VisitPhotoCreateNestedManyWithoutVisitInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutVisitInput
+  workItems?: Prisma.VisitWorkItemCreateNestedManyWithoutVisitInput
+  handover?: Prisma.VisitHandoverCreateNestedOneWithoutVisitInput
+  receiver?: Prisma.StaffCreateNestedOneWithoutReceivedVisitsInput
+  payrollEntries?: Prisma.PayrollEntryCreateNestedManyWithoutVisitInput
+  cashEntries?: Prisma.CashEntryCreateNestedManyWithoutVisitInput
+  stockMovements?: Prisma.StockMovementCreateNestedManyWithoutVisitInput
 }
 
 export type VisitHistoryUncheckedCreateWithoutVehicleInput = {
@@ -985,9 +1443,24 @@ export type VisitHistoryUncheckedCreateWithoutVehicleInput = {
   completedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  docNumber?: string | null
+  docDate?: Date | string | null
+  discountPercent?: number | null
+  discountRub?: number | null
+  paymentMethod?: $Enums.PaymentMethod | null
+  paidRub?: number | null
+  receiverId?: number | null
   pendingReviewSms?: Prisma.PendingReviewSmsUncheckedCreateNestedOneWithoutVisitInput
   siteLead?: Prisma.SiteLeadUncheckedCreateNestedOneWithoutVisitInput
   assignees?: Prisma.VisitStaffUncheckedCreateNestedManyWithoutVisitInput
+  inspection?: Prisma.VehicleInspectionUncheckedCreateNestedOneWithoutVisitInput
+  photos?: Prisma.VisitPhotoUncheckedCreateNestedManyWithoutVisitInput
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutVisitInput
+  workItems?: Prisma.VisitWorkItemUncheckedCreateNestedManyWithoutVisitInput
+  handover?: Prisma.VisitHandoverUncheckedCreateNestedOneWithoutVisitInput
+  payrollEntries?: Prisma.PayrollEntryUncheckedCreateNestedManyWithoutVisitInput
+  cashEntries?: Prisma.CashEntryUncheckedCreateNestedManyWithoutVisitInput
+  stockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutVisitInput
 }
 
 export type VisitHistoryCreateOrConnectWithoutVehicleInput = {
@@ -1030,11 +1503,26 @@ export type VisitHistoryCreateWithoutCatalogServiceTypeInput = {
   completedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  docNumber?: string | null
+  docDate?: Date | string | null
+  discountPercent?: number | null
+  discountRub?: number | null
+  paymentMethod?: $Enums.PaymentMethod | null
+  paidRub?: number | null
   user: Prisma.CabinetUserCreateNestedOneWithoutVisitsInput
   vehicle?: Prisma.ClientVehicleCreateNestedOneWithoutVisitsInput
   pendingReviewSms?: Prisma.PendingReviewSmsCreateNestedOneWithoutVisitInput
   siteLead?: Prisma.SiteLeadCreateNestedOneWithoutVisitInput
   assignees?: Prisma.VisitStaffCreateNestedManyWithoutVisitInput
+  inspection?: Prisma.VehicleInspectionCreateNestedOneWithoutVisitInput
+  photos?: Prisma.VisitPhotoCreateNestedManyWithoutVisitInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutVisitInput
+  workItems?: Prisma.VisitWorkItemCreateNestedManyWithoutVisitInput
+  handover?: Prisma.VisitHandoverCreateNestedOneWithoutVisitInput
+  receiver?: Prisma.StaffCreateNestedOneWithoutReceivedVisitsInput
+  payrollEntries?: Prisma.PayrollEntryCreateNestedManyWithoutVisitInput
+  cashEntries?: Prisma.CashEntryCreateNestedManyWithoutVisitInput
+  stockMovements?: Prisma.StockMovementCreateNestedManyWithoutVisitInput
 }
 
 export type VisitHistoryUncheckedCreateWithoutCatalogServiceTypeInput = {
@@ -1054,9 +1542,24 @@ export type VisitHistoryUncheckedCreateWithoutCatalogServiceTypeInput = {
   completedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  docNumber?: string | null
+  docDate?: Date | string | null
+  discountPercent?: number | null
+  discountRub?: number | null
+  paymentMethod?: $Enums.PaymentMethod | null
+  paidRub?: number | null
+  receiverId?: number | null
   pendingReviewSms?: Prisma.PendingReviewSmsUncheckedCreateNestedOneWithoutVisitInput
   siteLead?: Prisma.SiteLeadUncheckedCreateNestedOneWithoutVisitInput
   assignees?: Prisma.VisitStaffUncheckedCreateNestedManyWithoutVisitInput
+  inspection?: Prisma.VehicleInspectionUncheckedCreateNestedOneWithoutVisitInput
+  photos?: Prisma.VisitPhotoUncheckedCreateNestedManyWithoutVisitInput
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutVisitInput
+  workItems?: Prisma.VisitWorkItemUncheckedCreateNestedManyWithoutVisitInput
+  handover?: Prisma.VisitHandoverUncheckedCreateNestedOneWithoutVisitInput
+  payrollEntries?: Prisma.PayrollEntryUncheckedCreateNestedManyWithoutVisitInput
+  cashEntries?: Prisma.CashEntryUncheckedCreateNestedManyWithoutVisitInput
+  stockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutVisitInput
 }
 
 export type VisitHistoryCreateOrConnectWithoutCatalogServiceTypeInput = {
@@ -1099,11 +1602,26 @@ export type VisitHistoryCreateWithoutSiteLeadInput = {
   completedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  docNumber?: string | null
+  docDate?: Date | string | null
+  discountPercent?: number | null
+  discountRub?: number | null
+  paymentMethod?: $Enums.PaymentMethod | null
+  paidRub?: number | null
   user: Prisma.CabinetUserCreateNestedOneWithoutVisitsInput
   vehicle?: Prisma.ClientVehicleCreateNestedOneWithoutVisitsInput
   catalogServiceType?: Prisma.ServiceTypeCreateNestedOneWithoutVisitsInput
   pendingReviewSms?: Prisma.PendingReviewSmsCreateNestedOneWithoutVisitInput
   assignees?: Prisma.VisitStaffCreateNestedManyWithoutVisitInput
+  inspection?: Prisma.VehicleInspectionCreateNestedOneWithoutVisitInput
+  photos?: Prisma.VisitPhotoCreateNestedManyWithoutVisitInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutVisitInput
+  workItems?: Prisma.VisitWorkItemCreateNestedManyWithoutVisitInput
+  handover?: Prisma.VisitHandoverCreateNestedOneWithoutVisitInput
+  receiver?: Prisma.StaffCreateNestedOneWithoutReceivedVisitsInput
+  payrollEntries?: Prisma.PayrollEntryCreateNestedManyWithoutVisitInput
+  cashEntries?: Prisma.CashEntryCreateNestedManyWithoutVisitInput
+  stockMovements?: Prisma.StockMovementCreateNestedManyWithoutVisitInput
 }
 
 export type VisitHistoryUncheckedCreateWithoutSiteLeadInput = {
@@ -1124,8 +1642,23 @@ export type VisitHistoryUncheckedCreateWithoutSiteLeadInput = {
   completedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  docNumber?: string | null
+  docDate?: Date | string | null
+  discountPercent?: number | null
+  discountRub?: number | null
+  paymentMethod?: $Enums.PaymentMethod | null
+  paidRub?: number | null
+  receiverId?: number | null
   pendingReviewSms?: Prisma.PendingReviewSmsUncheckedCreateNestedOneWithoutVisitInput
   assignees?: Prisma.VisitStaffUncheckedCreateNestedManyWithoutVisitInput
+  inspection?: Prisma.VehicleInspectionUncheckedCreateNestedOneWithoutVisitInput
+  photos?: Prisma.VisitPhotoUncheckedCreateNestedManyWithoutVisitInput
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutVisitInput
+  workItems?: Prisma.VisitWorkItemUncheckedCreateNestedManyWithoutVisitInput
+  handover?: Prisma.VisitHandoverUncheckedCreateNestedOneWithoutVisitInput
+  payrollEntries?: Prisma.PayrollEntryUncheckedCreateNestedManyWithoutVisitInput
+  cashEntries?: Prisma.CashEntryUncheckedCreateNestedManyWithoutVisitInput
+  stockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutVisitInput
 }
 
 export type VisitHistoryCreateOrConnectWithoutSiteLeadInput = {
@@ -1158,11 +1691,26 @@ export type VisitHistoryUpdateWithoutSiteLeadInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  docNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  docDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  discountPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  discountRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethod?: Prisma.NullableEnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod | null
+  paidRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   user?: Prisma.CabinetUserUpdateOneRequiredWithoutVisitsNestedInput
   vehicle?: Prisma.ClientVehicleUpdateOneWithoutVisitsNestedInput
   catalogServiceType?: Prisma.ServiceTypeUpdateOneWithoutVisitsNestedInput
   pendingReviewSms?: Prisma.PendingReviewSmsUpdateOneWithoutVisitNestedInput
   assignees?: Prisma.VisitStaffUpdateManyWithoutVisitNestedInput
+  inspection?: Prisma.VehicleInspectionUpdateOneWithoutVisitNestedInput
+  photos?: Prisma.VisitPhotoUpdateManyWithoutVisitNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutVisitNestedInput
+  workItems?: Prisma.VisitWorkItemUpdateManyWithoutVisitNestedInput
+  handover?: Prisma.VisitHandoverUpdateOneWithoutVisitNestedInput
+  receiver?: Prisma.StaffUpdateOneWithoutReceivedVisitsNestedInput
+  payrollEntries?: Prisma.PayrollEntryUpdateManyWithoutVisitNestedInput
+  cashEntries?: Prisma.CashEntryUpdateManyWithoutVisitNestedInput
+  stockMovements?: Prisma.StockMovementUpdateManyWithoutVisitNestedInput
 }
 
 export type VisitHistoryUncheckedUpdateWithoutSiteLeadInput = {
@@ -1183,8 +1731,23 @@ export type VisitHistoryUncheckedUpdateWithoutSiteLeadInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  docNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  docDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  discountPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  discountRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethod?: Prisma.NullableEnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod | null
+  paidRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  receiverId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pendingReviewSms?: Prisma.PendingReviewSmsUncheckedUpdateOneWithoutVisitNestedInput
   assignees?: Prisma.VisitStaffUncheckedUpdateManyWithoutVisitNestedInput
+  inspection?: Prisma.VehicleInspectionUncheckedUpdateOneWithoutVisitNestedInput
+  photos?: Prisma.VisitPhotoUncheckedUpdateManyWithoutVisitNestedInput
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutVisitNestedInput
+  workItems?: Prisma.VisitWorkItemUncheckedUpdateManyWithoutVisitNestedInput
+  handover?: Prisma.VisitHandoverUncheckedUpdateOneWithoutVisitNestedInput
+  payrollEntries?: Prisma.PayrollEntryUncheckedUpdateManyWithoutVisitNestedInput
+  cashEntries?: Prisma.CashEntryUncheckedUpdateManyWithoutVisitNestedInput
+  stockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutVisitNestedInput
 }
 
 export type VisitHistoryCreateWithoutPendingReviewSmsInput = {
@@ -1201,11 +1764,26 @@ export type VisitHistoryCreateWithoutPendingReviewSmsInput = {
   completedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  docNumber?: string | null
+  docDate?: Date | string | null
+  discountPercent?: number | null
+  discountRub?: number | null
+  paymentMethod?: $Enums.PaymentMethod | null
+  paidRub?: number | null
   user: Prisma.CabinetUserCreateNestedOneWithoutVisitsInput
   vehicle?: Prisma.ClientVehicleCreateNestedOneWithoutVisitsInput
   catalogServiceType?: Prisma.ServiceTypeCreateNestedOneWithoutVisitsInput
   siteLead?: Prisma.SiteLeadCreateNestedOneWithoutVisitInput
   assignees?: Prisma.VisitStaffCreateNestedManyWithoutVisitInput
+  inspection?: Prisma.VehicleInspectionCreateNestedOneWithoutVisitInput
+  photos?: Prisma.VisitPhotoCreateNestedManyWithoutVisitInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutVisitInput
+  workItems?: Prisma.VisitWorkItemCreateNestedManyWithoutVisitInput
+  handover?: Prisma.VisitHandoverCreateNestedOneWithoutVisitInput
+  receiver?: Prisma.StaffCreateNestedOneWithoutReceivedVisitsInput
+  payrollEntries?: Prisma.PayrollEntryCreateNestedManyWithoutVisitInput
+  cashEntries?: Prisma.CashEntryCreateNestedManyWithoutVisitInput
+  stockMovements?: Prisma.StockMovementCreateNestedManyWithoutVisitInput
 }
 
 export type VisitHistoryUncheckedCreateWithoutPendingReviewSmsInput = {
@@ -1226,8 +1804,23 @@ export type VisitHistoryUncheckedCreateWithoutPendingReviewSmsInput = {
   completedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  docNumber?: string | null
+  docDate?: Date | string | null
+  discountPercent?: number | null
+  discountRub?: number | null
+  paymentMethod?: $Enums.PaymentMethod | null
+  paidRub?: number | null
+  receiverId?: number | null
   siteLead?: Prisma.SiteLeadUncheckedCreateNestedOneWithoutVisitInput
   assignees?: Prisma.VisitStaffUncheckedCreateNestedManyWithoutVisitInput
+  inspection?: Prisma.VehicleInspectionUncheckedCreateNestedOneWithoutVisitInput
+  photos?: Prisma.VisitPhotoUncheckedCreateNestedManyWithoutVisitInput
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutVisitInput
+  workItems?: Prisma.VisitWorkItemUncheckedCreateNestedManyWithoutVisitInput
+  handover?: Prisma.VisitHandoverUncheckedCreateNestedOneWithoutVisitInput
+  payrollEntries?: Prisma.PayrollEntryUncheckedCreateNestedManyWithoutVisitInput
+  cashEntries?: Prisma.CashEntryUncheckedCreateNestedManyWithoutVisitInput
+  stockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutVisitInput
 }
 
 export type VisitHistoryCreateOrConnectWithoutPendingReviewSmsInput = {
@@ -1260,11 +1853,26 @@ export type VisitHistoryUpdateWithoutPendingReviewSmsInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  docNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  docDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  discountPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  discountRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethod?: Prisma.NullableEnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod | null
+  paidRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   user?: Prisma.CabinetUserUpdateOneRequiredWithoutVisitsNestedInput
   vehicle?: Prisma.ClientVehicleUpdateOneWithoutVisitsNestedInput
   catalogServiceType?: Prisma.ServiceTypeUpdateOneWithoutVisitsNestedInput
   siteLead?: Prisma.SiteLeadUpdateOneWithoutVisitNestedInput
   assignees?: Prisma.VisitStaffUpdateManyWithoutVisitNestedInput
+  inspection?: Prisma.VehicleInspectionUpdateOneWithoutVisitNestedInput
+  photos?: Prisma.VisitPhotoUpdateManyWithoutVisitNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutVisitNestedInput
+  workItems?: Prisma.VisitWorkItemUpdateManyWithoutVisitNestedInput
+  handover?: Prisma.VisitHandoverUpdateOneWithoutVisitNestedInput
+  receiver?: Prisma.StaffUpdateOneWithoutReceivedVisitsNestedInput
+  payrollEntries?: Prisma.PayrollEntryUpdateManyWithoutVisitNestedInput
+  cashEntries?: Prisma.CashEntryUpdateManyWithoutVisitNestedInput
+  stockMovements?: Prisma.StockMovementUpdateManyWithoutVisitNestedInput
 }
 
 export type VisitHistoryUncheckedUpdateWithoutPendingReviewSmsInput = {
@@ -1285,8 +1893,122 @@ export type VisitHistoryUncheckedUpdateWithoutPendingReviewSmsInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  docNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  docDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  discountPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  discountRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethod?: Prisma.NullableEnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod | null
+  paidRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  receiverId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   siteLead?: Prisma.SiteLeadUncheckedUpdateOneWithoutVisitNestedInput
   assignees?: Prisma.VisitStaffUncheckedUpdateManyWithoutVisitNestedInput
+  inspection?: Prisma.VehicleInspectionUncheckedUpdateOneWithoutVisitNestedInput
+  photos?: Prisma.VisitPhotoUncheckedUpdateManyWithoutVisitNestedInput
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutVisitNestedInput
+  workItems?: Prisma.VisitWorkItemUncheckedUpdateManyWithoutVisitNestedInput
+  handover?: Prisma.VisitHandoverUncheckedUpdateOneWithoutVisitNestedInput
+  payrollEntries?: Prisma.PayrollEntryUncheckedUpdateManyWithoutVisitNestedInput
+  cashEntries?: Prisma.CashEntryUncheckedUpdateManyWithoutVisitNestedInput
+  stockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutVisitNestedInput
+}
+
+export type VisitHistoryCreateWithoutReceiverInput = {
+  visitDate: Date | string
+  serviceType: string
+  diskLink?: string | null
+  startsAt?: Date | string | null
+  endsAt?: Date | string | null
+  priceRub?: number | null
+  location?: $Enums.CrmLocation
+  managerName?: string | null
+  masterComment?: string | null
+  reviewSmsSentAt?: Date | string | null
+  completedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  docNumber?: string | null
+  docDate?: Date | string | null
+  discountPercent?: number | null
+  discountRub?: number | null
+  paymentMethod?: $Enums.PaymentMethod | null
+  paidRub?: number | null
+  user: Prisma.CabinetUserCreateNestedOneWithoutVisitsInput
+  vehicle?: Prisma.ClientVehicleCreateNestedOneWithoutVisitsInput
+  catalogServiceType?: Prisma.ServiceTypeCreateNestedOneWithoutVisitsInput
+  pendingReviewSms?: Prisma.PendingReviewSmsCreateNestedOneWithoutVisitInput
+  siteLead?: Prisma.SiteLeadCreateNestedOneWithoutVisitInput
+  assignees?: Prisma.VisitStaffCreateNestedManyWithoutVisitInput
+  inspection?: Prisma.VehicleInspectionCreateNestedOneWithoutVisitInput
+  photos?: Prisma.VisitPhotoCreateNestedManyWithoutVisitInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutVisitInput
+  workItems?: Prisma.VisitWorkItemCreateNestedManyWithoutVisitInput
+  handover?: Prisma.VisitHandoverCreateNestedOneWithoutVisitInput
+  payrollEntries?: Prisma.PayrollEntryCreateNestedManyWithoutVisitInput
+  cashEntries?: Prisma.CashEntryCreateNestedManyWithoutVisitInput
+  stockMovements?: Prisma.StockMovementCreateNestedManyWithoutVisitInput
+}
+
+export type VisitHistoryUncheckedCreateWithoutReceiverInput = {
+  id?: number
+  userId: number
+  vehicleId?: number | null
+  visitDate: Date | string
+  serviceType: string
+  diskLink?: string | null
+  startsAt?: Date | string | null
+  endsAt?: Date | string | null
+  priceRub?: number | null
+  serviceTypeId?: number | null
+  location?: $Enums.CrmLocation
+  managerName?: string | null
+  masterComment?: string | null
+  reviewSmsSentAt?: Date | string | null
+  completedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  docNumber?: string | null
+  docDate?: Date | string | null
+  discountPercent?: number | null
+  discountRub?: number | null
+  paymentMethod?: $Enums.PaymentMethod | null
+  paidRub?: number | null
+  pendingReviewSms?: Prisma.PendingReviewSmsUncheckedCreateNestedOneWithoutVisitInput
+  siteLead?: Prisma.SiteLeadUncheckedCreateNestedOneWithoutVisitInput
+  assignees?: Prisma.VisitStaffUncheckedCreateNestedManyWithoutVisitInput
+  inspection?: Prisma.VehicleInspectionUncheckedCreateNestedOneWithoutVisitInput
+  photos?: Prisma.VisitPhotoUncheckedCreateNestedManyWithoutVisitInput
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutVisitInput
+  workItems?: Prisma.VisitWorkItemUncheckedCreateNestedManyWithoutVisitInput
+  handover?: Prisma.VisitHandoverUncheckedCreateNestedOneWithoutVisitInput
+  payrollEntries?: Prisma.PayrollEntryUncheckedCreateNestedManyWithoutVisitInput
+  cashEntries?: Prisma.CashEntryUncheckedCreateNestedManyWithoutVisitInput
+  stockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutVisitInput
+}
+
+export type VisitHistoryCreateOrConnectWithoutReceiverInput = {
+  where: Prisma.VisitHistoryWhereUniqueInput
+  create: Prisma.XOR<Prisma.VisitHistoryCreateWithoutReceiverInput, Prisma.VisitHistoryUncheckedCreateWithoutReceiverInput>
+}
+
+export type VisitHistoryCreateManyReceiverInputEnvelope = {
+  data: Prisma.VisitHistoryCreateManyReceiverInput | Prisma.VisitHistoryCreateManyReceiverInput[]
+  skipDuplicates?: boolean
+}
+
+export type VisitHistoryUpsertWithWhereUniqueWithoutReceiverInput = {
+  where: Prisma.VisitHistoryWhereUniqueInput
+  update: Prisma.XOR<Prisma.VisitHistoryUpdateWithoutReceiverInput, Prisma.VisitHistoryUncheckedUpdateWithoutReceiverInput>
+  create: Prisma.XOR<Prisma.VisitHistoryCreateWithoutReceiverInput, Prisma.VisitHistoryUncheckedCreateWithoutReceiverInput>
+}
+
+export type VisitHistoryUpdateWithWhereUniqueWithoutReceiverInput = {
+  where: Prisma.VisitHistoryWhereUniqueInput
+  data: Prisma.XOR<Prisma.VisitHistoryUpdateWithoutReceiverInput, Prisma.VisitHistoryUncheckedUpdateWithoutReceiverInput>
+}
+
+export type VisitHistoryUpdateManyWithWhereWithoutReceiverInput = {
+  where: Prisma.VisitHistoryScalarWhereInput
+  data: Prisma.XOR<Prisma.VisitHistoryUpdateManyMutationInput, Prisma.VisitHistoryUncheckedUpdateManyWithoutReceiverInput>
 }
 
 export type VisitHistoryCreateWithoutAssigneesInput = {
@@ -1303,11 +2025,26 @@ export type VisitHistoryCreateWithoutAssigneesInput = {
   completedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  docNumber?: string | null
+  docDate?: Date | string | null
+  discountPercent?: number | null
+  discountRub?: number | null
+  paymentMethod?: $Enums.PaymentMethod | null
+  paidRub?: number | null
   user: Prisma.CabinetUserCreateNestedOneWithoutVisitsInput
   vehicle?: Prisma.ClientVehicleCreateNestedOneWithoutVisitsInput
   catalogServiceType?: Prisma.ServiceTypeCreateNestedOneWithoutVisitsInput
   pendingReviewSms?: Prisma.PendingReviewSmsCreateNestedOneWithoutVisitInput
   siteLead?: Prisma.SiteLeadCreateNestedOneWithoutVisitInput
+  inspection?: Prisma.VehicleInspectionCreateNestedOneWithoutVisitInput
+  photos?: Prisma.VisitPhotoCreateNestedManyWithoutVisitInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutVisitInput
+  workItems?: Prisma.VisitWorkItemCreateNestedManyWithoutVisitInput
+  handover?: Prisma.VisitHandoverCreateNestedOneWithoutVisitInput
+  receiver?: Prisma.StaffCreateNestedOneWithoutReceivedVisitsInput
+  payrollEntries?: Prisma.PayrollEntryCreateNestedManyWithoutVisitInput
+  cashEntries?: Prisma.CashEntryCreateNestedManyWithoutVisitInput
+  stockMovements?: Prisma.StockMovementCreateNestedManyWithoutVisitInput
 }
 
 export type VisitHistoryUncheckedCreateWithoutAssigneesInput = {
@@ -1328,8 +2065,23 @@ export type VisitHistoryUncheckedCreateWithoutAssigneesInput = {
   completedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  docNumber?: string | null
+  docDate?: Date | string | null
+  discountPercent?: number | null
+  discountRub?: number | null
+  paymentMethod?: $Enums.PaymentMethod | null
+  paidRub?: number | null
+  receiverId?: number | null
   pendingReviewSms?: Prisma.PendingReviewSmsUncheckedCreateNestedOneWithoutVisitInput
   siteLead?: Prisma.SiteLeadUncheckedCreateNestedOneWithoutVisitInput
+  inspection?: Prisma.VehicleInspectionUncheckedCreateNestedOneWithoutVisitInput
+  photos?: Prisma.VisitPhotoUncheckedCreateNestedManyWithoutVisitInput
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutVisitInput
+  workItems?: Prisma.VisitWorkItemUncheckedCreateNestedManyWithoutVisitInput
+  handover?: Prisma.VisitHandoverUncheckedCreateNestedOneWithoutVisitInput
+  payrollEntries?: Prisma.PayrollEntryUncheckedCreateNestedManyWithoutVisitInput
+  cashEntries?: Prisma.CashEntryUncheckedCreateNestedManyWithoutVisitInput
+  stockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutVisitInput
 }
 
 export type VisitHistoryCreateOrConnectWithoutAssigneesInput = {
@@ -1362,11 +2114,26 @@ export type VisitHistoryUpdateWithoutAssigneesInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  docNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  docDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  discountPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  discountRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethod?: Prisma.NullableEnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod | null
+  paidRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   user?: Prisma.CabinetUserUpdateOneRequiredWithoutVisitsNestedInput
   vehicle?: Prisma.ClientVehicleUpdateOneWithoutVisitsNestedInput
   catalogServiceType?: Prisma.ServiceTypeUpdateOneWithoutVisitsNestedInput
   pendingReviewSms?: Prisma.PendingReviewSmsUpdateOneWithoutVisitNestedInput
   siteLead?: Prisma.SiteLeadUpdateOneWithoutVisitNestedInput
+  inspection?: Prisma.VehicleInspectionUpdateOneWithoutVisitNestedInput
+  photos?: Prisma.VisitPhotoUpdateManyWithoutVisitNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutVisitNestedInput
+  workItems?: Prisma.VisitWorkItemUpdateManyWithoutVisitNestedInput
+  handover?: Prisma.VisitHandoverUpdateOneWithoutVisitNestedInput
+  receiver?: Prisma.StaffUpdateOneWithoutReceivedVisitsNestedInput
+  payrollEntries?: Prisma.PayrollEntryUpdateManyWithoutVisitNestedInput
+  cashEntries?: Prisma.CashEntryUpdateManyWithoutVisitNestedInput
+  stockMovements?: Prisma.StockMovementUpdateManyWithoutVisitNestedInput
 }
 
 export type VisitHistoryUncheckedUpdateWithoutAssigneesInput = {
@@ -1387,8 +2154,1319 @@ export type VisitHistoryUncheckedUpdateWithoutAssigneesInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  docNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  docDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  discountPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  discountRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethod?: Prisma.NullableEnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod | null
+  paidRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  receiverId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pendingReviewSms?: Prisma.PendingReviewSmsUncheckedUpdateOneWithoutVisitNestedInput
   siteLead?: Prisma.SiteLeadUncheckedUpdateOneWithoutVisitNestedInput
+  inspection?: Prisma.VehicleInspectionUncheckedUpdateOneWithoutVisitNestedInput
+  photos?: Prisma.VisitPhotoUncheckedUpdateManyWithoutVisitNestedInput
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutVisitNestedInput
+  workItems?: Prisma.VisitWorkItemUncheckedUpdateManyWithoutVisitNestedInput
+  handover?: Prisma.VisitHandoverUncheckedUpdateOneWithoutVisitNestedInput
+  payrollEntries?: Prisma.PayrollEntryUncheckedUpdateManyWithoutVisitNestedInput
+  cashEntries?: Prisma.CashEntryUncheckedUpdateManyWithoutVisitNestedInput
+  stockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutVisitNestedInput
+}
+
+export type VisitHistoryCreateWithoutInspectionInput = {
+  visitDate: Date | string
+  serviceType: string
+  diskLink?: string | null
+  startsAt?: Date | string | null
+  endsAt?: Date | string | null
+  priceRub?: number | null
+  location?: $Enums.CrmLocation
+  managerName?: string | null
+  masterComment?: string | null
+  reviewSmsSentAt?: Date | string | null
+  completedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  docNumber?: string | null
+  docDate?: Date | string | null
+  discountPercent?: number | null
+  discountRub?: number | null
+  paymentMethod?: $Enums.PaymentMethod | null
+  paidRub?: number | null
+  user: Prisma.CabinetUserCreateNestedOneWithoutVisitsInput
+  vehicle?: Prisma.ClientVehicleCreateNestedOneWithoutVisitsInput
+  catalogServiceType?: Prisma.ServiceTypeCreateNestedOneWithoutVisitsInput
+  pendingReviewSms?: Prisma.PendingReviewSmsCreateNestedOneWithoutVisitInput
+  siteLead?: Prisma.SiteLeadCreateNestedOneWithoutVisitInput
+  assignees?: Prisma.VisitStaffCreateNestedManyWithoutVisitInput
+  photos?: Prisma.VisitPhotoCreateNestedManyWithoutVisitInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutVisitInput
+  workItems?: Prisma.VisitWorkItemCreateNestedManyWithoutVisitInput
+  handover?: Prisma.VisitHandoverCreateNestedOneWithoutVisitInput
+  receiver?: Prisma.StaffCreateNestedOneWithoutReceivedVisitsInput
+  payrollEntries?: Prisma.PayrollEntryCreateNestedManyWithoutVisitInput
+  cashEntries?: Prisma.CashEntryCreateNestedManyWithoutVisitInput
+  stockMovements?: Prisma.StockMovementCreateNestedManyWithoutVisitInput
+}
+
+export type VisitHistoryUncheckedCreateWithoutInspectionInput = {
+  id?: number
+  userId: number
+  vehicleId?: number | null
+  visitDate: Date | string
+  serviceType: string
+  diskLink?: string | null
+  startsAt?: Date | string | null
+  endsAt?: Date | string | null
+  priceRub?: number | null
+  serviceTypeId?: number | null
+  location?: $Enums.CrmLocation
+  managerName?: string | null
+  masterComment?: string | null
+  reviewSmsSentAt?: Date | string | null
+  completedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  docNumber?: string | null
+  docDate?: Date | string | null
+  discountPercent?: number | null
+  discountRub?: number | null
+  paymentMethod?: $Enums.PaymentMethod | null
+  paidRub?: number | null
+  receiverId?: number | null
+  pendingReviewSms?: Prisma.PendingReviewSmsUncheckedCreateNestedOneWithoutVisitInput
+  siteLead?: Prisma.SiteLeadUncheckedCreateNestedOneWithoutVisitInput
+  assignees?: Prisma.VisitStaffUncheckedCreateNestedManyWithoutVisitInput
+  photos?: Prisma.VisitPhotoUncheckedCreateNestedManyWithoutVisitInput
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutVisitInput
+  workItems?: Prisma.VisitWorkItemUncheckedCreateNestedManyWithoutVisitInput
+  handover?: Prisma.VisitHandoverUncheckedCreateNestedOneWithoutVisitInput
+  payrollEntries?: Prisma.PayrollEntryUncheckedCreateNestedManyWithoutVisitInput
+  cashEntries?: Prisma.CashEntryUncheckedCreateNestedManyWithoutVisitInput
+  stockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutVisitInput
+}
+
+export type VisitHistoryCreateOrConnectWithoutInspectionInput = {
+  where: Prisma.VisitHistoryWhereUniqueInput
+  create: Prisma.XOR<Prisma.VisitHistoryCreateWithoutInspectionInput, Prisma.VisitHistoryUncheckedCreateWithoutInspectionInput>
+}
+
+export type VisitHistoryUpsertWithoutInspectionInput = {
+  update: Prisma.XOR<Prisma.VisitHistoryUpdateWithoutInspectionInput, Prisma.VisitHistoryUncheckedUpdateWithoutInspectionInput>
+  create: Prisma.XOR<Prisma.VisitHistoryCreateWithoutInspectionInput, Prisma.VisitHistoryUncheckedCreateWithoutInspectionInput>
+  where?: Prisma.VisitHistoryWhereInput
+}
+
+export type VisitHistoryUpdateToOneWithWhereWithoutInspectionInput = {
+  where?: Prisma.VisitHistoryWhereInput
+  data: Prisma.XOR<Prisma.VisitHistoryUpdateWithoutInspectionInput, Prisma.VisitHistoryUncheckedUpdateWithoutInspectionInput>
+}
+
+export type VisitHistoryUpdateWithoutInspectionInput = {
+  visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  serviceType?: Prisma.StringFieldUpdateOperationsInput | string
+  diskLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  priceRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  location?: Prisma.EnumCrmLocationFieldUpdateOperationsInput | $Enums.CrmLocation
+  managerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  masterComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewSmsSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  docNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  docDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  discountPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  discountRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethod?: Prisma.NullableEnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod | null
+  paidRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  user?: Prisma.CabinetUserUpdateOneRequiredWithoutVisitsNestedInput
+  vehicle?: Prisma.ClientVehicleUpdateOneWithoutVisitsNestedInput
+  catalogServiceType?: Prisma.ServiceTypeUpdateOneWithoutVisitsNestedInput
+  pendingReviewSms?: Prisma.PendingReviewSmsUpdateOneWithoutVisitNestedInput
+  siteLead?: Prisma.SiteLeadUpdateOneWithoutVisitNestedInput
+  assignees?: Prisma.VisitStaffUpdateManyWithoutVisitNestedInput
+  photos?: Prisma.VisitPhotoUpdateManyWithoutVisitNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutVisitNestedInput
+  workItems?: Prisma.VisitWorkItemUpdateManyWithoutVisitNestedInput
+  handover?: Prisma.VisitHandoverUpdateOneWithoutVisitNestedInput
+  receiver?: Prisma.StaffUpdateOneWithoutReceivedVisitsNestedInput
+  payrollEntries?: Prisma.PayrollEntryUpdateManyWithoutVisitNestedInput
+  cashEntries?: Prisma.CashEntryUpdateManyWithoutVisitNestedInput
+  stockMovements?: Prisma.StockMovementUpdateManyWithoutVisitNestedInput
+}
+
+export type VisitHistoryUncheckedUpdateWithoutInspectionInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  userId?: Prisma.IntFieldUpdateOperationsInput | number
+  vehicleId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  serviceType?: Prisma.StringFieldUpdateOperationsInput | string
+  diskLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  priceRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  serviceTypeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  location?: Prisma.EnumCrmLocationFieldUpdateOperationsInput | $Enums.CrmLocation
+  managerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  masterComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewSmsSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  docNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  docDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  discountPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  discountRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethod?: Prisma.NullableEnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod | null
+  paidRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  receiverId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  pendingReviewSms?: Prisma.PendingReviewSmsUncheckedUpdateOneWithoutVisitNestedInput
+  siteLead?: Prisma.SiteLeadUncheckedUpdateOneWithoutVisitNestedInput
+  assignees?: Prisma.VisitStaffUncheckedUpdateManyWithoutVisitNestedInput
+  photos?: Prisma.VisitPhotoUncheckedUpdateManyWithoutVisitNestedInput
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutVisitNestedInput
+  workItems?: Prisma.VisitWorkItemUncheckedUpdateManyWithoutVisitNestedInput
+  handover?: Prisma.VisitHandoverUncheckedUpdateOneWithoutVisitNestedInput
+  payrollEntries?: Prisma.PayrollEntryUncheckedUpdateManyWithoutVisitNestedInput
+  cashEntries?: Prisma.CashEntryUncheckedUpdateManyWithoutVisitNestedInput
+  stockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutVisitNestedInput
+}
+
+export type VisitHistoryCreateWithoutPhotosInput = {
+  visitDate: Date | string
+  serviceType: string
+  diskLink?: string | null
+  startsAt?: Date | string | null
+  endsAt?: Date | string | null
+  priceRub?: number | null
+  location?: $Enums.CrmLocation
+  managerName?: string | null
+  masterComment?: string | null
+  reviewSmsSentAt?: Date | string | null
+  completedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  docNumber?: string | null
+  docDate?: Date | string | null
+  discountPercent?: number | null
+  discountRub?: number | null
+  paymentMethod?: $Enums.PaymentMethod | null
+  paidRub?: number | null
+  user: Prisma.CabinetUserCreateNestedOneWithoutVisitsInput
+  vehicle?: Prisma.ClientVehicleCreateNestedOneWithoutVisitsInput
+  catalogServiceType?: Prisma.ServiceTypeCreateNestedOneWithoutVisitsInput
+  pendingReviewSms?: Prisma.PendingReviewSmsCreateNestedOneWithoutVisitInput
+  siteLead?: Prisma.SiteLeadCreateNestedOneWithoutVisitInput
+  assignees?: Prisma.VisitStaffCreateNestedManyWithoutVisitInput
+  inspection?: Prisma.VehicleInspectionCreateNestedOneWithoutVisitInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutVisitInput
+  workItems?: Prisma.VisitWorkItemCreateNestedManyWithoutVisitInput
+  handover?: Prisma.VisitHandoverCreateNestedOneWithoutVisitInput
+  receiver?: Prisma.StaffCreateNestedOneWithoutReceivedVisitsInput
+  payrollEntries?: Prisma.PayrollEntryCreateNestedManyWithoutVisitInput
+  cashEntries?: Prisma.CashEntryCreateNestedManyWithoutVisitInput
+  stockMovements?: Prisma.StockMovementCreateNestedManyWithoutVisitInput
+}
+
+export type VisitHistoryUncheckedCreateWithoutPhotosInput = {
+  id?: number
+  userId: number
+  vehicleId?: number | null
+  visitDate: Date | string
+  serviceType: string
+  diskLink?: string | null
+  startsAt?: Date | string | null
+  endsAt?: Date | string | null
+  priceRub?: number | null
+  serviceTypeId?: number | null
+  location?: $Enums.CrmLocation
+  managerName?: string | null
+  masterComment?: string | null
+  reviewSmsSentAt?: Date | string | null
+  completedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  docNumber?: string | null
+  docDate?: Date | string | null
+  discountPercent?: number | null
+  discountRub?: number | null
+  paymentMethod?: $Enums.PaymentMethod | null
+  paidRub?: number | null
+  receiverId?: number | null
+  pendingReviewSms?: Prisma.PendingReviewSmsUncheckedCreateNestedOneWithoutVisitInput
+  siteLead?: Prisma.SiteLeadUncheckedCreateNestedOneWithoutVisitInput
+  assignees?: Prisma.VisitStaffUncheckedCreateNestedManyWithoutVisitInput
+  inspection?: Prisma.VehicleInspectionUncheckedCreateNestedOneWithoutVisitInput
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutVisitInput
+  workItems?: Prisma.VisitWorkItemUncheckedCreateNestedManyWithoutVisitInput
+  handover?: Prisma.VisitHandoverUncheckedCreateNestedOneWithoutVisitInput
+  payrollEntries?: Prisma.PayrollEntryUncheckedCreateNestedManyWithoutVisitInput
+  cashEntries?: Prisma.CashEntryUncheckedCreateNestedManyWithoutVisitInput
+  stockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutVisitInput
+}
+
+export type VisitHistoryCreateOrConnectWithoutPhotosInput = {
+  where: Prisma.VisitHistoryWhereUniqueInput
+  create: Prisma.XOR<Prisma.VisitHistoryCreateWithoutPhotosInput, Prisma.VisitHistoryUncheckedCreateWithoutPhotosInput>
+}
+
+export type VisitHistoryUpsertWithoutPhotosInput = {
+  update: Prisma.XOR<Prisma.VisitHistoryUpdateWithoutPhotosInput, Prisma.VisitHistoryUncheckedUpdateWithoutPhotosInput>
+  create: Prisma.XOR<Prisma.VisitHistoryCreateWithoutPhotosInput, Prisma.VisitHistoryUncheckedCreateWithoutPhotosInput>
+  where?: Prisma.VisitHistoryWhereInput
+}
+
+export type VisitHistoryUpdateToOneWithWhereWithoutPhotosInput = {
+  where?: Prisma.VisitHistoryWhereInput
+  data: Prisma.XOR<Prisma.VisitHistoryUpdateWithoutPhotosInput, Prisma.VisitHistoryUncheckedUpdateWithoutPhotosInput>
+}
+
+export type VisitHistoryUpdateWithoutPhotosInput = {
+  visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  serviceType?: Prisma.StringFieldUpdateOperationsInput | string
+  diskLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  priceRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  location?: Prisma.EnumCrmLocationFieldUpdateOperationsInput | $Enums.CrmLocation
+  managerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  masterComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewSmsSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  docNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  docDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  discountPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  discountRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethod?: Prisma.NullableEnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod | null
+  paidRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  user?: Prisma.CabinetUserUpdateOneRequiredWithoutVisitsNestedInput
+  vehicle?: Prisma.ClientVehicleUpdateOneWithoutVisitsNestedInput
+  catalogServiceType?: Prisma.ServiceTypeUpdateOneWithoutVisitsNestedInput
+  pendingReviewSms?: Prisma.PendingReviewSmsUpdateOneWithoutVisitNestedInput
+  siteLead?: Prisma.SiteLeadUpdateOneWithoutVisitNestedInput
+  assignees?: Prisma.VisitStaffUpdateManyWithoutVisitNestedInput
+  inspection?: Prisma.VehicleInspectionUpdateOneWithoutVisitNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutVisitNestedInput
+  workItems?: Prisma.VisitWorkItemUpdateManyWithoutVisitNestedInput
+  handover?: Prisma.VisitHandoverUpdateOneWithoutVisitNestedInput
+  receiver?: Prisma.StaffUpdateOneWithoutReceivedVisitsNestedInput
+  payrollEntries?: Prisma.PayrollEntryUpdateManyWithoutVisitNestedInput
+  cashEntries?: Prisma.CashEntryUpdateManyWithoutVisitNestedInput
+  stockMovements?: Prisma.StockMovementUpdateManyWithoutVisitNestedInput
+}
+
+export type VisitHistoryUncheckedUpdateWithoutPhotosInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  userId?: Prisma.IntFieldUpdateOperationsInput | number
+  vehicleId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  serviceType?: Prisma.StringFieldUpdateOperationsInput | string
+  diskLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  priceRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  serviceTypeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  location?: Prisma.EnumCrmLocationFieldUpdateOperationsInput | $Enums.CrmLocation
+  managerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  masterComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewSmsSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  docNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  docDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  discountPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  discountRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethod?: Prisma.NullableEnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod | null
+  paidRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  receiverId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  pendingReviewSms?: Prisma.PendingReviewSmsUncheckedUpdateOneWithoutVisitNestedInput
+  siteLead?: Prisma.SiteLeadUncheckedUpdateOneWithoutVisitNestedInput
+  assignees?: Prisma.VisitStaffUncheckedUpdateManyWithoutVisitNestedInput
+  inspection?: Prisma.VehicleInspectionUncheckedUpdateOneWithoutVisitNestedInput
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutVisitNestedInput
+  workItems?: Prisma.VisitWorkItemUncheckedUpdateManyWithoutVisitNestedInput
+  handover?: Prisma.VisitHandoverUncheckedUpdateOneWithoutVisitNestedInput
+  payrollEntries?: Prisma.PayrollEntryUncheckedUpdateManyWithoutVisitNestedInput
+  cashEntries?: Prisma.CashEntryUncheckedUpdateManyWithoutVisitNestedInput
+  stockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutVisitNestedInput
+}
+
+export type VisitHistoryCreateWithoutDocumentsInput = {
+  visitDate: Date | string
+  serviceType: string
+  diskLink?: string | null
+  startsAt?: Date | string | null
+  endsAt?: Date | string | null
+  priceRub?: number | null
+  location?: $Enums.CrmLocation
+  managerName?: string | null
+  masterComment?: string | null
+  reviewSmsSentAt?: Date | string | null
+  completedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  docNumber?: string | null
+  docDate?: Date | string | null
+  discountPercent?: number | null
+  discountRub?: number | null
+  paymentMethod?: $Enums.PaymentMethod | null
+  paidRub?: number | null
+  user: Prisma.CabinetUserCreateNestedOneWithoutVisitsInput
+  vehicle?: Prisma.ClientVehicleCreateNestedOneWithoutVisitsInput
+  catalogServiceType?: Prisma.ServiceTypeCreateNestedOneWithoutVisitsInput
+  pendingReviewSms?: Prisma.PendingReviewSmsCreateNestedOneWithoutVisitInput
+  siteLead?: Prisma.SiteLeadCreateNestedOneWithoutVisitInput
+  assignees?: Prisma.VisitStaffCreateNestedManyWithoutVisitInput
+  inspection?: Prisma.VehicleInspectionCreateNestedOneWithoutVisitInput
+  photos?: Prisma.VisitPhotoCreateNestedManyWithoutVisitInput
+  workItems?: Prisma.VisitWorkItemCreateNestedManyWithoutVisitInput
+  handover?: Prisma.VisitHandoverCreateNestedOneWithoutVisitInput
+  receiver?: Prisma.StaffCreateNestedOneWithoutReceivedVisitsInput
+  payrollEntries?: Prisma.PayrollEntryCreateNestedManyWithoutVisitInput
+  cashEntries?: Prisma.CashEntryCreateNestedManyWithoutVisitInput
+  stockMovements?: Prisma.StockMovementCreateNestedManyWithoutVisitInput
+}
+
+export type VisitHistoryUncheckedCreateWithoutDocumentsInput = {
+  id?: number
+  userId: number
+  vehicleId?: number | null
+  visitDate: Date | string
+  serviceType: string
+  diskLink?: string | null
+  startsAt?: Date | string | null
+  endsAt?: Date | string | null
+  priceRub?: number | null
+  serviceTypeId?: number | null
+  location?: $Enums.CrmLocation
+  managerName?: string | null
+  masterComment?: string | null
+  reviewSmsSentAt?: Date | string | null
+  completedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  docNumber?: string | null
+  docDate?: Date | string | null
+  discountPercent?: number | null
+  discountRub?: number | null
+  paymentMethod?: $Enums.PaymentMethod | null
+  paidRub?: number | null
+  receiverId?: number | null
+  pendingReviewSms?: Prisma.PendingReviewSmsUncheckedCreateNestedOneWithoutVisitInput
+  siteLead?: Prisma.SiteLeadUncheckedCreateNestedOneWithoutVisitInput
+  assignees?: Prisma.VisitStaffUncheckedCreateNestedManyWithoutVisitInput
+  inspection?: Prisma.VehicleInspectionUncheckedCreateNestedOneWithoutVisitInput
+  photos?: Prisma.VisitPhotoUncheckedCreateNestedManyWithoutVisitInput
+  workItems?: Prisma.VisitWorkItemUncheckedCreateNestedManyWithoutVisitInput
+  handover?: Prisma.VisitHandoverUncheckedCreateNestedOneWithoutVisitInput
+  payrollEntries?: Prisma.PayrollEntryUncheckedCreateNestedManyWithoutVisitInput
+  cashEntries?: Prisma.CashEntryUncheckedCreateNestedManyWithoutVisitInput
+  stockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutVisitInput
+}
+
+export type VisitHistoryCreateOrConnectWithoutDocumentsInput = {
+  where: Prisma.VisitHistoryWhereUniqueInput
+  create: Prisma.XOR<Prisma.VisitHistoryCreateWithoutDocumentsInput, Prisma.VisitHistoryUncheckedCreateWithoutDocumentsInput>
+}
+
+export type VisitHistoryUpsertWithoutDocumentsInput = {
+  update: Prisma.XOR<Prisma.VisitHistoryUpdateWithoutDocumentsInput, Prisma.VisitHistoryUncheckedUpdateWithoutDocumentsInput>
+  create: Prisma.XOR<Prisma.VisitHistoryCreateWithoutDocumentsInput, Prisma.VisitHistoryUncheckedCreateWithoutDocumentsInput>
+  where?: Prisma.VisitHistoryWhereInput
+}
+
+export type VisitHistoryUpdateToOneWithWhereWithoutDocumentsInput = {
+  where?: Prisma.VisitHistoryWhereInput
+  data: Prisma.XOR<Prisma.VisitHistoryUpdateWithoutDocumentsInput, Prisma.VisitHistoryUncheckedUpdateWithoutDocumentsInput>
+}
+
+export type VisitHistoryUpdateWithoutDocumentsInput = {
+  visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  serviceType?: Prisma.StringFieldUpdateOperationsInput | string
+  diskLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  priceRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  location?: Prisma.EnumCrmLocationFieldUpdateOperationsInput | $Enums.CrmLocation
+  managerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  masterComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewSmsSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  docNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  docDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  discountPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  discountRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethod?: Prisma.NullableEnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod | null
+  paidRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  user?: Prisma.CabinetUserUpdateOneRequiredWithoutVisitsNestedInput
+  vehicle?: Prisma.ClientVehicleUpdateOneWithoutVisitsNestedInput
+  catalogServiceType?: Prisma.ServiceTypeUpdateOneWithoutVisitsNestedInput
+  pendingReviewSms?: Prisma.PendingReviewSmsUpdateOneWithoutVisitNestedInput
+  siteLead?: Prisma.SiteLeadUpdateOneWithoutVisitNestedInput
+  assignees?: Prisma.VisitStaffUpdateManyWithoutVisitNestedInput
+  inspection?: Prisma.VehicleInspectionUpdateOneWithoutVisitNestedInput
+  photos?: Prisma.VisitPhotoUpdateManyWithoutVisitNestedInput
+  workItems?: Prisma.VisitWorkItemUpdateManyWithoutVisitNestedInput
+  handover?: Prisma.VisitHandoverUpdateOneWithoutVisitNestedInput
+  receiver?: Prisma.StaffUpdateOneWithoutReceivedVisitsNestedInput
+  payrollEntries?: Prisma.PayrollEntryUpdateManyWithoutVisitNestedInput
+  cashEntries?: Prisma.CashEntryUpdateManyWithoutVisitNestedInput
+  stockMovements?: Prisma.StockMovementUpdateManyWithoutVisitNestedInput
+}
+
+export type VisitHistoryUncheckedUpdateWithoutDocumentsInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  userId?: Prisma.IntFieldUpdateOperationsInput | number
+  vehicleId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  serviceType?: Prisma.StringFieldUpdateOperationsInput | string
+  diskLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  priceRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  serviceTypeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  location?: Prisma.EnumCrmLocationFieldUpdateOperationsInput | $Enums.CrmLocation
+  managerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  masterComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewSmsSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  docNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  docDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  discountPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  discountRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethod?: Prisma.NullableEnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod | null
+  paidRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  receiverId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  pendingReviewSms?: Prisma.PendingReviewSmsUncheckedUpdateOneWithoutVisitNestedInput
+  siteLead?: Prisma.SiteLeadUncheckedUpdateOneWithoutVisitNestedInput
+  assignees?: Prisma.VisitStaffUncheckedUpdateManyWithoutVisitNestedInput
+  inspection?: Prisma.VehicleInspectionUncheckedUpdateOneWithoutVisitNestedInput
+  photos?: Prisma.VisitPhotoUncheckedUpdateManyWithoutVisitNestedInput
+  workItems?: Prisma.VisitWorkItemUncheckedUpdateManyWithoutVisitNestedInput
+  handover?: Prisma.VisitHandoverUncheckedUpdateOneWithoutVisitNestedInput
+  payrollEntries?: Prisma.PayrollEntryUncheckedUpdateManyWithoutVisitNestedInput
+  cashEntries?: Prisma.CashEntryUncheckedUpdateManyWithoutVisitNestedInput
+  stockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutVisitNestedInput
+}
+
+export type VisitHistoryCreateWithoutWorkItemsInput = {
+  visitDate: Date | string
+  serviceType: string
+  diskLink?: string | null
+  startsAt?: Date | string | null
+  endsAt?: Date | string | null
+  priceRub?: number | null
+  location?: $Enums.CrmLocation
+  managerName?: string | null
+  masterComment?: string | null
+  reviewSmsSentAt?: Date | string | null
+  completedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  docNumber?: string | null
+  docDate?: Date | string | null
+  discountPercent?: number | null
+  discountRub?: number | null
+  paymentMethod?: $Enums.PaymentMethod | null
+  paidRub?: number | null
+  user: Prisma.CabinetUserCreateNestedOneWithoutVisitsInput
+  vehicle?: Prisma.ClientVehicleCreateNestedOneWithoutVisitsInput
+  catalogServiceType?: Prisma.ServiceTypeCreateNestedOneWithoutVisitsInput
+  pendingReviewSms?: Prisma.PendingReviewSmsCreateNestedOneWithoutVisitInput
+  siteLead?: Prisma.SiteLeadCreateNestedOneWithoutVisitInput
+  assignees?: Prisma.VisitStaffCreateNestedManyWithoutVisitInput
+  inspection?: Prisma.VehicleInspectionCreateNestedOneWithoutVisitInput
+  photos?: Prisma.VisitPhotoCreateNestedManyWithoutVisitInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutVisitInput
+  handover?: Prisma.VisitHandoverCreateNestedOneWithoutVisitInput
+  receiver?: Prisma.StaffCreateNestedOneWithoutReceivedVisitsInput
+  payrollEntries?: Prisma.PayrollEntryCreateNestedManyWithoutVisitInput
+  cashEntries?: Prisma.CashEntryCreateNestedManyWithoutVisitInput
+  stockMovements?: Prisma.StockMovementCreateNestedManyWithoutVisitInput
+}
+
+export type VisitHistoryUncheckedCreateWithoutWorkItemsInput = {
+  id?: number
+  userId: number
+  vehicleId?: number | null
+  visitDate: Date | string
+  serviceType: string
+  diskLink?: string | null
+  startsAt?: Date | string | null
+  endsAt?: Date | string | null
+  priceRub?: number | null
+  serviceTypeId?: number | null
+  location?: $Enums.CrmLocation
+  managerName?: string | null
+  masterComment?: string | null
+  reviewSmsSentAt?: Date | string | null
+  completedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  docNumber?: string | null
+  docDate?: Date | string | null
+  discountPercent?: number | null
+  discountRub?: number | null
+  paymentMethod?: $Enums.PaymentMethod | null
+  paidRub?: number | null
+  receiverId?: number | null
+  pendingReviewSms?: Prisma.PendingReviewSmsUncheckedCreateNestedOneWithoutVisitInput
+  siteLead?: Prisma.SiteLeadUncheckedCreateNestedOneWithoutVisitInput
+  assignees?: Prisma.VisitStaffUncheckedCreateNestedManyWithoutVisitInput
+  inspection?: Prisma.VehicleInspectionUncheckedCreateNestedOneWithoutVisitInput
+  photos?: Prisma.VisitPhotoUncheckedCreateNestedManyWithoutVisitInput
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutVisitInput
+  handover?: Prisma.VisitHandoverUncheckedCreateNestedOneWithoutVisitInput
+  payrollEntries?: Prisma.PayrollEntryUncheckedCreateNestedManyWithoutVisitInput
+  cashEntries?: Prisma.CashEntryUncheckedCreateNestedManyWithoutVisitInput
+  stockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutVisitInput
+}
+
+export type VisitHistoryCreateOrConnectWithoutWorkItemsInput = {
+  where: Prisma.VisitHistoryWhereUniqueInput
+  create: Prisma.XOR<Prisma.VisitHistoryCreateWithoutWorkItemsInput, Prisma.VisitHistoryUncheckedCreateWithoutWorkItemsInput>
+}
+
+export type VisitHistoryUpsertWithoutWorkItemsInput = {
+  update: Prisma.XOR<Prisma.VisitHistoryUpdateWithoutWorkItemsInput, Prisma.VisitHistoryUncheckedUpdateWithoutWorkItemsInput>
+  create: Prisma.XOR<Prisma.VisitHistoryCreateWithoutWorkItemsInput, Prisma.VisitHistoryUncheckedCreateWithoutWorkItemsInput>
+  where?: Prisma.VisitHistoryWhereInput
+}
+
+export type VisitHistoryUpdateToOneWithWhereWithoutWorkItemsInput = {
+  where?: Prisma.VisitHistoryWhereInput
+  data: Prisma.XOR<Prisma.VisitHistoryUpdateWithoutWorkItemsInput, Prisma.VisitHistoryUncheckedUpdateWithoutWorkItemsInput>
+}
+
+export type VisitHistoryUpdateWithoutWorkItemsInput = {
+  visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  serviceType?: Prisma.StringFieldUpdateOperationsInput | string
+  diskLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  priceRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  location?: Prisma.EnumCrmLocationFieldUpdateOperationsInput | $Enums.CrmLocation
+  managerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  masterComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewSmsSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  docNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  docDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  discountPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  discountRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethod?: Prisma.NullableEnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod | null
+  paidRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  user?: Prisma.CabinetUserUpdateOneRequiredWithoutVisitsNestedInput
+  vehicle?: Prisma.ClientVehicleUpdateOneWithoutVisitsNestedInput
+  catalogServiceType?: Prisma.ServiceTypeUpdateOneWithoutVisitsNestedInput
+  pendingReviewSms?: Prisma.PendingReviewSmsUpdateOneWithoutVisitNestedInput
+  siteLead?: Prisma.SiteLeadUpdateOneWithoutVisitNestedInput
+  assignees?: Prisma.VisitStaffUpdateManyWithoutVisitNestedInput
+  inspection?: Prisma.VehicleInspectionUpdateOneWithoutVisitNestedInput
+  photos?: Prisma.VisitPhotoUpdateManyWithoutVisitNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutVisitNestedInput
+  handover?: Prisma.VisitHandoverUpdateOneWithoutVisitNestedInput
+  receiver?: Prisma.StaffUpdateOneWithoutReceivedVisitsNestedInput
+  payrollEntries?: Prisma.PayrollEntryUpdateManyWithoutVisitNestedInput
+  cashEntries?: Prisma.CashEntryUpdateManyWithoutVisitNestedInput
+  stockMovements?: Prisma.StockMovementUpdateManyWithoutVisitNestedInput
+}
+
+export type VisitHistoryUncheckedUpdateWithoutWorkItemsInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  userId?: Prisma.IntFieldUpdateOperationsInput | number
+  vehicleId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  serviceType?: Prisma.StringFieldUpdateOperationsInput | string
+  diskLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  priceRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  serviceTypeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  location?: Prisma.EnumCrmLocationFieldUpdateOperationsInput | $Enums.CrmLocation
+  managerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  masterComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewSmsSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  docNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  docDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  discountPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  discountRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethod?: Prisma.NullableEnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod | null
+  paidRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  receiverId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  pendingReviewSms?: Prisma.PendingReviewSmsUncheckedUpdateOneWithoutVisitNestedInput
+  siteLead?: Prisma.SiteLeadUncheckedUpdateOneWithoutVisitNestedInput
+  assignees?: Prisma.VisitStaffUncheckedUpdateManyWithoutVisitNestedInput
+  inspection?: Prisma.VehicleInspectionUncheckedUpdateOneWithoutVisitNestedInput
+  photos?: Prisma.VisitPhotoUncheckedUpdateManyWithoutVisitNestedInput
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutVisitNestedInput
+  handover?: Prisma.VisitHandoverUncheckedUpdateOneWithoutVisitNestedInput
+  payrollEntries?: Prisma.PayrollEntryUncheckedUpdateManyWithoutVisitNestedInput
+  cashEntries?: Prisma.CashEntryUncheckedUpdateManyWithoutVisitNestedInput
+  stockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutVisitNestedInput
+}
+
+export type VisitHistoryCreateWithoutHandoverInput = {
+  visitDate: Date | string
+  serviceType: string
+  diskLink?: string | null
+  startsAt?: Date | string | null
+  endsAt?: Date | string | null
+  priceRub?: number | null
+  location?: $Enums.CrmLocation
+  managerName?: string | null
+  masterComment?: string | null
+  reviewSmsSentAt?: Date | string | null
+  completedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  docNumber?: string | null
+  docDate?: Date | string | null
+  discountPercent?: number | null
+  discountRub?: number | null
+  paymentMethod?: $Enums.PaymentMethod | null
+  paidRub?: number | null
+  user: Prisma.CabinetUserCreateNestedOneWithoutVisitsInput
+  vehicle?: Prisma.ClientVehicleCreateNestedOneWithoutVisitsInput
+  catalogServiceType?: Prisma.ServiceTypeCreateNestedOneWithoutVisitsInput
+  pendingReviewSms?: Prisma.PendingReviewSmsCreateNestedOneWithoutVisitInput
+  siteLead?: Prisma.SiteLeadCreateNestedOneWithoutVisitInput
+  assignees?: Prisma.VisitStaffCreateNestedManyWithoutVisitInput
+  inspection?: Prisma.VehicleInspectionCreateNestedOneWithoutVisitInput
+  photos?: Prisma.VisitPhotoCreateNestedManyWithoutVisitInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutVisitInput
+  workItems?: Prisma.VisitWorkItemCreateNestedManyWithoutVisitInput
+  receiver?: Prisma.StaffCreateNestedOneWithoutReceivedVisitsInput
+  payrollEntries?: Prisma.PayrollEntryCreateNestedManyWithoutVisitInput
+  cashEntries?: Prisma.CashEntryCreateNestedManyWithoutVisitInput
+  stockMovements?: Prisma.StockMovementCreateNestedManyWithoutVisitInput
+}
+
+export type VisitHistoryUncheckedCreateWithoutHandoverInput = {
+  id?: number
+  userId: number
+  vehicleId?: number | null
+  visitDate: Date | string
+  serviceType: string
+  diskLink?: string | null
+  startsAt?: Date | string | null
+  endsAt?: Date | string | null
+  priceRub?: number | null
+  serviceTypeId?: number | null
+  location?: $Enums.CrmLocation
+  managerName?: string | null
+  masterComment?: string | null
+  reviewSmsSentAt?: Date | string | null
+  completedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  docNumber?: string | null
+  docDate?: Date | string | null
+  discountPercent?: number | null
+  discountRub?: number | null
+  paymentMethod?: $Enums.PaymentMethod | null
+  paidRub?: number | null
+  receiverId?: number | null
+  pendingReviewSms?: Prisma.PendingReviewSmsUncheckedCreateNestedOneWithoutVisitInput
+  siteLead?: Prisma.SiteLeadUncheckedCreateNestedOneWithoutVisitInput
+  assignees?: Prisma.VisitStaffUncheckedCreateNestedManyWithoutVisitInput
+  inspection?: Prisma.VehicleInspectionUncheckedCreateNestedOneWithoutVisitInput
+  photos?: Prisma.VisitPhotoUncheckedCreateNestedManyWithoutVisitInput
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutVisitInput
+  workItems?: Prisma.VisitWorkItemUncheckedCreateNestedManyWithoutVisitInput
+  payrollEntries?: Prisma.PayrollEntryUncheckedCreateNestedManyWithoutVisitInput
+  cashEntries?: Prisma.CashEntryUncheckedCreateNestedManyWithoutVisitInput
+  stockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutVisitInput
+}
+
+export type VisitHistoryCreateOrConnectWithoutHandoverInput = {
+  where: Prisma.VisitHistoryWhereUniqueInput
+  create: Prisma.XOR<Prisma.VisitHistoryCreateWithoutHandoverInput, Prisma.VisitHistoryUncheckedCreateWithoutHandoverInput>
+}
+
+export type VisitHistoryUpsertWithoutHandoverInput = {
+  update: Prisma.XOR<Prisma.VisitHistoryUpdateWithoutHandoverInput, Prisma.VisitHistoryUncheckedUpdateWithoutHandoverInput>
+  create: Prisma.XOR<Prisma.VisitHistoryCreateWithoutHandoverInput, Prisma.VisitHistoryUncheckedCreateWithoutHandoverInput>
+  where?: Prisma.VisitHistoryWhereInput
+}
+
+export type VisitHistoryUpdateToOneWithWhereWithoutHandoverInput = {
+  where?: Prisma.VisitHistoryWhereInput
+  data: Prisma.XOR<Prisma.VisitHistoryUpdateWithoutHandoverInput, Prisma.VisitHistoryUncheckedUpdateWithoutHandoverInput>
+}
+
+export type VisitHistoryUpdateWithoutHandoverInput = {
+  visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  serviceType?: Prisma.StringFieldUpdateOperationsInput | string
+  diskLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  priceRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  location?: Prisma.EnumCrmLocationFieldUpdateOperationsInput | $Enums.CrmLocation
+  managerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  masterComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewSmsSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  docNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  docDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  discountPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  discountRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethod?: Prisma.NullableEnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod | null
+  paidRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  user?: Prisma.CabinetUserUpdateOneRequiredWithoutVisitsNestedInput
+  vehicle?: Prisma.ClientVehicleUpdateOneWithoutVisitsNestedInput
+  catalogServiceType?: Prisma.ServiceTypeUpdateOneWithoutVisitsNestedInput
+  pendingReviewSms?: Prisma.PendingReviewSmsUpdateOneWithoutVisitNestedInput
+  siteLead?: Prisma.SiteLeadUpdateOneWithoutVisitNestedInput
+  assignees?: Prisma.VisitStaffUpdateManyWithoutVisitNestedInput
+  inspection?: Prisma.VehicleInspectionUpdateOneWithoutVisitNestedInput
+  photos?: Prisma.VisitPhotoUpdateManyWithoutVisitNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutVisitNestedInput
+  workItems?: Prisma.VisitWorkItemUpdateManyWithoutVisitNestedInput
+  receiver?: Prisma.StaffUpdateOneWithoutReceivedVisitsNestedInput
+  payrollEntries?: Prisma.PayrollEntryUpdateManyWithoutVisitNestedInput
+  cashEntries?: Prisma.CashEntryUpdateManyWithoutVisitNestedInput
+  stockMovements?: Prisma.StockMovementUpdateManyWithoutVisitNestedInput
+}
+
+export type VisitHistoryUncheckedUpdateWithoutHandoverInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  userId?: Prisma.IntFieldUpdateOperationsInput | number
+  vehicleId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  serviceType?: Prisma.StringFieldUpdateOperationsInput | string
+  diskLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  priceRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  serviceTypeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  location?: Prisma.EnumCrmLocationFieldUpdateOperationsInput | $Enums.CrmLocation
+  managerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  masterComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewSmsSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  docNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  docDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  discountPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  discountRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethod?: Prisma.NullableEnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod | null
+  paidRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  receiverId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  pendingReviewSms?: Prisma.PendingReviewSmsUncheckedUpdateOneWithoutVisitNestedInput
+  siteLead?: Prisma.SiteLeadUncheckedUpdateOneWithoutVisitNestedInput
+  assignees?: Prisma.VisitStaffUncheckedUpdateManyWithoutVisitNestedInput
+  inspection?: Prisma.VehicleInspectionUncheckedUpdateOneWithoutVisitNestedInput
+  photos?: Prisma.VisitPhotoUncheckedUpdateManyWithoutVisitNestedInput
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutVisitNestedInput
+  workItems?: Prisma.VisitWorkItemUncheckedUpdateManyWithoutVisitNestedInput
+  payrollEntries?: Prisma.PayrollEntryUncheckedUpdateManyWithoutVisitNestedInput
+  cashEntries?: Prisma.CashEntryUncheckedUpdateManyWithoutVisitNestedInput
+  stockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutVisitNestedInput
+}
+
+export type VisitHistoryCreateWithoutPayrollEntriesInput = {
+  visitDate: Date | string
+  serviceType: string
+  diskLink?: string | null
+  startsAt?: Date | string | null
+  endsAt?: Date | string | null
+  priceRub?: number | null
+  location?: $Enums.CrmLocation
+  managerName?: string | null
+  masterComment?: string | null
+  reviewSmsSentAt?: Date | string | null
+  completedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  docNumber?: string | null
+  docDate?: Date | string | null
+  discountPercent?: number | null
+  discountRub?: number | null
+  paymentMethod?: $Enums.PaymentMethod | null
+  paidRub?: number | null
+  user: Prisma.CabinetUserCreateNestedOneWithoutVisitsInput
+  vehicle?: Prisma.ClientVehicleCreateNestedOneWithoutVisitsInput
+  catalogServiceType?: Prisma.ServiceTypeCreateNestedOneWithoutVisitsInput
+  pendingReviewSms?: Prisma.PendingReviewSmsCreateNestedOneWithoutVisitInput
+  siteLead?: Prisma.SiteLeadCreateNestedOneWithoutVisitInput
+  assignees?: Prisma.VisitStaffCreateNestedManyWithoutVisitInput
+  inspection?: Prisma.VehicleInspectionCreateNestedOneWithoutVisitInput
+  photos?: Prisma.VisitPhotoCreateNestedManyWithoutVisitInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutVisitInput
+  workItems?: Prisma.VisitWorkItemCreateNestedManyWithoutVisitInput
+  handover?: Prisma.VisitHandoverCreateNestedOneWithoutVisitInput
+  receiver?: Prisma.StaffCreateNestedOneWithoutReceivedVisitsInput
+  cashEntries?: Prisma.CashEntryCreateNestedManyWithoutVisitInput
+  stockMovements?: Prisma.StockMovementCreateNestedManyWithoutVisitInput
+}
+
+export type VisitHistoryUncheckedCreateWithoutPayrollEntriesInput = {
+  id?: number
+  userId: number
+  vehicleId?: number | null
+  visitDate: Date | string
+  serviceType: string
+  diskLink?: string | null
+  startsAt?: Date | string | null
+  endsAt?: Date | string | null
+  priceRub?: number | null
+  serviceTypeId?: number | null
+  location?: $Enums.CrmLocation
+  managerName?: string | null
+  masterComment?: string | null
+  reviewSmsSentAt?: Date | string | null
+  completedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  docNumber?: string | null
+  docDate?: Date | string | null
+  discountPercent?: number | null
+  discountRub?: number | null
+  paymentMethod?: $Enums.PaymentMethod | null
+  paidRub?: number | null
+  receiverId?: number | null
+  pendingReviewSms?: Prisma.PendingReviewSmsUncheckedCreateNestedOneWithoutVisitInput
+  siteLead?: Prisma.SiteLeadUncheckedCreateNestedOneWithoutVisitInput
+  assignees?: Prisma.VisitStaffUncheckedCreateNestedManyWithoutVisitInput
+  inspection?: Prisma.VehicleInspectionUncheckedCreateNestedOneWithoutVisitInput
+  photos?: Prisma.VisitPhotoUncheckedCreateNestedManyWithoutVisitInput
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutVisitInput
+  workItems?: Prisma.VisitWorkItemUncheckedCreateNestedManyWithoutVisitInput
+  handover?: Prisma.VisitHandoverUncheckedCreateNestedOneWithoutVisitInput
+  cashEntries?: Prisma.CashEntryUncheckedCreateNestedManyWithoutVisitInput
+  stockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutVisitInput
+}
+
+export type VisitHistoryCreateOrConnectWithoutPayrollEntriesInput = {
+  where: Prisma.VisitHistoryWhereUniqueInput
+  create: Prisma.XOR<Prisma.VisitHistoryCreateWithoutPayrollEntriesInput, Prisma.VisitHistoryUncheckedCreateWithoutPayrollEntriesInput>
+}
+
+export type VisitHistoryUpsertWithoutPayrollEntriesInput = {
+  update: Prisma.XOR<Prisma.VisitHistoryUpdateWithoutPayrollEntriesInput, Prisma.VisitHistoryUncheckedUpdateWithoutPayrollEntriesInput>
+  create: Prisma.XOR<Prisma.VisitHistoryCreateWithoutPayrollEntriesInput, Prisma.VisitHistoryUncheckedCreateWithoutPayrollEntriesInput>
+  where?: Prisma.VisitHistoryWhereInput
+}
+
+export type VisitHistoryUpdateToOneWithWhereWithoutPayrollEntriesInput = {
+  where?: Prisma.VisitHistoryWhereInput
+  data: Prisma.XOR<Prisma.VisitHistoryUpdateWithoutPayrollEntriesInput, Prisma.VisitHistoryUncheckedUpdateWithoutPayrollEntriesInput>
+}
+
+export type VisitHistoryUpdateWithoutPayrollEntriesInput = {
+  visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  serviceType?: Prisma.StringFieldUpdateOperationsInput | string
+  diskLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  priceRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  location?: Prisma.EnumCrmLocationFieldUpdateOperationsInput | $Enums.CrmLocation
+  managerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  masterComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewSmsSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  docNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  docDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  discountPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  discountRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethod?: Prisma.NullableEnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod | null
+  paidRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  user?: Prisma.CabinetUserUpdateOneRequiredWithoutVisitsNestedInput
+  vehicle?: Prisma.ClientVehicleUpdateOneWithoutVisitsNestedInput
+  catalogServiceType?: Prisma.ServiceTypeUpdateOneWithoutVisitsNestedInput
+  pendingReviewSms?: Prisma.PendingReviewSmsUpdateOneWithoutVisitNestedInput
+  siteLead?: Prisma.SiteLeadUpdateOneWithoutVisitNestedInput
+  assignees?: Prisma.VisitStaffUpdateManyWithoutVisitNestedInput
+  inspection?: Prisma.VehicleInspectionUpdateOneWithoutVisitNestedInput
+  photos?: Prisma.VisitPhotoUpdateManyWithoutVisitNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutVisitNestedInput
+  workItems?: Prisma.VisitWorkItemUpdateManyWithoutVisitNestedInput
+  handover?: Prisma.VisitHandoverUpdateOneWithoutVisitNestedInput
+  receiver?: Prisma.StaffUpdateOneWithoutReceivedVisitsNestedInput
+  cashEntries?: Prisma.CashEntryUpdateManyWithoutVisitNestedInput
+  stockMovements?: Prisma.StockMovementUpdateManyWithoutVisitNestedInput
+}
+
+export type VisitHistoryUncheckedUpdateWithoutPayrollEntriesInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  userId?: Prisma.IntFieldUpdateOperationsInput | number
+  vehicleId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  serviceType?: Prisma.StringFieldUpdateOperationsInput | string
+  diskLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  priceRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  serviceTypeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  location?: Prisma.EnumCrmLocationFieldUpdateOperationsInput | $Enums.CrmLocation
+  managerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  masterComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewSmsSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  docNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  docDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  discountPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  discountRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethod?: Prisma.NullableEnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod | null
+  paidRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  receiverId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  pendingReviewSms?: Prisma.PendingReviewSmsUncheckedUpdateOneWithoutVisitNestedInput
+  siteLead?: Prisma.SiteLeadUncheckedUpdateOneWithoutVisitNestedInput
+  assignees?: Prisma.VisitStaffUncheckedUpdateManyWithoutVisitNestedInput
+  inspection?: Prisma.VehicleInspectionUncheckedUpdateOneWithoutVisitNestedInput
+  photos?: Prisma.VisitPhotoUncheckedUpdateManyWithoutVisitNestedInput
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutVisitNestedInput
+  workItems?: Prisma.VisitWorkItemUncheckedUpdateManyWithoutVisitNestedInput
+  handover?: Prisma.VisitHandoverUncheckedUpdateOneWithoutVisitNestedInput
+  cashEntries?: Prisma.CashEntryUncheckedUpdateManyWithoutVisitNestedInput
+  stockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutVisitNestedInput
+}
+
+export type VisitHistoryCreateWithoutCashEntriesInput = {
+  visitDate: Date | string
+  serviceType: string
+  diskLink?: string | null
+  startsAt?: Date | string | null
+  endsAt?: Date | string | null
+  priceRub?: number | null
+  location?: $Enums.CrmLocation
+  managerName?: string | null
+  masterComment?: string | null
+  reviewSmsSentAt?: Date | string | null
+  completedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  docNumber?: string | null
+  docDate?: Date | string | null
+  discountPercent?: number | null
+  discountRub?: number | null
+  paymentMethod?: $Enums.PaymentMethod | null
+  paidRub?: number | null
+  user: Prisma.CabinetUserCreateNestedOneWithoutVisitsInput
+  vehicle?: Prisma.ClientVehicleCreateNestedOneWithoutVisitsInput
+  catalogServiceType?: Prisma.ServiceTypeCreateNestedOneWithoutVisitsInput
+  pendingReviewSms?: Prisma.PendingReviewSmsCreateNestedOneWithoutVisitInput
+  siteLead?: Prisma.SiteLeadCreateNestedOneWithoutVisitInput
+  assignees?: Prisma.VisitStaffCreateNestedManyWithoutVisitInput
+  inspection?: Prisma.VehicleInspectionCreateNestedOneWithoutVisitInput
+  photos?: Prisma.VisitPhotoCreateNestedManyWithoutVisitInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutVisitInput
+  workItems?: Prisma.VisitWorkItemCreateNestedManyWithoutVisitInput
+  handover?: Prisma.VisitHandoverCreateNestedOneWithoutVisitInput
+  receiver?: Prisma.StaffCreateNestedOneWithoutReceivedVisitsInput
+  payrollEntries?: Prisma.PayrollEntryCreateNestedManyWithoutVisitInput
+  stockMovements?: Prisma.StockMovementCreateNestedManyWithoutVisitInput
+}
+
+export type VisitHistoryUncheckedCreateWithoutCashEntriesInput = {
+  id?: number
+  userId: number
+  vehicleId?: number | null
+  visitDate: Date | string
+  serviceType: string
+  diskLink?: string | null
+  startsAt?: Date | string | null
+  endsAt?: Date | string | null
+  priceRub?: number | null
+  serviceTypeId?: number | null
+  location?: $Enums.CrmLocation
+  managerName?: string | null
+  masterComment?: string | null
+  reviewSmsSentAt?: Date | string | null
+  completedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  docNumber?: string | null
+  docDate?: Date | string | null
+  discountPercent?: number | null
+  discountRub?: number | null
+  paymentMethod?: $Enums.PaymentMethod | null
+  paidRub?: number | null
+  receiverId?: number | null
+  pendingReviewSms?: Prisma.PendingReviewSmsUncheckedCreateNestedOneWithoutVisitInput
+  siteLead?: Prisma.SiteLeadUncheckedCreateNestedOneWithoutVisitInput
+  assignees?: Prisma.VisitStaffUncheckedCreateNestedManyWithoutVisitInput
+  inspection?: Prisma.VehicleInspectionUncheckedCreateNestedOneWithoutVisitInput
+  photos?: Prisma.VisitPhotoUncheckedCreateNestedManyWithoutVisitInput
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutVisitInput
+  workItems?: Prisma.VisitWorkItemUncheckedCreateNestedManyWithoutVisitInput
+  handover?: Prisma.VisitHandoverUncheckedCreateNestedOneWithoutVisitInput
+  payrollEntries?: Prisma.PayrollEntryUncheckedCreateNestedManyWithoutVisitInput
+  stockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutVisitInput
+}
+
+export type VisitHistoryCreateOrConnectWithoutCashEntriesInput = {
+  where: Prisma.VisitHistoryWhereUniqueInput
+  create: Prisma.XOR<Prisma.VisitHistoryCreateWithoutCashEntriesInput, Prisma.VisitHistoryUncheckedCreateWithoutCashEntriesInput>
+}
+
+export type VisitHistoryUpsertWithoutCashEntriesInput = {
+  update: Prisma.XOR<Prisma.VisitHistoryUpdateWithoutCashEntriesInput, Prisma.VisitHistoryUncheckedUpdateWithoutCashEntriesInput>
+  create: Prisma.XOR<Prisma.VisitHistoryCreateWithoutCashEntriesInput, Prisma.VisitHistoryUncheckedCreateWithoutCashEntriesInput>
+  where?: Prisma.VisitHistoryWhereInput
+}
+
+export type VisitHistoryUpdateToOneWithWhereWithoutCashEntriesInput = {
+  where?: Prisma.VisitHistoryWhereInput
+  data: Prisma.XOR<Prisma.VisitHistoryUpdateWithoutCashEntriesInput, Prisma.VisitHistoryUncheckedUpdateWithoutCashEntriesInput>
+}
+
+export type VisitHistoryUpdateWithoutCashEntriesInput = {
+  visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  serviceType?: Prisma.StringFieldUpdateOperationsInput | string
+  diskLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  priceRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  location?: Prisma.EnumCrmLocationFieldUpdateOperationsInput | $Enums.CrmLocation
+  managerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  masterComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewSmsSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  docNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  docDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  discountPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  discountRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethod?: Prisma.NullableEnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod | null
+  paidRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  user?: Prisma.CabinetUserUpdateOneRequiredWithoutVisitsNestedInput
+  vehicle?: Prisma.ClientVehicleUpdateOneWithoutVisitsNestedInput
+  catalogServiceType?: Prisma.ServiceTypeUpdateOneWithoutVisitsNestedInput
+  pendingReviewSms?: Prisma.PendingReviewSmsUpdateOneWithoutVisitNestedInput
+  siteLead?: Prisma.SiteLeadUpdateOneWithoutVisitNestedInput
+  assignees?: Prisma.VisitStaffUpdateManyWithoutVisitNestedInput
+  inspection?: Prisma.VehicleInspectionUpdateOneWithoutVisitNestedInput
+  photos?: Prisma.VisitPhotoUpdateManyWithoutVisitNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutVisitNestedInput
+  workItems?: Prisma.VisitWorkItemUpdateManyWithoutVisitNestedInput
+  handover?: Prisma.VisitHandoverUpdateOneWithoutVisitNestedInput
+  receiver?: Prisma.StaffUpdateOneWithoutReceivedVisitsNestedInput
+  payrollEntries?: Prisma.PayrollEntryUpdateManyWithoutVisitNestedInput
+  stockMovements?: Prisma.StockMovementUpdateManyWithoutVisitNestedInput
+}
+
+export type VisitHistoryUncheckedUpdateWithoutCashEntriesInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  userId?: Prisma.IntFieldUpdateOperationsInput | number
+  vehicleId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  serviceType?: Prisma.StringFieldUpdateOperationsInput | string
+  diskLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  priceRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  serviceTypeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  location?: Prisma.EnumCrmLocationFieldUpdateOperationsInput | $Enums.CrmLocation
+  managerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  masterComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewSmsSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  docNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  docDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  discountPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  discountRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethod?: Prisma.NullableEnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod | null
+  paidRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  receiverId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  pendingReviewSms?: Prisma.PendingReviewSmsUncheckedUpdateOneWithoutVisitNestedInput
+  siteLead?: Prisma.SiteLeadUncheckedUpdateOneWithoutVisitNestedInput
+  assignees?: Prisma.VisitStaffUncheckedUpdateManyWithoutVisitNestedInput
+  inspection?: Prisma.VehicleInspectionUncheckedUpdateOneWithoutVisitNestedInput
+  photos?: Prisma.VisitPhotoUncheckedUpdateManyWithoutVisitNestedInput
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutVisitNestedInput
+  workItems?: Prisma.VisitWorkItemUncheckedUpdateManyWithoutVisitNestedInput
+  handover?: Prisma.VisitHandoverUncheckedUpdateOneWithoutVisitNestedInput
+  payrollEntries?: Prisma.PayrollEntryUncheckedUpdateManyWithoutVisitNestedInput
+  stockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutVisitNestedInput
+}
+
+export type VisitHistoryCreateWithoutStockMovementsInput = {
+  visitDate: Date | string
+  serviceType: string
+  diskLink?: string | null
+  startsAt?: Date | string | null
+  endsAt?: Date | string | null
+  priceRub?: number | null
+  location?: $Enums.CrmLocation
+  managerName?: string | null
+  masterComment?: string | null
+  reviewSmsSentAt?: Date | string | null
+  completedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  docNumber?: string | null
+  docDate?: Date | string | null
+  discountPercent?: number | null
+  discountRub?: number | null
+  paymentMethod?: $Enums.PaymentMethod | null
+  paidRub?: number | null
+  user: Prisma.CabinetUserCreateNestedOneWithoutVisitsInput
+  vehicle?: Prisma.ClientVehicleCreateNestedOneWithoutVisitsInput
+  catalogServiceType?: Prisma.ServiceTypeCreateNestedOneWithoutVisitsInput
+  pendingReviewSms?: Prisma.PendingReviewSmsCreateNestedOneWithoutVisitInput
+  siteLead?: Prisma.SiteLeadCreateNestedOneWithoutVisitInput
+  assignees?: Prisma.VisitStaffCreateNestedManyWithoutVisitInput
+  inspection?: Prisma.VehicleInspectionCreateNestedOneWithoutVisitInput
+  photos?: Prisma.VisitPhotoCreateNestedManyWithoutVisitInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutVisitInput
+  workItems?: Prisma.VisitWorkItemCreateNestedManyWithoutVisitInput
+  handover?: Prisma.VisitHandoverCreateNestedOneWithoutVisitInput
+  receiver?: Prisma.StaffCreateNestedOneWithoutReceivedVisitsInput
+  payrollEntries?: Prisma.PayrollEntryCreateNestedManyWithoutVisitInput
+  cashEntries?: Prisma.CashEntryCreateNestedManyWithoutVisitInput
+}
+
+export type VisitHistoryUncheckedCreateWithoutStockMovementsInput = {
+  id?: number
+  userId: number
+  vehicleId?: number | null
+  visitDate: Date | string
+  serviceType: string
+  diskLink?: string | null
+  startsAt?: Date | string | null
+  endsAt?: Date | string | null
+  priceRub?: number | null
+  serviceTypeId?: number | null
+  location?: $Enums.CrmLocation
+  managerName?: string | null
+  masterComment?: string | null
+  reviewSmsSentAt?: Date | string | null
+  completedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  docNumber?: string | null
+  docDate?: Date | string | null
+  discountPercent?: number | null
+  discountRub?: number | null
+  paymentMethod?: $Enums.PaymentMethod | null
+  paidRub?: number | null
+  receiverId?: number | null
+  pendingReviewSms?: Prisma.PendingReviewSmsUncheckedCreateNestedOneWithoutVisitInput
+  siteLead?: Prisma.SiteLeadUncheckedCreateNestedOneWithoutVisitInput
+  assignees?: Prisma.VisitStaffUncheckedCreateNestedManyWithoutVisitInput
+  inspection?: Prisma.VehicleInspectionUncheckedCreateNestedOneWithoutVisitInput
+  photos?: Prisma.VisitPhotoUncheckedCreateNestedManyWithoutVisitInput
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutVisitInput
+  workItems?: Prisma.VisitWorkItemUncheckedCreateNestedManyWithoutVisitInput
+  handover?: Prisma.VisitHandoverUncheckedCreateNestedOneWithoutVisitInput
+  payrollEntries?: Prisma.PayrollEntryUncheckedCreateNestedManyWithoutVisitInput
+  cashEntries?: Prisma.CashEntryUncheckedCreateNestedManyWithoutVisitInput
+}
+
+export type VisitHistoryCreateOrConnectWithoutStockMovementsInput = {
+  where: Prisma.VisitHistoryWhereUniqueInput
+  create: Prisma.XOR<Prisma.VisitHistoryCreateWithoutStockMovementsInput, Prisma.VisitHistoryUncheckedCreateWithoutStockMovementsInput>
+}
+
+export type VisitHistoryUpsertWithoutStockMovementsInput = {
+  update: Prisma.XOR<Prisma.VisitHistoryUpdateWithoutStockMovementsInput, Prisma.VisitHistoryUncheckedUpdateWithoutStockMovementsInput>
+  create: Prisma.XOR<Prisma.VisitHistoryCreateWithoutStockMovementsInput, Prisma.VisitHistoryUncheckedCreateWithoutStockMovementsInput>
+  where?: Prisma.VisitHistoryWhereInput
+}
+
+export type VisitHistoryUpdateToOneWithWhereWithoutStockMovementsInput = {
+  where?: Prisma.VisitHistoryWhereInput
+  data: Prisma.XOR<Prisma.VisitHistoryUpdateWithoutStockMovementsInput, Prisma.VisitHistoryUncheckedUpdateWithoutStockMovementsInput>
+}
+
+export type VisitHistoryUpdateWithoutStockMovementsInput = {
+  visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  serviceType?: Prisma.StringFieldUpdateOperationsInput | string
+  diskLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  priceRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  location?: Prisma.EnumCrmLocationFieldUpdateOperationsInput | $Enums.CrmLocation
+  managerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  masterComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewSmsSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  docNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  docDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  discountPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  discountRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethod?: Prisma.NullableEnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod | null
+  paidRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  user?: Prisma.CabinetUserUpdateOneRequiredWithoutVisitsNestedInput
+  vehicle?: Prisma.ClientVehicleUpdateOneWithoutVisitsNestedInput
+  catalogServiceType?: Prisma.ServiceTypeUpdateOneWithoutVisitsNestedInput
+  pendingReviewSms?: Prisma.PendingReviewSmsUpdateOneWithoutVisitNestedInput
+  siteLead?: Prisma.SiteLeadUpdateOneWithoutVisitNestedInput
+  assignees?: Prisma.VisitStaffUpdateManyWithoutVisitNestedInput
+  inspection?: Prisma.VehicleInspectionUpdateOneWithoutVisitNestedInput
+  photos?: Prisma.VisitPhotoUpdateManyWithoutVisitNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutVisitNestedInput
+  workItems?: Prisma.VisitWorkItemUpdateManyWithoutVisitNestedInput
+  handover?: Prisma.VisitHandoverUpdateOneWithoutVisitNestedInput
+  receiver?: Prisma.StaffUpdateOneWithoutReceivedVisitsNestedInput
+  payrollEntries?: Prisma.PayrollEntryUpdateManyWithoutVisitNestedInput
+  cashEntries?: Prisma.CashEntryUpdateManyWithoutVisitNestedInput
+}
+
+export type VisitHistoryUncheckedUpdateWithoutStockMovementsInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  userId?: Prisma.IntFieldUpdateOperationsInput | number
+  vehicleId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  serviceType?: Prisma.StringFieldUpdateOperationsInput | string
+  diskLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  priceRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  serviceTypeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  location?: Prisma.EnumCrmLocationFieldUpdateOperationsInput | $Enums.CrmLocation
+  managerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  masterComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewSmsSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  docNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  docDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  discountPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  discountRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethod?: Prisma.NullableEnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod | null
+  paidRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  receiverId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  pendingReviewSms?: Prisma.PendingReviewSmsUncheckedUpdateOneWithoutVisitNestedInput
+  siteLead?: Prisma.SiteLeadUncheckedUpdateOneWithoutVisitNestedInput
+  assignees?: Prisma.VisitStaffUncheckedUpdateManyWithoutVisitNestedInput
+  inspection?: Prisma.VehicleInspectionUncheckedUpdateOneWithoutVisitNestedInput
+  photos?: Prisma.VisitPhotoUncheckedUpdateManyWithoutVisitNestedInput
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutVisitNestedInput
+  workItems?: Prisma.VisitWorkItemUncheckedUpdateManyWithoutVisitNestedInput
+  handover?: Prisma.VisitHandoverUncheckedUpdateOneWithoutVisitNestedInput
+  payrollEntries?: Prisma.PayrollEntryUncheckedUpdateManyWithoutVisitNestedInput
+  cashEntries?: Prisma.CashEntryUncheckedUpdateManyWithoutVisitNestedInput
 }
 
 export type VisitHistoryCreateManyUserInput = {
@@ -1408,6 +3486,13 @@ export type VisitHistoryCreateManyUserInput = {
   completedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  docNumber?: string | null
+  docDate?: Date | string | null
+  discountPercent?: number | null
+  discountRub?: number | null
+  paymentMethod?: $Enums.PaymentMethod | null
+  paidRub?: number | null
+  receiverId?: number | null
 }
 
 export type VisitHistoryUpdateWithoutUserInput = {
@@ -1424,11 +3509,26 @@ export type VisitHistoryUpdateWithoutUserInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  docNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  docDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  discountPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  discountRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethod?: Prisma.NullableEnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod | null
+  paidRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   vehicle?: Prisma.ClientVehicleUpdateOneWithoutVisitsNestedInput
   catalogServiceType?: Prisma.ServiceTypeUpdateOneWithoutVisitsNestedInput
   pendingReviewSms?: Prisma.PendingReviewSmsUpdateOneWithoutVisitNestedInput
   siteLead?: Prisma.SiteLeadUpdateOneWithoutVisitNestedInput
   assignees?: Prisma.VisitStaffUpdateManyWithoutVisitNestedInput
+  inspection?: Prisma.VehicleInspectionUpdateOneWithoutVisitNestedInput
+  photos?: Prisma.VisitPhotoUpdateManyWithoutVisitNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutVisitNestedInput
+  workItems?: Prisma.VisitWorkItemUpdateManyWithoutVisitNestedInput
+  handover?: Prisma.VisitHandoverUpdateOneWithoutVisitNestedInput
+  receiver?: Prisma.StaffUpdateOneWithoutReceivedVisitsNestedInput
+  payrollEntries?: Prisma.PayrollEntryUpdateManyWithoutVisitNestedInput
+  cashEntries?: Prisma.CashEntryUpdateManyWithoutVisitNestedInput
+  stockMovements?: Prisma.StockMovementUpdateManyWithoutVisitNestedInput
 }
 
 export type VisitHistoryUncheckedUpdateWithoutUserInput = {
@@ -1448,9 +3548,24 @@ export type VisitHistoryUncheckedUpdateWithoutUserInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  docNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  docDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  discountPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  discountRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethod?: Prisma.NullableEnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod | null
+  paidRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  receiverId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pendingReviewSms?: Prisma.PendingReviewSmsUncheckedUpdateOneWithoutVisitNestedInput
   siteLead?: Prisma.SiteLeadUncheckedUpdateOneWithoutVisitNestedInput
   assignees?: Prisma.VisitStaffUncheckedUpdateManyWithoutVisitNestedInput
+  inspection?: Prisma.VehicleInspectionUncheckedUpdateOneWithoutVisitNestedInput
+  photos?: Prisma.VisitPhotoUncheckedUpdateManyWithoutVisitNestedInput
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutVisitNestedInput
+  workItems?: Prisma.VisitWorkItemUncheckedUpdateManyWithoutVisitNestedInput
+  handover?: Prisma.VisitHandoverUncheckedUpdateOneWithoutVisitNestedInput
+  payrollEntries?: Prisma.PayrollEntryUncheckedUpdateManyWithoutVisitNestedInput
+  cashEntries?: Prisma.CashEntryUncheckedUpdateManyWithoutVisitNestedInput
+  stockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutVisitNestedInput
 }
 
 export type VisitHistoryUncheckedUpdateManyWithoutUserInput = {
@@ -1470,6 +3585,13 @@ export type VisitHistoryUncheckedUpdateManyWithoutUserInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  docNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  docDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  discountPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  discountRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethod?: Prisma.NullableEnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod | null
+  paidRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  receiverId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type VisitHistoryCreateManyVehicleInput = {
@@ -1489,6 +3611,13 @@ export type VisitHistoryCreateManyVehicleInput = {
   completedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  docNumber?: string | null
+  docDate?: Date | string | null
+  discountPercent?: number | null
+  discountRub?: number | null
+  paymentMethod?: $Enums.PaymentMethod | null
+  paidRub?: number | null
+  receiverId?: number | null
 }
 
 export type VisitHistoryUpdateWithoutVehicleInput = {
@@ -1505,11 +3634,26 @@ export type VisitHistoryUpdateWithoutVehicleInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  docNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  docDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  discountPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  discountRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethod?: Prisma.NullableEnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod | null
+  paidRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   user?: Prisma.CabinetUserUpdateOneRequiredWithoutVisitsNestedInput
   catalogServiceType?: Prisma.ServiceTypeUpdateOneWithoutVisitsNestedInput
   pendingReviewSms?: Prisma.PendingReviewSmsUpdateOneWithoutVisitNestedInput
   siteLead?: Prisma.SiteLeadUpdateOneWithoutVisitNestedInput
   assignees?: Prisma.VisitStaffUpdateManyWithoutVisitNestedInput
+  inspection?: Prisma.VehicleInspectionUpdateOneWithoutVisitNestedInput
+  photos?: Prisma.VisitPhotoUpdateManyWithoutVisitNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutVisitNestedInput
+  workItems?: Prisma.VisitWorkItemUpdateManyWithoutVisitNestedInput
+  handover?: Prisma.VisitHandoverUpdateOneWithoutVisitNestedInput
+  receiver?: Prisma.StaffUpdateOneWithoutReceivedVisitsNestedInput
+  payrollEntries?: Prisma.PayrollEntryUpdateManyWithoutVisitNestedInput
+  cashEntries?: Prisma.CashEntryUpdateManyWithoutVisitNestedInput
+  stockMovements?: Prisma.StockMovementUpdateManyWithoutVisitNestedInput
 }
 
 export type VisitHistoryUncheckedUpdateWithoutVehicleInput = {
@@ -1529,9 +3673,24 @@ export type VisitHistoryUncheckedUpdateWithoutVehicleInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  docNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  docDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  discountPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  discountRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethod?: Prisma.NullableEnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod | null
+  paidRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  receiverId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pendingReviewSms?: Prisma.PendingReviewSmsUncheckedUpdateOneWithoutVisitNestedInput
   siteLead?: Prisma.SiteLeadUncheckedUpdateOneWithoutVisitNestedInput
   assignees?: Prisma.VisitStaffUncheckedUpdateManyWithoutVisitNestedInput
+  inspection?: Prisma.VehicleInspectionUncheckedUpdateOneWithoutVisitNestedInput
+  photos?: Prisma.VisitPhotoUncheckedUpdateManyWithoutVisitNestedInput
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutVisitNestedInput
+  workItems?: Prisma.VisitWorkItemUncheckedUpdateManyWithoutVisitNestedInput
+  handover?: Prisma.VisitHandoverUncheckedUpdateOneWithoutVisitNestedInput
+  payrollEntries?: Prisma.PayrollEntryUncheckedUpdateManyWithoutVisitNestedInput
+  cashEntries?: Prisma.CashEntryUncheckedUpdateManyWithoutVisitNestedInput
+  stockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutVisitNestedInput
 }
 
 export type VisitHistoryUncheckedUpdateManyWithoutVehicleInput = {
@@ -1551,6 +3710,13 @@ export type VisitHistoryUncheckedUpdateManyWithoutVehicleInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  docNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  docDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  discountPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  discountRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethod?: Prisma.NullableEnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod | null
+  paidRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  receiverId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type VisitHistoryCreateManyCatalogServiceTypeInput = {
@@ -1570,6 +3736,13 @@ export type VisitHistoryCreateManyCatalogServiceTypeInput = {
   completedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  docNumber?: string | null
+  docDate?: Date | string | null
+  discountPercent?: number | null
+  discountRub?: number | null
+  paymentMethod?: $Enums.PaymentMethod | null
+  paidRub?: number | null
+  receiverId?: number | null
 }
 
 export type VisitHistoryUpdateWithoutCatalogServiceTypeInput = {
@@ -1586,11 +3759,26 @@ export type VisitHistoryUpdateWithoutCatalogServiceTypeInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  docNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  docDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  discountPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  discountRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethod?: Prisma.NullableEnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod | null
+  paidRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   user?: Prisma.CabinetUserUpdateOneRequiredWithoutVisitsNestedInput
   vehicle?: Prisma.ClientVehicleUpdateOneWithoutVisitsNestedInput
   pendingReviewSms?: Prisma.PendingReviewSmsUpdateOneWithoutVisitNestedInput
   siteLead?: Prisma.SiteLeadUpdateOneWithoutVisitNestedInput
   assignees?: Prisma.VisitStaffUpdateManyWithoutVisitNestedInput
+  inspection?: Prisma.VehicleInspectionUpdateOneWithoutVisitNestedInput
+  photos?: Prisma.VisitPhotoUpdateManyWithoutVisitNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutVisitNestedInput
+  workItems?: Prisma.VisitWorkItemUpdateManyWithoutVisitNestedInput
+  handover?: Prisma.VisitHandoverUpdateOneWithoutVisitNestedInput
+  receiver?: Prisma.StaffUpdateOneWithoutReceivedVisitsNestedInput
+  payrollEntries?: Prisma.PayrollEntryUpdateManyWithoutVisitNestedInput
+  cashEntries?: Prisma.CashEntryUpdateManyWithoutVisitNestedInput
+  stockMovements?: Prisma.StockMovementUpdateManyWithoutVisitNestedInput
 }
 
 export type VisitHistoryUncheckedUpdateWithoutCatalogServiceTypeInput = {
@@ -1610,9 +3798,24 @@ export type VisitHistoryUncheckedUpdateWithoutCatalogServiceTypeInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  docNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  docDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  discountPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  discountRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethod?: Prisma.NullableEnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod | null
+  paidRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  receiverId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   pendingReviewSms?: Prisma.PendingReviewSmsUncheckedUpdateOneWithoutVisitNestedInput
   siteLead?: Prisma.SiteLeadUncheckedUpdateOneWithoutVisitNestedInput
   assignees?: Prisma.VisitStaffUncheckedUpdateManyWithoutVisitNestedInput
+  inspection?: Prisma.VehicleInspectionUncheckedUpdateOneWithoutVisitNestedInput
+  photos?: Prisma.VisitPhotoUncheckedUpdateManyWithoutVisitNestedInput
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutVisitNestedInput
+  workItems?: Prisma.VisitWorkItemUncheckedUpdateManyWithoutVisitNestedInput
+  handover?: Prisma.VisitHandoverUncheckedUpdateOneWithoutVisitNestedInput
+  payrollEntries?: Prisma.PayrollEntryUncheckedUpdateManyWithoutVisitNestedInput
+  cashEntries?: Prisma.CashEntryUncheckedUpdateManyWithoutVisitNestedInput
+  stockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutVisitNestedInput
 }
 
 export type VisitHistoryUncheckedUpdateManyWithoutCatalogServiceTypeInput = {
@@ -1632,6 +3835,138 @@ export type VisitHistoryUncheckedUpdateManyWithoutCatalogServiceTypeInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  docNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  docDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  discountPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  discountRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethod?: Prisma.NullableEnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod | null
+  paidRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  receiverId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+}
+
+export type VisitHistoryCreateManyReceiverInput = {
+  id?: number
+  userId: number
+  vehicleId?: number | null
+  visitDate: Date | string
+  serviceType: string
+  diskLink?: string | null
+  startsAt?: Date | string | null
+  endsAt?: Date | string | null
+  priceRub?: number | null
+  serviceTypeId?: number | null
+  location?: $Enums.CrmLocation
+  managerName?: string | null
+  masterComment?: string | null
+  reviewSmsSentAt?: Date | string | null
+  completedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  docNumber?: string | null
+  docDate?: Date | string | null
+  discountPercent?: number | null
+  discountRub?: number | null
+  paymentMethod?: $Enums.PaymentMethod | null
+  paidRub?: number | null
+}
+
+export type VisitHistoryUpdateWithoutReceiverInput = {
+  visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  serviceType?: Prisma.StringFieldUpdateOperationsInput | string
+  diskLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  priceRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  location?: Prisma.EnumCrmLocationFieldUpdateOperationsInput | $Enums.CrmLocation
+  managerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  masterComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewSmsSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  docNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  docDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  discountPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  discountRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethod?: Prisma.NullableEnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod | null
+  paidRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  user?: Prisma.CabinetUserUpdateOneRequiredWithoutVisitsNestedInput
+  vehicle?: Prisma.ClientVehicleUpdateOneWithoutVisitsNestedInput
+  catalogServiceType?: Prisma.ServiceTypeUpdateOneWithoutVisitsNestedInput
+  pendingReviewSms?: Prisma.PendingReviewSmsUpdateOneWithoutVisitNestedInput
+  siteLead?: Prisma.SiteLeadUpdateOneWithoutVisitNestedInput
+  assignees?: Prisma.VisitStaffUpdateManyWithoutVisitNestedInput
+  inspection?: Prisma.VehicleInspectionUpdateOneWithoutVisitNestedInput
+  photos?: Prisma.VisitPhotoUpdateManyWithoutVisitNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutVisitNestedInput
+  workItems?: Prisma.VisitWorkItemUpdateManyWithoutVisitNestedInput
+  handover?: Prisma.VisitHandoverUpdateOneWithoutVisitNestedInput
+  payrollEntries?: Prisma.PayrollEntryUpdateManyWithoutVisitNestedInput
+  cashEntries?: Prisma.CashEntryUpdateManyWithoutVisitNestedInput
+  stockMovements?: Prisma.StockMovementUpdateManyWithoutVisitNestedInput
+}
+
+export type VisitHistoryUncheckedUpdateWithoutReceiverInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  userId?: Prisma.IntFieldUpdateOperationsInput | number
+  vehicleId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  serviceType?: Prisma.StringFieldUpdateOperationsInput | string
+  diskLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  priceRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  serviceTypeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  location?: Prisma.EnumCrmLocationFieldUpdateOperationsInput | $Enums.CrmLocation
+  managerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  masterComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewSmsSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  docNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  docDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  discountPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  discountRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethod?: Prisma.NullableEnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod | null
+  paidRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  pendingReviewSms?: Prisma.PendingReviewSmsUncheckedUpdateOneWithoutVisitNestedInput
+  siteLead?: Prisma.SiteLeadUncheckedUpdateOneWithoutVisitNestedInput
+  assignees?: Prisma.VisitStaffUncheckedUpdateManyWithoutVisitNestedInput
+  inspection?: Prisma.VehicleInspectionUncheckedUpdateOneWithoutVisitNestedInput
+  photos?: Prisma.VisitPhotoUncheckedUpdateManyWithoutVisitNestedInput
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutVisitNestedInput
+  workItems?: Prisma.VisitWorkItemUncheckedUpdateManyWithoutVisitNestedInput
+  handover?: Prisma.VisitHandoverUncheckedUpdateOneWithoutVisitNestedInput
+  payrollEntries?: Prisma.PayrollEntryUncheckedUpdateManyWithoutVisitNestedInput
+  cashEntries?: Prisma.CashEntryUncheckedUpdateManyWithoutVisitNestedInput
+  stockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutVisitNestedInput
+}
+
+export type VisitHistoryUncheckedUpdateManyWithoutReceiverInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  userId?: Prisma.IntFieldUpdateOperationsInput | number
+  vehicleId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  serviceType?: Prisma.StringFieldUpdateOperationsInput | string
+  diskLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  priceRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  serviceTypeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  location?: Prisma.EnumCrmLocationFieldUpdateOperationsInput | $Enums.CrmLocation
+  managerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  masterComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewSmsSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  docNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  docDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  discountPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  discountRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethod?: Prisma.NullableEnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod | null
+  paidRub?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 
@@ -1641,10 +3976,22 @@ export type VisitHistoryUncheckedUpdateManyWithoutCatalogServiceTypeInput = {
 
 export type VisitHistoryCountOutputType = {
   assignees: number
+  photos: number
+  documents: number
+  workItems: number
+  payrollEntries: number
+  cashEntries: number
+  stockMovements: number
 }
 
 export type VisitHistoryCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   assignees?: boolean | VisitHistoryCountOutputTypeCountAssigneesArgs
+  photos?: boolean | VisitHistoryCountOutputTypeCountPhotosArgs
+  documents?: boolean | VisitHistoryCountOutputTypeCountDocumentsArgs
+  workItems?: boolean | VisitHistoryCountOutputTypeCountWorkItemsArgs
+  payrollEntries?: boolean | VisitHistoryCountOutputTypeCountPayrollEntriesArgs
+  cashEntries?: boolean | VisitHistoryCountOutputTypeCountCashEntriesArgs
+  stockMovements?: boolean | VisitHistoryCountOutputTypeCountStockMovementsArgs
 }
 
 /**
@@ -1662,6 +4009,48 @@ export type VisitHistoryCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types
  */
 export type VisitHistoryCountOutputTypeCountAssigneesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.VisitStaffWhereInput
+}
+
+/**
+ * VisitHistoryCountOutputType without action
+ */
+export type VisitHistoryCountOutputTypeCountPhotosArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.VisitPhotoWhereInput
+}
+
+/**
+ * VisitHistoryCountOutputType without action
+ */
+export type VisitHistoryCountOutputTypeCountDocumentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DocumentWhereInput
+}
+
+/**
+ * VisitHistoryCountOutputType without action
+ */
+export type VisitHistoryCountOutputTypeCountWorkItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.VisitWorkItemWhereInput
+}
+
+/**
+ * VisitHistoryCountOutputType without action
+ */
+export type VisitHistoryCountOutputTypeCountPayrollEntriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PayrollEntryWhereInput
+}
+
+/**
+ * VisitHistoryCountOutputType without action
+ */
+export type VisitHistoryCountOutputTypeCountCashEntriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CashEntryWhereInput
+}
+
+/**
+ * VisitHistoryCountOutputType without action
+ */
+export type VisitHistoryCountOutputTypeCountStockMovementsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.StockMovementWhereInput
 }
 
 
@@ -1683,12 +4072,28 @@ export type VisitHistorySelect<ExtArgs extends runtime.Types.Extensions.Internal
   completedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  docNumber?: boolean
+  docDate?: boolean
+  discountPercent?: boolean
+  discountRub?: boolean
+  paymentMethod?: boolean
+  paidRub?: boolean
+  receiverId?: boolean
   user?: boolean | Prisma.CabinetUserDefaultArgs<ExtArgs>
   vehicle?: boolean | Prisma.VisitHistory$vehicleArgs<ExtArgs>
   catalogServiceType?: boolean | Prisma.VisitHistory$catalogServiceTypeArgs<ExtArgs>
   pendingReviewSms?: boolean | Prisma.VisitHistory$pendingReviewSmsArgs<ExtArgs>
   siteLead?: boolean | Prisma.VisitHistory$siteLeadArgs<ExtArgs>
   assignees?: boolean | Prisma.VisitHistory$assigneesArgs<ExtArgs>
+  inspection?: boolean | Prisma.VisitHistory$inspectionArgs<ExtArgs>
+  photos?: boolean | Prisma.VisitHistory$photosArgs<ExtArgs>
+  documents?: boolean | Prisma.VisitHistory$documentsArgs<ExtArgs>
+  workItems?: boolean | Prisma.VisitHistory$workItemsArgs<ExtArgs>
+  handover?: boolean | Prisma.VisitHistory$handoverArgs<ExtArgs>
+  receiver?: boolean | Prisma.VisitHistory$receiverArgs<ExtArgs>
+  payrollEntries?: boolean | Prisma.VisitHistory$payrollEntriesArgs<ExtArgs>
+  cashEntries?: boolean | Prisma.VisitHistory$cashEntriesArgs<ExtArgs>
+  stockMovements?: boolean | Prisma.VisitHistory$stockMovementsArgs<ExtArgs>
   _count?: boolean | Prisma.VisitHistoryCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["visitHistory"]>
 
@@ -1710,9 +4115,17 @@ export type VisitHistorySelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   completedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  docNumber?: boolean
+  docDate?: boolean
+  discountPercent?: boolean
+  discountRub?: boolean
+  paymentMethod?: boolean
+  paidRub?: boolean
+  receiverId?: boolean
   user?: boolean | Prisma.CabinetUserDefaultArgs<ExtArgs>
   vehicle?: boolean | Prisma.VisitHistory$vehicleArgs<ExtArgs>
   catalogServiceType?: boolean | Prisma.VisitHistory$catalogServiceTypeArgs<ExtArgs>
+  receiver?: boolean | Prisma.VisitHistory$receiverArgs<ExtArgs>
 }, ExtArgs["result"]["visitHistory"]>
 
 export type VisitHistorySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1733,9 +4146,17 @@ export type VisitHistorySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   completedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  docNumber?: boolean
+  docDate?: boolean
+  discountPercent?: boolean
+  discountRub?: boolean
+  paymentMethod?: boolean
+  paidRub?: boolean
+  receiverId?: boolean
   user?: boolean | Prisma.CabinetUserDefaultArgs<ExtArgs>
   vehicle?: boolean | Prisma.VisitHistory$vehicleArgs<ExtArgs>
   catalogServiceType?: boolean | Prisma.VisitHistory$catalogServiceTypeArgs<ExtArgs>
+  receiver?: boolean | Prisma.VisitHistory$receiverArgs<ExtArgs>
 }, ExtArgs["result"]["visitHistory"]>
 
 export type VisitHistorySelectScalar = {
@@ -1756,9 +4177,16 @@ export type VisitHistorySelectScalar = {
   completedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  docNumber?: boolean
+  docDate?: boolean
+  discountPercent?: boolean
+  discountRub?: boolean
+  paymentMethod?: boolean
+  paidRub?: boolean
+  receiverId?: boolean
 }
 
-export type VisitHistoryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "vehicleId" | "visitDate" | "serviceType" | "diskLink" | "startsAt" | "endsAt" | "priceRub" | "serviceTypeId" | "location" | "managerName" | "masterComment" | "reviewSmsSentAt" | "completedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["visitHistory"]>
+export type VisitHistoryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "vehicleId" | "visitDate" | "serviceType" | "diskLink" | "startsAt" | "endsAt" | "priceRub" | "serviceTypeId" | "location" | "managerName" | "masterComment" | "reviewSmsSentAt" | "completedAt" | "createdAt" | "updatedAt" | "docNumber" | "docDate" | "discountPercent" | "discountRub" | "paymentMethod" | "paidRub" | "receiverId", ExtArgs["result"]["visitHistory"]>
 export type VisitHistoryInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.CabinetUserDefaultArgs<ExtArgs>
   vehicle?: boolean | Prisma.VisitHistory$vehicleArgs<ExtArgs>
@@ -1766,17 +4194,28 @@ export type VisitHistoryInclude<ExtArgs extends runtime.Types.Extensions.Interna
   pendingReviewSms?: boolean | Prisma.VisitHistory$pendingReviewSmsArgs<ExtArgs>
   siteLead?: boolean | Prisma.VisitHistory$siteLeadArgs<ExtArgs>
   assignees?: boolean | Prisma.VisitHistory$assigneesArgs<ExtArgs>
+  inspection?: boolean | Prisma.VisitHistory$inspectionArgs<ExtArgs>
+  photos?: boolean | Prisma.VisitHistory$photosArgs<ExtArgs>
+  documents?: boolean | Prisma.VisitHistory$documentsArgs<ExtArgs>
+  workItems?: boolean | Prisma.VisitHistory$workItemsArgs<ExtArgs>
+  handover?: boolean | Prisma.VisitHistory$handoverArgs<ExtArgs>
+  receiver?: boolean | Prisma.VisitHistory$receiverArgs<ExtArgs>
+  payrollEntries?: boolean | Prisma.VisitHistory$payrollEntriesArgs<ExtArgs>
+  cashEntries?: boolean | Prisma.VisitHistory$cashEntriesArgs<ExtArgs>
+  stockMovements?: boolean | Prisma.VisitHistory$stockMovementsArgs<ExtArgs>
   _count?: boolean | Prisma.VisitHistoryCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type VisitHistoryIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.CabinetUserDefaultArgs<ExtArgs>
   vehicle?: boolean | Prisma.VisitHistory$vehicleArgs<ExtArgs>
   catalogServiceType?: boolean | Prisma.VisitHistory$catalogServiceTypeArgs<ExtArgs>
+  receiver?: boolean | Prisma.VisitHistory$receiverArgs<ExtArgs>
 }
 export type VisitHistoryIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.CabinetUserDefaultArgs<ExtArgs>
   vehicle?: boolean | Prisma.VisitHistory$vehicleArgs<ExtArgs>
   catalogServiceType?: boolean | Prisma.VisitHistory$catalogServiceTypeArgs<ExtArgs>
+  receiver?: boolean | Prisma.VisitHistory$receiverArgs<ExtArgs>
 }
 
 export type $VisitHistoryPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1788,12 +4227,22 @@ export type $VisitHistoryPayload<ExtArgs extends runtime.Types.Extensions.Intern
     pendingReviewSms: Prisma.$PendingReviewSmsPayload<ExtArgs> | null
     siteLead: Prisma.$SiteLeadPayload<ExtArgs> | null
     assignees: Prisma.$VisitStaffPayload<ExtArgs>[]
+    inspection: Prisma.$VehicleInspectionPayload<ExtArgs> | null
+    photos: Prisma.$VisitPhotoPayload<ExtArgs>[]
+    documents: Prisma.$DocumentPayload<ExtArgs>[]
+    workItems: Prisma.$VisitWorkItemPayload<ExtArgs>[]
+    handover: Prisma.$VisitHandoverPayload<ExtArgs> | null
+    receiver: Prisma.$StaffPayload<ExtArgs> | null
+    payrollEntries: Prisma.$PayrollEntryPayload<ExtArgs>[]
+    cashEntries: Prisma.$CashEntryPayload<ExtArgs>[]
+    stockMovements: Prisma.$StockMovementPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
     userId: number
     /**
-     * * Автомобиль, по которому визит / обслуживание
+     * *
+     *    * Автомобиль, по которому визит / обслуживание
      */
     vehicleId: number | null
     visitDate: Date
@@ -1804,24 +4253,50 @@ export type $VisitHistoryPayload<ExtArgs extends runtime.Types.Extensions.Intern
     priceRub: number | null
     serviceTypeId: number | null
     /**
-     * * Филиал / площадка записи
+     * *
+     *    * Филиал / площадка записи
      */
     location: $Enums.CrmLocation
     /**
-     * * Имя менеджера (только админка, не для ЛК)
+     * *
+     *    * Имя менеджера (только админка, не для ЛК)
      */
     managerName: string | null
     /**
-     * * Внутренний комментарий мастера к записи.
+     * *
+     *    * Внутренний комментарий мастера к записи.
      */
     masterComment: string | null
     reviewSmsSentAt: Date | null
     /**
-     * * Работы по записи завершены (закрыта из календаря или из заявки).
+     * *
+     *    * Работы по записи завершены (закрыта из календаря или из заявки).
      */
     completedAt: Date | null
     createdAt: Date
     updatedAt: Date
+    /**
+     * Единый номер договора и связанных актов (ТЗ §16); выдаётся один раз и не меняется
+     */
+    docNumber: string | null
+    /**
+     * Дата договора — день, когда выдан номер
+     */
+    docDate: Date | null
+    /**
+     * Скидка: задаётся либо в процентах, либо в рублях (второе значение считается), ТЗ §8.5
+     */
+    discountPercent: number | null
+    discountRub: number | null
+    paymentMethod: $Enums.PaymentMethod | null
+    /**
+     * Фактически полученная оплата
+     */
+    paidRub: number | null
+    /**
+     * Мастер-приёмщик записи (сотрудник с ролью ADMIN): ему считается ставка приёмщика
+     */
+    receiverId: number | null
   }, ExtArgs["result"]["visitHistory"]>
   composites: {}
 }
@@ -2222,6 +4697,15 @@ export interface Prisma__VisitHistoryClient<T, Null = never, ExtArgs extends run
   pendingReviewSms<T extends Prisma.VisitHistory$pendingReviewSmsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.VisitHistory$pendingReviewSmsArgs<ExtArgs>>): Prisma.Prisma__PendingReviewSmsClient<runtime.Types.Result.GetResult<Prisma.$PendingReviewSmsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   siteLead<T extends Prisma.VisitHistory$siteLeadArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.VisitHistory$siteLeadArgs<ExtArgs>>): Prisma.Prisma__SiteLeadClient<runtime.Types.Result.GetResult<Prisma.$SiteLeadPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   assignees<T extends Prisma.VisitHistory$assigneesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.VisitHistory$assigneesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VisitStaffPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  inspection<T extends Prisma.VisitHistory$inspectionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.VisitHistory$inspectionArgs<ExtArgs>>): Prisma.Prisma__VehicleInspectionClient<runtime.Types.Result.GetResult<Prisma.$VehicleInspectionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  photos<T extends Prisma.VisitHistory$photosArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.VisitHistory$photosArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VisitPhotoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  documents<T extends Prisma.VisitHistory$documentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.VisitHistory$documentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  workItems<T extends Prisma.VisitHistory$workItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.VisitHistory$workItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VisitWorkItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  handover<T extends Prisma.VisitHistory$handoverArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.VisitHistory$handoverArgs<ExtArgs>>): Prisma.Prisma__VisitHandoverClient<runtime.Types.Result.GetResult<Prisma.$VisitHandoverPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  receiver<T extends Prisma.VisitHistory$receiverArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.VisitHistory$receiverArgs<ExtArgs>>): Prisma.Prisma__StaffClient<runtime.Types.Result.GetResult<Prisma.$StaffPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  payrollEntries<T extends Prisma.VisitHistory$payrollEntriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.VisitHistory$payrollEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PayrollEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  cashEntries<T extends Prisma.VisitHistory$cashEntriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.VisitHistory$cashEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CashEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  stockMovements<T extends Prisma.VisitHistory$stockMovementsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.VisitHistory$stockMovementsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StockMovementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2268,6 +4752,13 @@ export interface VisitHistoryFieldRefs {
   readonly completedAt: Prisma.FieldRef<"VisitHistory", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"VisitHistory", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"VisitHistory", 'DateTime'>
+  readonly docNumber: Prisma.FieldRef<"VisitHistory", 'String'>
+  readonly docDate: Prisma.FieldRef<"VisitHistory", 'DateTime'>
+  readonly discountPercent: Prisma.FieldRef<"VisitHistory", 'Float'>
+  readonly discountRub: Prisma.FieldRef<"VisitHistory", 'Int'>
+  readonly paymentMethod: Prisma.FieldRef<"VisitHistory", 'PaymentMethod'>
+  readonly paidRub: Prisma.FieldRef<"VisitHistory", 'Int'>
+  readonly receiverId: Prisma.FieldRef<"VisitHistory", 'Int'>
 }
     
 
@@ -2464,6 +4955,11 @@ export type VisitHistoryFindManyArgs<ExtArgs extends runtime.Types.Extensions.In
    * Skip the first `n` VisitHistories.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of VisitHistories.
+   */
   distinct?: Prisma.VisitHistoryScalarFieldEnum | Prisma.VisitHistoryScalarFieldEnum[]
 }
 
@@ -2761,6 +5257,207 @@ export type VisitHistory$assigneesArgs<ExtArgs extends runtime.Types.Extensions.
   take?: number
   skip?: number
   distinct?: Prisma.VisitStaffScalarFieldEnum | Prisma.VisitStaffScalarFieldEnum[]
+}
+
+/**
+ * VisitHistory.inspection
+ */
+export type VisitHistory$inspectionArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the VehicleInspection
+   */
+  select?: Prisma.VehicleInspectionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the VehicleInspection
+   */
+  omit?: Prisma.VehicleInspectionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.VehicleInspectionInclude<ExtArgs> | null
+  where?: Prisma.VehicleInspectionWhereInput
+}
+
+/**
+ * VisitHistory.photos
+ */
+export type VisitHistory$photosArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the VisitPhoto
+   */
+  select?: Prisma.VisitPhotoSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the VisitPhoto
+   */
+  omit?: Prisma.VisitPhotoOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.VisitPhotoInclude<ExtArgs> | null
+  where?: Prisma.VisitPhotoWhereInput
+  orderBy?: Prisma.VisitPhotoOrderByWithRelationInput | Prisma.VisitPhotoOrderByWithRelationInput[]
+  cursor?: Prisma.VisitPhotoWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.VisitPhotoScalarFieldEnum | Prisma.VisitPhotoScalarFieldEnum[]
+}
+
+/**
+ * VisitHistory.documents
+ */
+export type VisitHistory$documentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Document
+   */
+  select?: Prisma.DocumentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Document
+   */
+  omit?: Prisma.DocumentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DocumentInclude<ExtArgs> | null
+  where?: Prisma.DocumentWhereInput
+  orderBy?: Prisma.DocumentOrderByWithRelationInput | Prisma.DocumentOrderByWithRelationInput[]
+  cursor?: Prisma.DocumentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DocumentScalarFieldEnum | Prisma.DocumentScalarFieldEnum[]
+}
+
+/**
+ * VisitHistory.workItems
+ */
+export type VisitHistory$workItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the VisitWorkItem
+   */
+  select?: Prisma.VisitWorkItemSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the VisitWorkItem
+   */
+  omit?: Prisma.VisitWorkItemOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.VisitWorkItemInclude<ExtArgs> | null
+  where?: Prisma.VisitWorkItemWhereInput
+  orderBy?: Prisma.VisitWorkItemOrderByWithRelationInput | Prisma.VisitWorkItemOrderByWithRelationInput[]
+  cursor?: Prisma.VisitWorkItemWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.VisitWorkItemScalarFieldEnum | Prisma.VisitWorkItemScalarFieldEnum[]
+}
+
+/**
+ * VisitHistory.handover
+ */
+export type VisitHistory$handoverArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the VisitHandover
+   */
+  select?: Prisma.VisitHandoverSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the VisitHandover
+   */
+  omit?: Prisma.VisitHandoverOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.VisitHandoverInclude<ExtArgs> | null
+  where?: Prisma.VisitHandoverWhereInput
+}
+
+/**
+ * VisitHistory.receiver
+ */
+export type VisitHistory$receiverArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Staff
+   */
+  select?: Prisma.StaffSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Staff
+   */
+  omit?: Prisma.StaffOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.StaffInclude<ExtArgs> | null
+  where?: Prisma.StaffWhereInput
+}
+
+/**
+ * VisitHistory.payrollEntries
+ */
+export type VisitHistory$payrollEntriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PayrollEntry
+   */
+  select?: Prisma.PayrollEntrySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PayrollEntry
+   */
+  omit?: Prisma.PayrollEntryOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PayrollEntryInclude<ExtArgs> | null
+  where?: Prisma.PayrollEntryWhereInput
+  orderBy?: Prisma.PayrollEntryOrderByWithRelationInput | Prisma.PayrollEntryOrderByWithRelationInput[]
+  cursor?: Prisma.PayrollEntryWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PayrollEntryScalarFieldEnum | Prisma.PayrollEntryScalarFieldEnum[]
+}
+
+/**
+ * VisitHistory.cashEntries
+ */
+export type VisitHistory$cashEntriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CashEntry
+   */
+  select?: Prisma.CashEntrySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CashEntry
+   */
+  omit?: Prisma.CashEntryOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CashEntryInclude<ExtArgs> | null
+  where?: Prisma.CashEntryWhereInput
+  orderBy?: Prisma.CashEntryOrderByWithRelationInput | Prisma.CashEntryOrderByWithRelationInput[]
+  cursor?: Prisma.CashEntryWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CashEntryScalarFieldEnum | Prisma.CashEntryScalarFieldEnum[]
+}
+
+/**
+ * VisitHistory.stockMovements
+ */
+export type VisitHistory$stockMovementsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the StockMovement
+   */
+  select?: Prisma.StockMovementSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the StockMovement
+   */
+  omit?: Prisma.StockMovementOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.StockMovementInclude<ExtArgs> | null
+  where?: Prisma.StockMovementWhereInput
+  orderBy?: Prisma.StockMovementOrderByWithRelationInput | Prisma.StockMovementOrderByWithRelationInput[]
+  cursor?: Prisma.StockMovementWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.StockMovementScalarFieldEnum | Prisma.StockMovementScalarFieldEnum[]
 }
 
 /**

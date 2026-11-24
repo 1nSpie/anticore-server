@@ -294,7 +294,7 @@ export type SiteLeadGroupByOutputType = {
   _max: SiteLeadMaxAggregateOutputType | null
 }
 
-type GetSiteLeadGroupByPayload<T extends SiteLeadGroupByArgs> = Prisma.PrismaPromise<
+export type GetSiteLeadGroupByPayload<T extends SiteLeadGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<SiteLeadGroupByOutputType, T['by']> &
       {
@@ -932,15 +932,18 @@ export type $SiteLeadPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     diskLink: string | null
     followUpAt: Date | null
     /**
-     * * С какого момента считается срок реакции (30 мин): создание или возврат из «На уточнении».
+     * *
+     *    * С какого момента считается срок реакции (30 мин): создание или возврат из «На уточнении».
      */
     surfacedAt: Date | null
     /**
-     * * Убрана из списка CRM крестиком. Запись остаётся в БД; профиль клиента не затрагивается.
+     * *
+     *    * Убрана из списка CRM крестиком. Запись остаётся в БД; профиль клиента не затрагивается.
      */
     archivedAt: Date | null
     /**
-     * * Город / филиал для записи
+     * *
+     *    * Город / филиал для записи
      */
     location: $Enums.CrmLocation | null
     visitId: number | null
@@ -1586,6 +1589,11 @@ export type SiteLeadFindManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * Skip the first `n` SiteLeads.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of SiteLeads.
+   */
   distinct?: Prisma.SiteLeadScalarFieldEnum | Prisma.SiteLeadScalarFieldEnum[]
 }
 

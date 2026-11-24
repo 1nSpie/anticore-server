@@ -14,11 +14,24 @@ function setup(opts: { visit: any; staff?: any[]; after?: any[] }) {
   };
   const audit: any = { log: jest.fn(async () => undefined) };
   const notifications: any = { notify: jest.fn(async () => undefined) };
-  return { prisma, audit, notifications, svc: new StaffAssignmentsService(prisma, audit, notifications) };
+  const payroll: any = { syncMasters: jest.fn(async () => undefined) };
+  return { prisma, audit, notifications, payroll, svc: new StaffAssignmentsService(prisma, audit, notifications, payroll) };
 }
 const master = (id: number, over = {}) => ({ id, role: "MASTER", blockedAt: null, fullName: `М${id}`, ...over });
 
 describe("StaffAssignmentsService.setAssignees", () => {
+  it("при назначении сразу считается ставка: новым — начисление, снятым — удаление", async () => {
+    const { svc, payroll } = setup({ visit: { id: 1, assignees: [{ staffId: 1 }] }, staff: [master(2)] });
+    await svc.setAssignees(1, [2], {} as any);
+    expect(payroll.syncMasters).toHaveBeenCalledWith(1, [2], [1]);
+  });
+
+  it("без изменений состава ставки не пересчитываются", async () => {
+    const { svc, payroll } = setup({ visit: { id: 1, assignees: [{ staffId: 1 }] }, staff: [] });
+    await svc.setAssignees(1, [1], {} as any);
+    expect(payroll.syncMasters).not.toHaveBeenCalled();
+  });
+
   it("несуществующая запись → 404", async () => {
     const { svc } = setup({ visit: null });
     await expect(svc.setAssignees(1, [1], {} as any)).rejects.toBeInstanceOf(NotFoundException);

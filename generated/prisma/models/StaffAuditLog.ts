@@ -213,7 +213,7 @@ export type StaffAuditLogGroupByOutputType = {
   _max: StaffAuditLogMaxAggregateOutputType | null
 }
 
-type GetStaffAuditLogGroupByPayload<T extends StaffAuditLogGroupByArgs> = Prisma.PrismaPromise<
+export type GetStaffAuditLogGroupByPayload<T extends StaffAuditLogGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<StaffAuditLogGroupByOutputType, T['by']> &
       {
@@ -1272,6 +1272,11 @@ export type StaffAuditLogFindManyArgs<ExtArgs extends runtime.Types.Extensions.I
    * Skip the first `n` StaffAuditLogs.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of StaffAuditLogs.
+   */
   distinct?: Prisma.StaffAuditLogScalarFieldEnum | Prisma.StaffAuditLogScalarFieldEnum[]
 }
 

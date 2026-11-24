@@ -7,7 +7,7 @@ describe('Appointment master comment', () => {
     id: 1, userId: 1, vehicleId: null, visitDate: new Date('2026-10-01T07:00:00Z'),
     startsAt: new Date('2026-10-01T07:00:00Z'), endsAt: new Date('2026-10-01T08:00:00Z'),
     serviceType: 'Осмотр', serviceTypeId: null, priceRub: 0, managerName: null,
-    masterComment: null as string | null, location: 'ZHUKOVSKY', user: { id: 1, phone: 'test' },
+    masterComment: null as string | null, location: 'ZHUKOVSKY', user: { id: 1, phone: 'test' }, workItems: [],
   };
   let row: typeof initial;
   let service: CrmAppointmentsService;

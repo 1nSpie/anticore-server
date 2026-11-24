@@ -21,6 +21,7 @@ import { CabinetUserModule } from './cabinet/user/cabinet-user.module';
 import { CabinetAdminModule } from './cabinet/admin/cabinet-admin.module';
 import { CrmModule } from './crm/crm.module';
 import { StaffModule } from './staff/staff.module';
+import { PayrollModule } from './payroll/payroll.module';
 
 @Module({
   imports: [
@@ -47,6 +48,7 @@ import { StaffModule } from './staff/staff.module';
     CabinetAdminModule,
     CrmModule,
     StaffModule,
+    PayrollModule,
   ],
   providers: [
     {

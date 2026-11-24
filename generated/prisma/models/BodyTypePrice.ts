@@ -219,7 +219,7 @@ export type BodyTypePriceGroupByOutputType = {
   _max: BodyTypePriceMaxAggregateOutputType | null
 }
 
-type GetBodyTypePriceGroupByPayload<T extends BodyTypePriceGroupByArgs> = Prisma.PrismaPromise<
+export type GetBodyTypePriceGroupByPayload<T extends BodyTypePriceGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<BodyTypePriceGroupByOutputType, T['by']> &
       {
@@ -1053,6 +1053,11 @@ export type BodyTypePriceFindManyArgs<ExtArgs extends runtime.Types.Extensions.I
    * Skip the first `n` BodyTypePrices.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of BodyTypePrices.
+   */
   distinct?: Prisma.BodyTypePriceScalarFieldEnum | Prisma.BodyTypePriceScalarFieldEnum[]
 }
 

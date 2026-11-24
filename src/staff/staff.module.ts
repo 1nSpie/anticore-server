@@ -1,5 +1,6 @@
 import { Module } from "@nestjs/common";
 import { AdminAuthModule } from "../auth/admin-auth.module";
+import { PayrollModule } from "../payroll/payroll.module";
 import { StorageModule } from "../storage/storage.module";
 import { CheckinService } from "./checkin.service";
 import { CrmCheckinsController, StaffCheckinController } from "./checkin.controller";
@@ -24,7 +25,7 @@ import { StaffTokenService } from "./staff-token.service";
 
 /** Учётные записи сотрудников (мастера): вход, роли, журнал. Админ управляет ими через `/crm/staff`. */
 @Module({
-  imports: [AdminAuthModule, StorageModule],
+  imports: [AdminAuthModule, StorageModule, PayrollModule],
   controllers: [StaffAuthController, StaffAdminController, StaffScheduleController, AppointmentAssigneesController, StaffCheckinController, CrmCheckinsController, StaffTasksController, CrmTasksController, StaffRegulationController, CrmRegulationController, StaffNotificationsController, SessionController],
   providers: [StaffTokenService, StaffAuditService, StaffAuthService, StaffAdminService, StaffAssignmentsService, CheckinService, TasksService, RegulationService, NotificationsService, StaffEventsGateway, SessionService, StaffJwtGuard],
   exports: [StaffJwtGuard, StaffTokenService, StaffAuditService, NotificationsService],

@@ -1,4 +1,5 @@
-import { BadRequestException, ConflictException, Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, ConflictException, ForbiddenException, Injectable, NotFoundException } from "@nestjs/common";
+import { ADMIN_ENV_SUBJECT } from "../auth/admin-auth.service";
 import * as bcrypt from "bcrypt";
 import { randomInt } from "crypto";
 import { Prisma, Staff } from "../../generated/prisma/client";
@@ -104,6 +105,23 @@ export class StaffAdminService {
     return { password };
   }
 
+  /**
+   * Удалить мастера или администратора насовсем. Право только у администратора из env (`ADMIN_LOGIN`):
+   * сотрудники-админы удалять не могут, даже друг друга. Начисления зарплаты остаются, имя сохраняется в них.
+   */
+  async remove(id: number, req: Request) {
+    if (!isEnvAdmin(req)) throw new ForbiddenException("Удалять сотрудников может только главный администратор");
+    const staff = await this.requireStaff(id);
+    await this.prisma.staff.delete({ where: { id } });
+    await this.audit.log({
+      action: StaffAuditAction.STAFF_DELETED,
+      actor: adminActor(req),
+      req,
+      meta: { staffId: id, login: staff.login, fullName: staff.fullName, role: staff.role },
+    });
+    return { message: "Сотрудник удалён" };
+  }
+
   auditLog(q: StaffAuditQueryDto) {
     return this.audit.list({ staffId: q.staffId, action: q.action, take: q.limit ?? 50, skip: q.offset ?? 0 });
   }
@@ -114,4 +132,9 @@ export class StaffAdminService {
     if (!staff) throw new NotFoundException("Сотрудник не найден");
     return staff;
   }
+}
+
+/** Запрос выполнен администратором из env (а не сотрудником с ролью ADMIN). */
+export function isEnvAdmin(req?: unknown): boolean {
+  return (req as { admin?: { id?: unknown } } | undefined)?.admin?.id === ADMIN_ENV_SUBJECT;
 }

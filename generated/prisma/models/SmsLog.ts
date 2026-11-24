@@ -195,7 +195,7 @@ export type SmsLogGroupByOutputType = {
   _max: SmsLogMaxAggregateOutputType | null
 }
 
-type GetSmsLogGroupByPayload<T extends SmsLogGroupByArgs> = Prisma.PrismaPromise<
+export type GetSmsLogGroupByPayload<T extends SmsLogGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<SmsLogGroupByOutputType, T['by']> &
       {
@@ -1017,6 +1017,11 @@ export type SmsLogFindManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Skip the first `n` SmsLogs.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of SmsLogs.
+   */
   distinct?: Prisma.SmsLogScalarFieldEnum | Prisma.SmsLogScalarFieldEnum[]
 }
 

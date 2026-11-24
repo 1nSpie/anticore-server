@@ -196,7 +196,7 @@ export type RegulationStateGroupByOutputType = {
   _max: RegulationStateMaxAggregateOutputType | null
 }
 
-type GetRegulationStateGroupByPayload<T extends RegulationStateGroupByArgs> = Prisma.PrismaPromise<
+export type GetRegulationStateGroupByPayload<T extends RegulationStateGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<RegulationStateGroupByOutputType, T['by']> &
       {
@@ -1007,6 +1007,11 @@ export type RegulationStateFindManyArgs<ExtArgs extends runtime.Types.Extensions
    * Skip the first `n` RegulationStates.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of RegulationStates.
+   */
   distinct?: Prisma.RegulationStateScalarFieldEnum | Prisma.RegulationStateScalarFieldEnum[]
 }
 

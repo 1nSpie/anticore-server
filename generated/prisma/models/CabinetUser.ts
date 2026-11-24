@@ -315,7 +315,7 @@ export type CabinetUserGroupByOutputType = {
   _max: CabinetUserMaxAggregateOutputType | null
 }
 
-type GetCabinetUserGroupByPayload<T extends CabinetUserGroupByArgs> = Prisma.PrismaPromise<
+export type GetCabinetUserGroupByPayload<T extends CabinetUserGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<CabinetUserGroupByOutputType, T['by']> &
       {
@@ -2154,27 +2154,33 @@ export type $CabinetUserPayload<ExtArgs extends runtime.Types.Extensions.Interna
     patronymic: string | null
     birthDate: Date | null
     /**
-     * * Последняя смена даты рождения пользователем (лимит раз в сутки)
+     * *
+     *    * Последняя смена даты рождения пользователем (лимит раз в сутки)
      */
     birthDateChangedAt: Date | null
     /**
-     * * @deprecated use ClientVehicle — kept synced from primary vehicle
+     * *
+     *    * @deprecated use ClientVehicle — kept synced from primary vehicle
      */
     carId: number | null
     /**
-     * * @deprecated use ClientVehicle.customLabel
+     * *
+     *    * @deprecated use ClientVehicle.customLabel
      */
     customCar: string | null
     /**
-     * * @deprecated use ClientVehicle.vin
+     * *
+     *    * @deprecated use ClientVehicle.vin
      */
     vin: string | null
     /**
-     * * Заметки администратора (CRM)
+     * *
+     *    * Заметки администратора (CRM)
      */
     adminComment: string | null
     /**
-     * * Ссылка на фотоотчёт (Яндекс.Диск), одна на клиента
+     * *
+     *    * Ссылка на фотоотчёт (Яндекс.Диск), одна на клиента
      */
     photoReportUrl: string | null
     phoneVerified: boolean
@@ -2834,6 +2840,11 @@ export type CabinetUserFindManyArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Skip the first `n` CabinetUsers.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of CabinetUsers.
+   */
   distinct?: Prisma.CabinetUserScalarFieldEnum | Prisma.CabinetUserScalarFieldEnum[]
 }
 

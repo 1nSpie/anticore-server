@@ -14,7 +14,8 @@ import type * as Prisma from "../internal/prismaNamespace"
 
 /**
  * Model ClientVehicle
- * * Автомобиль клиента (экземпляр); каталог Car — только марка/модель/сегмент.
+ * *
+ *  * Автомобиль клиента (экземпляр); каталог Car — только марка/модель/сегмент.
  */
 export type ClientVehicleModel = runtime.Types.Result.DefaultSelection<Prisma.$ClientVehiclePayload>
 
@@ -30,12 +31,14 @@ export type ClientVehicleAvgAggregateOutputType = {
   id: number | null
   userId: number | null
   carId: number | null
+  year: number | null
 }
 
 export type ClientVehicleSumAggregateOutputType = {
   id: number | null
   userId: number | null
   carId: number | null
+  year: number | null
 }
 
 export type ClientVehicleMinAggregateOutputType = {
@@ -44,6 +47,8 @@ export type ClientVehicleMinAggregateOutputType = {
   carId: number | null
   customLabel: string | null
   vin: string | null
+  year: number | null
+  plate: string | null
   isPrimary: boolean | null
   archivedAt: Date | null
   createdAt: Date | null
@@ -56,6 +61,8 @@ export type ClientVehicleMaxAggregateOutputType = {
   carId: number | null
   customLabel: string | null
   vin: string | null
+  year: number | null
+  plate: string | null
   isPrimary: boolean | null
   archivedAt: Date | null
   createdAt: Date | null
@@ -68,6 +75,8 @@ export type ClientVehicleCountAggregateOutputType = {
   carId: number
   customLabel: number
   vin: number
+  year: number
+  plate: number
   isPrimary: number
   archivedAt: number
   createdAt: number
@@ -80,12 +89,14 @@ export type ClientVehicleAvgAggregateInputType = {
   id?: true
   userId?: true
   carId?: true
+  year?: true
 }
 
 export type ClientVehicleSumAggregateInputType = {
   id?: true
   userId?: true
   carId?: true
+  year?: true
 }
 
 export type ClientVehicleMinAggregateInputType = {
@@ -94,6 +105,8 @@ export type ClientVehicleMinAggregateInputType = {
   carId?: true
   customLabel?: true
   vin?: true
+  year?: true
+  plate?: true
   isPrimary?: true
   archivedAt?: true
   createdAt?: true
@@ -106,6 +119,8 @@ export type ClientVehicleMaxAggregateInputType = {
   carId?: true
   customLabel?: true
   vin?: true
+  year?: true
+  plate?: true
   isPrimary?: true
   archivedAt?: true
   createdAt?: true
@@ -118,6 +133,8 @@ export type ClientVehicleCountAggregateInputType = {
   carId?: true
   customLabel?: true
   vin?: true
+  year?: true
+  plate?: true
   isPrimary?: true
   archivedAt?: true
   createdAt?: true
@@ -217,6 +234,8 @@ export type ClientVehicleGroupByOutputType = {
   carId: number | null
   customLabel: string | null
   vin: string | null
+  year: number | null
+  plate: string | null
   isPrimary: boolean
   archivedAt: Date | null
   createdAt: Date
@@ -228,7 +247,7 @@ export type ClientVehicleGroupByOutputType = {
   _max: ClientVehicleMaxAggregateOutputType | null
 }
 
-type GetClientVehicleGroupByPayload<T extends ClientVehicleGroupByArgs> = Prisma.PrismaPromise<
+export type GetClientVehicleGroupByPayload<T extends ClientVehicleGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<ClientVehicleGroupByOutputType, T['by']> &
       {
@@ -252,6 +271,8 @@ export type ClientVehicleWhereInput = {
   carId?: Prisma.IntNullableFilter<"ClientVehicle"> | number | null
   customLabel?: Prisma.StringNullableFilter<"ClientVehicle"> | string | null
   vin?: Prisma.StringNullableFilter<"ClientVehicle"> | string | null
+  year?: Prisma.IntNullableFilter<"ClientVehicle"> | number | null
+  plate?: Prisma.StringNullableFilter<"ClientVehicle"> | string | null
   isPrimary?: Prisma.BoolFilter<"ClientVehicle"> | boolean
   archivedAt?: Prisma.DateTimeNullableFilter<"ClientVehicle"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"ClientVehicle"> | Date | string
@@ -267,6 +288,8 @@ export type ClientVehicleOrderByWithRelationInput = {
   carId?: Prisma.SortOrderInput | Prisma.SortOrder
   customLabel?: Prisma.SortOrderInput | Prisma.SortOrder
   vin?: Prisma.SortOrderInput | Prisma.SortOrder
+  year?: Prisma.SortOrderInput | Prisma.SortOrder
+  plate?: Prisma.SortOrderInput | Prisma.SortOrder
   isPrimary?: Prisma.SortOrder
   archivedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -285,6 +308,8 @@ export type ClientVehicleWhereUniqueInput = Prisma.AtLeast<{
   carId?: Prisma.IntNullableFilter<"ClientVehicle"> | number | null
   customLabel?: Prisma.StringNullableFilter<"ClientVehicle"> | string | null
   vin?: Prisma.StringNullableFilter<"ClientVehicle"> | string | null
+  year?: Prisma.IntNullableFilter<"ClientVehicle"> | number | null
+  plate?: Prisma.StringNullableFilter<"ClientVehicle"> | string | null
   isPrimary?: Prisma.BoolFilter<"ClientVehicle"> | boolean
   archivedAt?: Prisma.DateTimeNullableFilter<"ClientVehicle"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"ClientVehicle"> | Date | string
@@ -300,6 +325,8 @@ export type ClientVehicleOrderByWithAggregationInput = {
   carId?: Prisma.SortOrderInput | Prisma.SortOrder
   customLabel?: Prisma.SortOrderInput | Prisma.SortOrder
   vin?: Prisma.SortOrderInput | Prisma.SortOrder
+  year?: Prisma.SortOrderInput | Prisma.SortOrder
+  plate?: Prisma.SortOrderInput | Prisma.SortOrder
   isPrimary?: Prisma.SortOrder
   archivedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -320,6 +347,8 @@ export type ClientVehicleScalarWhereWithAggregatesInput = {
   carId?: Prisma.IntNullableWithAggregatesFilter<"ClientVehicle"> | number | null
   customLabel?: Prisma.StringNullableWithAggregatesFilter<"ClientVehicle"> | string | null
   vin?: Prisma.StringNullableWithAggregatesFilter<"ClientVehicle"> | string | null
+  year?: Prisma.IntNullableWithAggregatesFilter<"ClientVehicle"> | number | null
+  plate?: Prisma.StringNullableWithAggregatesFilter<"ClientVehicle"> | string | null
   isPrimary?: Prisma.BoolWithAggregatesFilter<"ClientVehicle"> | boolean
   archivedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"ClientVehicle"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"ClientVehicle"> | Date | string
@@ -329,6 +358,8 @@ export type ClientVehicleScalarWhereWithAggregatesInput = {
 export type ClientVehicleCreateInput = {
   customLabel?: string | null
   vin?: string | null
+  year?: number | null
+  plate?: string | null
   isPrimary?: boolean
   archivedAt?: Date | string | null
   createdAt?: Date | string
@@ -344,6 +375,8 @@ export type ClientVehicleUncheckedCreateInput = {
   carId?: number | null
   customLabel?: string | null
   vin?: string | null
+  year?: number | null
+  plate?: string | null
   isPrimary?: boolean
   archivedAt?: Date | string | null
   createdAt?: Date | string
@@ -354,6 +387,8 @@ export type ClientVehicleUncheckedCreateInput = {
 export type ClientVehicleUpdateInput = {
   customLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  year?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  plate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isPrimary?: Prisma.BoolFieldUpdateOperationsInput | boolean
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -369,6 +404,8 @@ export type ClientVehicleUncheckedUpdateInput = {
   carId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   customLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  year?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  plate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isPrimary?: Prisma.BoolFieldUpdateOperationsInput | boolean
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -382,6 +419,8 @@ export type ClientVehicleCreateManyInput = {
   carId?: number | null
   customLabel?: string | null
   vin?: string | null
+  year?: number | null
+  plate?: string | null
   isPrimary?: boolean
   archivedAt?: Date | string | null
   createdAt?: Date | string
@@ -391,6 +430,8 @@ export type ClientVehicleCreateManyInput = {
 export type ClientVehicleUpdateManyMutationInput = {
   customLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  year?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  plate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isPrimary?: Prisma.BoolFieldUpdateOperationsInput | boolean
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -403,6 +444,8 @@ export type ClientVehicleUncheckedUpdateManyInput = {
   carId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   customLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  year?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  plate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isPrimary?: Prisma.BoolFieldUpdateOperationsInput | boolean
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -425,6 +468,8 @@ export type ClientVehicleCountOrderByAggregateInput = {
   carId?: Prisma.SortOrder
   customLabel?: Prisma.SortOrder
   vin?: Prisma.SortOrder
+  year?: Prisma.SortOrder
+  plate?: Prisma.SortOrder
   isPrimary?: Prisma.SortOrder
   archivedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -435,6 +480,7 @@ export type ClientVehicleAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   carId?: Prisma.SortOrder
+  year?: Prisma.SortOrder
 }
 
 export type ClientVehicleMaxOrderByAggregateInput = {
@@ -443,6 +489,8 @@ export type ClientVehicleMaxOrderByAggregateInput = {
   carId?: Prisma.SortOrder
   customLabel?: Prisma.SortOrder
   vin?: Prisma.SortOrder
+  year?: Prisma.SortOrder
+  plate?: Prisma.SortOrder
   isPrimary?: Prisma.SortOrder
   archivedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -455,6 +503,8 @@ export type ClientVehicleMinOrderByAggregateInput = {
   carId?: Prisma.SortOrder
   customLabel?: Prisma.SortOrder
   vin?: Prisma.SortOrder
+  year?: Prisma.SortOrder
+  plate?: Prisma.SortOrder
   isPrimary?: Prisma.SortOrder
   archivedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -465,6 +515,7 @@ export type ClientVehicleSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   carId?: Prisma.SortOrder
+  year?: Prisma.SortOrder
 }
 
 export type ClientVehicleNullableScalarRelationFilter = {
@@ -575,6 +626,8 @@ export type ClientVehicleUpdateOneWithoutVisitsNestedInput = {
 export type ClientVehicleCreateWithoutCarInput = {
   customLabel?: string | null
   vin?: string | null
+  year?: number | null
+  plate?: string | null
   isPrimary?: boolean
   archivedAt?: Date | string | null
   createdAt?: Date | string
@@ -588,6 +641,8 @@ export type ClientVehicleUncheckedCreateWithoutCarInput = {
   userId: number
   customLabel?: string | null
   vin?: string | null
+  year?: number | null
+  plate?: string | null
   isPrimary?: boolean
   archivedAt?: Date | string | null
   createdAt?: Date | string
@@ -630,6 +685,8 @@ export type ClientVehicleScalarWhereInput = {
   carId?: Prisma.IntNullableFilter<"ClientVehicle"> | number | null
   customLabel?: Prisma.StringNullableFilter<"ClientVehicle"> | string | null
   vin?: Prisma.StringNullableFilter<"ClientVehicle"> | string | null
+  year?: Prisma.IntNullableFilter<"ClientVehicle"> | number | null
+  plate?: Prisma.StringNullableFilter<"ClientVehicle"> | string | null
   isPrimary?: Prisma.BoolFilter<"ClientVehicle"> | boolean
   archivedAt?: Prisma.DateTimeNullableFilter<"ClientVehicle"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"ClientVehicle"> | Date | string
@@ -639,6 +696,8 @@ export type ClientVehicleScalarWhereInput = {
 export type ClientVehicleCreateWithoutUserInput = {
   customLabel?: string | null
   vin?: string | null
+  year?: number | null
+  plate?: string | null
   isPrimary?: boolean
   archivedAt?: Date | string | null
   createdAt?: Date | string
@@ -652,6 +711,8 @@ export type ClientVehicleUncheckedCreateWithoutUserInput = {
   carId?: number | null
   customLabel?: string | null
   vin?: string | null
+  year?: number | null
+  plate?: string | null
   isPrimary?: boolean
   archivedAt?: Date | string | null
   createdAt?: Date | string
@@ -688,6 +749,8 @@ export type ClientVehicleUpdateManyWithWhereWithoutUserInput = {
 export type ClientVehicleCreateWithoutVisitsInput = {
   customLabel?: string | null
   vin?: string | null
+  year?: number | null
+  plate?: string | null
   isPrimary?: boolean
   archivedAt?: Date | string | null
   createdAt?: Date | string
@@ -702,6 +765,8 @@ export type ClientVehicleUncheckedCreateWithoutVisitsInput = {
   carId?: number | null
   customLabel?: string | null
   vin?: string | null
+  year?: number | null
+  plate?: string | null
   isPrimary?: boolean
   archivedAt?: Date | string | null
   createdAt?: Date | string
@@ -727,6 +792,8 @@ export type ClientVehicleUpdateToOneWithWhereWithoutVisitsInput = {
 export type ClientVehicleUpdateWithoutVisitsInput = {
   customLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  year?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  plate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isPrimary?: Prisma.BoolFieldUpdateOperationsInput | boolean
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -741,6 +808,8 @@ export type ClientVehicleUncheckedUpdateWithoutVisitsInput = {
   carId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   customLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  year?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  plate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isPrimary?: Prisma.BoolFieldUpdateOperationsInput | boolean
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -752,6 +821,8 @@ export type ClientVehicleCreateManyCarInput = {
   userId: number
   customLabel?: string | null
   vin?: string | null
+  year?: number | null
+  plate?: string | null
   isPrimary?: boolean
   archivedAt?: Date | string | null
   createdAt?: Date | string
@@ -761,6 +832,8 @@ export type ClientVehicleCreateManyCarInput = {
 export type ClientVehicleUpdateWithoutCarInput = {
   customLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  year?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  plate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isPrimary?: Prisma.BoolFieldUpdateOperationsInput | boolean
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -774,6 +847,8 @@ export type ClientVehicleUncheckedUpdateWithoutCarInput = {
   userId?: Prisma.IntFieldUpdateOperationsInput | number
   customLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  year?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  plate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isPrimary?: Prisma.BoolFieldUpdateOperationsInput | boolean
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -786,6 +861,8 @@ export type ClientVehicleUncheckedUpdateManyWithoutCarInput = {
   userId?: Prisma.IntFieldUpdateOperationsInput | number
   customLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  year?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  plate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isPrimary?: Prisma.BoolFieldUpdateOperationsInput | boolean
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -797,6 +874,8 @@ export type ClientVehicleCreateManyUserInput = {
   carId?: number | null
   customLabel?: string | null
   vin?: string | null
+  year?: number | null
+  plate?: string | null
   isPrimary?: boolean
   archivedAt?: Date | string | null
   createdAt?: Date | string
@@ -806,6 +885,8 @@ export type ClientVehicleCreateManyUserInput = {
 export type ClientVehicleUpdateWithoutUserInput = {
   customLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  year?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  plate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isPrimary?: Prisma.BoolFieldUpdateOperationsInput | boolean
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -819,6 +900,8 @@ export type ClientVehicleUncheckedUpdateWithoutUserInput = {
   carId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   customLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  year?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  plate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isPrimary?: Prisma.BoolFieldUpdateOperationsInput | boolean
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -831,6 +914,8 @@ export type ClientVehicleUncheckedUpdateManyWithoutUserInput = {
   carId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   customLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  year?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  plate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isPrimary?: Prisma.BoolFieldUpdateOperationsInput | boolean
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -874,6 +959,8 @@ export type ClientVehicleSelect<ExtArgs extends runtime.Types.Extensions.Interna
   carId?: boolean
   customLabel?: boolean
   vin?: boolean
+  year?: boolean
+  plate?: boolean
   isPrimary?: boolean
   archivedAt?: boolean
   createdAt?: boolean
@@ -890,6 +977,8 @@ export type ClientVehicleSelectCreateManyAndReturn<ExtArgs extends runtime.Types
   carId?: boolean
   customLabel?: boolean
   vin?: boolean
+  year?: boolean
+  plate?: boolean
   isPrimary?: boolean
   archivedAt?: boolean
   createdAt?: boolean
@@ -904,6 +993,8 @@ export type ClientVehicleSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
   carId?: boolean
   customLabel?: boolean
   vin?: boolean
+  year?: boolean
+  plate?: boolean
   isPrimary?: boolean
   archivedAt?: boolean
   createdAt?: boolean
@@ -918,13 +1009,15 @@ export type ClientVehicleSelectScalar = {
   carId?: boolean
   customLabel?: boolean
   vin?: boolean
+  year?: boolean
+  plate?: boolean
   isPrimary?: boolean
   archivedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type ClientVehicleOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "carId" | "customLabel" | "vin" | "isPrimary" | "archivedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["clientVehicle"]>
+export type ClientVehicleOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "carId" | "customLabel" | "vin" | "year" | "plate" | "isPrimary" | "archivedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["clientVehicle"]>
 export type ClientVehicleInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.CabinetUserDefaultArgs<ExtArgs>
   car?: boolean | Prisma.ClientVehicle$carArgs<ExtArgs>
@@ -952,10 +1045,19 @@ export type $ClientVehiclePayload<ExtArgs extends runtime.Types.Extensions.Inter
     userId: number
     carId: number | null
     /**
-     * * Свободный текст, если авто нет в каталоге
+     * *
+     *    * Свободный текст, если авто нет в каталоге
      */
     customLabel: string | null
     vin: string | null
+    /**
+     * Год выпуска (обязателен при создании через CRM; у старых записей может быть пуст)
+     */
+    year: number | null
+    /**
+     * Государственный номер: заглавные, без пробелов
+     */
+    plate: string | null
     isPrimary: boolean
     archivedAt: Date | null
     createdAt: Date
@@ -1391,6 +1493,8 @@ export interface ClientVehicleFieldRefs {
   readonly carId: Prisma.FieldRef<"ClientVehicle", 'Int'>
   readonly customLabel: Prisma.FieldRef<"ClientVehicle", 'String'>
   readonly vin: Prisma.FieldRef<"ClientVehicle", 'String'>
+  readonly year: Prisma.FieldRef<"ClientVehicle", 'Int'>
+  readonly plate: Prisma.FieldRef<"ClientVehicle", 'String'>
   readonly isPrimary: Prisma.FieldRef<"ClientVehicle", 'Boolean'>
   readonly archivedAt: Prisma.FieldRef<"ClientVehicle", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"ClientVehicle", 'DateTime'>
@@ -1591,6 +1695,11 @@ export type ClientVehicleFindManyArgs<ExtArgs extends runtime.Types.Extensions.I
    * Skip the first `n` ClientVehicles.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of ClientVehicles.
+   */
   distinct?: Prisma.ClientVehicleScalarFieldEnum | Prisma.ClientVehicleScalarFieldEnum[]
 }
 
