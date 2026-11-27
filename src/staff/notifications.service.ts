@@ -1,7 +1,8 @@
 import { Injectable, Logger } from "@nestjs/common";
 import { StaffRole } from "../../generated/prisma/client";
 import { PrismaService } from "../prisma/prisma.service";
-import { NotificationInput } from "./notification-types";
+import { PushService } from "../push/push.service";
+import { MASTER_HOME, NotificationInput } from "./notification-types";
 import { StaffEventsGateway } from "./staff-events.gateway";
 
 const select = { id: true, type: true, title: true, body: true, link: true, readAt: true, createdAt: true } as const;
@@ -13,6 +14,7 @@ export class NotificationsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly events: StaffEventsGateway,
+    private readonly pushes: PushService,
   ) {}
 
   /**
@@ -38,8 +40,20 @@ export class NotificationsService {
           this.logger.warn(`Не удалось отправить по WebSocket: ${(e as Error).message}`);
         }
       });
+      await this.pushToStaff(ids, input);
     } catch (e) {
       this.logger.error(`Не удалось создать уведомление ${input.type}: ${(e as Error).message}`);
+    }
+  }
+
+  /** Push на устройства мастеров (приложение закрыто). Сбой доставки уведомление не отменяет. */
+  private async pushToStaff(staffIds: number[], input: NotificationInput) {
+    if (!this.pushes.enabled) return;
+    try {
+      const subs = await this.pushes.listForSubjects(staffIds.map((id) => `staff:${id}`));
+      await this.pushes.send(subs, { title: input.title, body: input.body ?? "", url: input.link ?? MASTER_HOME, tag: `${input.type}:${input.link ?? ""}` });
+    } catch (e) {
+      this.logger.warn(`Push мастерам не отправлен: ${(e as Error).message}`);
     }
   }
 

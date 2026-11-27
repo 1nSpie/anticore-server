@@ -9,16 +9,12 @@ function make() {
     staff: { findMany: jest.fn().mockResolvedValue([]) },
   };
   const events = { emitToAdmins: jest.fn() };
-  const service = new AdminNotificationsService(prisma as never, events as never);
-  return { prisma, events, service };
+  const pushes = { enabled: false, publicKey: null, listAll: jest.fn().mockResolvedValue([]), send: jest.fn() };
+  const service = new AdminNotificationsService(prisma as never, events as never, pushes as never);
+  return { prisma, events, pushes, service };
 }
 
 describe("AdminNotificationsService", () => {
-  beforeEach(() => {
-    delete process.env.VAPID_PUBLIC_KEY;
-    delete process.env.VAPID_PRIVATE_KEY;
-  });
-
   it("сохраняет уведомление и рассылает его администраторам по сокету", async () => {
     const { prisma, events, service } = make();
     await service.notify({ type: AdminNotificationType.LEAD_NEW, title: "Новая заявка", link: "/admin/leads" });
@@ -27,10 +23,10 @@ describe("AdminNotificationsService", () => {
   });
 
   it("без VAPID-ключей push отключён и подписки не читаются", async () => {
-    const { prisma, service } = make();
+    const { pushes, service } = make();
     expect(service.publicKey).toBeNull();
     await service.notify({ type: AdminNotificationType.LEAD_NEW, title: "x" });
-    expect(prisma.pushSubscription.findMany).not.toHaveBeenCalled();
+    expect(pushes.listAll).not.toHaveBeenCalled();
   });
 
   it("сбой БД не бросает исключение (приём заявки не ломается)", async () => {
