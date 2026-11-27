@@ -62,8 +62,8 @@ export class AdminNotificationsController {
   }
 
   @Delete("push/subscribe")
-  unsubscribe(@Body() dto: UnsubscribeDto) {
-    return this.notifications.unsubscribe(dto.endpoint);
+  unsubscribe(@Req() req: Request, @Body() dto: UnsubscribeDto) {
+    return this.notifications.unsubscribe((req["admin"] as { id: string }).id, dto.endpoint);
   }
 
   @Post("read-all")

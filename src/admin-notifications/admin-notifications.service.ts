@@ -1,8 +1,8 @@
 import { Injectable, Logger } from "@nestjs/common";
-import * as webpush from "web-push";
 import { StaffRole } from "../../generated/prisma/client";
 import { staffIdFromSubject } from "../auth/admin-auth.service";
 import { PrismaService } from "../prisma/prisma.service";
+import { PushService, type PushSubscriptionInput } from "../push/push.service";
 import { AdminEventsGateway } from "./admin-events.gateway";
 
 const select = { id: true, type: true, title: true, body: true, link: true, readAt: true, createdAt: true } as const;
@@ -17,32 +17,18 @@ export interface AdminNotificationInput {
   link?: string | null;
 }
 
-export interface PushSubscriptionInput {
-  endpoint: string;
-  p256dh: string;
-  auth: string;
-}
-
 @Injectable()
 export class AdminNotificationsService {
   private readonly logger = new Logger(AdminNotificationsService.name);
-  private readonly pushReady: boolean;
 
   constructor(
     private readonly prisma: PrismaService,
     private readonly events: AdminEventsGateway,
-  ) {
-    const { VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY, VAPID_SUBJECT } = process.env;
-    this.pushReady = Boolean(VAPID_PUBLIC_KEY && VAPID_PRIVATE_KEY);
-    if (this.pushReady) {
-      webpush.setVapidDetails(VAPID_SUBJECT || "mailto:admin@example.com", VAPID_PUBLIC_KEY!, VAPID_PRIVATE_KEY!);
-    } else {
-      this.logger.warn("VAPID_PUBLIC_KEY / VAPID_PRIVATE_KEY не заданы — push отключён, лента и всплывающие окна работают");
-    }
-  }
+    private readonly pushes: PushService,
+  ) {}
 
   get publicKey(): string | null {
-    return this.pushReady ? process.env.VAPID_PUBLIC_KEY! : null;
+    return this.pushes.publicKey;
   }
 
   /**
@@ -60,7 +46,7 @@ export class AdminNotificationsService {
       } catch (e) {
         this.logger.warn(`Не удалось отправить по WebSocket: ${(e as Error).message}`);
       }
-      await this.push({ title: input.title, body: input.body ?? "", url: input.link ?? "/admin", tag: `${input.type}:${row.id}` });
+      await this.pushToAdmins({ title: input.title, body: input.body ?? "", url: input.link ?? "/admin", tag: `${input.type}:${row.id}` });
     } catch (e) {
       this.logger.error(`Не удалось создать уведомление ${input.type}: ${(e as Error).message}`);
     }
@@ -84,23 +70,17 @@ export class AdminNotificationsService {
     return { updated: r.count };
   }
 
-  async subscribe(subject: string, sub: PushSubscriptionInput) {
-    await this.prisma.pushSubscription.upsert({
-      where: { endpoint: sub.endpoint },
-      update: { p256dh: sub.p256dh, auth: sub.auth, subject },
-      create: { ...sub, subject },
-    });
-    return { success: true };
+  subscribe(subject: string, sub: PushSubscriptionInput) {
+    return this.pushes.subscribe(subject, sub);
   }
 
-  async unsubscribe(endpoint: string) {
-    await this.prisma.pushSubscription.deleteMany({ where: { endpoint } });
-    return { success: true };
+  unsubscribe(subject: string, endpoint: string) {
+    return this.pushes.unsubscribe(subject, endpoint);
   }
 
   /** Подписки действующих администраторов: разжалованный или заблокированный сотрудник push больше не получает. */
   private async activeSubscriptions() {
-    const subs = await this.prisma.pushSubscription.findMany();
+    const subs = await this.pushes.listAll();
     const staffIds = [...new Set(subs.map((s) => staffIdFromSubject(s.subject)).filter((id): id is number => id !== null))];
     const allowed = new Set(
       (
@@ -116,24 +96,8 @@ export class AdminNotificationsService {
     });
   }
 
-  private async push(payload: { title: string; body: string; url: string; tag: string }) {
-    if (!this.pushReady) return;
-    const subs = await this.activeSubscriptions();
-    const message = JSON.stringify(payload);
-    await Promise.all(
-      subs.map(async (s) => {
-        try {
-          await webpush.sendNotification({ endpoint: s.endpoint, keys: { p256dh: s.p256dh, auth: s.auth } }, message, { TTL: 60 * 60 });
-        } catch (e) {
-          const status = (e as { statusCode?: number }).statusCode;
-          // 404/410 — подписка отозвана или устройство удалило приложение
-          if (status === 404 || status === 410) {
-            await this.prisma.pushSubscription.deleteMany({ where: { endpoint: s.endpoint } });
-          } else {
-            this.logger.warn(`Push не доставлен (${status ?? "?"}): ${(e as Error).message}`);
-          }
-        }
-      }),
-    );
+  private async pushToAdmins(payload: { title: string; body: string; url: string; tag: string }) {
+    if (!this.pushes.enabled) return;
+    await this.pushes.send(await this.activeSubscriptions(), payload);
   }
 }

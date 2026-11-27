@@ -12,7 +12,7 @@ function setup() {
     staff: { findMany: jest.fn(async () => [{ id: 1 }, { id: 2 }]) },
   };
   const events: any = { emitToStaff: jest.fn() };
-  return { prisma, events, svc: new NotificationsService(prisma, events) };
+  return { prisma, events, svc: new NotificationsService(prisma, events, { enabled: false } as never) };
 }
 const input = { type: "TASK_NEW", title: "Новая задача", body: "Помыть пост", link: "/staff" } as const;
 
