@@ -341,3 +341,13 @@ export type StockItem = Prisma.StockItemModel
  * Движение по складу филиала. `delta` со знаком: приход +, расход −, инвентаризация ±. Остаток = сумма delta.
  */
 export type StockMovement = Prisma.StockMovementModel
+/**
+ * Model AdminNotification
+ * Уведомление администраторам (общая лента: новые заявки и т.п.). Показывается всплывающим окном, колокольчиком и push.
+ */
+export type AdminNotification = Prisma.AdminNotificationModel
+/**
+ * Model PushSubscription
+ * Подписка браузера на Web Push (устройство администратора).
+ */
+export type PushSubscription = Prisma.PushSubscriptionModel

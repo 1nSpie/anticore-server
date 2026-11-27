@@ -7,6 +7,7 @@ import {
 import { SiteLeadKind, SiteLeadStatus } from "../../../generated/prisma/client";
 import { PrismaService } from "../../prisma/prisma.service";
 import { normalizePhoneRu } from "../../cabinet/common/phone.util";
+import { AdminNotificationsService, AdminNotificationType } from "../../admin-notifications/admin-notifications.service";
 import { UpdateSiteLeadDto } from "./dto/site-lead.dto";
 import { phoneSearchVariants } from "../common/phone-search";
 import {
@@ -76,7 +77,10 @@ function assertAdminNoteOnLeaveNew(
 
 @Injectable()
 export class CrmLeadsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly adminNotifications: AdminNotificationsService,
+  ) {}
 
   async createFromSiteForm(data: SiteFormPayload) {
     const phone = normalizePhoneRu(data.phone);
@@ -85,7 +89,7 @@ export class CrmLeadsService {
       ? SiteLeadKind.PRICE_REQUEST
       : SiteLeadKind.CALLBACK;
 
-    return this.prisma.siteLead.create({
+    const lead = await this.prisma.siteLead.create({
       data: {
         kind,
         name: data.name.trim(),
@@ -96,6 +100,14 @@ export class CrmLeadsService {
         pageUrl: data.href?.trim() || null,
       },
     });
+    // Не ждём доставку: уведомление не должно задерживать ответ сайту
+    void this.adminNotifications.notify({
+      type: AdminNotificationType.LEAD_NEW,
+      title: kind === SiteLeadKind.PRICE_REQUEST ? "Новая заявка: расчёт стоимости" : "Новая заявка: обратный звонок",
+      body: [lead.name, lead.phone, lead.carDescription].filter(Boolean).join(" · "),
+      link: "/admin/leads",
+    });
+    return lead;
   }
 
   async list(status?: SiteLeadStatus, q?: string) {
