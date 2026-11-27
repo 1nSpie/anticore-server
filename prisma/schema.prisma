@@ -1274,3 +1274,33 @@ model StockMovement {
   @@index([itemId, location])
   @@map("stock_movements")
 }
+
+/// Уведомление администраторам (общая лента: новые заявки и т.п.). Показывается всплывающим окном, колокольчиком и push.
+model AdminNotification {
+  id        Int       @id @default(autoincrement())
+  /// LEAD_NEW
+  type      String    @db.VarChar(40)
+  title     String    @db.VarChar(200)
+  body      String?   @db.VarChar(500)
+  /// Куда вести при нажатии (путь внутри /admin)
+  link      String?   @db.VarChar(200)
+  readAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([readAt, createdAt])
+  @@map("admin_notifications")
+}
+
+/// Подписка браузера на Web Push (устройство администратора).
+model PushSubscription {
+  id        Int      @id @default(autoincrement())
+  endpoint  String   @unique @db.Text
+  p256dh    String   @db.VarChar(200)
+  auth      String   @db.VarChar(100)
+  /// `admin` (env-админ) или `staff:<id>` (сотрудник с ролью ADMIN)
+  subject   String   @db.VarChar(40)
+  createdAt DateTime @default(now())
+
+  @@index([subject])
+  @@map("push_subscriptions")
+}

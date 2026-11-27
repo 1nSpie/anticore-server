@@ -1,6 +1,7 @@
 import { Module } from "@nestjs/common";
 import { ScheduleModule } from "@nestjs/schedule";
 import { AdminAuthModule } from "../auth/admin-auth.module";
+import { AdminNotificationsModule } from "../admin-notifications/admin-notifications.module";
 import { CabinetAuthModule } from "../cabinet/auth/cabinet-auth.module";
 import { SmsModule } from "../cabinet/sms/sms.module";
 import { ClientVehiclesModule } from "../client-vehicles/client-vehicles.module";
@@ -38,6 +39,7 @@ import { StorageModule } from "../storage/storage.module";
   imports: [
     ScheduleModule.forRoot(),
     AdminAuthModule,
+    AdminNotificationsModule,
     CabinetAuthModule,
     SmsModule,
     ClientVehiclesModule,
